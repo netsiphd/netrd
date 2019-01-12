@@ -1,13 +1,22 @@
-class BaseReconstructionAlgorithm():
+"""
+reconstruction/base.py
+----------------------
+
+Base clase for reconstruction algorithms.
+
+"""
+
+
+class BaseReconstructionAlgorithm:
     """Base class for graph reconstruction algorithms.
 
     The basic usage of a graph reconstruction algorithm is as follows:
 
     >>> reconstructor = ReconstructionAlgorithm(<some_params>)
-    >>> G = reconstructor.fit(ts_data)
+    >>> G = reconstructor.fit(T)
     >>> # or alternately, G = reconstructor.results['graph']
 
-    Here, `ts_data` is an $N \times T$ numpy array consisting of $T$
+    Here, `T` is an $N \times T$ numpy array consisting of $T$
     observations for each of $N$ sensors. This constrains the graphs to have
     integer-valued nodes.
 
@@ -19,21 +28,18 @@ class BaseReconstructionAlgorithm():
     """
 
     def __init__(self):
-        self.results = dict()
-        pass
+        self.results = {}
 
-    def fit(self, ts_data):
-        """
+    def fit(self, T):
+        """Reconstruct a graph from time series T.
 
         Params
         ------
-        ts_data (np.ndarray): A numpy array consisting of $T$ observations
-                              from $N$ sensors.
+        T (np.ndarray): Array consisting of $T$ observations from $N$ sensors.
 
         Returns
         -------
         G (nx.Graph): A reconstructed graph with $N$ nodes.
 
         """
-
         pass

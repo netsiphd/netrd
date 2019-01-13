@@ -1,7 +1,7 @@
 import setuptools
 
 setuptools.setup(
-    name='netrd'
+    name='netrd',
     version='0.0.1',
     author='NetSI 2019 Collabathon Team',
     author_email='leo@leotrs.com',

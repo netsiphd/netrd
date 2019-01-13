@@ -6,9 +6,10 @@ Reconstruct a random network from time series.
 
 """
 
-from netrd import BaseReconstructor
+from .base import BaseReconstructor
 
-class RandomReconstructor(RandomReconstructor):
+
+class RandomReconstructor(BaseReconstructor):
 
     def fit(self, T):
         """Reconstruct a random graph."""

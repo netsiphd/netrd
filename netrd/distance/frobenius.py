@@ -8,7 +8,7 @@ Frobenius norm between two adjacency matrices.
 
 import numpy as np
 import networkx as nx
-from netrd import BaseDistance
+from .base import BaseDistance
 
 
 class Frobenius(BaseDistance):

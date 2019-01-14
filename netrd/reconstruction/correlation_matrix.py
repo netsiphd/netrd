@@ -53,7 +53,7 @@ class CorrelationMatrixReconstructor(BaseReconstructor):
                  np.sqrt(np.diag(P)).reshape(1, num_sensors))
 
         # threshold the precision matrix
-        A = P * (P > np.quantile(P, quantile))
+        A = P * (P > np.percentile(P, quantile * 100))
 
         # construct the network
         self.results['graph'] = nx.from_numpy_array(A)

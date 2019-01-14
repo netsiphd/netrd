@@ -1,4 +1,4 @@
-# scale-free-networks-are-awesome
+# netrd
 
 
 + [Link to sign-up sheet](https://docs.google.com/spreadsheets/d/1N_9_85MjYFYClloKOQkMz-L6g3wuclIRshcIdE7MfTs/edit?usp=sharing)

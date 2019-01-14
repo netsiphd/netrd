@@ -25,8 +25,8 @@ class CorrelationMatrixReconstructor(BaseReconstructor):
         T (np.ndarray): Array consisting of $T$ observations from $N$ sensors
         num_eigs (int): The number of eigenvalues to use. This corresponds
         to the amount of regularization.
-        quantile: The threshold above which to create an edge, e.g., only
-        create edges between elements above the 90th quantile of the
+        quantile (float): The threshold above which to create an edge, e.g.,
+        only create edges between elements above the 90th quantile of the
         correlation matrix.
 
         Returns
@@ -35,10 +35,10 @@ class CorrelationMatrixReconstructor(BaseReconstructor):
 
         """
 
-        num_sensors = T.shape[1]
+        num_sensors = T.shape[0]
 
         # get the correlation matrix
-        X = np.corrcoef(T, rowvar=False)
+        X = np.corrcoef(T)
 
         # get its eigenvalues and eigenvectors
         vals, vecs = np.linalg.eigh(X)

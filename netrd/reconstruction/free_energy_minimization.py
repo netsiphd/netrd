@@ -76,6 +76,7 @@ class FreeEnergyMinimizationReconstructor(BaseReconstructor):
 
         # construct the network
         self.results['graph'] = nx.from_numpy_array(W)
+        self.results['matrix'] = W
         G = self.results['graph']
 
         return G

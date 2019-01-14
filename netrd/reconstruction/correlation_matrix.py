@@ -2,10 +2,11 @@
 correlation_matrix.py
 ---------------------
 
-Reconstruct a network from time series data using a regularized form of the
-precision matrix. After [this tutorial](
-https://bwlewis.github.io/correlation-regularization/) in R.
+Reconstruction of graphs using the correlation matrix.
 
+author: Stefan McCabe
+email: stefanmccabe at gmail dot com
+submitted as part of the 2019 NetSI Collabathon
 """
 from .base import BaseReconstructor
 import numpy as np
@@ -15,6 +16,9 @@ import networkx as nx
 class CorrelationMatrixReconstructor(BaseReconstructor):
     def fit(self, T, num_eigs=10, quantile=0.9):
         """
+        Reconstruct a network from time series data using a regularized
+        form of the precision matrix. After [this tutorial](
+        https://bwlewis.github.io/correlation-regularization/) in R.
 
         Params
         ------

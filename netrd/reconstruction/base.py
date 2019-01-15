@@ -7,7 +7,7 @@ class BaseReconstructor:
     >>> G = reconstructor.fit(T)
     >>> # or alternately, G = reconstructor.results['graph']
 
-    Here, `T` is an $N \times T$ numpy array consisting of $T$
+    Here, `TS` is an $N \times L$ numpy array consisting of $L$
     observations for each of $N$ sensors. This constrains the graphs to have
     integer-valued nodes.
 
@@ -21,19 +21,19 @@ class BaseReconstructor:
     def __init__(self):
         self.results = {}
 
-    def fit(self, T):
-        """Reconstruct a graph from time series T.
+    def fit(self, TS):
+        """Reconstruct a graph from time series TS.
 
         Params
         ------
-        T (np.ndarray): Array consisting of $T$ observations from $N$ sensors.
+        L (np.ndarray): Array consisting of $L$ observations from $N$ sensors.
 
         Returns
         -------
         G (nx.Graph): A reconstructed graph with $N$ nodes.
 
         """
-        G = nx.Graph()            # reconstruct the graph
-        self.results['graph'] = G # and store it in self.results
+        G = nx.Graph()  # reconstruct the graph
+        self.results['graph'] = G  # and store it in self.results
         # self.results[..] = ..   # also store other values if needed
         return G

@@ -6,6 +6,7 @@ Reconstruct a random network from time series.
 
 """
 
+import networkx as nx
 from .base import BaseReconstructor
 
 

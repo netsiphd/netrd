@@ -26,7 +26,7 @@ class BaseReconstructor:
 
         Params
         ------
-        L (np.ndarray): Array consisting of $L$ observations from $N$ sensors.
+        TS (np.ndarray): Array consisting of $L$ observations from $N$ sensors.
 
         Returns
         -------

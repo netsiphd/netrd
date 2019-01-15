@@ -6,7 +6,8 @@ Reconstruction of graphs using the correlation matrix.
 
 author: Stefan McCabe
 email: stefanmccabe at gmail dot com
-submitted as part of the 2019 NetSI Collabathon
+Submitted as part of the 2019 NetSI Collabathon
+
 """
 from .base import BaseReconstructor
 import numpy as np

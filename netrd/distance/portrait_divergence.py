@@ -8,7 +8,7 @@ author: Brennan Klein
 email: brennanjamesklein at gmail dot com
 submitted as part of the 2019 NetSI Collabathon
 """
-from base import BaseDistance
+from .base import BaseDistance
 from collections import Counter
 import numpy as np
 import networkx as nx

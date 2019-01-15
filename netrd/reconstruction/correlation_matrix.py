@@ -6,7 +6,8 @@ Reconstruction of graphs using the correlation matrix.
 
 author: Stefan McCabe
 email: stefanmccabe at gmail dot com
-submitted as part of the 2019 NetSI Collabathon
+Submitted as part of the 2019 NetSI Collabathon
+
 """
 from .base import BaseReconstructor
 import numpy as np
@@ -14,7 +15,7 @@ import networkx as nx
 
 
 class CorrelationMatrixReconstructor(BaseReconstructor):
-    def fit(self, T, num_eigs=10, quantile=0.9):
+    def fit(self, TS, num_eigs=10, quantile=0.9):
         """
         Reconstruct a network from time series data using a regularized
         form of the precision matrix. After [this tutorial](
@@ -22,7 +23,7 @@ class CorrelationMatrixReconstructor(BaseReconstructor):
 
         Params
         ------
-        T (np.ndarray): Array consisting of $T$ observations from $N$ sensors
+        TS (np.ndarray): Array consisting of $L$ observations from $N$ sensors
         num_eigs (int): The number of eigenvalues to use. This corresponds
         to the amount of regularization.
         quantile (float): The threshold above which to create an edge, e.g.,
@@ -35,10 +36,10 @@ class CorrelationMatrixReconstructor(BaseReconstructor):
 
         """
 
-        num_sensors = T.shape[0]
+        num_sensors = TS.shape[0]
 
         # get the correlation matrix
-        X = np.corrcoef(T)
+        X = np.corrcoef(TS)
 
         # get its eigenvalues and eigenvectors
         vals, vecs = np.linalg.eigh(X)

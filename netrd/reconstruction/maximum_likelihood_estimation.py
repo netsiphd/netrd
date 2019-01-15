@@ -4,16 +4,16 @@ maximum_likelihood_estimation.py
 Reconstruction of graphs using maximum likelihood estimation
 author: Brennan Klein
 email: brennanjamesklein at gmail dot com
-submitted as part of the 2019 NetSI Collabathon
+submitted as part of the 2019 NeTSI Collabathon
 """
 from .base import BaseReconstructor
 import numpy as np
 import networkx as nx
 
 class MaximumLikelihoodEstimationReconstructor(BaseReconstructor):
-    def fit(self, ts, rate, stop_criterion=True):
+    def fit(self, TS, rate, stop_criterion=True):
         """
-        Given a (N,t) time series, infer inter-node coupling weights using 
+        Given an NxL time series, infer inter-node coupling weights using 
         maximum likelihood estimation methods. 
         After [this tutorial]
         (https://github.com/nihcompmed/network-inference/blob/master/sphinx/codesource/inference.py) 
@@ -21,7 +21,7 @@ class MaximumLikelihoodEstimationReconstructor(BaseReconstructor):
         
         Params
         ------
-        ts (np.ndarray): Array consisting of $T$ observations from $N$ sensors.
+        TS (np.ndarray): Array consisting of $L$ observations from $N$ sensors.
         rate (float): rate term in maximum likelihood
         stop_criterion (bool): if True, prevent overly-long runtimes
         
@@ -31,18 +31,18 @@ class MaximumLikelihoodEstimationReconstructor(BaseReconstructor):
 
         """
         
-        N, t = np.shape(ts)             # N nodes, length t
-        rate = rate / t
+        N, L = np.shape(TS)             # N nodes, length L
+        rate = rate / L
 
-        s1 = ts[:,:-1]
+        s1 = TS[:,:-1]
         W = np.zeros((N,N))
 
         nloop = 10000 
         for i0 in range(N):
-            st1 = ts[i0,1:]             # time series activity of single node
+            st1 = TS[i0,1:]             # time series activity of single node
 
             w    = np.zeros(N)
-            h    = np.zeros(t-1) 
+            h    = np.zeros(L-1) 
             cost = np.full(nloop,100.)
 
             for iloop in range(nloop):

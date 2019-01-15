@@ -14,20 +14,10 @@ from scipy import linalg
 from scipy.integrate import quad
 from scipy.optimize import fsolve
 
-def cross_cov(a, b):
-    """ 
-    cross_covariance
-    a,b -->  <(a - <a>)(b - <b>)>  (axis=0) 
-    """    
-    da = a - np.mean(a, axis=0)
-    db = b - np.mean(b, axis=0)
-
-    return np.matmul(da.T, db) / a.shape[0]
-
 class ExactMeanFieldReconstructor(BaseReconstructor):
-    def fit(self, ts, stop_criterion=True):
+    def fit(self, TS, stop_criterion=True):
         """
-        Given a (N,t) time series, infer inter-node coupling weights using an
+        Given an NxL time series, infer inter-node coupling weights using an
         exact mean field approximation. 
         After [this tutorial]
         (https://github.com/nihcompmed/network-inference/blob/master/sphinx/codesource/inference.py) 
@@ -42,7 +32,7 @@ class ExactMeanFieldReconstructor(BaseReconstructor):
         
         Params
         ------
-        ts (np.ndarray): Array consisting of $T$ observations from $N$ sensors.
+        TS (np.ndarray): Array consisting of $L$ observations from $N$ sensors.
         stop_criterion (bool): if True, prevent overly-long runtimes
         
         Returns
@@ -51,18 +41,18 @@ class ExactMeanFieldReconstructor(BaseReconstructor):
 
         """
         
-        N, t = np.shape(ts)             # N nodes, length t
-        m = np.mean(ts, axis=1)         # empirical value
+        N, L = np.shape(TS)             # N nodes, length L
+        m = np.mean(TS, axis=1)         # empirical value
 
         # A matrix
         A = 1 - m**2 
         A = np.diag(A)
 
-        ds    = ts.T - m                # equal time correlation
+        ds    = TS.T - m                # equal time correlation
         C     = np.cov(ds, rowvar=False, bias=True)
         C_inv = linalg.inv(C)
         
-        s1  = ts[:,1:]                  # one-step-delayed correlation
+        s1  = TS[:,1:]                  # one-step-delayed correlation
         ds1 = s1.T - np.mean(s1, axis=1)
         D   = cross_cov(ds1,ds[:-1])    
         
@@ -104,7 +94,7 @@ class ExactMeanFieldReconstructor(BaseReconstructor):
                     delta = (1 / (a**2)) * np.sum( (B[i0,:]**2) * (1-m[:]**2) )
                     W_temp = B[i0,:] / a
 
-                H_temp = np.dot( ts[:,:-1].T, W_temp )
+                H_temp = np.dot( TS[:,:-1].T, W_temp )
                 cost[iloop] = np.mean((s1.T[:,i0] - np.tanh(H_temp))**2)
 
                 if stop_criterion and cost[iloop] >= cost[iloop-1]: 
@@ -120,3 +110,13 @@ class ExactMeanFieldReconstructor(BaseReconstructor):
         G = self.results['graph']
 
         return G
+
+def cross_cov(a, b):
+    """ 
+    cross_covariance
+    a,b -->  <(a - <a>)(b - <b>)>  (axis=0) 
+    """    
+    da = a - np.mean(a, axis=0)
+    db = b - np.mean(b, axis=0)
+
+    return np.matmul(da.T, db) / a.shape[0]        

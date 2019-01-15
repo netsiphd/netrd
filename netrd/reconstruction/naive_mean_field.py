@@ -15,7 +15,7 @@ from scipy import linalg
 class NaiveMeanFieldReconstructor(BaseReconstructor):
     def fit(self, TS):
         """
-        Given an NxL time series, infer inter-node coupling weights using a 
+        Given a (N,L) time series, infer inter-node coupling weights using a 
         naive mean field approximation. After [this tutorial]
         (https://github.com/nihcompmed/network-inference/blob/master/sphinx/codesource/inference.py) 
         in python.
@@ -29,13 +29,13 @@ class NaiveMeanFieldReconstructor(BaseReconstructor):
         G (nx.Graph or nx.DiGraph): a reconstructed graph.
 
         """
-        
+
         N, L = np.shape(TS)             # N nodes, length L
         m = np.mean(TS, axis=1)         # empirical value
 
         # A matrix
-        A = 1 - m**2 
-        A_inv = np.diag(1/A)
+        A = 1 - m**2
+        A_inv = np.diag(1 / A)
         A = np.diag(A)
 
         ds = TS.T - m                   # equal time correlation
@@ -43,9 +43,10 @@ class NaiveMeanFieldReconstructor(BaseReconstructor):
         C_inv = linalg.inv(C)
         
         s1 = TS[:,1:]                   # one-step-delayed correlation
+
         ds1 = s1.T - np.mean(s1, axis=1)
-        D = cross_cov(ds1,ds[:-1])    
-        
+        D = cross_cov(ds1, ds[:-1])
+
         # predict W:
         B = np.dot(D, C_inv)
         W = np.dot(A_inv, B)
@@ -56,7 +57,6 @@ class NaiveMeanFieldReconstructor(BaseReconstructor):
         G = self.results['graph']
 
         return G
-
 
 def cross_cov(a, b):
     """ 

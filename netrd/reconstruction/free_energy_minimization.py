@@ -12,10 +12,11 @@ import networkx as nx
 import scipy as sp
 from scipy import linalg
 
+
 class FreeEnergyMinimizationReconstructor(BaseReconstructor):
     def fit(self, TS):
         """
-        Given an NxL time series, infer inter-node coupling weights by
+        Given a (N,L) time series, infer inter-node coupling weights by 
         minimizing a free energy over the data structure. After [this tutorial]
         (https://github.com/nihcompmed/network-inference/blob/master/sphinx/codesource/inference.py) in python.
         
@@ -28,7 +29,7 @@ class FreeEnergyMinimizationReconstructor(BaseReconstructor):
         G (nx.Graph or nx.DiGraph): a reconstructed graph.
 
         """
-    
+        
         N, L = np.shape(TS)             # N nodes, length L
         m  = np.mean(TS[:,:-1], axis=1) # model average
         ds = TS[:,:-1].T - m            # discrepancy
@@ -42,9 +43,9 @@ class FreeEnergyMinimizationReconstructor(BaseReconstructor):
         dst = ds.T                      # discrepancy at time t
 
         # empty matrix to populate w/ inferred couplings
-        W = np.empty((N,N)) 
-        
-        nloop = 10000       # failsafe
+        W = np.empty((N, N))
+
+        nloop = 10000  # failsafe
 
         for i0 in range(N): # for each node
             
@@ -52,9 +53,9 @@ class FreeEnergyMinimizationReconstructor(BaseReconstructor):
             h = TS1         # calculate the the local field
             
             cost = np.full(nloop, 100.)
-            
+
             for iloop in range(nloop):
-                
+              
                 h_av  = np.mean(h)                # average local field
                 hs_av = np.dot(dst, h-h_av) / t1  # deltaE_i delta\sigma_k
                 w = np.dot(hs_av, c_inv)          # expectation under model 
@@ -72,7 +73,7 @@ class FreeEnergyMinimizationReconstructor(BaseReconstructor):
                 h *= np.divide(TS1, TS_model, out=np.ones_like(TS1), 
                                where=TS_model!=0)
 
-            W[i0,:] = w[:]
+            W[i0, :] = w[:]
 
         # construct the network
         self.results['graph'] = nx.from_numpy_array(W)

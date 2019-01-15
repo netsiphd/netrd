@@ -11,7 +11,7 @@ import numpy as np
 import networkx as nx
 
 class MaximumLikelihoodEstimationReconstructor(BaseReconstructor):
-    def fit(self, TS, rate, stop_criterion=True):
+    def fit(self, TS, rate=1.0, stop_criterion=True):
         """
         Given an NxL time series, infer inter-node coupling weights using 
         maximum likelihood estimation methods. 

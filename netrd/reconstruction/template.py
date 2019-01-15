@@ -12,7 +12,7 @@ Submitted as part of the 2019 NetSI Collabathon.
 from .base import BaseReconstructor
 
 class <AlgorithmName>(BaseReconstructor):
-    def fit(self, T):
+    def fit(self, TS):
         """A brief one-line description of the algorithm goes here.
 
         A short paragraph may follow. The paragraph may include $latex$ by
@@ -20,7 +20,7 @@ class <AlgorithmName>(BaseReconstructor):
 
         Params
         ------
-        T (np.ndarray): Array consisting of $T$ observations from $N$ sensors.
+        TS (np.ndarray): Array consisting of $L$ observations from $N$ sensors.
 
         Returns
         -------

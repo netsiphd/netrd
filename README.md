@@ -34,11 +34,23 @@ need to do them once.
    directory called 'netrd/'. Navigate to it and execute
 
    ```
-   git remote add upstream git@github.com:netsiphd/netrd.git
+   git remote add upstream https://github.com/netsiphd/netrd.git
    ```
 
    In this way, your machine will know of both your fork (which git calls
    `origin`) and the upstream repository (`upstream`).
+
+4. During development, you will probably want to play around with your
+   code. For this, you need to install the `netrd` package and have it
+   reflect your changes as you go along. For this, open the console and
+   navigate to the `netrd/` directory, and execute
+
+	```
+	pip install -e .
+	```
+
+	From now on, you can open a Jupyter notebook, ipython console, or your
+    favorite IDE from anywhere in your computer and type `import netrd`.
 
 
 These steps need to be taken only once. Now anything you do in the `netrd/`
@@ -88,3 +100,111 @@ Once you're all setup and ready to start coding, these are the steps you need.
    much as possible. However, if you really need to do something
    differently, go ahead and we will discuss how to make it fit with the
    rest of the package.
+
+5. If you need other auxiliary files, we got you covered! Place your
+   Jupyter notebooks in the `netrd/notebooks` folder, and any data files
+   you may need in the `netrd/data` folder. If you are willing to write a
+   short documentation file (this may be plain text, a notebook, latex,
+   etc) place that inside `netrd/docs`.
+
+
+## Finish
+
+1. Before adding your contribution to this repository, you need to make
+   sure that your code doesn't conflict with other code that other people
+   may have written in the meantime. For this, you need to execute
+   
+   ```
+   git pull upstream master
+   ```
+   
+   If this doesn't show any errors, you're good to go! On the other hand,
+   the possible errors at this stage may be confusing and hard to fix. If
+   you've never done this before, we recommend contacting someone with some
+   experience in git to help you at this stage. We do not foresee a lot of
+   errors at this step because we have designed the repository in such a
+   way that your code should never conflict with anybody else's... but it
+   still may happen.
+
+2. If you implemented a distance method, you need to edit
+   `netrd/distance/__init__.py`. Open it and add the following line:
+
+	```
+	from .<your_file_name> import <YourAlgorithmName>
+	```
+
+	Note: there is one dot (.) before <your_file_name>. This is important!
+	Note: this line must go BEFORE the line with `__all__ = []`.
+
+	If you implemented a reconstruction method, you need to edit
+    `netrd/reconstruction/__init__.py` instead, with the same line.
+
+3. After updating your local code in the previous step, the first thing to
+   do is tell git which files you have been working on. If you worked on a
+   distance algorithm, do
+
+   ```
+   git add netrd/distance/<your_file> netrd/distance/__init__.py
+   ```
+
+	If you worked on a reconstruction algorithm, do
+	
+	```
+	git add netrd/reconstruction/<your_file> netrd/reconstruction/__init__.py
+	```
+
+	At this point you also want to add any other files that you used during
+    development (see last step under 'Start'). For example, if you added a
+    Jupyter notebook to the `netrd/notebooks` folder then you should
+    execute
+
+	```
+	git add netrd/notebooks/<your_notebook_name>
+	```
+
+4. Next tell git to commit (or save) your changes:
+
+	```
+	git commit -m 'Write a commit message here. This will be public and
+	should be descriptive of the work you have done. Please be as explicit
+	as possible, but at least make sure to include the name of the method
+	you implemented. For example, the commit message may be: add
+	implementation of SomeMethod, based on SomeAuthor and/or SomeCode.'
+	```
+
+5. Now you have to tell git to send your changes from your machine to your
+   fork:
+
+	```
+	git push origin master
+	```
+
+6. Finally, you need to tell this (the upstream) repository to include your
+   contributions. For this, we use the GitHub web interface. At the top of
+   this page, there is a 'New Pull Request' button. Click on it, and it
+   will take you to a page titled 'Compare Changes'. Right below the title,
+   click on the blue text that reads 'compare across forks'. This will show
+   four buttons. Make sure that the first button reads 'base fork:
+   netsiphd/netrd', the second button reads 'base: master', the third
+   button reads 'head fork: <your_username>/netrd', and the fourth button
+   reads 'compare: master'. (If everything has gone according to plan, the
+   only button you should have to change is the third one - make sure you
+   find your username, not someone else's.) After you find your username,
+   GitHub will show a rundown of the differences that you are adding to the
+   upstream repository, so you will be able to see what changes you are
+   contributing. If everything looks correctly, press 'Create Pull
+   Request'.
+
+7. That's it! We will be notified and will review your code and changes to
+   make sure that everything is in place. Some automated tests will also
+   run in the background to make sure that your code can be imported
+   correctly and other sanity checks. Once that is all done, one of us will
+   either accept your Pull Request, or leave a message requesting some
+   changes (you will receive an email either way).
+
+8. Once your code is included in the package, it's time to implement
+   another method! You can go back to the sign-in sheet to see what
+   algorithms have yet to be implemented. If you start another algorithm,
+   you do not need to perform the steps under the 'Setup' heading at the
+   top of this page, but please make sure to follow the steps under
+   'Start'.

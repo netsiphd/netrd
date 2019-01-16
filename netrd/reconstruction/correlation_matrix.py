@@ -37,7 +37,7 @@ class CorrelationMatrixReconstructor(BaseReconstructor):
 
         """
 
-        num_sensors = TS.shape[0]
+        N = TS.shape[0]
 
         if num_eigs > N:
             raise ValueError("The number of eigenvalues used must be less "
@@ -55,8 +55,8 @@ class CorrelationMatrixReconstructor(BaseReconstructor):
         # construct the precision matrix and store it
         P = (vecs[:, :num_eigs]) @\
             (1 / (vals[:num_eigs]).reshape(num_eigs, 1) * (vecs[:, :num_eigs]).T)
-        P = P / (np.sqrt(np.diag(P)).reshape(num_sensors, 1) @\
-                 np.sqrt(np.diag(P)).reshape(1, num_sensors))
+        P = P / (np.sqrt(np.diag(P)).reshape(N, 1) @\
+                 np.sqrt(np.diag(P)).reshape(1, N))
         self.results['matrix'] = P
 
         # threshold the precision matrix

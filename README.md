@@ -10,7 +10,9 @@ steps you need to take (for details, go back to the slides).
 
 For all other information about the project, please visit the
 [Mega Doc](https://docs.google.com/document/d/1LMBFgE8F9fR3mZjB9WRDr5bj_R7Z5kcw04K-LWN_cGM/edit?usp=sharing).
-Or for a more general introduction, check out these [slides](https://docs.google.com/presentation/d/1nnGAttVH5sjzqzHJBIirBSyhbK9t2BdaU6kHaTGdgtM/edit?usp=sharing)
+Or for a more general introduction, check out these [slides](https://docs.google.com/presentation/d/1nnGAttVH5sjzqzHJBIirBSyhbK9t2BdaU6kHaTGdgtM/edit?usp=sharing). 
+Lastly, after writing up a brief description of the method you have
+implemented, please include it in this [document](https://v2.overleaf.com/5374841856ppnrdkgqkqpr).
 
 ## Setup
 

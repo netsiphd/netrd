@@ -17,6 +17,6 @@ def test_graph_size():
     used to reconstruct the graph.
     """
     for size in [10, 100, 1000]:
-        T = np.random.random((size, 500))
-        G = reconstruction.CorrelationMatrixReconstructor().fit(T)
+        TS = np.random.random((size, 500))
+        G = reconstruction.CorrelationMatrixReconstructor().fit(TS)
         assert G.order() == size

@@ -34,7 +34,7 @@ need to do them once.
    directory called 'netrd/'. Navigate to it and execute
 
    ```
-   git remote add upstream git@github.com:netsiphd/netrd.git
+   git remote add upstream https://github.com/netsiphd/netrd.git
    ```
 
    In this way, your machine will know of both your fork (which git calls

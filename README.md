@@ -27,7 +27,7 @@ need to do them once.
 3. Clone your fork to your machine by opening a console and doing
 
    ```
-   git clone git@github.com:<your_account>/netrd.git
+   git clone https://github.com/<your_account>/netrd.git
    ```
 
    Make sure to clone your fork, not the upstream repo. This will create a
@@ -140,8 +140,8 @@ Once you're all setup and ready to start coding, these are the steps you need.
     `netrd/reconstruction/__init__.py` instead, with the same line.
 
 3. After updating your local code in the previous step, the first thing to
-   do is tell git which files you have been working on. If you worked on a
-   distance algorithm, do
+   do is tell git which files you have been working on. (This is called
+   staging.) If you worked on a distance algorithm, do
 
    ```
    git add netrd/distance/<your_file> netrd/distance/__init__.py
@@ -161,6 +161,13 @@ Once you're all setup and ready to start coding, these are the steps you need.
 	```
 	git add netrd/notebooks/<your_notebook_name>
 	```
+
+    (Note: other tutorials might encourage using `git commit -a` to stage
+    modified files while writing a commit message for simplicity. Since this
+    project will have a lot of files, and a lot of people working on lots of
+    files, we would recommend not using `git commit -a`, and especially not
+    using `git add -A`, to avoid staging and committing files you did not intend
+    to commit, which could create merge conflicts for other people.)
 
 4. Next tell git to commit (or save) your changes:
 

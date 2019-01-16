@@ -27,14 +27,14 @@ need to do them once.
 3. Clone your fork to your machine by opening a console and doing
 
    ```
-   git clone https://github.com/<your_account>/netrd
+   git clone https://github.com/<your_account>/netrd.git
    ```
 
    Make sure to clone your fork, not the upstream repo. This will create a
    directory called 'netrd/'. Navigate to it and execute
 
    ```
-   git remote add upstream https://github.com/netsiphd/netrd
+   git remote add upstream https://github.com/netsiphd/netrd.git
    ```
 
    In this way, your machine will know of both your fork (which git calls

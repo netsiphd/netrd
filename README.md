@@ -27,14 +27,14 @@ need to do them once.
 3. Clone your fork to your machine by opening a console and doing
 
    ```
-   git clone git@github.com:<your_account>/netrd.git
+   git clone https://github.com/<your_account>/netrd
    ```
 
    Make sure to clone your fork, not the upstream repo. This will create a
    directory called 'netrd/'. Navigate to it and execute
 
    ```
-   git remote add upstream https://github.com/netsiphd/netrd.git
+   git remote add upstream https://github.com/netsiphd/netrd
    ```
 
    In this way, your machine will know of both your fork (which git calls
@@ -161,6 +161,13 @@ Once you're all setup and ready to start coding, these are the steps you need.
 	```
 	git add netrd/notebooks/<your_notebook_name>
 	```
+
+    (Note: other tutorials might encourage using `git commit -a` to stage
+    modified files while writing a commit message for simplicity. Since this
+    project will have a lot of files, and a lot of people working on lots of
+    files, we would recommend not using `git commit -a`, and especially not
+    using `git add -A`, to avoid staging and committing files you did not intend
+    to commit, which could create merge conflicts for other people.)
 
 4. Next tell git to commit (or save) your changes:
 

@@ -140,8 +140,8 @@ Once you're all setup and ready to start coding, these are the steps you need.
     `netrd/reconstruction/__init__.py` instead, with the same line.
 
 3. After updating your local code in the previous step, the first thing to
-   do is tell git which files you have been working on. If you worked on a
-   distance algorithm, do
+   do is tell git which files you have been working on. (This is called
+   staging.) If you worked on a distance algorithm, do
 
    ```
    git add netrd/distance/<your_file> netrd/distance/__init__.py

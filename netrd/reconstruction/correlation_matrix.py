@@ -35,15 +35,15 @@ class CorrelationMatrixReconstructor(BaseReconstructor):
         """
 
         # get the correlation matrix
-        X = np.corrcoef(TS)
-        self.results['matrix'] = X
+        cor = np.corrcoef(TS)
+        self.results['matrix'] = cor
 
         # get the mask using the cutoffs
         mask_function = np.vectorize(lambda x: any([x>=cutoff[0] and x<=cutoff[1] for cutoff in cutoffs]))
-        mask = mask_fucntion(x)
+        mask = mask_function(cor)
 
         # use the mask to threshold the correlation matrix
-        A = X * mask
+        A = cor * mask
 
         # construct the network
         self.results['graph'] = nx.from_numpy_array(A)

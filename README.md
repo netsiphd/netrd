@@ -1,16 +1,13 @@
 # netrd
 
-Welcome to the NetSI 2019 Collabathon repository page! In order to
-contribute to this repository please read carefully the instructions in the
-[slides](https://docs.google.com/presentation/d/1R-IS8kUHVhmLnVOs22wLmEV7wVbT4p5gY1s_HBBHRLU/edit?usp=sharing).
+Welcome to the NetSI 2019 Collabathon repository page! During development please
+make sure to keep the following checklists handy. They contain a summary of all
+the steps you need to take.
 
-That might be a lot to remember, so during development please make sure to
-keep the following checklists handy. They contain a summary of all the
-steps you need to take (for details, go back to the slides).
-
-For all other information about the project, please visit the
-[Mega Doc](https://docs.google.com/document/d/1LMBFgE8F9fR3mZjB9WRDr5bj_R7Z5kcw04K-LWN_cGM/edit?usp=sharing).
-Or for a more general introduction, check out these [slides](https://docs.google.com/presentation/d/1nnGAttVH5sjzqzHJBIirBSyhbK9t2BdaU6kHaTGdgtM/edit?usp=sharing)
+For information about the project, please visit the [Mega
+Doc](https://docs.google.com/document/d/1LMBFgE8F9fR3mZjB9WRDr5bj_R7Z5kcw04K-LWN_cGM/edit?usp=sharing).
+Or for a more general introduction, check out these
+[slides](https://docs.google.com/presentation/d/1nnGAttVH5sjzqzHJBIirBSyhbK9t2BdaU6kHaTGdgtM/edit?usp=sharing)
 
 ## Setup
 

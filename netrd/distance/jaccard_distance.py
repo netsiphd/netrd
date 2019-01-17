@@ -13,6 +13,7 @@ Submitted as part of the 2019 NetSI Collabathon.
 from .base import BaseDistance
 from sklearn.metrics import jaccard_similarity_score
 import networkx as nx
+import numpy as np
 
 
 

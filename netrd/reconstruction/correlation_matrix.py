@@ -24,8 +24,9 @@ class CorrelationMatrixReconstructor(BaseReconstructor):
         Params
         ------
         TS (np.ndarray): Array consisting of $L$ observations from $N$ sensors
-        num_eigs (int): The number of eigenvalues to use. This corresponds
-        to the amount of regularization.
+        num_eigs (int): The number of eigenvalues to use. (This corresponds
+        to the amount of regularization.) The number of eigenvalues used must
+        be less than $N$.
         quantile (float): The threshold above which to create an edge, e.g.,
         only create edges between elements above the 90th quantile of the
         correlation matrix.
@@ -36,7 +37,11 @@ class CorrelationMatrixReconstructor(BaseReconstructor):
 
         """
 
-        num_sensors = TS.shape[0]
+        N = TS.shape[0]
+
+        if num_eigs > N:
+            raise ValueError("The number of eigenvalues used must be less "
+                             "than the number of sensors.")
 
         # get the correlation matrix
         X = np.corrcoef(TS)
@@ -50,8 +55,8 @@ class CorrelationMatrixReconstructor(BaseReconstructor):
         # construct the precision matrix and store it
         P = (vecs[:, :num_eigs]) @\
             (1 / (vals[:num_eigs]).reshape(num_eigs, 1) * (vecs[:, :num_eigs]).T)
-        P = P / (np.sqrt(np.diag(P)).reshape(num_sensors, 1) @\
-                 np.sqrt(np.diag(P)).reshape(1, num_sensors))
+        P = P / (np.sqrt(np.diag(P)).reshape(N, 1) @\
+                 np.sqrt(np.diag(P)).reshape(1, N))
         self.results['matrix'] = P
 
         # threshold the precision matrix

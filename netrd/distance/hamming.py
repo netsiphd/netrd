@@ -1,12 +1,9 @@
 """
-<file_name>.py
+hamming.py
 --------------
 
-Graph distance based on <link to paper, or website, or repository>.
-
-author: <your name here>
-email: <name at server dot com> (optional)
-Submitted as part of the 2019 NetSI Collabathon.
+Hamming distance, wrapper for scipy function:
+https://docs.scipy.org/doc/scipy/reference/generated/scipy.spatial.distance.hamming.html#scipy.spatial.distance.hamming
 
 """
 

@@ -14,7 +14,7 @@ import numpy as np
 import networkx as nx
 
 
-class RegluarizedCorrelationMatrixReconstructor(BaseReconstructor):
+class RegularizedCorrelationMatrixReconstructor(BaseReconstructor):
     def fit(self, TS, num_eigs=10, quantile=0.9):
         """
         Reconstruct a network from time series data using a regularized

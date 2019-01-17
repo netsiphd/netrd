@@ -56,7 +56,7 @@ your fork you can then request one of the organizers to `pull` from your
 fork into the upstream repository. More on this later!
 
 
-## Start
+## Before you start coding
 
 Once you're all setup and ready to start coding, these are the steps you need.
 
@@ -88,15 +88,36 @@ Once you're all setup and ready to start coding, these are the steps you need.
    are to use `CamelCaseLikeThis` and not `snake_case_like_this`. (These
    are python guidelines, not ours!)
 
-4. Inside the class, there is only one function, `dist` for distances and
-   `fit` for reconstructors. This is where the magic happens! There are
-   some comments inside of these functions to guide the development, please
-   make sure to read them! Feel free to add anything and everything you
-   feel you need. For example, if you need auxiliary functions feel free to
-   add those as standalone functions. Please try to follow the template as
-   much as possible. However, if you really need to do something
-   differently, go ahead and we will discuss how to make it fit with the
-   rest of the package.
+2. If you are implementing a distance method, you need to edit
+   `netrd/distance/__init__.py`. Open it and add the following line:
+
+	```
+	from .<your_file_name> import <YourAlgorithmName>
+	```
+
+	Note: there is one dot (.) before <your_file_name>. This is important!
+	Note: this line must go BEFORE the line with `__all__ = []`.
+
+	If you are implementing a reconstruction method, you need to edit
+    `netrd/reconstruction/__init__.py` instead, with the same line.
+
+	This line tells the `netrd` package where to find your code.
+
+4. Go back to editing <your_file_name>. After the line that starts with
+   `class`, there is only one function: it is called `dist` for distances
+   and `fit` for reconstructors. This is where the magic happens! There are
+   some comments inside of these functions to guide the development, so
+   please make sure to read them! Feel free to add anything and everything
+   you feel you need. For example, if you need auxiliary functions feel
+   free to add those as standalone functions. Please try to follow the
+   template as much as possible. However, if you really need to do
+   something differently, go ahead and we will discuss how to make it fit
+   with the rest of the package. In particular, the `dist` or `fit`
+   functions MUST have those names and MUST receive those parameters
+   (`dist` receives two graphs, while `fit` receives one time series). You
+   can add more parameters if your method needs them, but only AFTER the
+   ones already in place. Every time you add a new parameter, it needs to
+   have a default value.
 
 5. If you need other auxiliary files, we got you covered! Place your
    Jupyter notebooks in the `netrd/notebooks` folder, and any data files
@@ -105,7 +126,7 @@ Once you're all setup and ready to start coding, these are the steps you need.
    etc) place that inside `netrd/docs`.
 
 
-## Finish
+## After you finish coding
 
 1. Before adding your contribution to this repository, you need to make
    sure that your code doesn't conflict with other code that other people
@@ -122,19 +143,6 @@ Once you're all setup and ready to start coding, these are the steps you need.
    errors at this step because we have designed the repository in such a
    way that your code should never conflict with anybody else's... but it
    still may happen.
-
-2. If you implemented a distance method, you need to edit
-   `netrd/distance/__init__.py`. Open it and add the following line:
-
-	```
-	from .<your_file_name> import <YourAlgorithmName>
-	```
-
-	Note: there is one dot (.) before <your_file_name>. This is important!
-	Note: this line must go BEFORE the line with `__all__ = []`.
-
-	If you implemented a reconstruction method, you need to edit
-    `netrd/reconstruction/__init__.py` instead, with the same line.
 
 3. After updating your local code in the previous step, the first thing to
    do is tell git which files you have been working on. (This is called
@@ -206,7 +214,20 @@ Once you're all setup and ready to start coding, these are the steps you need.
    either accept your Pull Request, or leave a message requesting some
    changes (you will receive an email either way).
 
-8. Once your code is included in the package, it's time to implement
+8. Remember all those handy descriptions you have been writing up? It's 
+   time to add those to the write-up [document](https://v2.overleaf.com/5374841856ppnrdkgqkqpr)! 
+   The instructions for this task are listed in the document itself, along
+   with a couple preliminary examples, but briefly here: 
+   	- Original citation and other key citations
+    	- Why the method was introduced and a description about the 
+	discipline(s) it's used in
+    	- The algorithm itself, trying to be thorough with each of the 
+	steps (this means trying to find meaningful ways of conveying 
+	the equations, etc.), also trying to ensure that there is a 
+	mapping between the steps or variable names in the code. 
+	Please try to be thorough with the attribution, as well. 
+
+9. Once your code is included in the package, it's time to implement
    another method! You can go back to the sign-in sheet to see what
    algorithms have yet to be implemented. If you start another algorithm,
    you do not need to perform the steps under the 'Setup' heading at the

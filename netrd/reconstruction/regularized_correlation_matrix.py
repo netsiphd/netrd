@@ -1,8 +1,8 @@
 """
-correlation_matrix.py
+regularized_correlation_matrix.py
 ---------------------
 
-Reconstruction of graphs using the correlation matrix.
+Reconstruction of graphs using the regularized correlation matrix.
 
 author: Stefan McCabe
 email: stefanmccabe at gmail dot com
@@ -14,7 +14,7 @@ import numpy as np
 import networkx as nx
 
 
-class CorrelationMatrixReconstructor(BaseReconstructor):
+class RegularizedCorrelationMatrixReconstructor(BaseReconstructor):
     def fit(self, TS, num_eigs=10, quantile=0.9):
         """
         Reconstruct a network from time series data using a regularized

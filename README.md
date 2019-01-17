@@ -11,8 +11,6 @@ steps you need to take (for details, go back to the slides).
 For all other information about the project, please visit the
 [Mega Doc](https://docs.google.com/document/d/1LMBFgE8F9fR3mZjB9WRDr5bj_R7Z5kcw04K-LWN_cGM/edit?usp=sharing).
 Or for a more general introduction, check out these [slides](https://docs.google.com/presentation/d/1nnGAttVH5sjzqzHJBIirBSyhbK9t2BdaU6kHaTGdgtM/edit?usp=sharing). 
-Lastly, after writing up a brief description of the method you have
-implemented, please include it in this [document](https://v2.overleaf.com/5374841856ppnrdkgqkqpr).
 
 ## Setup
 
@@ -211,7 +209,20 @@ Once you're all setup and ready to start coding, these are the steps you need.
    either accept your Pull Request, or leave a message requesting some
    changes (you will receive an email either way).
 
-8. Once your code is included in the package, it's time to implement
+8. Remember all those handy descriptions you have been writing up? It's 
+   time to add those to the write-up [document](https://v2.overleaf.com/5374841856ppnrdkgqkqpr)! 
+   The instructions for this task are listed in the document itself, along
+   with a couple preliminary examples, but briefly here: 
+   	- Original citation and other key citations
+    	- Why the method was introduced and a description about the 
+	discipline(s) it's used in
+    	- The algorithm itself, trying to be thorough with each of the 
+	steps (this means trying to find meaningful ways of conveying 
+	the equations, etc.), also trying to ensure that there is a 
+	mapping between the steps or variable names in the code. 
+	Please try to be thorough with the attribution, as well. 
+
+9. Once your code is included in the package, it's time to implement
    another method! You can go back to the sign-in sheet to see what
    algorithms have yet to be implemented. If you start another algorithm,
    you do not need to perform the steps under the 'Setup' heading at the

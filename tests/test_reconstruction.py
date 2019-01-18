@@ -21,8 +21,8 @@ def test_graph_size():
         if label == 'PartialCorrelationMatrixReconstructor':
             continue
         if isinstance(obj, type) and BaseReconstructor in obj.__bases__:
-            for size in [10, 100, 1000]:
-                TS = np.random.random((size, 500))
+            for size in [10, 100]:
+                TS = np.random.random((size, 200))
                 G = obj().fit(TS)
                 assert G.order() == size
 
@@ -38,7 +38,7 @@ def test_partial_correlation():
                 if index is None and resid is True:
                     pass # this shouldn't be a valid parameterization
                 else:
-                    TS = np.random.random((size, 200))
+                    TS = np.random.random((size, 50))
                     G = reconstruction.PartialCorrelationMatrixReconstructor().fit(TS, index=index)
                     if index is None:
                         assert G.order() == size

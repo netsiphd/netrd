@@ -50,7 +50,7 @@ class OUInferenceReconstructor(BaseReconstructor):
         self.results['couplings'] = np.zeros([N, N]);
         self.results['couplings'][index_pair] = couplings;
 
-        G = nx.from_numpy_matrix(self.results['couplings'])
+        G = nx.convert_matrix.to_numpy_array(self.results['couplings'])
         self.results['graph'] = G
 
         return G

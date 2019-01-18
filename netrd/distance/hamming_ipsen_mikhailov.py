@@ -58,8 +58,8 @@ class HammingIpsenMikhailov(BaseDistance):
         N = len(G1)
 
         #get the adjacency matrices
-        adj1 = nx.to_numpy_matrix(G1)
-        adj2 = nx.to_numpy_matrix(G2)
+        adj1 = nx.to_numpy_array(G1)
+        adj2 = nx.to_numpy_array(G2)
         self.results['adj1'] = adj1
         self.results['adj2'] = adj2
 

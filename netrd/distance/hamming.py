@@ -40,11 +40,11 @@ class Hamming(BaseDistance):
 
         """
 
-        adj1 = nx.adjacency_matrix(G1)
-        adj2 = nx.adjacency_matrix(G2)
+        adj1 = nx.to_numpy_array(G1)
+        adj2 = nx.to_numpy_array(G2)
         dist = scipy.spatial.distance.hamming(
-            adj1.toarray().flatten(), 
-            adj2.toarray().flatten()
+            adj1.flatten(), 
+            adj2.flatten()
         )
         self.results['dist'] = dist
         self.results['adj'] = np.array([adj1, adj2])

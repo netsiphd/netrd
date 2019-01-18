@@ -80,9 +80,9 @@ def get_resistance_matrix(G):
     """
     # Get adjacency matrix
     n = len(G.nodes())
-    A = nx.adjacency_matrix(G)
+    A = nx.to_numpy_array(G)
     # Get Laplacian
-    D = ss.diags(np.squeeze(np.asarray(A.sum(axis=0))))
+    D = np.diag(A.sum(axis=0))
     L = D - A
     # Get Moore-Penrose pseudoinverses of Laplacian
     # Note: converts to dense matrix and introduces n^2 operation here

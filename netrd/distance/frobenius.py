@@ -24,8 +24,8 @@ class Frobenius(BaseDistance):
 
     def dist(self, G1, G2):
         """Frobenius distance between two graphs."""
-        adj1 = nx.adjacency_matrix(G1)
-        adj2 = nx.adjacency_matrix(G2)
+        adj1 = nx.to_numpy_array(G1)
+        adj2 = nx.to_numpy_array(G2)
         dist = np.linalg.norm((adj1 - adj2).A)
         self.results['dist'] = dist
         self.results['adj'] = np.array([adj1, adj2])

@@ -7,5 +7,6 @@ from .naive_mean_field import NaiveMeanFieldReconstructor
 from .thouless_anderson_palmer import ThoulessAndersonPalmerReconstructor
 from .exact_mean_field import ExactMeanFieldReconstructor
 from .maximum_likelihood_estimation import MaximumLikelihoodEstimationReconstructor
+from .mutual_information_matrix import MutualInformationMatrixReconstructor
 
 __all__ = []

@@ -37,8 +37,8 @@ class JaccardDistance(BaseDistance):
         dist (float): the distance between G1 and G2.
 
         """
-        adj1 = nx.to_numpy_matrix(G1)
-        adj2 = nx.to_numpy_matrix(G2)
+        adj1 = nx.to_numpy_array(G1)
+        adj2 = nx.to_numpy_array(G2)
         dist = 1 - jaccard_similarity_score(adj1,adj2)
         self.results['dist'] = float(dist)
         self.results['adj'] = np.array([adj1, adj2])

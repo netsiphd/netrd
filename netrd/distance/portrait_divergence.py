@@ -286,8 +286,8 @@ class PortraitDivergence(BaseDistance):
         
         """
 
-        adj1 = nx.adjacency_matrix(G1)
-        adj2 = nx.adjacency_matrix(G2)
+        adj1 = nx.to_numpy_array(G1)
+        adj2 = nx.to_numpy_array(G2)
 
         paths_G1 = list(nx.all_pairs_dijkstra_path_length(G1))
         paths_G2 = list(nx.all_pairs_dijkstra_path_length(G2))

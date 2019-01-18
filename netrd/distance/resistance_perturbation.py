@@ -40,7 +40,7 @@ class ResistancePerturbation(BaseDistance):
         ------
         G1, G2 (nx.Graph): two networkx graphs to be compared.
         p (float or str, optional): $p$-norm to take of the difference between
-            the resistance matrices. Specify 'infinity' to take $\infty$-norm.
+            the resistance matrices. Specify `np.inf` to take $\infty$-norm.
 
         Returns
         -------
@@ -54,7 +54,7 @@ class ResistancePerturbation(BaseDistance):
         self.results['resist2'] = R2
 
         # Get resistance perturbation distance
-        if p != 'infinity':
+        if not np.isinf(p):
             dist = np.power(np.sum(np.power(np.abs(R1 - R2), p)), 1/p)
         else:
             dist = np.amax(np.abs(R1 - R2))

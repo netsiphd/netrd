@@ -31,6 +31,16 @@ class <AlgorithmName>(BaseDistance):
         dist (float): the distance between G1 and G2.
 
         """
+        # A note on input validation: You should _only_ validate input params
+        # that are (1) specific to the method you are computing and (2) can
+        # cause errors in the execution of the method. For example, you do not
+        # need to validate that G1 is a networkx graph. However, if your method
+        # requires that G1 and G2 are the same size, you should add the
+        # following validation (and if you aren't sure, ask!):
+        # if G1.number_of_nodes() != G2.number_of_nodes():
+        #     raise ValueError('G1 and G2 must have same number of nodes')
+
+
         # Your code goes here!
         # Your code goes here!
         # Your code goes here!

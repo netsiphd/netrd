@@ -91,6 +91,8 @@ def get_resistance_matrix(G):
     L_i = np.linalg.solve(L+J, I) - J
     # Get resistance matrix
     ones = np.ones(n)
+    ones = ones.reshape((1,n))
     L_i_diag = np.diag(L_i)
-    R = np.dot(L_i_diag.T, ones) + np.dot(ones.T, L_i_diag) - 2*L_i
+    L_i_diag = L_i_diag.reshape((n,1))
+    R = np.dot(L_i_diag, ones) + np.dot(ones.T, L_i_diag.T) - 2*L_i
     return R

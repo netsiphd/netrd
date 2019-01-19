@@ -22,7 +22,7 @@ def test_same_graph():
 
 
 def test_different_graphs():
-    """ The distance between two different graphs must be zero."""
+    """ The distance between two different graphs must be nonzero."""
     G1 = nx.fast_gnp_random_graph(100, 0.1)
     G2 = nx.barabasi_albert_graph(100, 5)
 

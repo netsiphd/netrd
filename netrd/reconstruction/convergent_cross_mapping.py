@@ -67,19 +67,28 @@ class ConvergentCrossMappingReconstructor(BaseReconstructor):
 
         Notes
         -----
-        1. The matrix of correlation between estimates and the observed values
+        1. The length of time series data must be long enough such that
+           $L \geq 3 + (N-1)(1+\tau)$.
+
+        2. The matrix of correlation between estimates and the observed values
            and the matrix of p-value for correlation test can be found in
            results['correlation'] and resutls['pvalue'] respectively.
 
-        2. The $\[i, j\]$ of the correlation matrix entails the correlation
+        3. The $\[i, j\]$ of the correlation matrix entails the correlation
            between the $j$th variable and its estimate from the $i$th variable.
            A similar rule applies to the p-value matrix.
 
-        3. The computation complexity of this implementation is $O(N^3 L)$.
+        4. The computation complexity of this implementation is $O(N^3 L)$.
 
         """
         data = TS.T  # Transpose the time series to make observations the rows
         L, N = data.shape
+
+        # Raise error if there is not enough data to run the implementation
+        if L < 3 + (N-1) * (1+tau):
+            message = 'Need more data.'
+            message += ' L must be not less than 3+(N-1)*(1+tau).'
+            raise ValueError(message)
 
         # Create shadow data cloud for each variable
         shadows = [shadow_data_cloud(data[:, i], N, tau) for i in range(N)]

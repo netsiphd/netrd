@@ -28,7 +28,6 @@ class OUInferenceReconstructor(BaseReconstructor):
         Params
         ------
         TS (np.ndarray): Array consisting of $L$ observations from $N$ sensors.
-        N x T
 
         Returns
         -------

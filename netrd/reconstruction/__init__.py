@@ -12,5 +12,6 @@ from .convergent_cross_mapping import ConvergentCrossMappingReconstructor
 from .mutual_information_matrix import MutualInformationMatrixReconstructor
 from .ou_inference import OUInferenceReconstructor
 from .graphical_lasso import GraphicalLassoReconstructor
+from .marchenko_pastur import MarchenkoPastur
 
 __all__ = []

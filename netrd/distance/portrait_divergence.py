@@ -36,10 +36,6 @@ def portrait(G):
     max_path = 1
     adj = G.adj
 
-    ## NOTE: Negative weights not allowed. Taking
-    ##  absolute value of the adjaceny matrix.
-    adj = np.abs(adj)
-
     for starting_node in G.nodes():
         nodes_visited = {starting_node:0}
         search_queue = [starting_node]
@@ -292,6 +288,13 @@ class PortraitDivergence(BaseDistance):
 
         adj1 = nx.to_numpy_array(G1)
         adj2 = nx.to_numpy_array(G2)
+
+        ## NOTE dijkstra cannot handle negative weights
+        if (adj1<0).any() or (adj2<0).any():
+            adj1 = np.abs(adj1)
+            adj2 = np.abs(adj2)
+            G1 = nx.from_numpy_array(adj1)
+            G2 = nx.from_numpy_array(adj2)
 
         paths_G1 = list(nx.all_pairs_dijkstra_path_length(G1))
         paths_G2 = list(nx.all_pairs_dijkstra_path_length(G2))

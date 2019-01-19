@@ -23,7 +23,7 @@ def test_graph_size():
             continue
         if isinstance(obj, type) and BaseReconstructor in obj.__bases__:
             for size in [10, 100]:
-                TS = np.random.random((size, 200))
+                TS = np.random.random((size, 250))
                 G = obj().fit(TS)
                 assert G.order() == size
 

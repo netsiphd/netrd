@@ -28,7 +28,6 @@ class OUInferenceReconstructor(BaseReconstructor):
         Params
         ------
         TS (np.ndarray): Array consisting of $L$ observations from $N$ sensors.
-        N x T
 
         Returns
         -------
@@ -43,21 +42,21 @@ class OUInferenceReconstructor(BaseReconstructor):
 
         yCovariance = np.cov(Y)
         index_pair = np.array([(i, j) for i in index for j in index])
-        couplings = inverse_method(-yCovariance, temperatures)
+        weights = inverse_method(-yCovariance, temperatures)
         self.results['covariance'] = np.zeros([N, N]);
         self.results['covariance'][index_pair] = yCovariance;
 
-        self.results['couplings'] = np.zeros([N, N]);
-        self.results['couplings'][index_pair] = couplings;
+        self.results['weights'] = np.zeros([N, N]);
+        self.results['weights'][index_pair] = weights;
 
-        G = nx.from_numpy_array(self.results['couplings'])
+        G = nx.from_numpy_array(self.results['weights'])
         self.results['graph'] = G
 
         return G
 
 
 def inverse_method(covariance, temperatures):
-    """This function finds the couplings of an heterogenous Ornstein-Uhlenbeck 
+    """This function finds the weights of an heterogenous Ornstein-Uhlenbeck 
     process 
     covariance  = covariance matrix of the zero-mean signal
 
@@ -71,7 +70,7 @@ def inverse_method(covariance, temperatures):
     Returns
     -------
 
-    couplings (np.ndarray): Coupling between nodes under the OU process asumption.
+    weights (np.ndarray): Coupling between nodes under the OU process asumption.
 
     """
 
@@ -92,6 +91,6 @@ def inverse_method(covariance, temperatures):
     eig_val = np.matmul(np.ones([n, n]), eig_val)
     eig_val = (eig_val + eig_val.T)**(-1)
     eig_val = eig_val.real
-    couplings = -np.matmul(eig_vec, np.matmul(2 * eig_val * e_mat, eig_vec.T))
+    weights = -np.matmul(eig_vec, np.matmul(2 * eig_val * e_mat, eig_vec.T))
 
-    return couplings
+    return weights

@@ -11,5 +11,6 @@ from .maximum_likelihood_estimation import MaximumLikelihoodEstimationReconstruc
 from .convergent_cross_mapping import ConvergentCrossMappingReconstructor
 from .mutual_information_matrix import MutualInformationMatrixReconstructor
 from .ou_inference import OUInferenceReconstructor
+from .graphical_lasso import GraphicalLassoReconstructor
 
 __all__ = []

@@ -13,5 +13,6 @@ from .mutual_information_matrix import MutualInformationMatrixReconstructor
 from .ou_inference import OUInferenceReconstructor
 from .graphical_lasso import GraphicalLassoReconstructor
 from .naive_transfer_entropy import NaiveTransferEntropyReconstructor
+from .time_granger_causality import TimeGrangerCausalityReconstructor
 
 __all__ = []

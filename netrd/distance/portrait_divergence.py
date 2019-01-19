@@ -36,6 +36,10 @@ def portrait(G):
     max_path = 1
     adj = G.adj
 
+    ## NOTE: Negative weights not allowed. Taking
+    ##  absolute value of the adjaceny matrix.
+    adj = np.abs(adj)
+
     for starting_node in G.nodes():
         nodes_visited = {starting_node:0}
         search_queue = [starting_node]

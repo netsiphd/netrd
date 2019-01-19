@@ -21,10 +21,9 @@ from .base import BaseReconstructor
 
 class GraphicalLassoReconstructor(BaseReconstructor):
     def fit(self, TS, alpha=0.01, max_iter=100, convg_threshold=0.001):
-        """A brief one-line description of the algorithm goes here.
-
-        A short paragraph may follow. The paragraph may include $latex$ by
-        enclosing it in dollar signs $\textbf{like this}$.
+        """
+        Reconstruct a network from time series by performing a graphical lasso
+        from [1, 2].
 
         Params
         ------
@@ -73,7 +72,7 @@ def graphical_lasso(TS, alpha=0.01, max_iter=100, convg_threshold=0.001):
     cov (np.ndarray): Estimator of the inverse covariance matrix with sparsity.
     
     """
-    
+
     TS = TS.T
 
     if alpha < 1e-15:

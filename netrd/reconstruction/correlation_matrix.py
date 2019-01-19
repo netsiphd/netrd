@@ -15,21 +15,18 @@ import networkx as nx
 
 
 class CorrelationMatrixReconstructor(BaseReconstructor):
-    def fit(self, TS, num_eigs=10, quantile=0.9):
+    def fit(self, TS, cutoffs=[(-1, 1)]):
         """
-        Reconstruct a network from time series data using a regularized
-        form of the precision matrix. After [this tutorial](
-        https://bwlewis.github.io/correlation-regularization/) in R.
+        Reconstruct a network from time series data using an unregularized form of
+        the precision matrix. After [this tutorial](
+        https://github.com/valeria-io/visualising_stocks_correlations/blob/master/corr_matrix_viz.ipynb).
 
         Params
         ------
         TS (np.ndarray): Array consisting of $L$ observations from $N$ sensors
-        num_eigs (int): The number of eigenvalues to use. (This corresponds
-        to the amount of regularization.) The number of eigenvalues used must
-        be less than $N$.
-        quantile (float): The threshold above which to create an edge, e.g.,
-        only create edges between elements above the 90th quantile of the
-        correlation matrix.
+        cutoffs (list of tuples): When thresholding, include only edges whose
+        correlations fall within a given range or set of ranges. The lower
+        value must come first.
 
         Returns
         -------
@@ -37,30 +34,16 @@ class CorrelationMatrixReconstructor(BaseReconstructor):
 
         """
 
-        N = TS.shape[0]
-
-        if num_eigs > N:
-            raise ValueError("The number of eigenvalues used must be less "
-                             "than the number of sensors.")
-
         # get the correlation matrix
-        X = np.corrcoef(TS)
+        cor = np.corrcoef(TS)
+        self.results['matrix'] = cor
 
-        # get its eigenvalues and eigenvectors
-        vals, vecs = np.linalg.eigh(X)
-        idx = vals.argsort()[::-1]
-        vals = vals[idx]
-        vecs = vecs[:, idx]
+        # get the mask using the cutoffs
+        mask_function = np.vectorize(lambda x: any([x>=cutoff[0] and x<=cutoff[1] for cutoff in cutoffs]))
+        mask = mask_function(cor)
 
-        # construct the precision matrix and store it
-        P = (vecs[:, :num_eigs]) @\
-            (1 / (vals[:num_eigs]).reshape(num_eigs, 1) * (vecs[:, :num_eigs]).T)
-        P = P / (np.sqrt(np.diag(P)).reshape(N, 1) @\
-                 np.sqrt(np.diag(P)).reshape(1, N))
-        self.results['matrix'] = P
-
-        # threshold the precision matrix
-        A = P * (P > np.percentile(P, quantile * 100))
+        # use the mask to threshold the correlation matrix
+        A = cor * mask
 
         # construct the network
         self.results['graph'] = nx.from_numpy_array(A)

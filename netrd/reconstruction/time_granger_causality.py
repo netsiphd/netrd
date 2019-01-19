@@ -22,10 +22,15 @@ from sklearn.linear_model import LinearRegression
 
 class TimeGrangerCausalityReconstructor(BaseReconstructor):
     def fit(self, TS, lag=1):
-        """A brief one-line description of the algorithm goes here.
-
-        A short paragraph may follow. The paragraph may include $latex$ by
-        enclosing it in dollar signs $\textbf{like this}$.
+        """
+        Reconstruct a network based on the Granger causality. To evaluate the 
+        effect of a time series (j) over another (i), it first evaluates the
+        error e2 given by an autoregressive model fitted to (i) alone. Then, it
+        evaluates another error e2 given by an autoregressive model training to
+        correlate the future of (i) with the past of (i) and (j). The Granger
+        causality of node (j) over (i) is simply given by
+        log(var(e1) / var(e2)). It constructs the network by calculating the 
+        Granger causality for each pair of nodes.
 
         Params
         ------
@@ -50,7 +55,7 @@ class TimeGrangerCausalityReconstructor(BaseReconstructor):
                 reg2 = LinearRegression().fit(X, Y)
                 err1 = yi - reg1.predict(xi)
                 err2 = Y - reg2.predict(X)
-                self.results['weights'][i, j] = np.log(np.std(err2) / np.std(err1))
+                self.results['weights'][j, i] = np.log(np.std(err1) / np.std(err2))
 
 
         G = nx.from_numpy_array(self.results['weights'])

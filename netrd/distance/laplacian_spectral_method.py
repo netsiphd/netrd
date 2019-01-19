@@ -12,17 +12,18 @@ Submitted as part of the 2019 NetSI Collabathon.
 
 """
 import numpy as np
+import networkx as nx
 from .base import BaseDistance
 from scipy.special import erf
 from scipy.integrate import quad
 from scipy.sparse.csgraph import laplacian
 from scipy.linalg import eigh
 
-
+import matplotlib.pyplot as plt
 
 class LaplacianSpectralMethod(BaseDistance):
     def dist(self, G1, G2, normed=True, kernel='normal', hwhm=0.011775,
-             measure='jensen-shannon'):
+             measure='euclidean'):
         """Graph distances using different measure between the Laplacian
         spectra of the two graphs
 
@@ -137,7 +138,8 @@ def _create_continuous_spectrum(eigenvalues, kernel, hwhm, a, b):
     #define density and repartition function for each eigenvalue
     if kernel == "normal":
         std = hwhm/1.1775
-        f = lambda x, xp: np.exp(-(x-xp)/(2*std**2))/np.sqrt(2*np.pi*std**2)
+        f = lambda x, xp: np.exp(-(x-xp)**2/(2*std**2))\
+                /np.sqrt(2*np.pi*std**2)
         F = lambda x, xp: (1 + erf((x-xp)/(np.sqrt(2)*std)))/2
     elif kernel == "lorentzian":
         f = lambda x, xp: hwhm/(np.pi*(hwhm**2 + (x-xp)**2))
@@ -145,7 +147,7 @@ def _create_continuous_spectrum(eigenvalues, kernel, hwhm, a, b):
 
     #compute normalization factor and define density function
     Z = np.sum(F(b, eigenvalues) - F(a, eigenvalues))
-    density = lambda x: np.sum(f(x, xp))/Z
+    density = lambda x: np.sum(f(x, eigenvalues))/Z
 
     return density
 
@@ -170,8 +172,10 @@ def _spectra_comparizon(density1, density2, a, b, measure):
 
     """
     if measure == "jensen-shannon":
-        integrand1 = lambda x: density1(x)*np.log(density1(x)/density2(x))
-        integrand2 = lambda x: density2(x)*np.log(density2(x)/density1(x))
+        integrand1 = lambda x: _jensen_shannon_integrand(
+            x, density1, density2)
+        integrand2 = lambda x: _jensen_shannon_integrand(
+            x, density2, density1)
         dist = np.sqrt(
             quad(integrand1, a, b)[0]/2 + quad(integrand2, a, b)[0]/2)
     elif measure == "euclidean":
@@ -179,3 +183,13 @@ def _spectra_comparizon(density1, density2, a, b, measure):
         dist = np.sqrt(quad(integrand, a, b)[0])
 
     return dist
+
+def _jensen_shannon_integrand(x, f1, f2):
+    integrand = 0
+    if f1(x) > 10**(-12):
+        integrand += f1(x)*np.log2(f1(x))
+    if f1(x) > 10**(-12) and f2(x) > 0:
+        integrand -= f1(x)*np.log2(f2(x))
+    return integrand
+
+

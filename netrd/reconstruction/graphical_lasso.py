@@ -100,8 +100,6 @@ def graphical_lasso(TS, alpha=0.01, max_iter=100, convg_threshold=0.001):
             covariance_[ n, indices != n] = temp_coefs
             covariance_[ indices!=n, n ] = temp_coefs
 
-        print(i, covariance_, precision_)
-        
         #if test_convergence( old_estimate_, new_estimate_, mle_estimate_, convg_threshold):
         if np.abs( _dual_gap( mle_estimate_, precision_, alpha ) ) < convg_threshold:
                 break

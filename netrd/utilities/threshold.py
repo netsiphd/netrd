@@ -72,11 +72,11 @@ def threshold_on_degree(mat, avg_k=1):
     """
 
     n = len(mat)
-    A = np.zeros((n, n))
+    A = np.ones((n, n))
 
     for m in sorted(mat.flatten()):
-        A[mat == m] = 1
-        if np.mean(np.sum(A, 1)) > avg_k:
+        A[mat == m] = 0
+        if np.mean(np.sum(A, 1)) <= avg_k:
             break
 
     return mat * (mat >= m)

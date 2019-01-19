@@ -36,23 +36,27 @@ class NetSimile(BaseDistance):
 
         """
 
-        # the measure only works for undirected Graphs
+        # NOTE: the measure only works for undirected 
+        # graphs. For now we will silently convert a
+        # directed graph to be undirected.
 
-        # TODO: replace with netrd error messages
-        assert not nx.is_directed(G1), "G1 must be an undirected networkx graph"
-        assert not nx.is_directed(G2), "G2 must be an undirected networkx graph"
-        
+        # TODO: raise ValuError in the future?
+        if nx.is_directed(G1):
+            G1 = nx.to_undirected(G1)
+        if nx.is_directed(G2):
+            G2 = nx.to_undirected(G2)
+
         # find the graph node feature matrices
         G1_node_features = feature_extraction(G1)
         G2_node_features = feature_extraction(G2)
-        
+
         # get the graph signature vectors
         G1_signature = graph_signature(G1_node_features)
         G2_signature = graph_signature(G2_node_features)
-        
+
         # the final distance is the absolute canberra distance
         dist = abs(canberra(G1_signature, G2_signature))
-        
+
         self.results['dist'] = dist
 
         return dist

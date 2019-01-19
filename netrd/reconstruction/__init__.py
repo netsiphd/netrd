@@ -11,5 +11,6 @@ from .maximum_likelihood_estimation import MaximumLikelihoodEstimationReconstruc
 from .mutual_information_matrix import MutualInformationMatrixReconstructor
 from .ou_inference import OUInferenceReconstructor
 from .graphical_lasso import GraphicalLassoReconstructor
+from .time_granger_causality import TimeGrangerCausalityReconstructor
 
 __all__ = []

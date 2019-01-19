@@ -11,9 +11,9 @@ Submitted as part of the 2019 NetSI Collabathon.
 
 """
 
+from .base import BaseReconstructor
 import networkx as nx
 import numpy as np
-from .base import BaseReconstructor
 
 
 class RandomReconstructor(BaseReconstructor):
@@ -34,10 +34,10 @@ class RandomReconstructor(BaseReconstructor):
 
         N, L = TS.shape
         W = np.random.rand(N, N)
-		A = np.array(W > tau, dtype=int)
-		G = nx.from_numpy_array(A)
+        A = np.array(W > tau, dtype=int)
+        G = nx.from_numpy_array(A)
 
-		self.results['graph'] = G
+        self.results['graph'] = G
 
         self.results['random_matrix'] = W
 

@@ -47,7 +47,7 @@ class GraphicalLassoReconstructor(BaseReconstructor):
 
         cov, prec = graphical_lasso(TS, alpha, max_iter, convg_threshold)
         self.results['covariance'] = cov
-        self.results['weights'] = np.linalg.inv(cov)
+        self.results['weights'] = cov
         self.results['precision'] = prec
         G = nx.from_numpy_array(self.results["weights"])
         self.results['graph'] = G
@@ -74,8 +74,12 @@ def graphical_lasso(TS, alpha=0.01, max_iter=100, convg_threshold=0.001):
     
     """
     
-    if alpha == 0:
-        return cov_estimator(TS)
+    TS = TS.T
+
+    if alpha < 1e-15:
+        covariance_ = cov_estimator(TS)
+        precision_ = np.linalg.pinv(TS)
+        return covariance_, precision_
     n_features = TS.shape[1]
 
     mle_estimate_ = cov_estimator(TS)
@@ -105,7 +109,7 @@ def graphical_lasso(TS, alpha=0.01, max_iter=100, convg_threshold=0.001):
                 break
     else:
         #this triggers if not break command occurs
-        print("The algorithm did not coverge. Try increasing the max number of iterations.")
+        print("The algorithm did not converge. Try increasing the max number of iterations.")
     
     return covariance_, precision_        
         

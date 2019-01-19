@@ -10,5 +10,6 @@ from .exact_mean_field import ExactMeanFieldReconstructor
 from .maximum_likelihood_estimation import MaximumLikelihoodEstimationReconstructor
 from .mutual_information_matrix import MutualInformationMatrixReconstructor
 from .ou_inference import OUInferenceReconstructor
+from .graphical_lasso import GraphicalLassoReconstructor
 
 __all__ = []

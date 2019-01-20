@@ -20,10 +20,10 @@ from scipy.linalg import eig, inv
 
 class OUInferenceReconstructor(BaseReconstructor):
     def fit(self, TS):
-        """A brief one-line description of the algorithm goes here.
-
-        A short paragraph may follow. The paragraph may include $latex$ by
-        enclosing it in dollar signs $\textbf{like this}$.
+        """
+        Reconstruct a network by inferring the coupling coefficients provided 
+        that the generative model of the time series is an Orstein-Uhlenbeck
+        process.
 
         Params
         ------

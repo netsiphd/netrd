@@ -2,15 +2,13 @@
 entropy.py
 ----------
 
-Utility functions computing entropy of variables in time series data inspired
-by https://blog.biolab.si/2012/06/15/computing-joint-entropy-in-python/.
+Utility functions computing entropy of variables in time series data.
 
 author: Chia-Hung Yang
 Submitted as part of the 2019 NetSI Collabathon.
 """
 
 import numpy as np
-from itertools import product
 
 
 def entropy(var):
@@ -49,20 +47,18 @@ def joint_entropy(data):
     2. The data of variables must be categorical.
 
     """
-    m, _ = data.shape
-    data = data.T  # Transpose the data for ease of looping over variables
+    # Entropy is computed through summing contribution of states with non-zero
+    # empirical probability in the data
+    # Obtain counts of states that appear in the data
+    count = dict()
+    for state in data:
+        key = tuple(state)
+        count.setdefault(key, 0)
+        count[key] += 1
 
-    # Enumerate all possible joint values of the variables
-    entrp = 0
-    for values in product(*[set(var) for var in data]):
-        # Compute the joint probability that variables have the values
-        indc = np.full(m, True)  # Joint indicators
-        for var, val in zip(data, values):
-            indc = np.logical_and(indc, var == val)
-        p = np.mean(indc)
-        # Additively update the entropy
-        if p > 0:
-            entrp += -p * np.log2(p)
+    # Compute the entropy
+    m, _ = data.shape  # Total number of observations
+    entrp = -sum((c/m) * np.log2(c/m) for c in count.values())
 
     return entrp
 

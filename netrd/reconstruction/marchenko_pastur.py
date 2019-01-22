@@ -13,6 +13,8 @@ Submitted as part of the 2019 NetSI Collabathon.
 from .base import BaseReconstructor
 import numpy as np
 import networkx as nx
+from ..utilities.graph import create_graph
+
 
 class MarchenkoPastur(BaseReconstructor):
     def fit(self, TS, only_positive=True, remove_largest=False, metric_distance=False, 
@@ -150,7 +152,7 @@ class MarchenkoPastur(BaseReconstructor):
         if remove_selfloops:
             np.fill_diagonal(C_signal,0)
 
-        G = nx.from_numpy_array(C_signal)
+        G = create_graph(C_signal)
 
         self.results['graph'] = G
         return G

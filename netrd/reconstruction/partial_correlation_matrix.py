@@ -13,6 +13,7 @@ from .base import BaseReconstructor
 import numpy as np
 import networkx as nx
 from scipy import stats, linalg
+from ..utilities.graph import create_graph
 
 
 class PartialCorrelationMatrixReconstructor(BaseReconstructor):
@@ -66,7 +67,7 @@ class PartialCorrelationMatrixReconstructor(BaseReconstructor):
         A = p_cor * mask
 
         # construct the network
-        self.results['graph'] = nx.from_numpy_array(A)
+        self.results['graph'] = create_graph(A)
         G = self.results['graph']
 
         return G

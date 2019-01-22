@@ -17,6 +17,8 @@ from .base import BaseReconstructor
 import networkx as nx
 import numpy as np
 from scipy.linalg import eig, inv
+from ..utilities.graph import create_graph
+
 
 class OUInferenceReconstructor(BaseReconstructor):
     def fit(self, TS):
@@ -49,7 +51,7 @@ class OUInferenceReconstructor(BaseReconstructor):
         self.results['weights'] = np.zeros([N, N]);
         self.results['weights'][index_pair] = weights;
 
-        G = nx.from_numpy_array(self.results['weights'])
+        G = create_graph(self.results['weights'])
         self.results['graph'] = G
 
         return G

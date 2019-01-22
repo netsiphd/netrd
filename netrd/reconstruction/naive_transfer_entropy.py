@@ -16,6 +16,7 @@ import numpy as np
 import networkx as nx
 from scipy import stats
 from scipy import ndimage
+from ..utilities.graph import create_graph
 
 
 class NaiveTransferEntropyReconstructor(BaseReconstructor):
@@ -70,7 +71,7 @@ class NaiveTransferEntropyReconstructor(BaseReconstructor):
         A = np.array(TE > tau, dtype=int)
         self.results['adjacency_matrix'] = A
 
-        G = nx.from_numpy_matrix(A)
+        G = create_graph(A)
         self.results['G'] = G
 
         return G

@@ -13,6 +13,8 @@ import scipy as sp
 from scipy import linalg
 from scipy.integrate import quad
 from scipy.optimize import fsolve
+from ..utilities.graph import create_graph
+
 
 class ExactMeanFieldReconstructor(BaseReconstructor):
     def fit(self, TS, stop_criterion=True):
@@ -105,7 +107,8 @@ class ExactMeanFieldReconstructor(BaseReconstructor):
         W = W_EMF
 
         # construct the network
-        self.results['graph'] = nx.from_numpy_array(W)
+
+        self.results['graph'] = create_graph(W)
         self.results['matrix'] = W
         G = self.results['graph']
 

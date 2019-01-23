@@ -16,5 +16,6 @@ from .marchenko_pastur import MarchenkoPastur
 from .naive_transfer_entropy import NaiveTransferEntropyReconstructor
 from .time_granger_causality import TimeGrangerCausalityReconstructor
 from .optimal_causation_entropy import OptimalCausationEntropyReconstructor
+from .correlation_spanning_tree import CorrelationSpanningTree
 
 __all__ = []

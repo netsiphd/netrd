@@ -9,6 +9,8 @@ submitted as part of the 2019 NeTSI Collabathon
 from .base import BaseReconstructor
 import numpy as np
 import networkx as nx
+from ..utilities.graph import create_graph
+
 
 class MaximumLikelihoodEstimationReconstructor(BaseReconstructor):
     def fit(self, TS, rate=1.0, stop_criterion=True):
@@ -59,7 +61,7 @@ class MaximumLikelihoodEstimationReconstructor(BaseReconstructor):
             W[i0,:] = w
 
         # construct the network
-        self.results['graph'] = nx.from_numpy_array(W)
+        self.results['graph'] = create_graph(W)
         self.results['matrix'] = W
         G = self.results['graph']
 

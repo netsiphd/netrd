@@ -17,6 +17,7 @@ import networkx as nx
 import numpy as np
 from sklearn.linear_model import lars_path
 from .base import BaseReconstructor
+from ..utilities.graph import create_graph
 
 
 class GraphicalLassoReconstructor(BaseReconstructor):
@@ -48,7 +49,7 @@ class GraphicalLassoReconstructor(BaseReconstructor):
         self.results['covariance'] = cov
         self.results['weights'] = cov
         self.results['precision'] = prec
-        G = nx.from_numpy_array(self.results["weights"])
+        G = create_graph(self.results['weights'])
         self.results['graph'] = G
 
         return G

@@ -33,8 +33,9 @@ def test_entropies():
                                  data[:, 0, np.newaxis])
 
     H_true = 1.0
-    H_joint_true = 1 + 1.5 * np.log2(4/3)
+    H_joint_true = 3/4 + 3/4 * np.log2(8/3)
     H_cond_true = H_joint - H
-    assert H == H_true
-    assert H_joint == H_joint_true
-    assert H_cond == H_cond_true
+
+    assert np.isclose(H, H_true)
+    assert np.isclose(H_joint, H_joint_true)
+    assert np.isclose(H_cond, H_cond_true)

@@ -12,6 +12,7 @@ Submitted as part of the 2019 NetSI Collabathon.
 from .base import BaseReconstructor
 from netrd.utilities.entropy import categorized_data, conditional_entropy
 import networkx as nx
+from graph import create_graph
 import numpy as np
 
 
@@ -61,7 +62,7 @@ class OptimalCausationEntropyReconstructor(BaseReconstructor):
 
         Notes
         -----
-        1. Nodes' causal parents can be found in results['adjlist'].
+        1. Nodes' causal parents can be found in results['parents'].
 
         2. Current implementation naively thresholds the causation entropy to
            determine whether it's closed to zero or not. This can potentially
@@ -86,7 +87,8 @@ class OptimalCausationEntropyReconstructor(BaseReconstructor):
             adjlist[node] = parents
 
         # Build the reconstructed graph
-        G = nx.DiGraph(adjlist).reverse()
+        A = nx.to_numpy_array(nx.DiGraph(adjlist).reverse())
+        G = create_graph(A, create_using=nx.DiGraph, remove_self_loops=False)
         self.results['graph'] = G
         self.results['parents'] = adjlist
 

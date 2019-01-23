@@ -12,7 +12,7 @@ Submitted as part of the 2019 NetSI Collabathon.
 from .base import BaseReconstructor
 from netrd.utilities.entropy import categorized_data, conditional_entropy
 import networkx as nx
-from graph import create_graph
+from netrd.utilities.graph import create_graph
 import numpy as np
 
 

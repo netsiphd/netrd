@@ -12,6 +12,8 @@ import numpy as np
 import networkx as nx
 import scipy as sp
 from scipy import linalg
+from ..utilities.graph import create_graph
+
 
 class ThoulessAndersonPalmerReconstructor(BaseReconstructor):
     def fit(self, TS):
@@ -92,7 +94,7 @@ class ThoulessAndersonPalmerReconstructor(BaseReconstructor):
         W = np.dot(A_TAP_inv, B)
 
         # construct the network
-        self.results['graph'] = nx.from_numpy_array(W)
+        self.results['graph'] = create_graph(W)
         self.results['matrix'] = W
         G = self.results['graph']
 

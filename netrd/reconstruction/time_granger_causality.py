@@ -19,6 +19,8 @@ import numpy as np
 
 from .base import BaseReconstructor
 from sklearn.linear_model import LinearRegression
+from ..utilities.graph import create_graph
+
 
 class TimeGrangerCausalityReconstructor(BaseReconstructor):
     def fit(self, TS, lag=1):
@@ -58,7 +60,7 @@ class TimeGrangerCausalityReconstructor(BaseReconstructor):
                 self.results['weights'][j, i] = np.log(np.std(err1) / np.std(err2))
 
 
-        G = nx.from_numpy_array(self.results['weights'])
+        G = create_graph(self.results['weights'])
 
         self.results['graph'] = G
 

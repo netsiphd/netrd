@@ -12,6 +12,7 @@ Submitted as part of the 2019 NetSI Collabathon
 from .base import BaseReconstructor
 import numpy as np
 import networkx as nx
+from ..utilities.graph import create_graph
 
 
 class CorrelationMatrixReconstructor(BaseReconstructor):
@@ -46,7 +47,7 @@ class CorrelationMatrixReconstructor(BaseReconstructor):
         A = cor * mask
 
         # construct the network
-        self.results['graph'] = nx.from_numpy_array(A)
+        self.results['graph'] = create_graph(A)
         G = self.results['graph']
 
         return G

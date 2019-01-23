@@ -15,6 +15,8 @@ Submitted as part of the 2019 NetSI Collabathon.
 from .base import BaseReconstructor
 import numpy as np
 import networkx as nx
+from ..utilities.graph import create_graph
+
 
 class MutualInformationMatrixReconstructor(BaseReconstructor):
     def fit(self, TS, deg=15, nbins=10):
@@ -59,7 +61,7 @@ class MutualInformationMatrixReconstructor(BaseReconstructor):
         tau=threshold_from_degree(deg,I)
         A = np.array(I>tau, dtype=int)
 
-        G = nx.from_numpy_matrix(A)
+        G = create_graph(A)
         self.results['G'] = G
 
         return G

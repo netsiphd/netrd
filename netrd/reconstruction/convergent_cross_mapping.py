@@ -16,6 +16,7 @@ from itertools import permutations
 from scipy.stats import pearsonr
 import networkx as nx
 from sklearn.neighbors import NearestNeighbors
+from ..utilities.graph import create_graph
 
 
 class ConvergentCrossMappingReconstructor(BaseReconstructor):
@@ -113,8 +114,7 @@ class ConvergentCrossMappingReconstructor(BaseReconstructor):
 
         # Build the reconstructed graph by finding significantly correlated
         # variables
-        G = nx.DiGraph(pvalue.T < alpha)
-        G.remove_edges_from(G.selfloop_edges())  # Filter out self-dependency
+        G = create_graph(pvalue.T < alpha, create_using=nx.DiGraph)
 
         # Save the graph object, matrices of correlation and p-values into the
         # "results" field (dictionary)

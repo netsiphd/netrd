@@ -12,7 +12,7 @@ Submitted as part of the 2019 NetSI Collabathon
 import numpy as np
 
 
-def threshold_in_range(mat, cutoffs=[(-1, 1)]):
+def threshold_in_range(mat, **kwargs):
     """
     Threshold a numpy array by setting values not within a list of ranges to zero.
 
@@ -30,6 +30,11 @@ def threshold_in_range(mat, cutoffs=[(-1, 1)]):
 
     """
 
+    if 'cutoffs' in kwargs:
+        cutoffs = kwargs['cutoffs']
+    else:
+        cutoffs = [(-1, 1)]
+
     mask_function = np.vectorize(lambda x: any([x>=cutoff[0] and x<=cutoff[1] for cutoff in cutoffs]))
     mask = mask_function(mat)
 
@@ -37,7 +42,7 @@ def threshold_in_range(mat, cutoffs=[(-1, 1)]):
     return thresholded_mat
 
 
-def threshold_on_quantile(mat, quantile=0.9):
+def threshold_on_quantile(mat, **kwargs):
     """
     Threshold a numpy array by setting values below a given quantile to zero.
 
@@ -52,11 +57,19 @@ def threshold_on_quantile(mat, quantile=0.9):
     thresholded_mat: the thresholded numpy array
 
     """
+    if 'quantile' in kwargs:
+        quantile = kwargs['quantile']
+    else:
+        quantile = 0.9
+
+    if quantile == 0:
+        # degenerate case
+        return(mat)
 
     return mat * (mat > np.percentile(mat, quantile * 100))
 
 
-def threshold_on_degree(mat, avg_k=1):
+def threshold_on_degree(mat, **kwargs):
     """
     Threshold a numpy array by setting values below a given quantile to zero.
 
@@ -71,8 +84,17 @@ def threshold_on_degree(mat, avg_k=1):
 
     """
 
+    if 'avg_k' in kwargs:
+        avg_k = kwargs['avg_k']
+    else:
+        avg_k = 1
+
     n = len(mat)
     A = np.ones((n, n))
+
+    if np.mean(np.sum(A, 1)) <= avg_k:
+        # degenerate case: threshold the whole matrix
+        return(mat)
 
     for m in sorted(mat.flatten()):
         A[mat == m] = 0
@@ -80,3 +102,32 @@ def threshold_on_degree(mat, avg_k=1):
             break
 
     return mat * (mat > m)
+
+def threshold(mat, rule, **kwargs):
+    """
+    A flexible interface to other thresholding functions.
+
+    Params
+    ------
+    mat: (np.ndarray): A numpy array.
+    rule (str): A string indicating which thresholding function to invoke.
+    kwargs (dict): Named arguments to pass to the underlying threshold function.
+
+    Returns
+    -------
+    thresholded_mat: the thresholded numpy array
+
+    ---
+    """
+
+    try:
+        if rule == 'degree':
+            return threshold_on_degree(mat, **kwargs)
+        elif rule == 'range':
+            return threshold_in_range(mat, **kwargs)
+        elif rule == 'quantile':
+            return threshold_on_quantile(mat, **kwargs)
+        elif rule == 'custom':
+            return kwargs['custom_thresholder'](mat)
+    except KeyError:
+        raise ValueError("missing threshold parameter")

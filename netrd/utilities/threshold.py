@@ -79,4 +79,4 @@ def threshold_on_degree(mat, avg_k=1):
         if np.mean(np.sum(A, 1)) <= avg_k:
             break
 
-    return mat * (mat >= m)
+    return mat * (mat > m)

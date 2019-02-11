@@ -14,10 +14,11 @@ Submitted as part of the 2019 NetSI Collabathon.
 from .base import BaseReconstructor
 import networkx as nx
 import numpy as np
+from ..utilities import create_graph, threshold
 
 
 class RandomReconstructor(BaseReconstructor):
-    def fit(self, TS, tau=0.6):
+    def fit(self, TS, threshold_type='range', **kwargs):
         """
         Reconstruct a network from a time serues -- just kidding, simply return 
         a random correlation matrix with a threshold.
@@ -25,7 +26,9 @@ class RandomReconstructor(BaseReconstructor):
         Params
         ------
         TS (np.ndarray): array consisting of $L$ observations from $N$ sensors.
-        tau (float): threshold
+        threshold_type (str): Which thresholding function to use on the matrix of
+        weights. See `netrd.utilities.threshold.py` for documentation. Pass additional
+        arguments to the thresholder using `**kwargs`.
 
         Returns
         -------
@@ -34,13 +37,12 @@ class RandomReconstructor(BaseReconstructor):
 
         N, L = TS.shape
         W = np.random.rand(N, N)
-        A = np.array(W > tau, dtype=int)
-        G = nx.from_numpy_array(A)
+        A = threshold(W, threshold_type, **kwargs)
+
+        G = create_graph(A)
 
         self.results['graph'] = G
-
         self.results['random_matrix'] = W
-
         self.results['adjacency_matrix'] = A
 
         return G

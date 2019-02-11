@@ -9,11 +9,11 @@ submitted as part of the 2019 NeTSI Collabathon
 from .base import BaseReconstructor
 import numpy as np
 import networkx as nx
-from ..utilities.graph import create_graph
+from ..utilities import create_graph, threshold
 
 
 class MaximumLikelihoodEstimationReconstructor(BaseReconstructor):
-    def fit(self, TS, rate=1.0, stop_criterion=True):
+    def fit(self, TS, rate=1.0, stop_criterion=True, threshold_type='degree', **kwargs):
         """
         Given an NxL time series, infer inter-node coupling weights using 
         maximum likelihood estimation methods. 
@@ -26,6 +26,9 @@ class MaximumLikelihoodEstimationReconstructor(BaseReconstructor):
         TS (np.ndarray): Array consisting of $L$ observations from $N$ sensors.
         rate (float): rate term in maximum likelihood
         stop_criterion (bool): if True, prevent overly-long runtimes
+        threshold_type (str): Which thresholding function to use on the matrix of
+        weights. See `netrd.utilities.threshold.py` for documentation. Pass additional
+        arguments to the thresholder using `**kwargs`.
         
         Returns
         -------
@@ -60,9 +63,14 @@ class MaximumLikelihoodEstimationReconstructor(BaseReconstructor):
 
             W[i0,:] = w
 
+        # threshold the network
+        W_thresh = threshold(W, threshold_type, **kwargs)
+
         # construct the network
-        self.results['graph'] = create_graph(W)
+
+        self.results['graph'] = create_graph(W_thresh)
         self.results['matrix'] = W
+        self.results['thresholded_matrix'] = W_thresh
         G = self.results['graph']
 
         return G

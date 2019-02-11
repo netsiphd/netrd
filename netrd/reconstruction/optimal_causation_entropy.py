@@ -12,12 +12,12 @@ Submitted as part of the 2019 NetSI Collabathon.
 from .base import BaseReconstructor
 from netrd.utilities.entropy import categorized_data, conditional_entropy
 import networkx as nx
-from netrd.utilities.graph import create_graph
 import numpy as np
+from ..utilities import create_graph
 
 
 class OptimalCausationEntropyReconstructor(BaseReconstructor):
-    def fit(self, TS, n_bins=40, atol=1e-6):
+    def fit(self, TS, n_bins=40, atol=1e-6, **kwargs):
         """Reconstruct causal parents of nodes by optimizing causation entropy.
 
         Optimal causation entropy method reconstructs parents of nodes in a

@@ -16,11 +16,11 @@ import numpy as np
 import networkx as nx
 from scipy import stats
 from scipy import ndimage
-from ..utilities.graph import create_graph
+from ..utilities import create_graph, threshold
 
 
 class NaiveTransferEntropyReconstructor(BaseReconstructor):
-    def fit(self, TS, delay_max=10, tau=0.5):
+    def fit(self, TS, delay_max=10, threshold_type='range', **kwargs):
         """
         Reconstruct a network by calculating the transfer entropy from i --> j.
         The resulting network is asymmetric, and each element TE_ij represents
@@ -41,6 +41,9 @@ class NaiveTransferEntropyReconstructor(BaseReconstructor):
         TS (np.ndarray): array consisting of $L$ observations from $N$ sensors.
         delay_max (int): the number of timesteps in the past to 
                          aggregate and average in order to get TE_ij
+        threshold_type (str): Which thresholding function to use on the matrix of
+        weights. See `netrd.utilities.threshold.py` for documentation. Pass additional
+        arguments to the thresholder using `**kwargs`.
 
         Returns
         -------
@@ -68,11 +71,13 @@ class NaiveTransferEntropyReconstructor(BaseReconstructor):
 
         self.results['transfer_entropy_matrix'] = TE
 
-        A = np.array(TE > tau, dtype=int)
-        self.results['adjacency_matrix'] = A
+        # threshold the network
+        TE_thresh = threshold(TE, threshold_type, **kwargs)
+        self.results['thresholded_matrix'] = TE_thresh
 
-        G = create_graph(A)
-        self.results['G'] = G
+        # construct the network
+        self.results['graph'] = create_graph(TE_thresh)
+        G = self.results['graph']
 
         return G
 

@@ -21,7 +21,7 @@ class BaseReconstructor:
     def __init__(self):
         self.results = {}
 
-    def fit(self, TS):
+    def fit(self, TS, **kwargs):
         """Reconstruct a graph from time series TS.
 
         Params

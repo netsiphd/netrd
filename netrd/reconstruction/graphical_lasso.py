@@ -17,11 +17,12 @@ import networkx as nx
 import numpy as np
 from sklearn.linear_model import lars_path
 from .base import BaseReconstructor
-from ..utilities.graph import create_graph
+from ..utilities import create_graph, threshold
 
 
 class GraphicalLassoReconstructor(BaseReconstructor):
-    def fit(self, TS, alpha=0.01, max_iter=100, convg_threshold=0.001):
+    def fit(self, TS, alpha=0.01, max_iter=100, convg_threshold=0.001,
+            threshold_type='degree', **kwargs):
         """
         Reconstruct a network from time series by performing a graphical lasso
         from [1, 2].
@@ -29,14 +30,14 @@ class GraphicalLassoReconstructor(BaseReconstructor):
         Params
         ------
         TS (np.ndarray): Array consisting of $L$ observations from $N$ sensors.
-
         alpha (float, default=0.01): Coefficient of penalization, higher values
         means more sparseness
-
         max_iter (int, default=100): Maximum number of iterations.
-
         convg_threshold (float, default=0.001): Stop the algorithm when the
         duality gap is below a certain threshold.
+        threshold_type (str): Which thresholding function to use on the matrix of
+        weights. See `netrd.utilities.threshold.py` for documentation. Pass additional
+        arguments to the thresholder using `**kwargs`.
 
 
         Returns
@@ -49,7 +50,13 @@ class GraphicalLassoReconstructor(BaseReconstructor):
         self.results['covariance'] = cov
         self.results['weights'] = cov
         self.results['precision'] = prec
-        G = create_graph(self.results['weights'])
+
+        # threshold the network
+        self.results['thresholded_weights'] = threshold(self.results['weights'],
+                                                        threshold_type, **kwargs)
+
+        # construct the network
+        G = create_graph(self.results['thresholded_weights'])
         self.results['graph'] = G
 
         return G

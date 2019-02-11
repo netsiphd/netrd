@@ -39,6 +39,10 @@ def threshold_in_range(mat, **kwargs):
     mask = mask_function(mat)
 
     thresholded_mat = mat * mask
+
+    if 'binary' in kwargs and kwargs['binary']:
+        thresholded_mat = np.abs(np.sign(thresholded_mat))
+
     return thresholded_mat
 
 
@@ -62,11 +66,15 @@ def threshold_on_quantile(mat, **kwargs):
     else:
         quantile = 0.9
 
-    if quantile == 0:
-        # degenerate case
-        return(mat)
+    if quantile != 0:
+        thresholded_mat = mat * (mat > np.percentile(mat, quantile * 100))
+    else:
+        thresholded_mat = mat
 
-    return mat * (mat > np.percentile(mat, quantile * 100))
+    if 'binary' in kwargs and kwargs['binary']:
+        thresholded_mat = np.abs(np.sign(thresholded_mat))
+
+    return thresholded_mat
 
 
 def threshold_on_degree(mat, **kwargs):
@@ -94,14 +102,18 @@ def threshold_on_degree(mat, **kwargs):
 
     if np.mean(np.sum(A, 1)) <= avg_k:
         # degenerate case: threshold the whole matrix
-        return(mat)
+        thresholded_mat = mat
+    else:
+        for m in sorted(mat.flatten()):
+            A[mat == m] = 0
+            if np.mean(np.sum(A, 1)) <= avg_k:
+                break
+        thresholded_mat = mat * (mat > m)
 
-    for m in sorted(mat.flatten()):
-        A[mat == m] = 0
-        if np.mean(np.sum(A, 1)) <= avg_k:
-            break
+    if 'binary' in kwargs and kwargs['binary']:
+        thresholded_mat = np.abs(np.sign(thresholded_mat))
 
-    return mat * (mat > m)
+    return thresholded_mat
 
 def threshold(mat, rule, **kwargs):
     """

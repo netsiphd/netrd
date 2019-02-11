@@ -43,6 +43,16 @@ def test_thresholds():
     assert np.array_equal(threshold(mat, 'degree', avg_k=2), target_mat)
     assert np.array_equal(threshold(mat, 'quantile', quantile=0.5), target_mat)
 
+    target_mat = np.array([[0, 0, 0, 0],
+                           [0, 0, 0, 0],
+                           [1, 1, 1, 1],
+                           [1, 1, 1, 1]])
+
+    assert np.array_equal(threshold(mat, 'range', cutoffs=[(9,16)], binary=True), target_mat)
+    assert np.array_equal(threshold(mat, 'degree', avg_k=2, binary=True), target_mat)
+    assert np.array_equal(threshold(mat, 'quantile', quantile=0.5, binary=True), target_mat)
+
+
 
 def test_categorized_data():
     """Test the function that turn continuous data into categorical."""

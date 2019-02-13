@@ -35,9 +35,9 @@ def create_graph(A, create_using=None, remove_self_loops=True):
 
     if create_using is None:
         if np.allclose(A, A.T):
-            G = nx.from_numpy_array(A, create_using=nx.Graph)
+            G = nx.from_numpy_array(A, create_using=nx.Graph())
         else:
-            G = nx.from_numpy_array(A, create_using=nx.DiGraph)
+            G = nx.from_numpy_array(A, create_using=nx.DiGraph())
     else:
         G = nx.from_numpy_array(A, create_using=create_using)
 

@@ -88,7 +88,7 @@ class OptimalCausationEntropyReconstructor(BaseReconstructor):
 
         # Build the reconstructed graph
         A = nx.to_numpy_array(nx.DiGraph(adjlist).reverse())
-        G = create_graph(A, create_using=nx.DiGraph, remove_self_loops=False)
+        G = create_graph(A, create_using=nx.DiGraph(), remove_self_loops=False)
         self.results['graph'] = G
         self.results['parents'] = adjlist
 

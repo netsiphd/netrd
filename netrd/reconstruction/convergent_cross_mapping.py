@@ -114,7 +114,7 @@ class ConvergentCrossMappingReconstructor(BaseReconstructor):
 
         # Build the reconstructed graph by finding significantly correlated
         # variables
-        G = create_graph(pvalue.T < alpha, create_using=nx.DiGraph)
+        G = create_graph(pvalue.T < alpha, create_using=nx.DiGraph())
 
         # Save the graph object, matrices of correlation and p-values into the
         # "results" field (dictionary)

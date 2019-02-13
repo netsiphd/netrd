@@ -10,6 +10,7 @@ Submitted as part of the 2019 NetSI Collabathon
 
 """
 import numpy as np
+import warnings
 
 
 def threshold_in_range(mat, **kwargs):
@@ -21,8 +22,8 @@ def threshold_in_range(mat, **kwargs):
     mat: (np.ndarray): A numpy array.
     cutoffs (list of tuples): When thresholding, include only edges whose
     correlations fall within a given range or set of ranges. The lower
-    value must come first in each tuple. For example, to keep those values whose absolute
-    value is between 0.5 and 1, pass `cutoffs=[(-1, -0.5), (0.5, 1)]`
+    value must come first in each tuple. For example, to keep those values whose
+    absolute value is between 0.5 and 1, pass `cutoffs=[(-1, -0.5), (0.5, 1)]`
 
     Returns
     -------
@@ -33,6 +34,8 @@ def threshold_in_range(mat, **kwargs):
     if 'cutoffs' in kwargs:
         cutoffs = kwargs['cutoffs']
     else:
+        warnings.warn(
+            "Setting 'cutoffs' argument is strongly encouraged. Using cutoff range of (-1, 1).", SyntaxWarning)
         cutoffs = [(-1, 1)]
 
     mask_function = np.vectorize(lambda x: any([x>=cutoff[0] and x<=cutoff[1] for cutoff in cutoffs]))
@@ -64,6 +67,8 @@ def threshold_on_quantile(mat, **kwargs):
     if 'quantile' in kwargs:
         quantile = kwargs['quantile']
     else:
+        warnings.warn(
+            "Setting 'quantile' argument is strongly recommended. Using target quantile of 0.9 for thresholding.", SyntaxWarning)
         quantile = 0.9
 
     if quantile != 0:
@@ -95,6 +100,8 @@ def threshold_on_degree(mat, **kwargs):
     if 'avg_k' in kwargs:
         avg_k = kwargs['avg_k']
     else:
+        warnings.warn(
+            "Setting 'avg_k' argument is strongly encouraged. Using average degree of 1 for thresholding.", SyntaxWarning)
         avg_k = 1
 
     n = len(mat)
@@ -114,6 +121,7 @@ def threshold_on_degree(mat, **kwargs):
         thresholded_mat = np.abs(np.sign(thresholded_mat))
 
     return thresholded_mat
+
 
 def threshold(mat, rule, **kwargs):
     """

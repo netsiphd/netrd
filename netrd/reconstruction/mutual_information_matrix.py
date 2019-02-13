@@ -15,11 +15,11 @@ Submitted as part of the 2019 NetSI Collabathon.
 from .base import BaseReconstructor
 import numpy as np
 import networkx as nx
-from ..utilities.graph import create_graph
+from ..utilities import create_graph, threshold
 
 
 class MutualInformationMatrixReconstructor(BaseReconstructor):
-    def fit(self, TS, deg=15, nbins=10):
+    def fit(self, TS, nbins=10, threshold_type='degree', **kwargs):
         """
         Reconstruct a network by calculating the mutual information between the
         probability distributions of the (binned) values of the time series of
@@ -31,8 +31,10 @@ class MutualInformationMatrixReconstructor(BaseReconstructor):
         Params
         ------
         TS (np.ndarray): Array consisting of $L$ observations from $N$ sensors.
-        deg (int): mean degree of reconstructed graph
         nbins (int): number of bins for the pre-processing step (to yield a discrete probability distribution)
+        threshold_type (str): Which thresholding function to use on the matrix of
+        weights. See `netrd.utilities.threshold.py` for documentation. Pass additional
+        arguments to the thresholder using `**kwargs`.
 
         Returns
         -------
@@ -58,8 +60,9 @@ class MutualInformationMatrixReconstructor(BaseReconstructor):
         self.results['mutual_information_matrix'] = I
 
         # the adjacency matrix is the binarized thresholded mutual information matrix
-        tau=threshold_from_degree(deg,I)
-        A = np.array(I>tau, dtype=int)
+        # tau=threshold_from_degree(deg,I)
+        # A = np.array(I>tau, dtype=int)
+        A = threshold(I, threshold_type, **kwargs)
 
         G = create_graph(A)
         self.results['G'] = G

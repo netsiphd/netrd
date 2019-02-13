@@ -12,7 +12,7 @@ Submitted as part of the 2019 NetSI Collabathon.
 from .base import BaseReconstructor
 
 class <AlgorithmName>(BaseReconstructor):
-    def fit(self, TS):
+    def fit(self, TS, **kwargs):
         """A brief one-line description of the algorithm goes here.
 
         A short paragraph may follow. The paragraph may include $latex$ by

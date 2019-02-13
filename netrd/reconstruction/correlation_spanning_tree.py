@@ -18,7 +18,7 @@ from scipy.sparse.csgraph import minimum_spanning_tree
 
 
 class CorrelationSpanningTree(BaseReconstructor):
-    def fit(self, TS):
+    def fit(self, TS, **kwargs):
         """Create a minimum spanning tree connecting the sensors.
         
         The empirical correlation matrix is used to first compute a distance matrix

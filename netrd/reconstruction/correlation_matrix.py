@@ -12,11 +12,12 @@ Submitted as part of the 2019 NetSI Collabathon
 from .base import BaseReconstructor
 import numpy as np
 import networkx as nx
-from ..utilities.graph import create_graph
+from ..utilities import create_graph, threshold
+
 
 
 class CorrelationMatrixReconstructor(BaseReconstructor):
-    def fit(self, TS, cutoffs=[(-1, 1)]):
+    def fit(self, TS, threshold_type='range', **kwargs):
         """
         Reconstruct a network from time series data using an unregularized form of
         the precision matrix. After [this tutorial](
@@ -25,9 +26,9 @@ class CorrelationMatrixReconstructor(BaseReconstructor):
         Params
         ------
         TS (np.ndarray): Array consisting of $L$ observations from $N$ sensors
-        cutoffs (list of tuples): When thresholding, include only edges whose
-        correlations fall within a given range or set of ranges. The lower
-        value must come first.
+        threshold_type (str): Which thresholding function to use on the matrix of
+        weights. See `netrd.utilities.threshold.py` for documentation. Pass additional
+        arguments to the thresholder using `**kwargs`.
 
         Returns
         -------
@@ -39,12 +40,8 @@ class CorrelationMatrixReconstructor(BaseReconstructor):
         cor = np.corrcoef(TS)
         self.results['matrix'] = cor
 
-        # get the mask using the cutoffs
-        mask_function = np.vectorize(lambda x: any([x>=cutoff[0] and x<=cutoff[1] for cutoff in cutoffs]))
-        mask = mask_function(cor)
-
-        # use the mask to threshold the correlation matrix
-        A = cor * mask
+        # threshold the correlation matrix
+        A = threshold(cor, threshold_type, **kwargs)
 
         # construct the network
         self.results['graph'] = create_graph(A)

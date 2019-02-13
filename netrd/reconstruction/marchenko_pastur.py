@@ -13,12 +13,11 @@ Submitted as part of the 2019 NetSI Collabathon.
 from .base import BaseReconstructor
 import numpy as np
 import networkx as nx
-from ..utilities.graph import create_graph
+from ..utilities import create_graph, threshold
 
 
 class MarchenkoPastur(BaseReconstructor):
-    def fit(self, TS, only_positive=True, remove_largest=False, metric_distance=False, 
-        remove_selfloops=True):
+    def fit(self, TS, remove_largest=False, metric_distance=False, threshold_type='range', **kwargs):
         """Create a correlation-based graph using Marchenko-Pastur law to remove noise.
         
         A signed graph is built by constructing a projection of the empirical correlation 
@@ -29,27 +28,20 @@ class MarchenkoPastur(BaseReconstructor):
         ------
         TS (np.ndarray): $N \\times L$ array consisting of $L$ observations 
                          from $N$ sensors.
-
-        only_positive (bool), optional: If ``False``, a signed graph is obtained.
-        The weights associated to the edges represent the de-noised correlation 
-        coefficient $\\rho_{i,j}$ between time series $i$ and $j$. 
-        If ``True``, only positive de-noised correlations are kept.
-
         remove_largest (bool), optional:  If ``False``, all the eigenvectors
         associated to the significant eigenvalues will be used to reconstruct
         the de-noised empirical correlation matrix. If ``True``, the eigenvector
         associated to the largest eigenvalue (normally known as the ``market`` mode, [2])
         is going to be excluded from the recontruction step.
-
         metric_distance (bool), optional: If ``False``, a signed graph is obtained.
         The weights associated to the edges represent the de-noised correlation 
         coefficient $\\rho_{i,j}$ between time series $i$ and $j$. 
         If ``True``, the correlation is transformed by defining a metric distance 
         between each pair of nodes where $d_{i,j} = \\sqrt{2(1-\\rho_{i,j})}$ as 
         proposed in [3].
-
-        remove_selfloops (bool), optional:  If ``False``, self-loops are allowed.
-        If ``True``, self-loops weights are set to zero.
+        threshold_type (str): Which thresholding function to use on the matrix of
+        weights. See `netrd.utilities.threshold.py` for documentation. Pass additional
+        arguments to the thresholder using `**kwargs`.
 
         Returns
         -------
@@ -146,13 +138,13 @@ class MarchenkoPastur(BaseReconstructor):
         if metric_distance:
             C_signal = np.sqrt(2*(1-C_signal))
 
-        if only_positive:
-            C_signal[C_signal<0] = 0
+        self.results['matrix'] = C_signal
 
-        if remove_selfloops:
-            np.fill_diagonal(C_signal,0)
+        #threshold signal matrix
 
-        G = create_graph(C_signal)
+        self.results['thresholded_matrix'] = threshold(C_signal, threshold_type, **kwargs)
+
+        G = create_graph(self.results['thresholded_matrix'])
 
         self.results['graph'] = G
         return G

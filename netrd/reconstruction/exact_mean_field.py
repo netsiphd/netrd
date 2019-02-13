@@ -13,11 +13,11 @@ import scipy as sp
 from scipy import linalg
 from scipy.integrate import quad
 from scipy.optimize import fsolve
-from ..utilities.graph import create_graph
+from ..utilities import create_graph, threshold
 
 
 class ExactMeanFieldReconstructor(BaseReconstructor):
-    def fit(self, TS, stop_criterion=True):
+    def fit(self, TS, stop_criterion=True, threshold_type='range', **kwargs):
         """
         Given an NxL time series, infer inter-node coupling weights using an
         exact mean field approximation. 
@@ -36,7 +36,10 @@ class ExactMeanFieldReconstructor(BaseReconstructor):
         ------
         TS (np.ndarray): Array consisting of $L$ observations from $N$ sensors.
         stop_criterion (bool): if True, prevent overly-long runtimes
-        
+        threshold_type (str): Which thresholding function to use on the matrix of
+        weights. See `netrd.utilities.threshold.py` for documentation. Pass additional
+        arguments to the thresholder using `**kwargs`.
+
         Returns
         -------
         G (nx.Graph or nx.DiGraph): a reconstructed graph.
@@ -106,10 +109,14 @@ class ExactMeanFieldReconstructor(BaseReconstructor):
 
         W = W_EMF
 
+        # threshold the network
+        W_thresh = threshold(W, threshold_type, **kwargs)
+
         # construct the network
 
-        self.results['graph'] = create_graph(W)
+        self.results['graph'] = create_graph(W_thresh)
         self.results['matrix'] = W
+        self.results['thresholded_matrix'] = W_thresh
         G = self.results['graph']
 
         return G

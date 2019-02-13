@@ -11,11 +11,11 @@ import numpy as np
 import networkx as nx
 import scipy as sp
 from scipy import linalg
-from ..utilities.graph import create_graph
+from ..utilities import create_graph, threshold
 
 
 class NaiveMeanFieldReconstructor(BaseReconstructor):
-    def fit(self, TS):
+    def fit(self, TS, threshold_type='degree', **kwargs):
         """
         Given a (N,L) time series, infer inter-node coupling weights using a 
         naive mean field approximation. After [this tutorial]
@@ -25,7 +25,10 @@ class NaiveMeanFieldReconstructor(BaseReconstructor):
         Params
         ------
         TS (np.ndarray): Array consisting of $L$ observations from $N$ sensors.
-        
+        threshold_type (str): Which thresholding function to use on the matrix of
+        weights. See `netrd.utilities.threshold.py` for documentation. Pass additional
+        arguments to the thresholder using `**kwargs`.
+
         Returns
         -------
         G (nx.Graph or nx.DiGraph): a reconstructed graph.
@@ -53,9 +56,14 @@ class NaiveMeanFieldReconstructor(BaseReconstructor):
         B = np.dot(D, C_inv)
         W = np.dot(A_inv, B)
 
+        # threshold the network
+        W_thresh = threshold(W, threshold_type, **kwargs)
+
         # construct the network
-        self.results['graph'] = create_graph(W)
+
+        self.results['graph'] = create_graph(W_thresh)
         self.results['matrix'] = W
+        self.results['thresholded_matrix'] = W_thresh
         G = self.results['graph']
 
         return G

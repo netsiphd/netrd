@@ -19,26 +19,28 @@ import numpy as np
 
 from .base import BaseReconstructor
 from sklearn.linear_model import LinearRegression
-from ..utilities.graph import create_graph
+from ..utilities import create_graph, threshold
 
 
 class TimeGrangerCausalityReconstructor(BaseReconstructor):
-    def fit(self, TS, lag=1):
+    def fit(self, TS, lag=1, threshold_type = 'range', **kwargs):
         """
-        Reconstruct a network based on the Granger causality. To evaluate the 
+        Reconstruct a network based on the Granger causality. To evaluate the
         effect of a time series (j) over another (i), it first evaluates the
         error e2 given by an autoregressive model fitted to (i) alone. Then, it
         evaluates another error e2 given by an autoregressive model training to
         correlate the future of (i) with the past of (i) and (j). The Granger
         causality of node (j) over (i) is simply given by
-        log(var(e1) / var(e2)). It constructs the network by calculating the 
+        log(var(e1) / var(e2)). It constructs the network by calculating the
         Granger causality for each pair of nodes.
 
         Params
         ------
         TS (np.ndarray): Array consisting of $L$ observations from $N$ sensors.
-
         lag (int): Time lag.
+        threshold_type (str): Which thresholding function to use on the matrix of
+        weights. See `netrd.utilities.threshold.py` for documentation. Pass additional
+        arguments to the thresholder using `**kwargs`.
 
         Returns
         -------
@@ -59,10 +61,13 @@ class TimeGrangerCausalityReconstructor(BaseReconstructor):
                 err2 = Y - reg2.predict(X)
                 self.results['weights'][j, i] = np.log(np.std(err1) / np.std(err2))
 
+        # threshold the network
+        W_thresh = threshold(self.results['weights'], threshold_type, **kwargs)
+        self.results['thresholded_weights'] = W_thresh
 
-        G = create_graph(self.results['weights'])
-
-        self.results['graph'] = G
+        # construct the network
+        self.results['graph'] = create_graph(W_thresh)
+        G = self.results['graph']
 
         return G
 

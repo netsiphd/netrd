@@ -17,11 +17,11 @@ from .base import BaseReconstructor
 import networkx as nx
 import numpy as np
 from scipy.linalg import eig, inv
-from ..utilities.graph import create_graph
+from ..utilities import create_graph, threshold
 
 
 class OUInferenceReconstructor(BaseReconstructor):
-    def fit(self, TS):
+    def fit(self, TS, threshold_type='range', **kwargs):
         """
         Reconstruct a network by inferring the coupling coefficients provided 
         that the generative model of the time series is an Orstein-Uhlenbeck
@@ -30,6 +30,9 @@ class OUInferenceReconstructor(BaseReconstructor):
         Params
         ------
         TS (np.ndarray): Array consisting of $L$ observations from $N$ sensors.
+        threshold_type (str): Which thresholding function to use on the matrix of
+        weights. See `netrd.utilities.threshold.py` for documentation. Pass additional
+        arguments to the thresholder using `**kwargs`.
 
         Returns
         -------
@@ -51,8 +54,13 @@ class OUInferenceReconstructor(BaseReconstructor):
         self.results['weights'] = np.zeros([N, N]);
         self.results['weights'][index_pair] = weights;
 
-        G = create_graph(self.results['weights'])
-        self.results['graph'] = G
+        # threshold the network
+        W_thresh = threshold(self.results['weights'], threshold_type, **kwargs)
+        self.results['thresholded_weights'] = W_thresh
+
+        # construct the network
+        self.results['graph'] = create_graph(W_thresh)
+        G = self.results['graph']
 
         return G
 

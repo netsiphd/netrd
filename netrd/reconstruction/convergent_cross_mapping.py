@@ -16,11 +16,11 @@ from itertools import permutations
 from scipy.stats import pearsonr
 import networkx as nx
 from sklearn.neighbors import NearestNeighbors
-from ..utilities.graph import create_graph
+from ..utilities import create_graph
 
 
 class ConvergentCrossMappingReconstructor(BaseReconstructor):
-    def fit(self, TS, tau=1, alpha=0.05):
+    def fit(self, TS, tau=1, alpha=0.05, **kwargs):
         """Infer causal relation applying Takens Theorem of dynamical systems.
 
         Convergent cross-mapping infers dynamical causal relation between

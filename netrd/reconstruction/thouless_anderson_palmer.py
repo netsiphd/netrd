@@ -12,31 +12,36 @@ import numpy as np
 import networkx as nx
 import scipy as sp
 from scipy import linalg
+from ..utilities import create_graph, threshold
+
 
 class ThoulessAndersonPalmerReconstructor(BaseReconstructor):
-    def fit(self, TS):
+    def fit(self, TS, threshold_type='range', **kwargs):
         """
-        Given a (N,L) time series, infer inter-node coupling weights using a 
-        Thouless-Anderson-Palmer mean field approximation. 
+        Given a (N,L) time series, infer inter-node coupling weights using a
+        Thouless-Anderson-Palmer mean field approximation.
         After [this tutorial]
-        (https://github.com/nihcompmed/network-inference/blob/master/sphinx/codesource/inference.py) 
+        (https://github.com/nihcompmed/network-inference/blob/master/sphinx/codesource/inference.py)
         in python.
 
         From the paper: "Similar to naive mean field, TAP works well only in
-        the regime of large sample sizes and small coupling variability. 
-        However, this method leads to poor inference results in the regime 
+        the regime of large sample sizes and small coupling variability.
+        However, this method leads to poor inference results in the regime
         of small sample sizes and/or large coupling variability."
-        
+
         Params
         ------
         TS (np.ndarray): Array consisting of $L$ observations from $N$ sensors.
-        
+        threshold_type (str): Which thresholding function to use on the matrix of
+        weights. See `netrd.utilities.threshold.py` for documentation. Pass additional
+        arguments to the thresholder using `**kwargs`.
+
         Returns
         -------
         G (nx.Graph or nx.DiGraph): a reconstructed graph.
 
         """
-        
+
         N, L = np.shape(TS)             # N nodes, length L
         m = np.mean(TS, axis=1)         # empirical value
 
@@ -90,11 +95,16 @@ class ThoulessAndersonPalmerReconstructor(BaseReconstructor):
 
         # predict W:
         W = np.dot(A_TAP_inv, B)
+        self.results['matrix'] = W
+
+        # threshold the network
+        W_thresh = threshold(W, threshold_type, **kwargs)
+        self.results['thresholded_matrix'] = W_thresh
 
         # construct the network
-        self.results['graph'] = nx.from_numpy_array(W)
-        self.results['matrix'] = W
+        self.results['graph'] = create_graph(W_thresh)
         G = self.results['graph']
+
 
         return G
 

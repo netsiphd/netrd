@@ -11,10 +11,11 @@ import numpy as np
 import networkx as nx
 import scipy as sp
 from scipy import linalg
+from ..utilities import create_graph, threshold
 
 
 class FreeEnergyMinimizationReconstructor(BaseReconstructor):
-    def fit(self, TS):
+    def fit(self, TS, threshold_type='degree', **kwargs):
         """
         Given a (N,L) time series, infer inter-node coupling weights by 
         minimizing a free energy over the data structure. After [this tutorial]
@@ -23,7 +24,10 @@ class FreeEnergyMinimizationReconstructor(BaseReconstructor):
         Params
         ------
         TS (np.ndarray): Array consisting of $L$ observations from $N$ sensors.
-        
+        threshold_type (str): Which thresholding function to use on the matrix of
+        weights. See `netrd.utilities.threshold.py` for documentation. Pass additional
+        arguments to the thresholder using `**kwargs`.
+
         Returns
         -------
         G (nx.Graph or nx.DiGraph): a reconstructed graph.
@@ -75,9 +79,14 @@ class FreeEnergyMinimizationReconstructor(BaseReconstructor):
 
             W[i0, :] = w[:]
 
+        # threshold the network
+        W_thresh = threshold(W, threshold_type, **kwargs)
+
         # construct the network
-        self.results['graph'] = nx.from_numpy_array(W)
+
+        self.results['graph'] = create_graph(W_thresh)
         self.results['matrix'] = W
+        self.results['thresholded_matrix'] = W_thresh
         G = self.results['graph']
 
         return G

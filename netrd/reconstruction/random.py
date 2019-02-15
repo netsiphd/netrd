@@ -2,17 +2,47 @@
 random.py
 ---------
 
-Reconstruct a random network from time series.
+Reconstruct a network from a random matrix 
+not taking the time series into account.
+
+author: Brennan Klein
+email: klein.br@husky.neu.edu
+Submitted as part of the 2019 NetSI Collabathon.
 
 """
 
-import networkx as nx
 from .base import BaseReconstructor
+import networkx as nx
+import numpy as np
+from ..utilities import create_graph, threshold
 
 
 class RandomReconstructor(BaseReconstructor):
-    def fit(self, TS):
-        """Reconstruct a random graph."""
-        G = nx.erdos_renyi_graph(TS.shape[0], 0.1)
+    def fit(self, TS, threshold_type='range', **kwargs):
+        """
+        Reconstruct a network from a time serues -- just kidding, simply return 
+        a random correlation matrix with a threshold.
+
+        Params
+        ------
+        TS (np.ndarray): array consisting of $L$ observations from $N$ sensors.
+        threshold_type (str): Which thresholding function to use on the matrix of
+        weights. See `netrd.utilities.threshold.py` for documentation. Pass additional
+        arguments to the thresholder using `**kwargs`.
+
+        Returns
+        -------
+        G (nx.Graph): a reconstructed graph with $N$ nodes.
+        """
+
+        N, L = TS.shape
+        W = np.random.rand(N, N)
+        A = threshold(W, threshold_type, **kwargs)
+
+        G = create_graph(A)
+
         self.results['graph'] = G
+        self.results['random_matrix'] = W
+        self.results['adjacency_matrix'] = A
+
         return G

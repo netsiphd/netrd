@@ -19,7 +19,6 @@ from scipy.integrate import quad
 from scipy.sparse.csgraph import laplacian
 from scipy.linalg import eigh
 
-import matplotlib.pyplot as plt
 
 class LaplacianSpectralMethod(BaseDistance):
     def dist(self, G1, G2, normed=True, kernel='normal', hwhm=0.011775,

@@ -23,7 +23,7 @@ import matplotlib.pyplot as plt
 
 class LaplacianSpectralMethod(BaseDistance):
     def dist(self, G1, G2, normed=True, kernel='normal', hwhm=0.011775,
-             measure='euclidean'):
+             measure='jensen-shannon'):
         """Graph distances using different measure between the Laplacian
         spectra of the two graphs
 
@@ -172,24 +172,22 @@ def _spectra_comparizon(density1, density2, a, b, measure):
 
     """
     if measure == "jensen-shannon":
-        integrand1 = lambda x: _jensen_shannon_integrand(
-            x, density1, density2)
-        integrand2 = lambda x: _jensen_shannon_integrand(
-            x, density2, density1)
-        dist = np.sqrt(
-            quad(integrand1, a, b)[0]/2 + quad(integrand2, a, b)[0]/2)
+        M = lambda x: (density1(x) + density2(x))/2
+        jensen_shannon = (_kullback_leiber(density1, M, a, b)
+                          + _kullback_leiber(density2, M, a, b))/2
+        dist = np.sqrt(jensen_shannon)
+
     elif measure == "euclidean":
         integrand = lambda x: (density1(x) - density2(x))**2
         dist = np.sqrt(quad(integrand, a, b)[0])
 
     return dist
 
-def _jensen_shannon_integrand(x, f1, f2):
-    integrand = 0
-    if f1(x) > 10**(-12):
-        integrand += f1(x)*np.log2(f1(x))
-    if f1(x) > 10**(-12) and f2(x) > 0:
-        integrand -= f1(x)*np.log2(f2(x))
-    return integrand
-
-
+def _kullback_leiber(f1, f2, a, b):
+    def integrand(x):
+        if f1(x) > 0 and f2(x) > 0:
+            result = f1(x)*np.log(f1(x)/f2(x))
+        else:
+            result = 0
+        return result
+    return quad(integrand, a, b)[0]

@@ -106,6 +106,7 @@ class LaplacianSpectralMethod(BaseDistance):
 
         #compare the spectra
         dist = _spectra_comparizon(density1, density2, a, b, measure)
+        self.results['dist'] = dist
 
         return dist
 

@@ -35,7 +35,8 @@ def threshold_in_range(mat, **kwargs):
         cutoffs = kwargs['cutoffs']
     else:
         warnings.warn(
-            "Setting 'cutoffs' argument is strongly encouraged. Using cutoff range of (-1, 1).", SyntaxWarning)
+            "Setting 'cutoffs' argument is strongly encouraged. Using cutoff range of (-1, 1).",
+            RuntimeWarning)
         cutoffs = [(-1, 1)]
 
     mask_function = np.vectorize(lambda x: any([x>=cutoff[0] and x<=cutoff[1] for cutoff in cutoffs]))
@@ -68,7 +69,8 @@ def threshold_on_quantile(mat, **kwargs):
         quantile = kwargs['quantile']
     else:
         warnings.warn(
-            "Setting 'quantile' argument is strongly recommended. Using target quantile of 0.9 for thresholding.", SyntaxWarning)
+            "Setting 'quantile' argument is strongly recommended. Using target quantile of 0.9 for thresholding.",
+            RuntimeWarning)
         quantile = 0.9
 
     if quantile != 0:
@@ -101,7 +103,8 @@ def threshold_on_degree(mat, **kwargs):
         avg_k = kwargs['avg_k']
     else:
         warnings.warn(
-            "Setting 'avg_k' argument is strongly encouraged. Using average degree of 1 for thresholding.", SyntaxWarning)
+            "Setting 'avg_k' argument is strongly encouraged. Using average degree of 1 for thresholding.",
+            RuntimeWarning)
         avg_k = 1
 
     n = len(mat)

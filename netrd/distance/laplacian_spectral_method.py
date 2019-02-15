@@ -16,13 +16,15 @@ import networkx as nx
 from .base import BaseDistance
 from scipy.special import erf
 from scipy.integrate import quad
+from scipy.linalg import eigvalsh
+from scipy.sparse.csgraph import csgraph_from_dense
 from scipy.sparse.csgraph import laplacian
-from scipy.linalg import eigh
+from scipy.sparse.linalg import eigsh
 
 
 class LaplacianSpectralMethod(BaseDistance):
     def dist(self, G1, G2, normed=True, kernel='normal', hwhm=0.011775,
-             measure='jensen-shannon'):
+             measure='jensen-shannon', k=None):
         """Graph distances using different measure between the Laplacian
         spectra of the two graphs
 
@@ -59,6 +61,10 @@ class LaplacianSpectralMethod(BaseDistance):
             -jensen-shannon
             -euclidean
 
+        k (int): number of desired eigenvalues for the spectrum. The largest
+        ones in magnitude are kept. If none, all the eigenvalues are used.
+        k must be smaller (strictly) than the size of both graphs.
+
         Returns
         -------
 
@@ -86,11 +92,24 @@ class LaplacianSpectralMethod(BaseDistance):
             self.results['adj1_aug'] = adj1
             self.results['adj2_aug'] = adj2
 
-        #get the laplacian and their eigenvalues
-        L1 = laplacian(adj1, normed=normed)
-        L2 = laplacian(adj2, normed=normed)
-        ev1 = np.abs(eigh(L1)[0])
-        ev2 = np.abs(eigh(L2)[0])
+        #get the laplacian matrices
+        lap1 = laplacian(adj1, normed=normed)
+        lap2 = laplacian(adj2, normed=normed)
+        self.results['lap1'] = lap1
+        self.results['lap2'] = lap2
+
+        #get the eigenvalues of the laplacian matrices
+        if k is None:
+            ev1 = np.abs(eigvalsh(lap1))
+            ev2 = np.abs(eigvalsh(lap2))
+        else:
+            #transform the dense adjacency matrices to sparse representations
+            lap1 = csgraph_from_dense(lap1)
+            lap2 = csgraph_from_dense(lap2)
+            ev1 = np.abs(eigsh(lap1, k=k, which='LM')[0])
+            ev2 = np.abs(eigsh(lap2, k=k, which='LM')[0])
+        self.results['ev1'] = ev1
+        self.results['ev2'] = ev2
 
         #define the proper support
         a = 0
@@ -104,7 +123,7 @@ class LaplacianSpectralMethod(BaseDistance):
         density2 = _create_continuous_spectrum(ev2, kernel, hwhm, a, b)
 
         #compare the spectra
-        dist = _spectra_comparizon(density1, density2, a, b, measure)
+        dist = _spectra_comparison(density1, density2, a, b, measure)
         self.results['dist'] = dist
 
         return dist
@@ -152,7 +171,7 @@ def _create_continuous_spectrum(eigenvalues, kernel, hwhm, a, b):
     return density
 
 
-def _spectra_comparizon(density1, density2, a, b, measure):
+def _spectra_comparison(density1, density2, a, b, measure):
     """Apply a metric to compare the spectra
 
     Params

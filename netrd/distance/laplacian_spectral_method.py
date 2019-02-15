@@ -103,7 +103,7 @@ class LaplacianSpectralMethod(BaseDistance):
             ev1 = np.abs(eigvalsh(lap1))
             ev2 = np.abs(eigvalsh(lap2))
         else:
-            #transform the dense adjacency matrices to sparse representations
+            #transform the dense laplacian matrices to sparse representations
             lap1 = csgraph_from_dense(lap1)
             lap2 = csgraph_from_dense(lap2)
             ev1 = np.abs(eigsh(lap1, k=k, which='LM')[0])

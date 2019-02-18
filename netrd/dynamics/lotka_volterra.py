@@ -15,7 +15,7 @@ from numpy.random import uniform, normal
 from scipy.integrate import ode
 
 
-class LotkaVolttera(BaseDynamics):
+class LotkaVolterra(BaseDynamics):
     def simulate(self, G, L, init=None, gr=None, cap=None, inter=None,
                  dt=1e-2, stochastic=True, pertb=None):
         """Simulate time series on a network from the Lotka-Vottera model.

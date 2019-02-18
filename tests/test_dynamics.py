@@ -11,6 +11,7 @@ import numpy as np
 from netrd import dynamics
 from netrd.dynamics import BaseDynamics
 
+
 def test_dynamics_valid_dimensions():
     """Dynamics models should return N x L arrays."""
 

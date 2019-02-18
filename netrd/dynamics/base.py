@@ -1,5 +1,6 @@
 import numpy as np
 
+
 class BaseDynamics:
     """Base class for all dynamics processes.
 

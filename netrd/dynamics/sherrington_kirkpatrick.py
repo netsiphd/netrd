@@ -2,21 +2,29 @@ import networkx as nx
 import numpy as np
 
 class SherringtonKirkpatrickIsing:
-    """
-    Kinetic Ising model from 
-    D. Sherrington and S. Kirkpatrick, Phys. Rev. Lett. 35, 1792 (1975)
-
-    Generates an N x L time series 
-
-    """
 
     def __init__(self):
         self.results = {}
 
     def simulate(self, G, L, noisy=False):
         """
-        Simulate dynamics on a ground truth network.
+        Simulate Kinetic Ising model dynamics on a ground truth network.
+        from D. Sherrington and S. Kirkpatrick, Phys. Rev. Lett. 35, 1792 (1975)
+        
+        and from Hoang, D.T., Song, J., Periwal, V. and Jo, J., Network inference 
+        in stochastic systems from neurons to currencies: Improved performance at 
+        small sample size. (2019)
 
+	    Generates an N x L time series.
+
+	    Example Usage:
+		#######
+		G = nx.ring_of_cliques(4,16)
+		L = 2001
+		dynamics = SherringtonKirkpatrickIsing()
+		TS = dynamics.simulate(G, L)
+		#######
+		
         Params
         ------
         G (nx.Graph): the input (ground-truth) graph with $N$ nodes.
@@ -42,15 +50,16 @@ class SherringtonKirkpatrickIsing:
             h = np.sum(W[:,:] * ts[t,:], axis=1) # Wij from j to i
             p = 1 / ( 1 + np.exp(-2*h) )
             if noisy:
-                ts[t+1,:]= p - np.random.rand(N)
+                ts[t+1,:] = p - np.random.rand(N)
             else:
-                ts[t+1,:]= sign_vec(p - np.random.rand(N))
+                ts[t+1,:] = sign_vec(p - np.random.rand(N))
 
 
         self.results['ground_truth'] = G
         self.results['TS'] = ts.T
 
         return self.results['TS']
+
 
 def sign(x):
     """
@@ -65,25 +74,3 @@ def sign_vec(x):
     """
     x_vec = np.vectorize(sign)
     return x_vec(x)
-
-
-'''
-# Example Usage
-
-G = nx.ring_of_cliques(4,16)
-L = 2001
-
-dynamics = SherringtonKirkpatrickIsing()
-TS = dynamics.simulate(G, L)
-
-recon = netrd.reconstruction.FreeEnergyMinimizationReconstructor()
-G = recon.fit(TS)
-
-fig, (ax0,ax1) = plt.subplots(1,2,figsize=(21,10))
-ax0.imshow(TS, aspect='auto', cmap='bone_r')
-ax1.imshow(recon.results['matrix'],aspect='auto', cmap='bone_r')
-ax0.set_title("Time Series", fontsize=20)
-ax1.set_title("Reconstruction", fontsize=20)
-plt.savefig('example.png', dpi=425, bbox_inches='tight')
-plt.show()
-'''

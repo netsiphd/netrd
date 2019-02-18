@@ -3,8 +3,8 @@ class BaseDistance:
 
     The basic usage of a distance algorithm is as follows:
 
-    >>> dist_obj = DistanceAlgorithm(<some_params>)
-    >>> distance = dist_obj.dist(G1, G2)
+    >>> dist_obj = DistanceAlgorithm()
+    >>> distance = dist_obj.dist(G1, G2, <some_params>)
     >>> # or alternatively: distance = dist_obj.results['dist']
 
     Here, G1 and G2 are nx.Graph objects (or subclasses such as
@@ -12,7 +12,6 @@ class BaseDistance:
     as any other values that were computed as a side effect.
 
     """
-
 
     def __init__(self):
         self.results = {}

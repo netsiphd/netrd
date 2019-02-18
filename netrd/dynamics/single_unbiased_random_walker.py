@@ -1,3 +1,4 @@
+from .base import BaseDynamics
 import networkx as nx
 import numpy as np
 

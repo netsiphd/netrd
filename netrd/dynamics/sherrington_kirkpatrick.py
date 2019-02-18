@@ -1,7 +1,17 @@
+"""
+sherrington_kirkpatrick.py
+---------------------
+Generate an ising model-like time series on a graph
+
+author: Brennan Klein
+email: brennanjamesklein at gmail dot com
+submitted as part of the 2019 NetSI Collabathon
+"""
+from .base import BaseDynamics
 import networkx as nx
 import numpy as np
 
-class SherringtonKirkpatrickIsing:
+class SherringtonKirkpatrickIsing(BaseDynamics):
 
     def __init__(self):
         self.results = {}

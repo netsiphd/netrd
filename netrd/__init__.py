@@ -11,4 +11,5 @@ Science Insitute 2019 Collabathon.
 
 from .distance import *
 from .reconstruction import *
+from .dynamics import *
 from .utilities import *

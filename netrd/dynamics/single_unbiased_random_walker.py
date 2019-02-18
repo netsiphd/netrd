@@ -41,9 +41,11 @@ class SingleUnbiasedRandomWalker(BaseDynamics):
         # run dynamical process
         for t in range(L-1):
             W[t+1]=ra.choice(np.where(A[W[t],:])[0])
-        self.results['node index sequence']=W
+        self.results['node_index_sequence']=W
         # turn into a binary-valued
         TS=np.zeros((N,L))
         for t,w in enumerate(W):
             TS[w,t]=1
+        self.results['TS']=TS
+        self.results['ground_truth']=G
         return TS

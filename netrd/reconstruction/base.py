@@ -3,8 +3,8 @@ class BaseReconstructor:
 
     The basic usage of a graph reconstruction algorithm is as follows:
 
-    >>> reconstructor = ReconstructionAlgorithm(<some_params>)
-    >>> G = reconstructor.fit(TS)
+    >>> reconstructor = ReconstructionAlgorithm()
+    >>> G = reconstructor.fit(TS, <some_params>)
     >>> # or alternately, G = reconstructor.results['graph']
 
     Here, `TS` is an $N \times L$ numpy array consisting of $L$

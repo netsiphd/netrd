@@ -1,5 +1,5 @@
 """
-lotka_vottera.py
+lotka_volterra.py
 ----------------
 
 Implementation to simulate a Lotka-Vottera model on a network.

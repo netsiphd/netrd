@@ -11,7 +11,7 @@ Submitted as part of the 2019 NetSI Collabathon.
 from netrd.dynamics import BaseDynamics
 import numpy as np
 import networkx as nx
-from numpy.random import unifrom, normal
+from numpy.random import uniform, normal
 from scipy.integrate import ode
 
 
@@ -93,7 +93,7 @@ class LotkaVottera(BaseDynamics):
         # Randomly initialize an initial condition if not speciefied
         TS = np.zeros((N, L), dtype=float)
         if init is None:
-            init = unifrom(low=0, high=cap)
+            init = uniform(low=0, high=cap)
         TS[:, 0] = init
 
         # Define the function of dynamics

@@ -8,6 +8,7 @@ email:
 Submitted as part of the 2019 NetSI Collabathon.
 
 """
+import warnings
 import numpy as np
 import networkx as nx
 import scipy.sparse as ss
@@ -34,6 +35,10 @@ class ResistancePerturbation(BaseDistance):
         respectively. When $p = \infty$,
         $d_{r(\infty)} = \max_{i,j \in V} |R^{(1)}_{i,j} - R^{(2)}_{i,j}|$.
 
+        This method assumes that the input graphs are undirected; if directed
+        graphs are used, it will coerce them to undirected graphs and emit a
+        RuntimeWarning.
+
         For details, see https://arxiv.org/abs/1605.01091v2
 
         Params
@@ -47,6 +52,20 @@ class ResistancePerturbation(BaseDistance):
         dist (float): the distance between G1 and G2.
 
         """
+
+
+        # Coerce to undirected, if needed.
+        directed_flag = False
+        if nx.is_directed(G1):
+            G1 = nx.to_undirected(G1)
+            directed_flag = True
+        if nx.is_directed(G2):
+            G2 = nx.to_undirected(G2)
+            directed_flag = True
+
+        if directed_flag:
+            warnings.warn("Coercing directed graph to undirected.", RuntimeWarning)
+
         # Get resistance matrices
         R1 = get_resistance_matrix(G1)
         R2 = get_resistance_matrix(G2)

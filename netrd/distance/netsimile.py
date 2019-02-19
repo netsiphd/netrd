@@ -12,6 +12,7 @@ Submitted as part of the 2019 NetSI Collabathon.
 """
 import networkx as nx
 import numpy as np
+import warnings
 from scipy.spatial.distance import canberra
 from scipy.stats import skew, kurtosis
 
@@ -36,15 +37,20 @@ class NetSimile(BaseDistance):
 
         """
 
-        # NOTE: the measure only works for undirected 
+        # NOTE: the measure only works for undirected
         # graphs. For now we will silently convert a
         # directed graph to be undirected.
-
-        # TODO: raise ValuError in the future?
+        directed_flag = False
         if nx.is_directed(G1):
             G1 = nx.to_undirected(G1)
+            directed_flag = True
         if nx.is_directed(G2):
             G2 = nx.to_undirected(G2)
+            directed_flag = True
+
+        if directed_flag:
+            warnings.warn("Coercing directed graph to undirected.", RuntimeWarning)
+
 
         # find the graph node feature matrices
         G1_node_features = feature_extraction(G1)

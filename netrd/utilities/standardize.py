@@ -19,6 +19,11 @@ def mean_GNP_distance(n, edge_probability, distance, samples=10, **kwargs):
     parameters N=n,p=edge_probability using distance function _distance_,
     whose parameters are passed with **kwargs.
 
+    NOTE: Ideally, each 'sample' would involve generating two GNP graphs,
+    computing the distance between them, then throwing them both away.
+    However, this will be computationally expensive, so for now we are
+    reusing samples, but _not_ including distance between the same sample
+    in the mean (e.g. excluding the diagonal of a distance matrix).
 
     Params
     ------
@@ -50,14 +55,18 @@ def mean_GNP_distance(n, edge_probability, distance, samples=10, **kwargs):
        a.append(nx.fast_gnp_random_graph(n, edge_probability))
 
     # get distances
-    dis=[]
+    dis_mat = np.zeros((samples,samples))
+    dis_list = []
     for i in range(samples):
-       for j in range(i):
-           dis.append(distance(a[i], a[j], **kwargs))
+        for j in range(samples):
+            # Do not compute distance between identical samples (see docstring)
+            if i != j:
+                dis[i,j]= distance(a[i], a[j], **kwargs)
+                dis_list.append(dis[i,j])
 
     # get mean distances \ std distances
-    mean_dist=np.mean(dis)
-    std_dist=np.std(dis)
+    mean_dist=np.mean(dis_list)
+    std_dist=np.std(dis_list)
 
-    return mean_dist,std_dist,dis
+    return mean_dist, std_dist, dis_mat
 

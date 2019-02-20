@@ -39,7 +39,7 @@ def mean_GNP_distance(n, edge_probability, distance, samples=10, **kwargs):
 
     Example
     -------
-    dist_obj = netrd.distances.ResistancePerturbation()
+    dist_obj = netrd.distance.ResistancePerturbation()
     kwargs = {'p':2}
     mean, std, dists = netrd.utilities.mean_GNP_distance(100, 0.1, dist_obj.dist, **kwargs)
 

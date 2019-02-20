@@ -13,7 +13,7 @@ Submitted as part of the 2019 NetSI Collabathon
 import numpy as np
 import networkx as nx
 
-def mean_GNP_distance(n, edge_probability, samples=10, distance=None, **kwargs):
+def mean_GNP_distance(n, edge_probability, distance, samples=10, **kwargs):
     '''
     Compute the mean distance between _samples_ GNP graphs with
     parameters N=n,p=edge_probability using distance function _distance_,
@@ -36,6 +36,12 @@ def mean_GNP_distance(n, edge_probability, samples=10, distance=None, **kwargs):
     mean (float): The average distance between the sampled ER networks.
     std (float): The standard deviation of the distances.
     dist (np.ndarray): Array storing the actual distances.
+
+    Example
+    -------
+    dist_obj = netrd.distances.ResistancePerturbation()
+    kwargs = {'p':2}
+    mean, std, dists = netrd.utilities.mean_GNP_distance(100, 0.1, dist_obj.dist, **kwargs)
 
     '''
     # generate sample graphs

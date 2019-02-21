@@ -46,7 +46,7 @@ class PolynomialDissimilarity(BaseDistance):
         P_A1 = calculate_polynomial(A1,k,alpha)
         P_A2 = calculate_polynomial(A2,k,alpha)
     
-        dist = sum(sum(np.abs(P_A1-P_A2)**2))**(1/2)/A1.shape[0]**2
+        dist = np.linalg.norm(P_A1-P_A2,ord='fro')/A1.shape[0]**2
         
     return dist
 

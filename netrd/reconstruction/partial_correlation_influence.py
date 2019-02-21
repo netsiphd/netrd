@@ -36,7 +36,7 @@ class PartialCorrelationInfluenceReconstructor(BaseReconstructor):
         a series X and all other series*
 
         The partial correlation influence:
-        d(X:Z)=<d(X,Y:Z)>_Y!=X,Z where
+        d(X:Z)=<d(X,Y:Z)>_Y!=X where
         d(X,Y:Z) = ρ(X,Y) - ρ(X,Y:Z)
 
         If an index is given, both terms become partial correlations:

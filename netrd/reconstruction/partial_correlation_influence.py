@@ -68,7 +68,7 @@ class PartialCorrelationInfluenceReconstructor(BaseReconstructor):
         else:
             p_cor = partial_corr(TS)
 
-        p_cor = np.fill_diagonal(p_cor, float("nan"))
+        np.fill_diagonal(p_cor, float("nan"))
 
         n = p_cor.shape[0]
 

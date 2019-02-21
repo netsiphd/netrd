@@ -17,9 +17,7 @@ import numpy as np
 import networkx as nx
 from .base import BaseDistance
 from scipy.optimize import fsolve
-from scipy.sparse.csgraph import laplacian
-from scipy.linalg import eigh
-from scipy.integrate import quad
+from .ipsen_mikhailov import _im_distance
 
 class HammingIpsenMikhailov(BaseDistance):
     def dist(self, G1, G2, combination_factor=1):
@@ -181,48 +179,4 @@ def _get_hwhm_directed(N):
                 + 2*W*Wp*L(Nm2,2*N-2) + 2*W*Wp*L(N,2*N-2)
 
     return fsolve(func, 0.5)[0]
-
-
-def _im_distance(adj1, adj2, hwhm):
-    """Computes the Ipsen-Mikhailov distance for two symmetric adjacency
-    matrices
-
-    Note : Requires networks with the same number of nodes. The networks
-    can be directed and weighted (with weights in the range [0,1]).
-
-    Params
-    ------
-
-    adj1, adj2 (array): adjacency matrices.
-
-    hwhm (float) : hwhm of the lorentzian distribution.
-
-    Returns
-    -------
-
-    dist (float) : Ipsen-Mikhailov distance.
-
-    """
-    N = len(adj1)
-    #get laplacian matrix
-    L1 = laplacian(adj1, normed=False)
-    L2 = laplacian(adj2, normed=False)
-
-    #get the modes for the positive-semidefinite laplacian
-    w1 = np.sqrt(np.abs(eigh(L1)[0][1:]))
-    w2 = np.sqrt(np.abs(eigh(L2)[0][1:]))
-
-    #we calculate the norm for both spectrum
-    norm1 = (N-1)*np.pi/2 - np.sum(np.arctan(-w1/hwhm))
-    norm2 = (N-1)*np.pi/2 - np.sum(np.arctan(-w2/hwhm))
-
-    #define both spectral densities
-    density1 = lambda w: np.sum(hwhm/((w - w1)**2 + hwhm**2))/norm1
-    density2 = lambda w: np.sum(hwhm/((w - w2)**2 + hwhm**2))/norm2
-
-    func = lambda w: (density1(w) - density2(w))**2
-
-    return np.sqrt(quad(func, 0, np.inf)[0])
-
-
 

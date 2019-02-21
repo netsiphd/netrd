@@ -18,14 +18,41 @@ def test_graph_size():
     equal to the number of sensors in the time series data
     used to reconstruct the graph.
     """
+    size = 50
     for label, obj in reconstruction.__dict__.items():
-        if label == 'PartialCorrelationMatrixReconstructor':
+        if label in [
+                'PartialCorrelationMatrixReconstructor',
+                'NaiveTransferEntropyReconstructor'
+                'OptimalCausationEntropyReconstructor'
+        ]:
             continue
         if isinstance(obj, type) and BaseReconstructor in obj.__bases__:
-            for size in [10, 100]:
-                TS = np.random.random((size, 250))
-                G = obj().fit(TS)
-                assert G.order() == size
+            TS = np.random.random((size, 125))
+            G = obj().fit(TS)
+            assert G.order() == size
+
+
+def test_naive_transfer_entropy():
+    """
+    Use a smaller data set to test the NaiveTransferEntropyReconstructor,
+    because it is very slow.
+
+    """
+    size = 25
+    TS = np.random.random((size, 100))
+    G = reconstruction.NaiveTransferEntropyReconstructor().fit(TS, delay_max=2)
+    assert G.order() == size
+
+
+def test_oce():
+    """
+    Test optimal causation entropy using a smaller dataset.
+    """
+
+    size = 25
+    TS = np.random.random((size, 50))
+    G = reconstruction.OptimalCausationEntropyReconstructor().fit(TS)
+    assert G.order() == size
 
 
 def test_convergent_cross_mapping():
@@ -66,4 +93,3 @@ def test_partial_correlation():
                         assert G.order() == size
                     else:
                         assert G.order() == (size - 1)
-

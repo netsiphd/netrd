@@ -13,6 +13,7 @@ from .base import BaseReconstructor
 import numpy as np
 import networkx as nx
 from scipy import stats, linalg
+from ..utilities import create_graph, threshold
 
 
 class PartialCorrelationMatrixReconstructor(BaseReconstructor):
@@ -21,7 +22,8 @@ class PartialCorrelationMatrixReconstructor(BaseReconstructor):
             index=None,
             drop_index=True,
             of_residuals=False,
-            cutoffs=[(-1, 1)]):
+            threshold_type='range',
+            **kwargs):
         """
         Reconstruct a network from time series data using a regularized
         form of the precision matrix. After [this tutorial](
@@ -38,9 +40,9 @@ class PartialCorrelationMatrixReconstructor(BaseReconstructor):
         of_residuals (bool): If True, after calculating the partial correlations (
         presumably using a dropped index variable), recalculate the partial
         correlations between each variable, holding constant all other variables.
-        cutoffs (list of tuples): When thresholding, include only edges whose
-        correlations fall within a given range or set of ranges. The lower
-        value must come first.
+        threshold_type (str): Which thresholding function to use on the matrix of
+        weights. See `netrd.utilities.threshold.py` for documentation. Pass additional
+        arguments to the thresholder using `**kwargs`.
 
         Returns
         -------
@@ -59,15 +61,15 @@ class PartialCorrelationMatrixReconstructor(BaseReconstructor):
 
         self.results['matrix'] = p_cor
 
-        mask_function = np.vectorize(lambda x: any([x>=cutoff[0] and x<=cutoff[1] for cutoff in cutoffs]))
-        mask = mask_function(p_cor)
-
-        # use the mask to threshold the correlation matrix
-        A = p_cor * mask
+        # threshold the network
+        W_thresh = threshold(p_cor, threshold_type, **kwargs)
 
         # construct the network
-        self.results['graph'] = nx.from_numpy_array(A)
+        self.results['graph'] = create_graph(W_thresh)
+        self.results['thresholded_matrix'] = W_thresh
+
         G = self.results['graph']
+
 
         return G
 

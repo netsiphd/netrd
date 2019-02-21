@@ -12,10 +12,10 @@ Submitted as part of the 2019 NetSI Collabathon
 from .base import BaseReconstructor
 import numpy as np
 import networkx as nx
-
+from ..utilities import create_graph, threshold
 
 class RegularizedCorrelationMatrixReconstructor(BaseReconstructor):
-    def fit(self, TS, num_eigs=10, quantile=0.9):
+    def fit(self, TS, num_eigs=10, threshold_type='quantile', **kwargs):
         """
         Reconstruct a network from time series data using a regularized
         form of the precision matrix. After [this tutorial](
@@ -27,9 +27,9 @@ class RegularizedCorrelationMatrixReconstructor(BaseReconstructor):
         num_eigs (int): The number of eigenvalues to use. (This corresponds
         to the amount of regularization.) The number of eigenvalues used must
         be less than $N$.
-        quantile (float): The threshold above which to create an edge, e.g.,
-        only create edges between elements above the 90th quantile of the
-        correlation matrix.
+        threshold_type (str): Which thresholding function to use on the matrix of
+        weights. See `netrd.utilities.threshold.py` for documentation. Pass additional
+        arguments to the thresholder using `**kwargs`.
 
         Returns
         -------
@@ -60,10 +60,11 @@ class RegularizedCorrelationMatrixReconstructor(BaseReconstructor):
         self.results['matrix'] = P
 
         # threshold the precision matrix
-        A = P * (P > np.percentile(P, quantile * 100))
+        A = threshold(P, threshold_type, **kwargs)
+        self.results['thresholded_matrix'] = A
 
         # construct the network
-        self.results['graph'] = nx.from_numpy_array(A)
+        self.results['graph'] = create_graph(A)
         G = self.results['graph']
 
         return G

@@ -24,32 +24,31 @@ from scipy import stats, linalg
 from ..utilities import create_graph, threshold
 
 
-class PartialCorrelationMatrixReconstructor(BaseReconstructor):
+class PartialCorrelationInfluenceReconstructor(BaseReconstructor):
     def fit(self,
             TS,
             index=None,
-            drop_index=True,
-            of_residuals=False,
             threshold_type='range',
             **kwargs):
         """
-        Reconstruct a network from time series data using a regularized
-        form of the precision matrix. After [this tutorial](
-        https://bwlewis.github.io/correlation-regularization/) in R.
+        Reconstruct a network from time series data using the
+        *average effect of a series Z on the correlation between
+        a series X and all other series*
+
+        The partial correlation influence:
+        d(X:Z)=<d(X,Y:Z)>_Y!=X,Z where
+        d(X,Y:Z) = ρ(X,Y) - ρ(X,Y:Z)
+
+        If an index is given, both terms become partial correlations:
+        d(X,Y:Z) ≡ ρ(X,Y:M) − ρ(X,Y:M,Z)
 
         Params
         ------
-        of_residuals (bool): If True, after calculating the partial correlation
-        influence (presumably using a dropped index variable), recalculate the partial
-        correlation influence between each variable, holding constant all other variables.
 
         index (int, array of ints, or None): Take the partial correlations of
         each pair of elements holding constant an index variable or set of
         index variables. If None, take the partial correlations of the
         variables holding constant all other variables.
-
-        drop_index (bool): If True, drop the index variables after calculating
-        the partial correlations.
 
         threshold_type (str): Which thresholding function to use on the matrix of
         weights. See `netrd.utilities.threshold.py` for documentation. Pass additional
@@ -61,7 +60,7 @@ class PartialCorrelationMatrixReconstructor(BaseReconstructor):
 
         """
 
-        if of_residuals:
+        if index:
             p_cor = partial_corr(TS, index=index)
             n_TS  = p_cor.shape[0]
             p_cor = np.delete(p_cor, index, axis=0)
@@ -69,27 +68,29 @@ class PartialCorrelationMatrixReconstructor(BaseReconstructor):
         else:
             p_cor = partial_corr(TS)
 
+        p_cor = np.fill_diagonal(p_cor, float("nan"))
+
         n = p_cor.shape[0]
 
-        if index is None:
-            index = np.array([],dtype=int)
+        p_cor_zs = np.zeros((n,n,n))
 
-        p_cor_z = np.zeros((n,n,n))
-
-        if of_residuals:
+        if index:
             for z in np.delete(range(n_TS),index):
                 index_z = np.append(index,z)
-                p_cor_z[z] = partial_corr(TS, index=index_z)
-                p_cor_z[z] = np.delete(p_cor, index, axis=0)
-                p_cor_z[z] = np.delete(p_cor, index, axis=1)
-                p_cor_z[z] = p_cor - p_cor_z[z]
+                p_cor_z = partial_corr(TS, index=index_z)
+                p_cor_z = np.delete(p_cor_z, index, axis=0)
+                p_cor_z = np.delete(p_cor_z, index, axis=1)
+                p_cor_z = p_cor - p_cor_z
+                p_cor_zs[z] = p_cor_z
         else:
+            index = np.array([],dtype=int)
             for z in range(n):
                 index_z = z
-                p_cor_z[z] = partial_corr(TS, index=index_z)
-                p_cor_z[z] = p_cor - p_cor_z[z]
+                p_cor_z = partial_corr(TS, index=index_z)
+                p_cor_z = p_cor - p_cor_z
+                p_cor_zs[z] = p_cor_z
 
-        p_cor_inf = np.mean(p_cor_z, axis=0)
+        p_cor_inf = np.nanmean(p_cor_zs, axis=2) # mean over the Y axis
 
         self.results['matrix'] = p_cor_inf
 

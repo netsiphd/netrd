@@ -14,7 +14,6 @@ import numpy as np
 import networkx as nx
 from scipy.stats import entropy
 
-
 class PortraitDivergence(BaseDistance):
     def dist(self, G1, G2, bins=None, binedges=None):
         """

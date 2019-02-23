@@ -111,7 +111,7 @@ class LotkaVolterra(BaseDynamics):
 
         # Deterministic dynamics
         if not stochastic:
-            integrator = ode(dyn).set_integrator('dropi5')
+            integrator = ode(dyn).set_integrator('dopri5')
             integrator.set_initial_value(init, 0.0)
             for t in range(L-1):
                 if integrator.succesful():

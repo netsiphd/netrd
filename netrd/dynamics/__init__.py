@@ -5,5 +5,6 @@ from .kuramoto import Kuramoto
 from .lotka_volterra import LotkaVolterra
 from .ising_glauber import IsingGlauber
 from .branching_process import BranchingModel
+from .voter import VoterModel
 
 __all__ = []

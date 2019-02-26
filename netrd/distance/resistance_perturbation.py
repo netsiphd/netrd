@@ -13,6 +13,7 @@ import numpy as np
 import networkx as nx
 import scipy.sparse as ss
 from .base import BaseDistance
+from ..utilities import ensure_undirected
 
 class ResistancePerturbation(BaseDistance):
     def dist(self, G1, G2, p=2):
@@ -55,16 +56,8 @@ class ResistancePerturbation(BaseDistance):
 
 
         # Coerce to undirected, if needed.
-        directed_flag = False
-        if nx.is_directed(G1):
-            G1 = nx.to_undirected(G1)
-            directed_flag = True
-        if nx.is_directed(G2):
-            G2 = nx.to_undirected(G2)
-            directed_flag = True
-
-        if directed_flag:
-            warnings.warn("Coercing directed graph to undirected.", RuntimeWarning)
+        G1 = ensure_undirected(G1)
+        G2 = ensure_undirected(G2)
 
         # Get resistance matrices
         R1 = get_resistance_matrix(G1)

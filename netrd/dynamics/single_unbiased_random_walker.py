@@ -31,7 +31,7 @@ class SingleUnbiasedRandomWalker(BaseDynamics):
         TS (np.ndarray): an $N \times L$ array of synthetic time series data.
         """
     # get adjacency matrix and set up vector of indices
-        A=nx.to_numpy_matrix(G)
+        A=nx.to_numpy_array(G)
         N=G.number_of_nodes()
         W=np.zeros(L,dtype=int)
         # place walker at initial location

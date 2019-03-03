@@ -48,6 +48,8 @@ class PolynomialDissimilarity(BaseDistance):
     
         dist = np.linalg.norm(P_A1-P_A2,ord='fro')/A1.shape[0]**2
 
+        self.results['adjacency_matrices'] = A1, A2
+        self.results['dist'] = dist
         return dist
         
 

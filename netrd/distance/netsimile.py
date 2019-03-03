@@ -63,10 +63,8 @@ class NetSimile(BaseDistance):
         # the final distance is the absolute canberra distance
         dist = abs(canberra(G1_signature, G2_signature))
 
-        self.results['G1_feature_matrix'] = G1_node_features
-        self.results['G2_feature_matrix'] = G2_node_features
-        self.results['G1_signature_vector'] = G1_signature
-        self.results['G2_signature_vector'] = G2_signature
+        self.results['feature_matrixs'] = G1_node_features, G2_node_features
+        self.results['signature_vectors'] = G1_signature, G2_signature
         self.results['dist'] = dist
 
         return dist

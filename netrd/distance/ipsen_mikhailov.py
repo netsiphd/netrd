@@ -46,11 +46,11 @@ class IpsenMikhailov(BaseDistance):
         #get the adjacency matrices
         adj1 = nx.to_numpy_array(G1)
         adj2 = nx.to_numpy_array(G2)
-        self.results['adj1'] = adj1
-        self.results['adj2'] = adj2
+        self.results['adjacency_matrices'] = adj1, adj2
 
         #get the IM distance
         dist = _im_distance(adj1, adj2, hwhm)
+
         self.results['dist'] = dist
 
         return dist
@@ -82,6 +82,7 @@ def _im_distance(adj1, adj2, hwhm):
     L1 = laplacian(adj1, normed=False)
     L2 = laplacian(adj2, normed=False)
 
+
     #get the modes for the positive-semidefinite laplacian
     w1 = np.sqrt(np.abs(eigh(L1)[0][1:]))
     w2 = np.sqrt(np.abs(eigh(L2)[0][1:]))
@@ -97,6 +98,4 @@ def _im_distance(adj1, adj2, hwhm):
     func = lambda w: (density1(w) - density2(w))**2
 
     return np.sqrt(quad(func, 0, np.inf)[0])
-
-
 

@@ -83,7 +83,8 @@ class PortraitDivergence(BaseDistance):
                                              N2=G2.number_of_nodes())
 
         self.results['dist'] = dist
-        self.results['adj'] = np.array([adj1, adj2])
+        self.results['adjacency_matrices'] = adj1, adj2
+        self.results['portraits'] = BG1, BG2
     
         return dist
 

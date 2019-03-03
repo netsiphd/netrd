@@ -58,8 +58,7 @@ class HammingIpsenMikhailov(BaseDistance):
         #get the adjacency matrices
         adj1 = nx.to_numpy_array(G1)
         adj2 = nx.to_numpy_array(G2)
-        self.results['adj1'] = adj1
-        self.results['adj2'] = adj2
+        self.results['adjacency_matrices'] = adj1, adj2
 
         #verify if the graphs are directed
         directed = nx.is_directed(G1) or nx.is_directed(G2)
@@ -69,12 +68,11 @@ class HammingIpsenMikhailov(BaseDistance):
             #create augmented adjacency matrices
             adj1_aug = np.block([[null_mat, adj1.T],[adj1, null_mat]])
             adj2_aug = np.block([[null_mat, adj2.T],[adj2, null_mat]])
-            self.results['adj1_aug'] = adj1_aug
-            self.results['adj2_aug'] = adj2_aug
+            self.results['augmented_adjacency_matrices'] = adj1_aug, adj2_aug
 
             #get the normalized Hamming distance
             H = np.sum(np.abs(adj1_aug - adj2_aug))/(2*N*(N-1))
-            self.results['H_dist'] = H
+            self.results['hamming_dist'] = H
 
             #get the appropriate hwhm for the network size
             hwhm = _get_hwhm_directed(N)
@@ -82,12 +80,12 @@ class HammingIpsenMikhailov(BaseDistance):
 
             #get the IM distance
             IM = _im_distance(adj1_aug, adj2_aug, hwhm)
-            self.results['IM_dist'] = IM
+            self.results['ipsen_mikhailov_dist'] = IM
 
         else:
             #get the normalized Hamming distance
             H = np.sum(np.abs(adj1 - adj2))/(N*(N-1))
-            self.results['H_dist'] = H
+            self.results['hamming_dist'] = H
 
             #get the appropriate hwhm for the network size
             hwhm = _get_hwhm_undirected(N)
@@ -95,7 +93,7 @@ class HammingIpsenMikhailov(BaseDistance):
 
             #get the IM distance
             IM = _im_distance(adj1, adj2, hwhm)
-            self.results['IM_dist'] = IM
+            self.results['ipsen_mikhailov_dist'] = IM
 
         #determine the glocal distance from the combination
         HIM = np.sqrt(H**2 + combination_factor*IM**2)\

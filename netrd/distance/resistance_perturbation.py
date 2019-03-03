@@ -62,8 +62,7 @@ class ResistancePerturbation(BaseDistance):
         # Get resistance matrices
         R1 = get_resistance_matrix(G1)
         R2 = get_resistance_matrix(G2)
-        self.results['resist1'] = R1
-        self.results['resist2'] = R2
+        self.results['resistance_matrices'] = R1, R2
 
         # Get resistance perturbation distance
         if not np.isinf(p):

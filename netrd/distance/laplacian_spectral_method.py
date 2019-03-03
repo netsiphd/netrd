@@ -75,8 +75,7 @@ class LaplacianSpectralMethod(BaseDistance):
         #get the adjacency matrices
         adj1 = nx.to_numpy_array(G1)
         adj2 = nx.to_numpy_array(G2)
-        self.results['adj1'] = adj1
-        self.results['adj2'] = adj2
+        self.results['adjacency_matrices'] = adj1, adj2
 
         #verify if the graphs are directed (at least one)
         directed = nx.is_directed(G1) or nx.is_directed(G2)
@@ -89,14 +88,12 @@ class LaplacianSpectralMethod(BaseDistance):
             null_mat2 = np.zeros((N2,N2))
             adj1 = np.block([[null_mat1, adj1.T],[adj1, null_mat1]])
             adj2 = np.block([[null_mat2, adj2.T],[adj2, null_mat2]])
-            self.results['adj1_aug'] = adj1
-            self.results['adj2_aug'] = adj2
+            self.results['augmented_adjacency_matrices'] = adj1, adj2
 
         #get the laplacian matrices
         lap1 = laplacian(adj1, normed=normed)
         lap2 = laplacian(adj2, normed=normed)
-        self.results['lap1'] = lap1
-        self.results['lap2'] = lap2
+        self.results['laplacian_matrices'] = lap1, lap2
 
         #get the eigenvalues of the laplacian matrices
         if k is None:
@@ -108,8 +105,7 @@ class LaplacianSpectralMethod(BaseDistance):
             lap2 = csgraph_from_dense(lap2)
             ev1 = np.abs(eigsh(lap1, k=k, which='LM')[0])
             ev2 = np.abs(eigsh(lap2, k=k, which='LM')[0])
-        self.results['ev1'] = ev1
-        self.results['ev2'] = ev2
+        self.results['eigenvalues'] = ev1, ev2
 
         #define the proper support
         a = 0

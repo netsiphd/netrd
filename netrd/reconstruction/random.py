@@ -42,7 +42,7 @@ class RandomReconstructor(BaseReconstructor):
         G = create_graph(A)
 
         self.results['graph'] = G
-        self.results['random_matrix'] = W
-        self.results['adjacency_matrix'] = A
+        self.results['weights_matrix'] = W
+        self.results['thresholded_matrix'] = A
 
         return G

@@ -59,7 +59,7 @@ class PartialCorrelationMatrixReconstructor(BaseReconstructor):
         if of_residuals:
             p_cor = partial_corr(p_cor, index=None)
 
-        self.results['matrix'] = p_cor
+        self.results['weights_matrix'] = p_cor
 
         # threshold the network
         W_thresh = threshold(p_cor, threshold_type, **kwargs)

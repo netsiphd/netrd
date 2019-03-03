@@ -138,7 +138,7 @@ class MarchenkoPastur(BaseReconstructor):
         if metric_distance:
             C_signal = np.sqrt(2*(1-C_signal))
 
-        self.results['matrix'] = C_signal
+        self.results['weights_matrix'] = C_signal
 
         #threshold signal matrix
 

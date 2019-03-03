@@ -69,7 +69,7 @@ class NaiveTransferEntropyReconstructor(BaseReconstructor):
                     # this average is naive, but appears to be sufficient in 
                     # some circumstances
 
-        self.results['transfer_entropy_matrix'] = TE
+        self.results['weights_matrix'] = TE
 
         # threshold the network
         TE_thresh = threshold(TE, threshold_type, **kwargs)

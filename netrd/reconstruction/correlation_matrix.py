@@ -38,7 +38,7 @@ class CorrelationMatrixReconstructor(BaseReconstructor):
 
         # get the correlation matrix
         cor = np.corrcoef(TS)
-        self.results['matrix'] = cor
+        self.results['weights_matrix'] = cor
 
         # threshold the correlation matrix
         A = threshold(cor, threshold_type, **kwargs)

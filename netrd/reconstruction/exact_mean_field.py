@@ -115,7 +115,7 @@ class ExactMeanFieldReconstructor(BaseReconstructor):
         # construct the network
 
         self.results['graph'] = create_graph(W_thresh)
-        self.results['matrix'] = W
+        self.results['weights_matrix'] = W
         self.results['thresholded_matrix'] = W_thresh
         G = self.results['graph']
 

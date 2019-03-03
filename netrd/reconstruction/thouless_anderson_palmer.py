@@ -95,7 +95,7 @@ class ThoulessAndersonPalmerReconstructor(BaseReconstructor):
 
         # predict W:
         W = np.dot(A_TAP_inv, B)
-        self.results['matrix'] = W
+        self.results['weights_matrix'] = W
 
         # threshold the network
         W_thresh = threshold(W, threshold_type, **kwargs)

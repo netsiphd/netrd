@@ -119,8 +119,8 @@ class ConvergentCrossMappingReconstructor(BaseReconstructor):
         # Save the graph object, matrices of correlation and p-values into the
         # "results" field (dictionary)
         self.results['graph'] = G
-        self.results['correlation'] = correlation
-        self.results['pvalue'] = pvalue
+        self.results['weights_matrix'] = correlation
+        self.results['pvalues_matrix'] = pvalue
 
         return G
 

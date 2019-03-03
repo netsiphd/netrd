@@ -57,7 +57,7 @@ class RegularizedCorrelationMatrixReconstructor(BaseReconstructor):
             (1 / (vals[:num_eigs]).reshape(num_eigs, 1) * (vecs[:, :num_eigs]).T)
         P = P / (np.sqrt(np.diag(P)).reshape(N, 1) @\
                  np.sqrt(np.diag(P)).reshape(1, N))
-        self.results['matrix'] = P
+        self.results['weights_matrix'] = P
 
         # threshold the precision matrix
         A = threshold(P, threshold_type, **kwargs)

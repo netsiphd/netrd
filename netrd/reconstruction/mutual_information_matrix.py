@@ -57,7 +57,7 @@ class MutualInformationMatrixReconstructor(BaseReconstructor):
         # calculate the mutual information between each pair of nodes--this is the
         # mutual information matrix
         I = mutual_info_all_pairs(JointP, ProduP, N)
-        self.results['mutual_information_matrix'] = I
+        self.results['weights_matrix'] = I
 
         # the adjacency matrix is the binarized thresholded mutual information matrix
         # tau=threshold_from_degree(deg,I)
@@ -65,7 +65,7 @@ class MutualInformationMatrixReconstructor(BaseReconstructor):
         A = threshold(I, threshold_type, **kwargs)
 
         G = create_graph(A)
-        self.results['G'] = G
+        self.results['graph'] = G
 
         return G
 

@@ -47,16 +47,16 @@ class GraphicalLassoReconstructor(BaseReconstructor):
         """
 
         cov, prec = graphical_lasso(TS, alpha, max_iter, convg_threshold)
-        self.results['covariance'] = cov
-        self.results['weights'] = cov
-        self.results['precision'] = prec
+        self.results['covariance_matrix'] = cov
+        self.results['weights_matrix'] = cov
+        self.results['precision_matrix'] = prec
 
         # threshold the network
-        self.results['thresholded_weights'] = threshold(self.results['weights'],
+        self.results['thresholded_matrix'] = threshold(self.results['weights_matrix'],
                                                         threshold_type, **kwargs)
 
         # construct the network
-        G = create_graph(self.results['thresholded_weights'])
+        G = create_graph(self.results['thresholded_matrix'])
         self.results['graph'] = G
 
         return G

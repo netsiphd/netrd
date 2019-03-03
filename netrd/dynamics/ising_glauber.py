@@ -69,4 +69,6 @@ class IsingGlauber(BaseDynamics):
             _next = np.where(rand(N) < probs, 1 - state, state)
             TS[:, t+1] = _next
 
+        self.results['ground_truth'] = G
+        self.results['TS'] = TS
         return TS

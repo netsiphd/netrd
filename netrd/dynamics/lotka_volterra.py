@@ -132,6 +132,6 @@ class LotkaVolterra(BaseDynamics):
         # Store the results
         self.results['ground_truth'] = G
         self.results['time_steps'] = np.cumsum(dt)
-        self.results['time_series'] = TS
+        self.results['TS'] = TS
 
         return TS

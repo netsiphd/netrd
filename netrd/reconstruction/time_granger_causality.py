@@ -34,6 +34,9 @@ class TimeGrangerCausalityReconstructor(BaseReconstructor):
         log(var(e1) / var(e2)). It constructs the network by calculating the
         Granger causality for each pair of nodes.
 
+        The results dictionary also stores the weight matrix as `'weights_matrix'`
+        and the thresholded version of the weight matrix as `'thresholded_matrix'`.
+
         Params
         ------
         TS (np.ndarray): Array consisting of $L$ observations from $N$ sensors.

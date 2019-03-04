@@ -27,6 +27,8 @@ class SherringtonKirkpatrickIsing(BaseDynamics):
 
 	    Generates an N x L time series.
 
+        The results dictionary also stores the ground truth network as `'ground_truth'`.
+
 	    Example Usage:
 		#######
 		G = nx.ring_of_cliques(4,16)

@@ -33,6 +33,13 @@ class LaplacianSpectralMethod(BaseDistance):
         to produce continuous ones. Finally, these distribution are
         compared using a metric.
 
+        The results dictionary also stores a 2-tuple of the underlying
+        adjacency matrices in the key `'adjacency_matrices'`, the Laplacian
+        matrices in `'laplacian_matrices'`, the eigenvalues of the Laplacians
+        in `'eigenvalues'`. If the networks being compared are directed, the
+        augmented adjacency matrices are calculated and stored in
+        `'augmented_adjacency_matrices'`.
+
         Note : The methods are usually applied to undirected (unweighted)
         networks. We however relax this assumption using the same method
         proposed for the Hamming-Ipsen-Mikhailov. See paper :

@@ -42,6 +42,10 @@ class PartialCorrelationInfluenceReconstructor(BaseReconstructor):
         If an index is given, both terms become partial correlations:
         d(X,Y:Z) ≡ ρ(X,Y:M) − ρ(X,Y:M,Z)
 
+        The results dictionary also stores the matrix of partial correlations
+        as `'weights_matrix'` and the thresholded version of the partial
+        correlation matrix as `'thresholded_matrix'`.
+
         Params
         ------
 

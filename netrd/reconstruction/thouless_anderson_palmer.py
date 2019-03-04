@@ -29,6 +29,9 @@ class ThoulessAndersonPalmerReconstructor(BaseReconstructor):
         However, this method leads to poor inference results in the regime
         of small sample sizes and/or large coupling variability."
 
+        The results dictionary also stores the weight matrix as `'weights_matrix'`
+        and the thresholded version of the weight matrix as `'thresholded_matrix'`.
+
         Params
         ------
         TS (np.ndarray): Array consisting of $L$ observations from $N$ sensors.

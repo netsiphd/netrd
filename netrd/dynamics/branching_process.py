@@ -26,6 +26,7 @@ class BranchingModel(BaseDynamics):
         """
         Simulate a branching processs dynamics (sand-pile-like) on a network.
         
+        The results dictionary also stores the ground truth network as `'ground_truth'`.
         Params
         ------
         G (nx.Graph): directed or undirected ground truth graph

@@ -42,6 +42,9 @@ class OptimalCausationEntropyReconstructor(BaseReconstructor):
         reconstructed from time series data by applying the proposed algorithm
         to every node.
 
+        The results dictionary stores the causal parents of individual nodes in
+        `'parents'` and the raw adjacency matrix in `'adjacency_matrix'`.
+
         Params
         ------
         TS (np.ndarray): $N \times L$ array consisting of $L$ observations

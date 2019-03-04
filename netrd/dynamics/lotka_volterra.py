@@ -27,6 +27,9 @@ class LotkaVolterra(BaseDynamics):
         species $i$ respectively, and $W_{ij}$ are the relative interaction
         strength of species $j$ on $i$.
 
+        The results dictionary also stores the ground truth network as `'ground_truth'`
+        and the intermediate time steps as `'time_steps'`.
+
         Params
         ------
         G (nx.Graph): Underlying ground-truth network of simulated time series

@@ -53,6 +53,10 @@ class ConvergentCrossMappingReconstructor(BaseReconstructor):
         dynamical system. The convergent cross-mapping approach is thus
         numerically validated to infer causal relation from time series data.
 
+        The results dictionary also includes the raw Pearson correlations
+        between elements (`'weights_matrix'`) and their associated p-values
+        (`'pvalues_matrix'`).
+
         Params
         ------
         TS (np.ndarray): $N \times L$ array consisting of $L$ observations
@@ -71,15 +75,11 @@ class ConvergentCrossMappingReconstructor(BaseReconstructor):
         1. The length of time series data must be long enough such that
            $L \geq 3 + (N-1)(1+\tau)$.
 
-        2. The matrix of correlation between estimates and the observed values
-           and the matrix of p-value for correlation test can be found in
-           results['correlation'] and resutls['pvalue'] respectively.
-
-        3. The $\[i, j\]$ of the correlation matrix entails the correlation
+        2. The $\[i, j\]$ of the correlation matrix entails the correlation
            between the $j$th variable and its estimate from the $i$th variable.
            A similar rule applies to the p-value matrix.
 
-        4. The computation complexity of this implementation is $O(N^3 L)$.
+        3. The computation complexity of this implementation is $O(N^3 L)$.
 
         """
         data = TS.T  # Transpose the time series to make observations the rows

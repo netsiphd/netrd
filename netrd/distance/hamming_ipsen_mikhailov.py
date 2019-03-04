@@ -35,6 +35,14 @@ class HammingIpsenMikhailov(BaseDistance):
         associated with H and IM. For more details :
         https://ieeexplore.ieee.org/abstract/document/7344816
 
+
+        The results dictionary also stores a 2-tuple of the underlying adjacency
+        matrices in the key `'adjacency_matrices'`, the Hamming distance in
+        `'hamming_dist'`, the Ipsen-Mikhailov distance in `'ipsen_mikhailov_dist'`,
+        and the Lorentzian half-width at half-maximum in `'hwhm'`. If the networks
+        being compared are directed, the augmented adjacency matrices are calculated
+        and stored in `'augmented_adjacency_matrices'`.
+
         Note : The method requires networks with the same number of nodes.
         The networks can be directed and weighted (with weights in the
         range [0,1]). Both (H and IM) are also saved in the results

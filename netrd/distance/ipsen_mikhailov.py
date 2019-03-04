@@ -25,6 +25,8 @@ class IpsenMikhailov(BaseDistance):
         """Graph distance comparing the spectrum ot the associated Laplacian
         matrices
 
+        The results dictionary also stores a 2-tuple of the underlying adjacency
+        matrices in the key `'adjacency_matrices'`.
 
         Note : The method requires undirected networks.
 

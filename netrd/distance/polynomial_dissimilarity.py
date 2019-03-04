@@ -29,6 +29,9 @@ class PolynomialDissimilarity(BaseDistance):
         raised to the kth power and the the elements correspond to 
         the number of paths of length k between nodes i and j.
 
+        The results dictionary also stores a 2-tuple of the underlying adjacency
+        matrices in the key `'adjacency_matrices'`.
+
         Params
         ------
 

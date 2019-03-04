@@ -22,6 +22,8 @@ class CorrelationMatrixReconstructor(BaseReconstructor):
         Reconstruct a network from time series data using an unregularized form of
         the precision matrix. After [this tutorial](
         https://github.com/valeria-io/visualising_stocks_correlations/blob/master/corr_matrix_viz.ipynb).
+        The results dictionary also stores the raw correlation matrix as `'weights_matrix'`
+        and the thresholded version of the correlation matrix as `'thresholded_matrix'`.
 
         Params
         ------
@@ -42,6 +44,7 @@ class CorrelationMatrixReconstructor(BaseReconstructor):
 
         # threshold the correlation matrix
         A = threshold(cor, threshold_type, **kwargs)
+        self.results['thresholded_matrix'] = A
 
         # construct the network
         self.results['graph'] = create_graph(A)

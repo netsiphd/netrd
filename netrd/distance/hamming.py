@@ -28,6 +28,9 @@ class Hamming(BaseDistance):
         this code could allow weights can be applied, but only one set of 
         weights that apply to both graphs.
 
+        The results dictionary also stores a 2-tuple of the underlying adjacency
+        matrices in the key `'adjacency_matrices'`.
+
         Params
         ------
 

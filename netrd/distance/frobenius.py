@@ -20,6 +20,8 @@ class Frobenius(BaseDistance):
 
     The graphs must have the same number of nodes.
 
+    The results dictionary also stores a 2-tuple of the underlying adjacency
+    matrices in the key `'adjacency_matrices'`.
     """
 
     def dist(self, G1, G2):

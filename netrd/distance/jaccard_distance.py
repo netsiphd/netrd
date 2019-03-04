@@ -26,6 +26,9 @@ class JaccardDistance(BaseDistance):
         and here:
         https://scikit-learn.org/stable/modules/generated/sklearn.metrics.jaccard_similarity_score.html
 
+        The results dictionary also stores a 2-tuple of the underlying adjacency
+        matrices in the key `'adjacency_matrices'`.
+
         Params
         ------
 

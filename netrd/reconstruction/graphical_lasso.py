@@ -23,8 +23,7 @@ from ..utilities import create_graph, threshold
 class GraphicalLassoReconstructor(BaseReconstructor):
     def fit(self, TS, alpha=0.01, max_iter=100, convg_threshold=0.001,
             threshold_type='degree', **kwargs):
-        """
-        Reconstruct a network from time series by performing a graphical lasso
+        """Reconstruct a network from time series by performing a graphical lasso
         from [1, 2].
 
         Params
@@ -39,6 +38,10 @@ class GraphicalLassoReconstructor(BaseReconstructor):
         weights. See `netrd.utilities.threshold.py` for documentation. Pass additional
         arguments to the thresholder using `**kwargs`.
 
+        The results dictionary also stores the covariance matrix as
+        `'weights_matrix'`, the precision matrix as `'precision_matrix'`, and
+        the thresholded version of the covariance matrix as
+        `'thresholded_matrix'`.
 
         Returns
         -------
@@ -47,7 +50,6 @@ class GraphicalLassoReconstructor(BaseReconstructor):
         """
 
         cov, prec = graphical_lasso(TS, alpha, max_iter, convg_threshold)
-        self.results['covariance_matrix'] = cov
         self.results['weights_matrix'] = cov
         self.results['precision_matrix'] = prec
 

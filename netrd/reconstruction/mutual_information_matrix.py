@@ -28,6 +28,9 @@ class MutualInformationMatrixReconstructor(BaseReconstructor):
         First, the mutual information is computed between each pair of vertices.
         Then, a thresholding condition is applied to obtain edges.
 
+        The results dictionary also stores the weight matrix as `'weights_matrix'`
+        and the thresholded version of the weight matrix as `'thresholded_matrix'`.
+
         Params
         ------
         TS (np.ndarray): Array consisting of $L$ observations from $N$ sensors.
@@ -63,6 +66,7 @@ class MutualInformationMatrixReconstructor(BaseReconstructor):
         # tau=threshold_from_degree(deg,I)
         # A = np.array(I>tau, dtype=int)
         A = threshold(I, threshold_type, **kwargs)
+        self.results['thresholded_matrix'] = A
 
         G = create_graph(A)
         self.results['graph'] = G

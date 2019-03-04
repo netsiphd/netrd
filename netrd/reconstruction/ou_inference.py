@@ -23,9 +23,13 @@ from ..utilities import create_graph, threshold
 class OUInferenceReconstructor(BaseReconstructor):
     def fit(self, TS, threshold_type='range', **kwargs):
         """
-        Reconstruct a network by inferring the coupling coefficients provided 
+        Reconstruct a network by inferring the coupling coefficients provided
         that the generative model of the time series is an Orstein-Uhlenbeck
         process.
+
+        The results dictionary also stores the weight matrix as
+        `'weights_matrix'`, the covariance matrix in `covariance_matrix` and
+        the thresholded version of the weight matrix as `'thresholded_matrix'`.
 
         Params
         ------
@@ -56,7 +60,7 @@ class OUInferenceReconstructor(BaseReconstructor):
 
         # threshold the network
         W_thresh = threshold(self.results['weights_matrix'], threshold_type, **kwargs)
-        self.results['thresholded_weights'] = W_thresh
+        self.results['thresholded_matrix'] = W_thresh
 
         # construct the network
         self.results['graph'] = create_graph(W_thresh)

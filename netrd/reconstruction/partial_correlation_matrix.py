@@ -29,6 +29,9 @@ class PartialCorrelationMatrixReconstructor(BaseReconstructor):
         form of the precision matrix. After [this tutorial](
         https://bwlewis.github.io/correlation-regularization/) in R.
 
+        The results dictionary also stores the weight matrix as `'weights_matrix'`
+        and the thresholded version of the weight matrix as `'thresholded_matrix'`.
+
         Params
         ------
         index (int, array of ints, or None): Take the partial correlations of

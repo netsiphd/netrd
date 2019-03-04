@@ -26,6 +26,8 @@ class IsingGlauber(BaseDynamics):
         neighbors; for active nodes the switch-state probability is
         $1 - 1 / (1 + e^{\beta (k - 2m) / k})$ instead.
 
+        The results dictionary also stores the ground truth network as `'ground_truth'`.
+
         Params
         ------
         G (nx.Graph): Underlying ground-truth network of simulated time series

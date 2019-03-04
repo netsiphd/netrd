@@ -36,6 +36,9 @@ class NaiveTransferEntropyReconstructor(BaseReconstructor):
         implemented in state of the art algorighms, as in the Java Information 
         Dynamics Toolkit: https://github.com/jlizier/jidt 
 
+        The results dictionary also stores the weight matrix as `'weights_matrix'`
+        and the thresholded version of the weight matrix as `'thresholded_matrix'`.
+
         Params
         ------
         TS (np.ndarray): array consisting of $L$ observations from $N$ sensors.

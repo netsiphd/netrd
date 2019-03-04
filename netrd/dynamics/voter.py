@@ -21,6 +21,7 @@ class VoterModel(BaseDynamics):
         all nodes asynchronously update by choosing their new state uniformly
         from their neighbors. Generates an $N \times L$ time series.
 
+        The results dictionary also stores the ground truth network as `'ground_truth'`.
 
         Params
         ------

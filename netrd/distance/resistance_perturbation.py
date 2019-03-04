@@ -42,6 +42,9 @@ class ResistancePerturbation(BaseDistance):
 
         For details, see https://arxiv.org/abs/1605.01091v2
 
+        The results dictionary also stores a 2-tuple of the underlying resistance
+        matrices in the key `'resistance_matrices'`.
+
         Params
         ------
         G1, G2 (nx.Graph): two networkx graphs to be compared.

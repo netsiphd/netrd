@@ -29,6 +29,9 @@ class PolynomialDissimilarity(BaseDistance):
         raised to the kth power and the the elements correspond to 
         the number of paths of length k between nodes i and j.
 
+        The results dictionary also stores a 2-tuple of the underlying adjacency
+        matrices in the key `'adjacency_matrices'`.
+
         Params
         ------
 
@@ -48,6 +51,8 @@ class PolynomialDissimilarity(BaseDistance):
     
         dist = np.linalg.norm(P_A1-P_A2,ord='fro')/A1.shape[0]**2
 
+        self.results['adjacency_matrices'] = A1, A2
+        self.results['dist'] = dist
         return dist
         
 

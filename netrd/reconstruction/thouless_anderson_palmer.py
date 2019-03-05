@@ -29,6 +29,9 @@ class ThoulessAndersonPalmerReconstructor(BaseReconstructor):
         However, this method leads to poor inference results in the regime
         of small sample sizes and/or large coupling variability."
 
+        The results dictionary also stores the weight matrix as `'weights_matrix'`
+        and the thresholded version of the weight matrix as `'thresholded_matrix'`.
+
         Params
         ------
         TS (np.ndarray): Array consisting of $L$ observations from $N$ sensors.
@@ -95,7 +98,7 @@ class ThoulessAndersonPalmerReconstructor(BaseReconstructor):
 
         # predict W:
         W = np.dot(A_TAP_inv, B)
-        self.results['matrix'] = W
+        self.results['weights_matrix'] = W
 
         # threshold the network
         W_thresh = threshold(W, threshold_type, **kwargs)

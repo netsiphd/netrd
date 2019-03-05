@@ -29,6 +29,9 @@ class PartialCorrelationMatrixReconstructor(BaseReconstructor):
         form of the precision matrix. After [this tutorial](
         https://bwlewis.github.io/correlation-regularization/) in R.
 
+        The results dictionary also stores the weight matrix as `'weights_matrix'`
+        and the thresholded version of the weight matrix as `'thresholded_matrix'`.
+
         Params
         ------
         index (int, array of ints, or None): Take the partial correlations of
@@ -59,7 +62,7 @@ class PartialCorrelationMatrixReconstructor(BaseReconstructor):
         if of_residuals:
             p_cor = partial_corr(p_cor, index=None)
 
-        self.results['matrix'] = p_cor
+        self.results['weights_matrix'] = p_cor
 
         # threshold the network
         W_thresh = threshold(p_cor, threshold_type, **kwargs)

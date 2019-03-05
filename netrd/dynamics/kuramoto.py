@@ -16,7 +16,11 @@ class Kuramoto(BaseDynamics):
     def simulate(self, G, L, dt=0.01, K=1, ICs=[], freqs=[]):
         """
         Simulate Kuramoto model on a ground truth network.
+
 	    Generates an N x L time series.
+
+        The results dictionary also stores the ground truth network as `'ground_truth'`
+        and the internal frequencies of the process as `'internal_frequencies'`.
 
 	    Example Usage:
 		#######

@@ -24,6 +24,9 @@ class MarchenkoPastur(BaseReconstructor):
         matrix generated from the time series data after having removed *noisy* components. 
         This method combines the results presented in [1],[2], and [3].
 
+        The results dictionary also stores the weight matrix as `'weights_matrix'`
+        and the thresholded version of the weight matrix as `'thresholded_matrix'`.
+
         Params
         ------
         TS (np.ndarray): $N \\times L$ array consisting of $L$ observations 
@@ -138,7 +141,7 @@ class MarchenkoPastur(BaseReconstructor):
         if metric_distance:
             C_signal = np.sqrt(2*(1-C_signal))
 
-        self.results['matrix'] = C_signal
+        self.results['weights_matrix'] = C_signal
 
         #threshold signal matrix
 

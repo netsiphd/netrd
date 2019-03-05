@@ -42,6 +42,10 @@ class PartialCorrelationInfluenceReconstructor(BaseReconstructor):
         If an index is given, both terms become partial correlations:
         d(X,Y:Z) ≡ ρ(X,Y:M) − ρ(X,Y:M,Z)
 
+        The results dictionary also stores the matrix of partial correlations
+        as `'weights_matrix'` and the thresholded version of the partial
+        correlation matrix as `'thresholded_matrix'`.
+
         Params
         ------
 
@@ -92,7 +96,7 @@ class PartialCorrelationInfluenceReconstructor(BaseReconstructor):
 
         p_cor_inf = np.nanmean(p_cor_zs, axis=2) # mean over the Y axis
 
-        self.results['matrix'] = p_cor_inf
+        self.results['weights_matrix'] = p_cor_inf
 
         # threshold the network
         W_thresh = threshold(p_cor_inf, threshold_type, **kwargs)

@@ -21,6 +21,7 @@ class VoterModel(BaseDynamics):
         all nodes asynchronously update by choosing their new state uniformly
         from their neighbors. Generates an $N \times L$ time series.
 
+        The results dictionary also stores the ground truth network as `'ground_truth'`.
 
         Params
         ------
@@ -51,4 +52,6 @@ class VoterModel(BaseDynamics):
                 if noise and np.random.rand() < noise:
                     TS[i, t] = 1 if np.random.rand() < 0.5 else -1
 
+        self.results['ground_truth'] = G
+        self.results['TS'] = TS
         return TS

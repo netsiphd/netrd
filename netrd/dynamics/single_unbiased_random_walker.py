@@ -13,6 +13,8 @@ class SingleUnbiasedRandomWalker(BaseDynamics):
         Generates an N x L time series TS; TS[j,t]==1 if the walker is at
         node j at time t, and TS[j,t]==0 otherwise.
 
+        The results dictionary also stores the ground truth network as `'ground_truth'`.
+
         Example Usage:
         #######
         G = nx.ring_of_cliques(4,16)

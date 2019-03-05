@@ -19,7 +19,11 @@ class PortraitDivergence(BaseDistance):
         """
         Given two graphs, G1 and G2, the portrait divergence provides a 
         distance measure based on the two graphs' "portraits".
-        
+
+        The results dictionary also stores a 2-tuple of the underlying adjacency
+        matrices in the key `'adjacency_matrices'` and the portrait matrices in
+        `'portrait_matrices'`.
+
         Params
         ------
         G1 (nx.Graph): a graph
@@ -83,7 +87,8 @@ class PortraitDivergence(BaseDistance):
                                              N2=G2.number_of_nodes())
 
         self.results['dist'] = dist
-        self.results['adj'] = np.array([adj1, adj2])
+        self.results['adjacency_matrices'] = adj1, adj2
+        self.results['portrait_matrices'] = BG1, BG2
     
         return dist
 

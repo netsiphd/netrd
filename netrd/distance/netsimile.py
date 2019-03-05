@@ -18,12 +18,15 @@ from scipy.stats import skew, kurtosis
 
 from .base import BaseDistance
 
-
 class NetSimile(BaseDistance):
     def dist(self, G1, G2):
         """A scalable approach to network similarity.
 
         A network similarity measure based on node signature distrubtions.
+
+        The results dictionary includes the underlying feature matrices in
+        `'feature_matrices'` and the underlying signature vectors in
+        `'signature_vectors'`.
 
         Params
         ------
@@ -63,10 +66,8 @@ class NetSimile(BaseDistance):
         # the final distance is the absolute canberra distance
         dist = abs(canberra(G1_signature, G2_signature))
 
-        self.results['G1_feature_matrix'] = G1_node_features
-        self.results['G2_feature_matrix'] = G2_node_features
-        self.results['G1_signature_vector'] = G1_signature
-        self.results['G2_signature_vector'] = G2_signature
+        self.results['feature_matrices'] = G1_node_features, G2_node_features
+        self.results['signature_vectors'] = G1_signature, G2_signature
         self.results['dist'] = dist
 
         return dist

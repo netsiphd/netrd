@@ -23,9 +23,13 @@ from ..utilities import create_graph, threshold
 class OUInferenceReconstructor(BaseReconstructor):
     def fit(self, TS, threshold_type='range', **kwargs):
         """
-        Reconstruct a network by inferring the coupling coefficients provided 
+        Reconstruct a network by inferring the coupling coefficients provided
         that the generative model of the time series is an Orstein-Uhlenbeck
         process.
+
+        The results dictionary also stores the weight matrix as
+        `'weights_matrix'`, the covariance matrix in `covariance_matrix` and
+        the thresholded version of the weight matrix as `'thresholded_matrix'`.
 
         Params
         ------
@@ -48,15 +52,15 @@ class OUInferenceReconstructor(BaseReconstructor):
         yCovariance = np.cov(Y)
         index_pair = np.array([(i, j) for i in index for j in index])
         weights = inverse_method(-yCovariance, temperatures)
-        self.results['covariance'] = np.zeros([N, N]);
-        self.results['covariance'][index_pair] = yCovariance;
+        self.results['covariance_matrix'] = np.zeros([N, N]);
+        self.results['covariance_matrix'][index_pair] = yCovariance;
 
-        self.results['weights'] = np.zeros([N, N]);
-        self.results['weights'][index_pair] = weights;
+        self.results['weights_matrix'] = np.zeros([N, N]);
+        self.results['weights_matrix'][index_pair] = weights;
 
         # threshold the network
-        W_thresh = threshold(self.results['weights'], threshold_type, **kwargs)
-        self.results['thresholded_weights'] = W_thresh
+        W_thresh = threshold(self.results['weights_matrix'], threshold_type, **kwargs)
+        self.results['thresholded_matrix'] = W_thresh
 
         # construct the network
         self.results['graph'] = create_graph(W_thresh)

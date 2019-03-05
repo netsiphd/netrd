@@ -68,7 +68,7 @@ def test_convergent_cross_mapping():
     """
     filepath = '../data/two_species_coupled_time_series.dat'
     edgelist = {(1, 0), (0, 1)}
-    keys = ['graph', 'correlation', 'pvalue']
+    keys = ['graph', 'weights_matrix', 'pvalues_matrix']
 
     TS = np.loadtxt(filepath, delimiter=',')
     recon = ConvergentCrossMappingReconstructor()

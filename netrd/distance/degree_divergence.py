@@ -19,10 +19,9 @@ from .base import BaseDistance
 class DegreeDivergence(BaseDistance):
     def dist(self, G1, G2):
         """
-        Return the K-L divergence between two graphs. Note that this distance
-        is not symmetric.
+        Return the Jenson-Shannon divergence between two graphs.
 
-        Note : The method assumes undirected networks.
+        Note: The method assumes undirected networks.
 
         Params
         ------
@@ -52,7 +51,6 @@ class DegreeDivergence(BaseDistance):
 
             return JSDpq
 
-        # K-L divergence
         dist = js_divergence(deg1, deg2)
 
         self.results['dist'] = dist

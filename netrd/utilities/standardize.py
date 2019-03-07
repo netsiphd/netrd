@@ -50,10 +50,12 @@ def mean_GNP_distance(n, prob, distance, samples=10, **kwargs):
 
     '''
     graphs = [nx.fast_gnp_random_graph(n, prob) for _ in range(samples)]
-    dis_mat = np.zeros((samples, samples))
+    dis_mat = np.full((samples, samples), np.nan)
     for i in range(samples):
-        for j in range(i+1, samples):
+        for j in range(samples):
+            if i == j:
+                continue
             dis_mat[i, j] = distance(graphs[i], graphs[j], **kwargs)
-    dis_mat += dis_mat.T
 
-    return dis_mat.mean(), dis_mat.std(), dis_mat
+    # the nan* versions below ignore NaNs and normalize appropriately
+    return np.nanmean(dis_mat), np.nanstd(dis_mat), dis_mat

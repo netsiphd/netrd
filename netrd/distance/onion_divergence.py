@@ -2,7 +2,7 @@
 onion_divergence.py
 --------------------------
 
-The Jensen-Shannon divergence between the two onion spectra of the graph.
+The Jensen-Shannon divergence between the two graphs onion decomposition.
 
 Graph distance based on :
 https://www.nature.com/articles/srep31708
@@ -17,12 +17,7 @@ Submitted as part of the 2019 NetSI Collabathon.
 import numpy as np
 import networkx as nx
 from .base import BaseDistance
-
-import scipy
-import sys, os
-import math
 from functools import reduce
-from optparse import OptionParser
 
 class OnionDivergence(BaseDistance):
     def dist(self, G1, G2, dist='lccm'):

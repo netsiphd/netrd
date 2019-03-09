@@ -10,5 +10,6 @@ from .netsimile import NetSimile
 from .laplacian_spectral_method import LaplacianSpectralMethod
 from .polynomial_dissimilarity import PolynomialDissimilarity
 from .degree_divergence import DegreeDivergence
+from .onion_divergence import OnionDivergence
 
 __all__ = []

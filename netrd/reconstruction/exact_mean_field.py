@@ -31,7 +31,10 @@ class ExactMeanFieldReconstructor(BaseReconstructor):
         stopping criterion. In general, eMF outperforms nMF and TAP, but it is
         still worse than FEM and MLE, especially in the limit of small sample 
         sizes and large coupling variability."
-        
+
+        The results dictionary also stores the weight matrix as `'weights_matrix'`
+        and the thresholded version of the weight matrix as `'thresholded_matrix'`.
+
         Params
         ------
         TS (np.ndarray): Array consisting of $L$ observations from $N$ sensors.
@@ -115,7 +118,7 @@ class ExactMeanFieldReconstructor(BaseReconstructor):
         # construct the network
 
         self.results['graph'] = create_graph(W_thresh)
-        self.results['matrix'] = W
+        self.results['weights_matrix'] = W
         self.results['thresholded_matrix'] = W_thresh
         G = self.results['graph']
 

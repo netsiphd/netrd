@@ -26,6 +26,9 @@ class JaccardDistance(BaseDistance):
         and here:
         https://scikit-learn.org/stable/modules/generated/sklearn.metrics.jaccard_similarity_score.html
 
+        The results dictionary also stores a 2-tuple of the underlying adjacency
+        matrices in the key `'adjacency_matrices'`.
+
         Params
         ------
 
@@ -40,8 +43,8 @@ class JaccardDistance(BaseDistance):
         ## jaccard_similarity_score requires binary matrices
         adj1 = nx.to_numpy_array(G1, weight=None)
         adj2 = nx.to_numpy_array(G2, weight=None)
-        dist = 1 - jaccard_similarity_score(adj1,adj2)
-        self.results['dist'] = float(dist)
-        self.results['adj'] = np.array([adj1, adj2])
+        dist = float(1 - jaccard_similarity_score(adj1, adj2))
+        self.results['dist'] = dist
+        self.results['adjacency_matrices'] = adj1, adj2
         return dist
 

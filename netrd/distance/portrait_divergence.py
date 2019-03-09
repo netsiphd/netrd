@@ -14,6 +14,84 @@ import numpy as np
 import networkx as nx
 from scipy.stats import entropy
 
+class PortraitDivergence(BaseDistance):
+    def dist(self, G1, G2, bins=None, binedges=None):
+        """
+        Given two graphs, G1 and G2, the portrait divergence provides a 
+        distance measure based on the two graphs' "portraits".
+
+        The results dictionary also stores a 2-tuple of the underlying adjacency
+        matrices in the key `'adjacency_matrices'` and the portrait matrices in
+        `'portrait_matrices'`.
+
+        Params
+        ------
+        G1 (nx.Graph): a graph
+        G2 (nx.Graph): a second graph
+        bins (int): width of bins in percentiles
+        binedges (list) vector of bin edges (mutually exclusive from bins)
+
+
+        Returns
+        -------
+        dist (float): the portrait divergence between two graphs.
+
+
+        From
+        ----
+        An information-theoretic, all-scales approach to comparing networks
+        James P. Bagrow and Erik M. Bollt, 2018 arXiv:1804.03665
+        and [this repository](https://github.com/bagrow/portrait-divergence)
+        
+		# sample usage
+		from portrait_divergence import *
+		G1 = nx.erdos_renyi_graph(100,0.05)
+		G2 = nx.erdos_renyi_graph(100,0.05)
+		# G1 = nx.erdos_renyi_graph(100,0.5)
+		# G2 = nx.erdos_renyi_graph(100,0.5)
+
+		test = PortraitDivergence()
+		print(test.dist(G1, G2))
+
+        """
+
+        adj1 = nx.to_numpy_array(G1)
+        adj2 = nx.to_numpy_array(G2)
+
+        ## NOTE dijkstra cannot handle negative weights
+        if (adj1<0).any() or (adj2<0).any():
+            adj1 = np.abs(adj1)
+            adj2 = np.abs(adj2)
+            G1 = nx.from_numpy_array(adj1)
+            G2 = nx.from_numpy_array(adj2)
+
+        paths_G1 = list(nx.all_pairs_dijkstra_path_length(G1))
+        paths_G2 = list(nx.all_pairs_dijkstra_path_length(G2))
+
+        # get bin_edges in common for G and H:
+        if binedges is None:
+            if bins is None:
+                bins = 1
+
+            UPL_G1 = set(_get_unique_path_lengths(G1, paths=paths_G1))
+            UPL_G2 = set(_get_unique_path_lengths(G2, paths=paths_G2))
+
+            unique_path_lengths = sorted(list(UPL_G1 | UPL_G2))
+            binedges = np.percentile(unique_path_lengths, np.arange(0, 101, bins))
+    
+        # get weighted portraits:
+        BG1 = weighted_portrait(G1, paths=paths_G1, binedges=binedges)
+        BG2 = weighted_portrait(G2, paths=paths_G2, binedges=binedges)
+    
+        dist = portrait_divergence(BG1, BG2, N1=G1.number_of_nodes(), 
+                                             N2=G2.number_of_nodes())
+
+        self.results['dist'] = dist
+        self.results['adjacency_matrices'] = adj1, adj2
+        self.results['portrait_matrices'] = BG1, BG2
+    
+        return dist
+
 
 def portrait(G):
     """
@@ -258,79 +336,3 @@ def portrait_divergence(G1, G2, N1=None, N2=None):
     JSDpq = 0.5*(KLDpm + KLDqm)
     
     return JSDpq
-
-class PortraitDivergence(BaseDistance):
-    def dist(self, G1, G2, bins=None, binedges=None):
-        """
-        Given two graphs, G1 and G2, the portrait divergence provides a 
-        distance measure based on the two graphs' "portraits".
-        
-        Params
-        ------
-        G1 (nx.Graph): a graph
-        G2 (nx.Graph): a second graph
-        bins (int): width of bins in percentiles
-        binedges (list) vector of bin edges (mutually exclusive from bins)
-
-
-        Returns
-        -------
-        dist (float): the portrait divergence between two graphs.
-
-
-        From
-        ----
-        An information-theoretic, all-scales approach to comparing networks
-        James P. Bagrow and Erik M. Bollt, 2018 arXiv:1804.03665
-        and [this repository](https://github.com/bagrow/portrait-divergence)
-        
-        """
-
-        adj1 = nx.to_numpy_array(G1)
-        adj2 = nx.to_numpy_array(G2)
-
-        ## NOTE dijkstra cannot handle negative weights
-        if (adj1<0).any() or (adj2<0).any():
-            adj1 = np.abs(adj1)
-            adj2 = np.abs(adj2)
-            G1 = nx.from_numpy_array(adj1)
-            G2 = nx.from_numpy_array(adj2)
-
-        paths_G1 = list(nx.all_pairs_dijkstra_path_length(G1))
-        paths_G2 = list(nx.all_pairs_dijkstra_path_length(G2))
-
-        # get bin_edges in common for G and H:
-        if binedges is None:
-            if bins is None:
-                bins = 1
-
-            UPL_G1 = set(_get_unique_path_lengths(G1, paths=paths_G1))
-            UPL_G2 = set(_get_unique_path_lengths(G2, paths=paths_G2))
-
-            unique_path_lengths = sorted(list(UPL_G1 | UPL_G2))
-            binedges = np.percentile(unique_path_lengths, np.arange(0, 101, bins))
-    
-        # get weighted portraits:
-        BG1 = weighted_portrait(G1, paths=paths_G1, binedges=binedges)
-        BG2 = weighted_portrait(G2, paths=paths_G2, binedges=binedges)
-    
-        dist = portrait_divergence(BG1, BG2, N1=G1.number_of_nodes(), 
-                                             N2=G2.number_of_nodes())
-
-        self.results['dist'] = dist
-        self.results['adj'] = np.array([adj1, adj2])
-    
-        return dist
-
-
-"""
-# sample usage
-from portrait_divergence import *
-G1 = nx.erdos_renyi_graph(100,0.05)
-G2 = nx.erdos_renyi_graph(100,0.05)
-# G1 = nx.erdos_renyi_graph(100,0.5)
-# G2 = nx.erdos_renyi_graph(100,0.5)
-
-test = PortraitDivergence()
-print(test.dist(G1, G2))
-"""

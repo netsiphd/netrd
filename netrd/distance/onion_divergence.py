@@ -18,12 +18,13 @@ import numpy as np
 import networkx as nx
 from .base import BaseDistance
 from functools import reduce
+from netrd.utilities import ensure_undirected
 
 class OnionDivergence(BaseDistance):
     def dist(self, G1, G2, dist='lccm'):
         """
-        Return the Jenson-Shannon divergence between two graphs onion spectra
-        of two graphs.
+        Return the Jenson-Shannon divergence between two graphs feature
+        distribution fixed by dist.
 
         Note: The method assumes simple graphs.
 
@@ -32,7 +33,15 @@ class OnionDivergence(BaseDistance):
 
         G1, G2 (nx.Graph): two networkx graphs to be compared.
         dist (str): type of distribution divergence to output. Choices are
-                    'cm', 'ccm', 'lccm_node' and 'lccm'.
+                    'cm', 'ccm', 'lccm_node' and 'lccm'. The type stand for
+                    the associated random graph ensemble. 'cm' compares only
+                    the degree distribution. 'ccm' compares the networks
+                    according to the edges degree-degree distribution.
+                    'lccm_node' compares the distribution of nodes according
+                    to their onion centrality (degree, coreness, and layer
+                    within core). Finally, 'lccm' compares the networks
+                    according to the edges joint degree,coreness and layer
+                    distribution for both endpoints.
 
         Returns
         -------
@@ -41,10 +50,10 @@ class OnionDivergence(BaseDistance):
 
         """
         #take the simple graph version
-        G1_simple = G1.to_undirected()
-        G2_simple = G2.to_undirected()
-        G1_simple.remove_edges_from(G1.selfloop_edges())
-        G2_simple.remove_edges_from(G2.selfloop_edges())
+        G1_simple = ensure_undirected(G1)
+        G2_simple = ensure_undirected(G2)
+        G1_simple.remove_edges_from(G1_simple.selfloop_edges())
+        G2_simple.remove_edges_from(G2_simple.selfloop_edges())
 
         #get sparse matrices values for each graph
         matrices_G1 = _create_sparse_matrices_for_graph(G1_simple)

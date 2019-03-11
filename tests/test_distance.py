@@ -35,3 +35,14 @@ def test_different_graphs():
             dist = obj().dist(G1, G2)
             assert dist > 0.0
 
+def test_symmetry():
+    """The distance between two graphs must be symmetric."""
+
+    G1 = nx.barabasi_albert_graph(100, 4)
+    G2 = nx.fast_gnp_random_graph(100, 0.1)
+
+    for obj in distance.__dict__.values():
+        if isinstance(obj, type) and BaseDistance in obj.__bases__:
+            dist1 = obj().dist(G1, G2)
+            dist2 = obj().dist(G2, G1)
+            assert np.isclose(dist1, dist2)

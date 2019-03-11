@@ -6,6 +6,7 @@ Test distance algorithms.
 
 """
 
+import numpy as np
 import networkx as nx
 from netrd import distance
 from netrd.distance import BaseDistance

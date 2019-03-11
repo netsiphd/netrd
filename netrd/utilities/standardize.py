@@ -13,7 +13,7 @@ Submitted as part of the 2019 NetSI Collabathon
 import numpy as np
 import networkx as nx
 
-def mean_GNP_distance(n, edge_probability, distance, samples=10, **kwargs):
+def mean_GNP_distance(n, prob, distance, samples=10, **kwargs):
     '''
     Compute the mean distance between _samples_ GNP graphs with
     parameters N=n,p=edge_probability using distance function _distance_,
@@ -49,23 +49,13 @@ def mean_GNP_distance(n, edge_probability, distance, samples=10, **kwargs):
     mean, std, dists = netrd.utilities.mean_GNP_distance(100, 0.1, dist_obj.dist, **kwargs)
 
     '''
-    # generate sample graphs
-    a=[]
-    for _ in range(samples):
-       a.append(nx.fast_gnp_random_graph(n, edge_probability))
-
-    # get distances
-    dis_mat = np.zeros((samples,samples))
-    dis_list = []
+    graphs = [nx.fast_gnp_random_graph(n, prob) for _ in range(samples)]
+    dis_mat = np.full((samples, samples), np.nan)
     for i in range(samples):
         for j in range(samples):
-            # Do not compute distance between identical samples (see docstring)
-            if i != j:
-                dis[i,j]= distance(a[i], a[j], **kwargs)
-                dis_list.append(dis[i,j])
+            if i == j:
+                continue
+            dis_mat[i, j] = distance(graphs[i], graphs[j], **kwargs)
 
-    # get mean distances \ std distances
-    mean_dist=np.mean(dis_list)
-    std_dist=np.std(dis_list)
-
-    return mean_dist, std_dist, dis_mat
+    # the nan* versions below ignore NaNs and normalize appropriately
+    return np.nanmean(dis_mat), np.nanstd(dis_mat), dis_mat

@@ -2,3 +2,6 @@ networkx>=2.2.0
 numpy>=1.10.0
 scipy>=1.0.0
 scikit-learn>=0.18.2
+Cython==0.29.2
+# POT is a dependency that we install separately
+# POT

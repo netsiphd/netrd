@@ -16,20 +16,20 @@ import networkx as nx
 def mean_GNP_distance(n, prob, distance, samples=10, **kwargs):
     '''
     Compute the mean distance between _samples_ GNP graphs with
-    parameters N=n,p=edge_probability using distance function _distance_,
+    parameters N=n,p=prob using distance function _distance_,
     whose parameters are passed with **kwargs.
 
     NOTE: Ideally, each 'sample' would involve generating two GNP graphs,
     computing the distance between them, then throwing them both away.
     However, this will be computationally expensive, so for now we are
-    reusing samples, but _not_ including distance between the same sample
-    in the mean (e.g. excluding the diagonal of a distance matrix).
+    reusing samples. The diagonal of the distance matrix is excluded, i.e.,
+    do not compute the distance between a sample graph and itself.
 
     Params
     ------
 
     n (int): Number of nodes in ER graphs to be generated
-    edge_probability (float): Probability of edge in ER graphs to be generated.
+    prob (float): Probability of edge in ER graphs to be generated.
     samples (int): Number of samples to average distance over.
     distance (function): Function from netrd.distances.<distance>.dist
     kwargs (dict): Keyword arguments to pass to the distance function.

@@ -29,7 +29,7 @@ def mean_GNP_distance(n, prob, distance, samples=10, **kwargs):
     ------
 
     n (int): Number of nodes in ER graphs to be generated
-    edge_prob (float): Probability of edge in ER graphs to be generated.
+    prob (float): Probability of edge in ER graphs to be generated.
     samples (int): Number of samples to average distance over.
     distance (function): Function from netrd.distances.<distance>.dist
     kwargs (dict): Keyword arguments to pass to the distance function.

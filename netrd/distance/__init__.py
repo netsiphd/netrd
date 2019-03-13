@@ -9,6 +9,7 @@ from .resistance_perturbation import ResistancePerturbation
 from .netsimile import NetSimile
 from .laplacian_spectral_method import LaplacianSpectralMethod
 from .polynomial_dissimilarity import PolynomialDissimilarity
+from .nbd import NBD
 from .degree_divergence import DegreeDivergence
 from .onion_divergence import OnionDivergence
 

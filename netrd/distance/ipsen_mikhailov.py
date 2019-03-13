@@ -99,5 +99,5 @@ def _im_distance(adj1, adj2, hwhm):
 
     func = lambda w: (density1(w) - density2(w))**2
 
-    return np.sqrt(quad(func, 0, np.inf)[0])
+    return np.sqrt(quad(func, 0, np.inf, limit = 100)[0])
 

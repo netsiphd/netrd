@@ -52,8 +52,8 @@ class OnionDivergence(BaseDistance):
         #take the simple graph version
         G1_simple = ensure_undirected(G1)
         G2_simple = ensure_undirected(G2)
-        G1_simple.remove_edges_from(G1_simple.selfloop_edges())
-        G2_simple.remove_edges_from(G2_simple.selfloop_edges())
+        G1_simple.remove_edges_from(nx.selfloop_edges(G1_simple))
+        G2_simple.remove_edges_from(nx.selfloop_edges(G2_simple))
 
         #get sparse matrices values for each graph
         matrices_G1 = _create_sparse_matrices_for_graph(G1_simple)

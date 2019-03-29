@@ -29,7 +29,7 @@ reconstructor object by calling its constructor with no arguments. Then, use the
 TS = np.loadtxt('data/synth_4clique_N64_simple.csv',
                 delimiter=',',
                 encoding='utf8')
-# TS is a NumPy array of shape N (number of nodes) x L (observations)
+# TS is a NumPy array of shape N (number of nodes) x L (observations).
 
 recon = netrd.reconstruction.RandomReconstructor()
 G = recon.fit(TS)
@@ -39,10 +39,10 @@ Many reconstruction algorithms store additional metadata in a `results`
 dictionary. 
 
 ```python
-# another way to obtain the reconstructed graph
+# Another way to obtain the reconstructed graph
 G = recon.results['graph']
 
-# a dense matrix of weights
+# A dense matrix of weights
 W = recon.results['weights_matrix']
 
 # The binarized matrix from which the graph is created
@@ -100,7 +100,7 @@ Some distances also store metadata in `results` dictionaries.
 # Another way to get the distance
 D = dist.results['dist']
 
-# the underlying features used in NetSimle
+# The underlying features used in NetSimile
 vecs = dist.results['signature_vectors']
 ```
 
@@ -118,7 +118,7 @@ TS = model.simulate(G, 1000, noise=.001)
 # Another way to get the dynamics
 TS = model.results['TS']
 
-# the original graph is stored in results
+# The original graph is stored in results
 H = model.results['ground_truth']
 ```
 

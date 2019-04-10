@@ -7,6 +7,7 @@ from .ipsen_mikhailov import IpsenMikhailov
 from .hamming_ipsen_mikhailov import HammingIpsenMikhailov
 from .resistance_perturbation import ResistancePerturbation
 from .netsimile import NetSimile
+from .netlsd import NetLSD
 from .laplacian_spectral_method import LaplacianSpectralMethod
 from .polynomial_dissimilarity import PolynomialDissimilarity
 from .nbd import NBD

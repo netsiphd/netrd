@@ -176,7 +176,7 @@ def partial_corr(C, index=None):
                 idx[index] = True
             else:
                 raise ValueError("Index must be an integer, an array of "
-                                 "integers, or False.")
+                                 "integers, or None.")
 
             beta_i = linalg.lstsq(C[:, idx], C[:, j])[0]
             beta_j = linalg.lstsq(C[:, idx], C[:, i])[0]

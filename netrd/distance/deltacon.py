@@ -81,7 +81,7 @@ class DeltaCon(BaseDistance):
 
             between X and Y.
             """
-            return np.sum(np.square(np.sqrt(X) - np.sqrt(Y)))
+            return np.sqrt(np.sum(np.square(np.sqrt(X) - np.sqrt(Y))))
 
         dist = matusita_dist(S1, S2)
 

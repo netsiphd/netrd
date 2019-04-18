@@ -73,7 +73,7 @@ class DeltaCon(BaseDistance):
 
         def matusita_dist(X, Y):
             """
-            Return the Matsusita distance
+            Return the Matusita distance
 
             $$
             \sqrt{\sum_i \sum_j \left( \sqrt{X_{ij}} - \sqrt{Y_{ij}} \right)^{2}}

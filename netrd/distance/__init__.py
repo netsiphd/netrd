@@ -13,5 +13,6 @@ from .polynomial_dissimilarity import PolynomialDissimilarity
 from .nbd import NBD
 from .degree_divergence import DegreeDivergence
 from .onion_divergence import OnionDivergence
+from .deltacon import DeltaCon
 
 __all__ = []

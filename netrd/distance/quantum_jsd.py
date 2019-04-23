@@ -62,7 +62,8 @@ class QuantumJSD(BaseDistance):
         $$
 
         Note that this implementation is not exact because the matrix
-        exponentiation is performed using the Padé approximation.
+        exponentiation is performed using the Padé approximation and because of
+        imprecision in the calculation of the eigenvalues of the density matrix.
 
         Params
         ------
@@ -103,8 +104,20 @@ class QuantumJSD(BaseDistance):
             Calculate the Rényi entropy with order `q`, or the Von Neumann
             entropy if `q` is `None` or 1.
             """
-            eigs = np.linalg.eigh(X)[0]
-            eigs = eigs[eigs > 0]
+
+            # Note that where there are many zero eigenvalues (i.e., large
+            # values of beta) in the density matrix, floating-point precision
+            # issues mean that there will be negative eigenvalues and the
+            # eigenvalues will not sum to precisely one. To avoid encountering
+            # `nan`s in `np.log2`, we remove all eigenvalues that are close
+            # to zero within 1e-6 tolerance. As for the eigenvalues not summing
+            # to exactly one, this is a small source of error in the
+            # calculation.
+            eigs = np.linalg.eigvalsh(X)
+            zero_eigenvalues = np.isclose(np.abs(eigs), 0, atol=1e-6)
+            eigs = eigs[np.logical_not(zero_eigenvalues)]
+
+            assert (eigs > 0).all()
 
             if q is None or q == 1:
                 # plain Von Neumann entropy

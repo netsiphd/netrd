@@ -14,5 +14,6 @@ from .nbd import NBD
 from .degree_divergence import DegreeDivergence
 from .onion_divergence import OnionDivergence
 from .deltacon import DeltaCon
+from .quantum_jsd import QuantumJSD
 
 __all__ = []

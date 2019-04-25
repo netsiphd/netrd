@@ -5,6 +5,7 @@ laplacian_spectral_method.py
 Graph distance based on :
 https://www.sciencedirect.com/science/article/pii/S0303264711001869
 https://arxiv.org/pdf/1005.0103.pdf
+https://www.nature.com/articles/s41598-018-37534-2
 
 author: Guillaume St-Onge
 email: guillaume.st-onge.4@ulaval.ca
@@ -55,22 +56,29 @@ class LaplacianSpectralMethod(BaseDistance):
 
         kernel (str): kernel to obtain a continuous spectrum. Choices
         available are
-            -normal
-            -lorentzian
+            -'normal'
+            -'lorentzian'
+            -None
+        If None is chosen, the discrete spectrum is used instead, and the
+        measure is simply the euclidean distance between the vector of
+        eigenvalues for each graph.
 
         hwhm (float): half-width at half-maximum for the kernel. The default
         value is chosen such that the standard deviation for the normal
         distribution is 0.01, as in the paper
         https://www.sciencedirect.com/science/article/pii/S0303264711001869.
+        This option is relevant only if kernel is not None.
 
         measure (str): metric between the two continuous spectra. Choices
         available are
-            -jensen-shannon
-            -euclidean
+            -'jensen-shannon'
+            -'euclidean'
+        This option is relevant only if kernel is not None.
 
-        k (int): number of desired eigenvalues for the spectrum. The largest
-        ones in magnitude are kept. If none, all the eigenvalues are used.
-        k must be smaller (strictly) than the size of both graphs.
+        k (int): number of eigenvalues kept for the (discrete) spectrum, also
+        used to create the continuous spectrum. The largest eigenvalues in
+        magnitude are kept. If None, all the eigenvalues are used. k must be
+        smaller (strictly) than the size of both graphs.
 
         Returns
         -------
@@ -114,20 +122,25 @@ class LaplacianSpectralMethod(BaseDistance):
             ev2 = np.abs(eigsh(lap2, k=k, which='LM')[0])
         self.results['eigenvalues'] = ev1, ev2
 
-        #define the proper support
-        a = 0
-        if normed:
-            b = 2
+        if kernel is not None:
+            #define the proper support
+            a = 0
+            if normed:
+                b = 2
+            else:
+                b = np.inf
+
+            #create continuous spectra
+            density1 = _create_continuous_spectrum(ev1, kernel, hwhm, a, b)
+            density2 = _create_continuous_spectrum(ev2, kernel, hwhm, a, b)
+
+            #compare the spectra
+            dist = _spectra_comparison(density1, density2, a, b, measure)
+            self.results['dist'] = dist
         else:
-            b = np.inf
-
-        #create continuous spectra
-        density1 = _create_continuous_spectrum(ev1, kernel, hwhm, a, b)
-        density2 = _create_continuous_spectrum(ev2, kernel, hwhm, a, b)
-
-        #compare the spectra
-        dist = _spectra_comparison(density1, density2, a, b, measure)
-        self.results['dist'] = dist
+            #euclidean distance between the two discrete spectra
+            dist = np.linalg.norm(ev1 - ev2)
+            self.results['dist'] = dist
 
         return dist
 
@@ -175,7 +188,7 @@ def _create_continuous_spectrum(eigenvalues, kernel, hwhm, a, b):
 
 
 def _spectra_comparison(density1, density2, a, b, measure):
-    """Apply a metric to compare the spectra
+    """Apply a metric to compare the continuous spectra
 
     Params
     ------

@@ -66,5 +66,5 @@ class DegreeDivergence(BaseDistance):
 
         dist = js_divergence(p1, p2)
 
-        self.results['dist'] = np.sqrt(dist)
-        return np.sqrt(dist)
+        self.results['dist'] = dist
+        return dist

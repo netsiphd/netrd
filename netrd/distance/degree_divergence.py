@@ -11,6 +11,7 @@ Submitted as part of the 2019 NetSI Collabathon.
 
 """
 
+from collections import Counter
 import numpy as np
 import networkx as nx
 from scipy.stats import entropy
@@ -41,6 +42,18 @@ class DegreeDivergence(BaseDistance):
 
         self.results['degree_vectors'] = deg1, deg2
 
+        N = G1.number_of_nodes()
+
+        # from degree sequences to degree histograms
+        p1 = np.zeros(N)
+        p2 = np.zeros(N)
+        for k, v in Counter(deg1).items():
+            p1[k] = v
+        for k, v in Counter(deg2).items():
+            p2[k] = v
+
+        self.results['degree_histograms'] = p1, p2
+
         def js_divergence(P, Q):
             """Jenson-Shannon divergence between P and Q."""
             M = 0.5*(P+Q)
@@ -51,7 +64,7 @@ class DegreeDivergence(BaseDistance):
 
             return JSDpq
 
-        dist = js_divergence(deg1, deg2)
+        dist = js_divergence(p1, p2)
 
-        self.results['dist'] = dist
-        return dist
+        self.results['dist'] = np.sqrt(dist)
+        return np.sqrt(dist)

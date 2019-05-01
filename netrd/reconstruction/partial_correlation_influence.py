@@ -1,13 +1,21 @@
 """
-partial_correlation_matrix.py
+partial_correlation_influence.py
 ---------------------
 
-Reconstruction of graphs using the partial correlation matrix.
+Reconstruction of graphs using the partial correlation influence, as defined in:
 
-author: Stefan McCabe
-email: stefanmccabe at gmail dot com
+Kenett, D. Y. et al. Dominating clasp of the financial sector revealed by
+partial correlation analysis of the stock market. PLoS ONE 5, e15032 (2010).
+
+The index variable option as in:
+
+Kenett, D. Y., Huang, X., Vodenska, I., Havlin, S. & Stanley, H. E. Partial correlation
+analysis: applications for financial markets. Quantitative Finance 15, 569–578 (2015).
+
+
+author: Carolina Mattsson
+email: mattsson dot c at northeastern dot edu
 Submitted as part of the 2019 NetSI Collabathon
-
 """
 from .base import BaseReconstructor
 import numpy as np
@@ -16,33 +24,36 @@ from scipy import stats, linalg
 from ..utilities import create_graph, threshold
 
 
-class PartialCorrelationMatrixReconstructor(BaseReconstructor):
+class PartialCorrelationInfluenceReconstructor(BaseReconstructor):
     def fit(self,
             TS,
             index=None,
-            drop_index=True,
-            of_residuals=False,
             threshold_type='range',
             **kwargs):
         """
-        Reconstruct a network from time series data using a regularized
-        form of the precision matrix. After [this tutorial](
-        https://bwlewis.github.io/correlation-regularization/) in R.
+        Reconstruct a network from time series data using the
+        *average effect of a series Z on the correlation between
+        a series X and all other series*
 
-        The results dictionary also stores the weight matrix as `'weights_matrix'`
-        and the thresholded version of the weight matrix as `'thresholded_matrix'`.
+        The partial correlation influence:
+        d(X:Z)=<d(X,Y:Z)>_Y!=X where
+        d(X,Y:Z) = ρ(X,Y) - ρ(X,Y:Z)
+
+        If an index is given, both terms become partial correlations:
+        d(X,Y:Z) ≡ ρ(X,Y:M) − ρ(X,Y:M,Z)
+
+        The results dictionary also stores the matrix of partial correlations
+        as `'weights_matrix'` and the thresholded version of the partial
+        correlation matrix as `'thresholded_matrix'`.
 
         Params
         ------
+
         index (int, array of ints, or None): Take the partial correlations of
         each pair of elements holding constant an index variable or set of
         index variables. If None, take the partial correlations of the
         variables holding constant all other variables.
-        drop_index (bool): If True, drop the index variables after calculating
-        the partial correlations.
-        of_residuals (bool): If True, after calculating the partial correlations (
-        presumably using a dropped index variable), recalculate the partial
-        correlations between each variable, holding constant all other variables.
+
         threshold_type (str): Which thresholding function to use on the matrix of
         weights. See `netrd.utilities.threshold.py` for documentation. Pass additional
         arguments to the thresholder using `**kwargs`.
@@ -53,26 +64,48 @@ class PartialCorrelationMatrixReconstructor(BaseReconstructor):
 
         """
 
-        p_cor = partial_corr(TS, index=index)
-
-        if drop_index and index is not None:
+        if index:
+            p_cor = partial_corr(TS, index=index)
+            n_TS  = p_cor.shape[0]
             p_cor = np.delete(p_cor, index, axis=0)
             p_cor = np.delete(p_cor, index, axis=1)
+        else:
+            p_cor = partial_corr(TS)
 
-        if of_residuals:
-            p_cor = partial_corr(p_cor, index=None)
+        np.fill_diagonal(p_cor, float("nan"))
 
-        self.results['weights_matrix'] = p_cor
+        n = p_cor.shape[0]
+
+        p_cor_zs = np.zeros((n,n,n))
+
+        if index:
+            for z in np.delete(range(n_TS),index):
+                index_z = np.append(index,z)
+                p_cor_z = partial_corr(TS, index=index_z)
+                p_cor_z = np.delete(p_cor_z, index, axis=0)
+                p_cor_z = np.delete(p_cor_z, index, axis=1)
+                p_cor_z = p_cor - p_cor_z
+                p_cor_zs[z] = p_cor_z
+        else:
+            index = np.array([],dtype=int)
+            for z in range(n):
+                index_z = z
+                p_cor_z = partial_corr(TS, index=index_z)
+                p_cor_z = p_cor - p_cor_z
+                p_cor_zs[z] = p_cor_z
+
+        p_cor_inf = np.nanmean(p_cor_zs, axis=2) # mean over the Y axis
+
+        self.results['weights_matrix'] = p_cor_inf
 
         # threshold the network
-        W_thresh = threshold(p_cor, threshold_type, **kwargs)
+        W_thresh = threshold(p_cor_inf, threshold_type, **kwargs)
 
         # construct the network
         self.results['graph'] = create_graph(W_thresh)
         self.results['thresholded_matrix'] = W_thresh
 
         G = self.results['graph']
-
 
         return G
 
@@ -83,8 +116,8 @@ class PartialCorrelationMatrixReconstructor(BaseReconstructor):
 """
 Partial Correlation in Python (clone of Matlab's partialcorr)
 
-This uses the linear regression approach to compute the partial 
-correlation (might be slow for a huge number of variables). The 
+This uses the linear regression approach to compute the partial
+correlation (might be slow for a huge number of variables). The
 algorithm is detailed here:
 
     http://en.wikipedia.org/wiki/Partial_correlation#Using_linear_regression
@@ -96,7 +129,7 @@ the algorithm can be summarized as
     2) calculate the residuals in Step #1
     3) perform a normal linear least-squares regression with Y as the target and Z as the predictor
     4) calculate the residuals in Step #3
-    5) calculate the correlation coefficient between the residuals from Steps #2 and #4; 
+    5) calculate the correlation coefficient between the residuals from Steps #2 and #4;
 
     The result is the partial correlation between X and Y while controlling for the effect of Z
 

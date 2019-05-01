@@ -34,6 +34,9 @@ class TimeGrangerCausalityReconstructor(BaseReconstructor):
         log(var(e1) / var(e2)). It constructs the network by calculating the
         Granger causality for each pair of nodes.
 
+        The results dictionary also stores the weight matrix as `'weights_matrix'`
+        and the thresholded version of the weight matrix as `'thresholded_matrix'`.
+
         Params
         ------
         TS (np.ndarray): Array consisting of $L$ observations from $N$ sensors.
@@ -49,7 +52,7 @@ class TimeGrangerCausalityReconstructor(BaseReconstructor):
         """
 
         n = TS.shape[0]
-        self.results['weights'] = np.zeros([n, n])
+        self.results['weights_matrix'] = np.zeros([n, n])
         for i in range(n):
             xi, yi = get_training_data(TS[i, :], lag)
             for j in range(n):
@@ -59,11 +62,11 @@ class TimeGrangerCausalityReconstructor(BaseReconstructor):
                 reg2 = LinearRegression().fit(X, Y)
                 err1 = yi - reg1.predict(xi)
                 err2 = Y - reg2.predict(X)
-                self.results['weights'][j, i] = np.log(np.std(err1) / np.std(err2))
+                self.results['weights_matrix'][j, i] = np.log(np.std(err1) / np.std(err2))
 
         # threshold the network
-        W_thresh = threshold(self.results['weights'], threshold_type, **kwargs)
-        self.results['thresholded_weights'] = W_thresh
+        W_thresh = threshold(self.results['weights_matrix'], threshold_type, **kwargs)
+        self.results['thresholded_matrix'] = W_thresh
 
         # construct the network
         self.results['graph'] = create_graph(W_thresh)

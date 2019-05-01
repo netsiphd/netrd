@@ -23,6 +23,9 @@ class RandomReconstructor(BaseReconstructor):
         Reconstruct a network from a time serues -- just kidding, simply return 
         a random correlation matrix with a threshold.
 
+        The results dictionary also stores the weight matrix as `'weights_matrix'`
+        and the thresholded version of the weight matrix as `'thresholded_matrix'`.
+
         Params
         ------
         TS (np.ndarray): array consisting of $L$ observations from $N$ sensors.
@@ -42,7 +45,7 @@ class RandomReconstructor(BaseReconstructor):
         G = create_graph(A)
 
         self.results['graph'] = G
-        self.results['random_matrix'] = W
-        self.results['adjacency_matrix'] = A
+        self.results['weights_matrix'] = W
+        self.results['thresholded_matrix'] = A
 
         return G

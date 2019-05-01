@@ -28,6 +28,9 @@ class Hamming(BaseDistance):
         this code could allow weights can be applied, but only one set of 
         weights that apply to both graphs.
 
+        The results dictionary also stores a 2-tuple of the underlying adjacency
+        matrices in the key `'adjacency_matrices'`.
+
         Params
         ------
 
@@ -43,11 +46,11 @@ class Hamming(BaseDistance):
         adj1 = nx.to_numpy_array(G1)
         adj2 = nx.to_numpy_array(G2)
         dist = scipy.spatial.distance.hamming(
-            adj1.flatten(), 
+            adj1.flatten(),
             adj2.flatten()
         )
         self.results['dist'] = dist
-        self.results['adj'] = np.array([adj1, adj2])
+        self.results['adjacency_matrices'] = adj1, adj2
 
         return dist
 

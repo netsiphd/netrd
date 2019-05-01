@@ -21,6 +21,9 @@ class FreeEnergyMinimizationReconstructor(BaseReconstructor):
         minimizing a free energy over the data structure. After [this tutorial]
         (https://github.com/nihcompmed/network-inference/blob/master/sphinx/codesource/inference.py) in python.
         
+        The results dictionary also stores the weight matrix as `'weights_matrix'`
+        and the thresholded version of the weight matrix as `'thresholded_matrix'`.
+
         Params
         ------
         TS (np.ndarray): Array consisting of $L$ observations from $N$ sensors.
@@ -85,7 +88,7 @@ class FreeEnergyMinimizationReconstructor(BaseReconstructor):
         # construct the network
 
         self.results['graph'] = create_graph(W_thresh)
-        self.results['matrix'] = W
+        self.results['weights_matrix'] = W
         self.results['thresholded_matrix'] = W_thresh
         G = self.results['graph']
 

@@ -3,6 +3,7 @@ from .random import RandomReconstructor
 from .correlation_matrix import CorrelationMatrixReconstructor
 from .regularized_correlation_matrix import RegularizedCorrelationMatrixReconstructor
 from .partial_correlation_matrix import PartialCorrelationMatrixReconstructor
+from .partial_correlation_influence import PartialCorrelationInfluenceReconstructor
 from .free_energy_minimization import FreeEnergyMinimizationReconstructor
 from .naive_mean_field import NaiveMeanFieldReconstructor
 from .thouless_anderson_palmer import ThoulessAndersonPalmerReconstructor

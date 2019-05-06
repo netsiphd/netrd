@@ -76,9 +76,8 @@ class LaplacianSpectralMethod(BaseDistance):
         This option is relevant only if kernel is not None.
 
         k (int): number of eigenvalues kept for the (discrete) spectrum, also
-        used to create the continuous spectrum. The largest eigenvalues in
-        magnitude are kept. If None, all the eigenvalues are used. k must be
-        smaller (strictly) than the size of both graphs.
+        used to create the continuous spectrum. If None, all the eigenvalues
+        are used. k must be smaller (strictly) than the size of both graphs.
 
         which (str): if k is not None, this option specifies the eigenvalues
         that are kept. See the choices offered by `scipy.sparse.linalg.eigsh`.

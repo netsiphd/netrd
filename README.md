@@ -124,6 +124,5 @@ H = model.results['ground_truth']
 
 # Contributing
 
-This project grew out of the 2019 Network Science Institute Collabathon.
-Contributing guidelines created for that event can be found in our
-`CONTRIBUTING.md`. 
+Contributing guidelines can be found in
+CONTRIBUTING.md. 

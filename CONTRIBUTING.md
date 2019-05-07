@@ -7,7 +7,7 @@ the more familiar you already are with git(hub), the less relevant the detailed 
 below will be for you.
 
 For an introduction and overview of the project, check out these
-[slides](https://docs.google.com/presentation/d/1nnGAttVH5sjzqzHJBIirBSyhbK9t2BdaU6kHaTGdgtM/edit?usp=sharing)
+[slides](https://docs.google.com/presentation/d/1nnGAttVH5sjzqzHJBIirBSyhbK9t2BdaU6kHaTGdgtM/edit?usp=sharing).
 
 
 ## Types of Contribution
@@ -38,7 +38,7 @@ and "help wanted" is open to whoever wants to implement it.
 
 The best way to send feedback is to open an issue at https://github.com/netsiphd/netrd/issues.
 
-If you are proposing to add a distance metric, reconstruction algorithm, or dynamical process, 
+If you are proposing to implement a distance metric, reconstruction algorithm, or dynamical process, 
 see more details below. 
 
 If you are proposing a feature not directly related to implementing a new method:
@@ -48,9 +48,12 @@ If you are proposing a feature not directly related to implementing a new method
 * Remember that this is a volunteer-driven project, and that your contributions
   are welcome!
 
+##### A Brief Note On Licensing
+Often, python code for an algorithm of interest already exists. In the interest of avoiding repeated reinvention of the wheel, we welcome code from other sources being integrated into `netrd`. If you are doing this, we ask that you be explicit and transparent about where the code came from and which license it is released under. The safest thing to do is copy the license from the original code into the header documentation of your file. For reference, this software is [licensed under MIT](https://github.com/tlarock/netrd/blob/master/LICENSE).
+
 ## Setup
-Before starting your contribution, you need to follow the following instructions once.
-The goal of this process is to fork, download and install the latest version of the repository.
+Before starting your contribution, you need to complete the following instructions once.
+The goal of this process is to fork, download and install the latest version of `netrd`.
 
 1. Log in to GitHub.
 
@@ -102,9 +105,9 @@ Once you have completed the above steps, you are ready to choose an algorithm to
 
 2. Open an issue at https://github.com/netsiphd/netrd/issues by clicking the "New Issue" button. 
 
-	Title the issue "Implement XYZ method", where XYZ method is a shorthand name for the distance, reconstruction or dynamics method you plan to implement. 
+	* Title the issue "Implement XYZ method", where XYZ method is a shorthand name for the distance, reconstruction or dynamics method you plan to implement. 
 
-	Leave a comment that includes a brief motivation for why you want to see this method in `netrd`, as well as any key citations.
+	* Leave a comment that includes a brief motivation for why you want to see this method in `netrd`, as well as any key citations.
 
 2. In your machine, create the file where your algorithm is going to
    live. If you chose a distance algorithm, copy
@@ -119,10 +122,10 @@ Once you have completed the above steps, you are ready to choose an algorithm to
 
 3. Open the newly created file and edit as follows. At the very top you
    will find a string describing the algorithm. Edit this to describe the algorithm you
-   are about to code, and preferably include a link and citation. Add also your name and
-   email (optional). Do not delete the line `from .base import
-   BaseDistance` or `from .base import BaseReconstructor`. In the next
-   line, change the class name to something appropriate. Guidelines here
+   are about to code, and preferably include a citation and link to any relevant papers. 
+   Also add your name and email address (optional). Do not delete the line 
+   `from .base import BaseDistance` or `from .base import BaseReconstructor`. 
+   In the next line, change the class name to something appropriate. Guidelines here
    are to use `CamelCaseLikeThis` and not `snake_case_like_this`. (These
    are python guidelines, not ours!)
 
@@ -133,13 +136,13 @@ Once you have completed the above steps, you are ready to choose an algorithm to
 	from .<your_file_name> import <YourAlgorithmName>
 	```
 
-	Note: there is one dot (.) before <your_file_name>. This is important!
-	Note: this line must go BEFORE the line with `__all__ = []`.
+	* Note: there is one dot (.) before <your_file_name>. This is important!
+	* Note: this line must go BEFORE the line with `__all__ = []`.
 
-	If you are implementing a reconstruction method, you need to edit
+   If you are implementing a reconstruction method, you need to edit
     `netrd/reconstruction/__init__.py` instead, with the same line.
 
-	This line tells the `netrd` package where to find your code.
+   This line tells the `netrd` package where to find your code.
 
 4. Go back to editing <your_file_name>. After the line that starts with
    `class`, there is a function called `dist` for distances
@@ -172,7 +175,7 @@ Once you have completed the above steps, you are ready to choose an algorithm to
 
 1. After updating your local code in the previous step, the first thing to
    do is tell git which files you have been working on. (This is called
-   staging.) If you worked on a distance algorithm, do
+   staging.) If you worked on a distance algorithm, for example, do
 
    ```
    git add netrd/distance/<your_file> netrd/distance/__init__.py
@@ -214,15 +217,16 @@ Once you have completed the above steps, you are ready to choose an algorithm to
    find your username, not someone else's.) After you find your username,
    GitHub will show a rundown of the differences that you are adding to the
    upstream repository, so you will be able to see what changes you are
-   contributing. If everything looks correctly, press 'Create Pull
+   contributing. If everything looks correct, press 'Create Pull
    Request'.
 	NOTE: Advanced git users may want to develop on branches other
 	than master on their fork. That is totally fine, we won't know
 	the difference in the end anyway.
 
-5. That's it! We will be notified and will review your code and changes to
-   make sure that everything is in place. Some automated tests will also
-   run in the background to make sure that your code can be imported
-   correctly and other sanity checks. Once that is all done, one of us will
-   either accept your Pull Request, or leave a message requesting some
-   changes (you will receive an email either way).
+
+That's it! After you've completed these steps, maintainers will be notified 
+and will review your code and changes to make sure that everything is in place. 
+Some automated tests will also run in the background to make sure that your 
+code can be imported correctly and other sanity checks. Once that is all done, 
+one of us will either accept your Pull Request, or leave a message requesting some
+changes (you will receive an email either way).

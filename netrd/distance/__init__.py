@@ -15,5 +15,6 @@ from .degree_divergence import DegreeDivergence
 from .onion_divergence import OnionDivergence
 from .deltacon import DeltaCon
 from .quantum_jsd import QuantumJSD
+from .communicability_jsd import CommunicabilityJSD
 
 __all__ = []

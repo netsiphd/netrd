@@ -125,4 +125,4 @@ H = model.results['ground_truth']
 # Contributing
 
 Contributing guidelines can be found in
-CONTRIBUTING.md. 
+<CONTRIBUTING.md>.

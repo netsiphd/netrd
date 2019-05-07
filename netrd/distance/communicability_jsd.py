@@ -42,11 +42,13 @@ class CommunicabilityJSD(BaseDistance):
 
         The communicability sequence entropy distance between two graphs, $G1$ 
         and $G2$, is the Jensen-Shannon divergence between these communicability 
-        sequence distributions, $P1$ and $P2$ of the two graphs. T
+        sequence distributions, $P1$ and $P2$ of the two graphs. 
 
         Note: this function uses the networkx approximation of the 
-        communicability of a graph, nx.communicability_exp, which requires 
-        G1 and G2 to be simple undirected networks.
+        communicability of a graph, `nx.communicability_exp`, which requires 
+        G1 and G2 to be simple undirected networks. In addition to the final
+        distance scalar, `self.results` stores the two vectors $P1$ and $P2$, 
+        their mixed vector, $P0$, and their associated entropies.
 
         Params
         ------

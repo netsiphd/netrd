@@ -107,7 +107,7 @@ Once you have completed the above steps, you are ready to choose an algorithm to
 
 	* Title the issue "Implement XYZ method", where XYZ method is a shorthand name for the distance, reconstruction or dynamics method you plan to implement.
 	* Leave a comment that includes a brief motivation for why you want to see this method in `netrd`, as well as any key citations.
-	* If such an issue already exists for the method you are going to write, it is a good idea to leave a comment letting others know you are going to work on it.
+	* If such an issue already exists for the method you are going to write, it is not necessary to open another. However, it is a good idea to leave a comment letting others know you are going to work on it.
 
 2. In your machine, create the file where your algorithm is going to
    live. If you chose a distance algorithm, copy

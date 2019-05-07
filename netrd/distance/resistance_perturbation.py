@@ -62,6 +62,10 @@ class ResistancePerturbation(BaseDistance):
         G1 = ensure_undirected(G1)
         G2 = ensure_undirected(G2)
 
+        # Check for connected graphs
+        if not nx.is_connected(G1) or not nx.is_connected(G2):
+            raise ValueError("Resistance perturbation is undefined for disconnected graphs.")
+
         # Get resistance matrices
         R1 = get_resistance_matrix(G1)
         R2 = get_resistance_matrix(G2)

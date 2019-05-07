@@ -25,7 +25,7 @@ from scipy.sparse.linalg import eigsh
 
 class LaplacianSpectralMethod(BaseDistance):
     def dist(self, G1, G2, normed=True, kernel='normal', hwhm=0.011775,
-             measure='jensen-shannon', k=None):
+             measure='jensen-shannon', k=None, which='LM'):
         """Graph distances using different measure between the Laplacian
         spectra of the two graphs
 
@@ -76,9 +76,12 @@ class LaplacianSpectralMethod(BaseDistance):
         This option is relevant only if kernel is not None.
 
         k (int): number of eigenvalues kept for the (discrete) spectrum, also
-        used to create the continuous spectrum. The largest eigenvalues in
-        magnitude are kept. If None, all the eigenvalues are used. k must be
-        smaller (strictly) than the size of both graphs.
+        used to create the continuous spectrum. If None, all the eigenvalues
+        are used. k must be smaller (strictly) than the size of both graphs.
+
+        which (str): if k is not None, this option specifies the eigenvalues
+        that are kept. See the choices offered by `scipy.sparse.linalg.eigsh`.
+        The largest eigenvalues in magnitude are kept by default.
 
         Returns
         -------
@@ -118,8 +121,8 @@ class LaplacianSpectralMethod(BaseDistance):
             #transform the dense laplacian matrices to sparse representations
             lap1 = csgraph_from_dense(lap1)
             lap2 = csgraph_from_dense(lap2)
-            ev1 = np.abs(eigsh(lap1, k=k, which='LM')[0])
-            ev2 = np.abs(eigsh(lap2, k=k, which='LM')[0])
+            ev1 = np.abs(eigsh(lap1, k=k, which=which)[0])
+            ev2 = np.abs(eigsh(lap2, k=k, which=which)[0])
         self.results['eigenvalues'] = ev1, ev2
 
         if kernel is not None:

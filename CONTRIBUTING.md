@@ -10,17 +10,15 @@ For an introduction and overview of the project, check out these
 [slides](https://docs.google.com/presentation/d/1nnGAttVH5sjzqzHJBIirBSyhbK9t2BdaU6kHaTGdgtM/edit?usp=sharing)
 
 
-## Contributing
+## Types of Contribution
 
-You can contribute in many ways:
-
-### Types of Contributions
+There are multiple ways to contribute to `netrd` (borrowed below list from https://github.com/uzhdag/pathpy/blob/master/CONTRIBUTING.rst):
 
 #### Report Bugs
 
-Report bugs at https://github.com/netsiphd/netrd/issues.
+To report a bug in the package, open an issue at https://github.com/netsiphd/netrd/issues.
 
-If you are reporting a bug, please include:
+Please include in your bug report:
 
 * Your operating system name and version.
 * Any details about your local setup that might be helpful in troubleshooting.
@@ -36,19 +34,16 @@ wanted" is open to whoever wants to implement it.
 Look through the GitHub issues for features. Anything tagged with "enhancement"
 and "help wanted" is open to whoever wants to implement it.
 
-#### Write Documentation
-
-pathpy could always use more documentation, whether as part of the
-official pathpy docs, in docstrings, or even on the web in blog posts,
-articles, and such.
-
 #### Submit Feedback
 
 The best way to send feedback is to open an issue at https://github.com/netsiphd/netrd/issues.
 
-If you are proposing a feature:
+If you are proposing to add a distance metric, reconstruction algorithm, or dynamical process, 
+see more details below. 
 
-* Explain in detail how it would work.
+If you are proposing a feature not directly related to implementing a new method:
+
+* Explain in detail why the feature is desirable and how it would work.
 * Keep the scope as narrow as possible, to make it easier to implement.
 * Remember that this is a volunteer-driven project, and that your contributions
   are welcome!

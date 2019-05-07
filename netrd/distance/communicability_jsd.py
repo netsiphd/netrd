@@ -25,7 +25,29 @@ from .base import BaseDistance
 
 class CommunicabilityJSD(BaseDistance):
     def dist(self, G1, G2):
-        """        
+        """
+        This distance is based on the communicability matrix, $C$, of a graph 
+        consisting of elements $c_{ij}$ which are values corresponding to the 
+        numbers of shortest paths of length $k$ between nodes $i$ and $j$.
+        
+        See: Estrada, E., & Hatano, N. (2008). Communicability in complex 
+        networks. Physical Review E, 77(3), 036111.
+        https://journals.aps.org/pre/abstract/10.1103/PhysRevE.77.036111
+        for a full introduction.
+
+        The commmunicability matrix is symmetric, which means the 
+        communicability sequence is formed by flattening the upper
+         triangular of $C$, which is then normalized to create the 
+        communicability sequence, $P$. 
+
+        The communicability sequence entropy distance between two graphs, $G1$ 
+        and $G2$, is the Jensen-Shannon divergence between these communicability 
+        sequence distributions, $P1$ and $P2$ of the two graphs. T
+
+        Note: this function uses the networkx approximation of the 
+        communicability of a graph, nx.communicability_exp, which requires 
+        G1 and G2 to be simple undirected networks.
+
         Params
         ------
         G1 (nx.Graph): the first graph

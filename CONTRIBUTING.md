@@ -18,7 +18,7 @@ You can contribute in many ways:
 
 #### Report Bugs
 
-Report bugs at https://github.com/uzhdag/pathpy/issues.
+Report bugs at https://github.com/netsiphd/netrd/issues.
 
 If you are reporting a bug, please include:
 

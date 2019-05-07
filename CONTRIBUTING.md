@@ -12,7 +12,7 @@ For an introduction and overview of the project, check out these
 
 ## Types of Contribution
 
-There are multiple ways to contribute to `netrd` (borrowed below list from [here](https://github.com/uzhdag/pathpy/blob/master/CONTRIBUTING.rst):
+There are multiple ways to contribute to `netrd` (borrowed below list from [here](https://github.com/uzhdag/pathpy/blob/master/CONTRIBUTING.rst)):
 
 #### Report Bugs
 

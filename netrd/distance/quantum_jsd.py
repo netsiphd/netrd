@@ -10,7 +10,7 @@ Information-Theoretic Tools for Complex Network Comparison.” Physical Review X
 
 
 author: Stefan McCabe & Brennan Klein
-email: 
+email:
 Submitted as part of the 2019 NetSI Collabathon.
 
 """
@@ -50,7 +50,7 @@ class QuantumJSD(BaseDistance):
         and $\lambda_i(\mathbf{L})$ is the $i$th eigenvalue of the Laplacian
         matrix $L$, represents an imaginary diffusion process over the network
         with time parameter $\beta > 0$.
-        
+
         For these density matrices and the mixture matrix, we calculate the
         Rényi entropy of order $q$
         $$
@@ -104,7 +104,6 @@ class QuantumJSD(BaseDistance):
             Calculate the Rényi entropy with order `q`, or the Von Neumann
             entropy if `q` is `None` or 1.
             """
-
             # Note that where there are many zero eigenvalues (i.e., large
             # values of beta) in the density matrix, floating-point precision
             # issues mean that there will be negative eigenvalues and the
@@ -116,8 +115,6 @@ class QuantumJSD(BaseDistance):
             eigs = np.linalg.eigvalsh(X)
             zero_eigenvalues = np.isclose(np.abs(eigs), 0, atol=1e-6)
             eigs = eigs[np.logical_not(zero_eigenvalues)]
-
-            assert (eigs > 0).all()
 
             if q is None or q == 1:
                 # plain Von Neumann entropy

@@ -14,8 +14,8 @@ Submitted as part of the 2019 NetSI Collabathon.
 from collections import Counter
 import numpy as np
 import networkx as nx
-from scipy.stats import entropy
 from .base import BaseDistance
+from ..utilities import entropy
 
 class DegreeDivergence(BaseDistance):
     def dist(self, G1, G2):
@@ -35,36 +35,26 @@ class DegreeDivergence(BaseDistance):
         dist (float): the distance between G1 and G2.
 
         """
+        def degree_vector_histogram(graph):
+            """Return the degrees in both formats.
 
-        # get the degrees
-        deg1 = np.array(list(dict(G1.degree()).values()))
-        deg2 = np.array(list(dict(G2.degree()).values()))
+            max_deg is the length of the histogram, to be padded with
+            zeros.
 
+            """
+            vec = np.array(list(dict(graph.degree()).values()))
+            max_deg = max(vec)
+            counter = Counter(vec)
+            hist = np.array([counter[v] for v in range(max_deg)])
+            return vec, hist
+
+        deg1, hist1 = degree_vector_histogram(G1)
+        deg2, hist2 = degree_vector_histogram(G2)
         self.results['degree_vectors'] = deg1, deg2
+        self.results['degree_histograms'] = hist1, hist2
 
-        N = G1.number_of_nodes()
-
-        # from degree sequences to degree histograms
-        p1 = np.zeros(N)
-        p2 = np.zeros(N)
-        for k, v in Counter(deg1).items():
-            p1[k] = v
-        for k, v in Counter(deg2).items():
-            p2[k] = v
-
-        self.results['degree_histograms'] = p1, p2
-
-        def js_divergence(P, Q):
-            """Jenson-Shannon divergence between P and Q."""
-            M = 0.5*(P+Q)
-
-            KLDpm = entropy(P, M, base=2)
-            KLDqm = entropy(Q, M, base=2)
-            JSDpq = 0.5*(KLDpm + KLDqm)
-
-            return JSDpq
-
-        dist = js_divergence(p1, p2)
-
-        self.results['dist'] = dist
-        return dist
+        max_len = max(len(hist1), len(hist2))
+        p1 = np.pad(hist1, (0, max_len - len(hist1)), 'constant', constant_values=0)
+        p2 = np.pad(hist2, (0, max_len - len(hist2)), 'constant', constant_values=0)
+        self.results['dist'] = entropy.js_divergence(p1, p2)
+        return self.results['dist']

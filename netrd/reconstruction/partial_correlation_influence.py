@@ -79,12 +79,14 @@ class PartialCorrelationInfluenceReconstructor(BaseReconstructor):
         p_cor_zs = np.zeros((n,n,n))
 
         if index:
-            for z in np.delete(range(n_TS),index):
+            for k, z in enumerate(np.delete(range(n_TS),index)):
                 index_z = np.append(index,z)
                 p_cor_z = partial_corr(TS, index=index_z)
                 p_cor_z = np.delete(p_cor_z, index, axis=0)
                 p_cor_z = np.delete(p_cor_z, index, axis=1)
                 p_cor_z = p_cor - p_cor_z
+                p_cor_z[:, k] = float("nan")
+                p_cor_z[k, :] = -np.inf
                 p_cor_zs[z] = p_cor_z
         else:
             index = np.array([],dtype=int)
@@ -92,6 +94,8 @@ class PartialCorrelationInfluenceReconstructor(BaseReconstructor):
                 index_z = z
                 p_cor_z = partial_corr(TS, index=index_z)
                 p_cor_z = p_cor - p_cor_z
+                p_cor_z[:, z] = float("nan")
+                p_cor_z[z, :] = -np.inf
                 p_cor_zs[z] = p_cor_z
 
         p_cor_inf = np.nanmean(p_cor_zs, axis=2) # mean over the Y axis

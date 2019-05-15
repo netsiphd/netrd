@@ -121,13 +121,13 @@ def threshold_on_degree(mat, **kwargs):
         np.fill_diagonal(A, 0)
         np.fill_diagonal(mat, 0)
 
-    if np.mean(np.sum(A, 1)) <= 2*avg_k:
+    if np.mean(np.sum(A, 1)) <= avg_k:
         # degenerate case: threshold the whole matrix
         thresholded_mat = mat
     else:
         for m in sorted(mat.flatten()):
             A[mat == m] = 0
-            if np.mean(np.sum(A, 1)) <= 2*avg_k:
+            if np.mean(np.sum(A, 1)) <= avg_k:
                 break
         thresholded_mat = mat * (mat > m)
 

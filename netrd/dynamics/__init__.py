@@ -6,6 +6,7 @@ from .lotka_volterra import LotkaVolterra
 from .ising_glauber import IsingGlauber
 from .branching_process import BranchingModel
 from .voter import VoterModel
+from .SIS import SISModel
 
 __all__ = [
     'SherringtonKirkpatrickIsing',

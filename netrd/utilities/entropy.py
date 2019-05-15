@@ -9,6 +9,13 @@ Submitted as part of the 2019 NetSI Collabathon.
 """
 
 import numpy as np
+from scipy.stats import entropy as sp_entropy
+
+
+def js_divergence(P, Q):
+    """Jenson-Shannon divergence between P and Q."""
+    M = 0.5*(P+Q)
+    return 0.5*(sp_entropy(P, M, base=2) + sp_entropy(Q, M, base=2))
 
 
 def entropy(var):
@@ -47,20 +54,15 @@ def joint_entropy(data):
     2. The data of variables must be categorical.
 
     """
-    # Entropy is computed through summing contribution of states with non-zero
-    # empirical probability in the data
-    # Obtain counts of states that appear in the data
+    # Entropy is computed through summing contribution of states with
+    # non-zero empirical probability in the data
     count = dict()
     for state in data:
         key = tuple(state)
         count.setdefault(key, 0)
         count[key] += 1
 
-    # Compute the entropy
-    m, _ = data.shape  # Total number of observations
-    entrp = -sum((c/m) * np.log2(c/m) for c in count.values())
-
-    return entrp
+    return sp_entropy(list(count.values()), base=2)
 
 
 def conditional_entropy(data, given):

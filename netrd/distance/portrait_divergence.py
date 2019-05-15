@@ -1,10 +1,10 @@
 """
 portrait_divergence.py
 ---------------------
-Adapted from "An information-theoretic, all-scales approach to comparing networks" by James P. Bagrow and Erik M. Bollt, 2018 arXiv:1804.03665 
+Adapted from "An information-theoretic, all-scales approach to comparing networks" by James P. Bagrow and Erik M. Bollt, 2018 arXiv:1804.03665
 and [this repository](https://github.com/bagrow/portrait-divergence)
 
-author: Brennan Klein 
+author: Brennan Klein
 email: brennanjamesklein at gmail dot com
 submitted as part of the 2019 NetSI Collabathon
 """
@@ -12,12 +12,12 @@ from .base import BaseDistance
 from collections import Counter
 import numpy as np
 import networkx as nx
-from scipy.stats import entropy
+from ..utilities import entropy
 
 class PortraitDivergence(BaseDistance):
     def dist(self, G1, G2, bins=None, binedges=None):
         """
-        Given two graphs, G1 and G2, the portrait divergence provides a 
+        Given two graphs, G1 and G2, the portrait divergence provides a
         distance measure based on the two graphs' "portraits".
 
         The results dictionary also stores a 2-tuple of the underlying adjacency
@@ -42,7 +42,7 @@ class PortraitDivergence(BaseDistance):
         An information-theoretic, all-scales approach to comparing networks
         James P. Bagrow and Erik M. Bollt, 2018 arXiv:1804.03665
         and [this repository](https://github.com/bagrow/portrait-divergence)
-        
+
 		# sample usage
 		from portrait_divergence import *
 		G1 = nx.erdos_renyi_graph(100,0.05)
@@ -78,18 +78,18 @@ class PortraitDivergence(BaseDistance):
 
             unique_path_lengths = sorted(list(UPL_G1 | UPL_G2))
             binedges = np.percentile(unique_path_lengths, np.arange(0, 101, bins))
-    
+
         # get weighted portraits:
         BG1 = weighted_portrait(G1, paths=paths_G1, binedges=binedges)
         BG2 = weighted_portrait(G2, paths=paths_G2, binedges=binedges)
-    
-        dist = portrait_divergence(BG1, BG2, N1=G1.number_of_nodes(), 
+
+        dist = portrait_divergence(BG1, BG2, N1=G1.number_of_nodes(),
                                              N2=G2.number_of_nodes())
 
         self.results['dist'] = dist
         self.results['adjacency_matrices'] = adj1, adj2
         self.results['portrait_matrices'] = BG1, BG2
-    
+
         return dist
 
 
@@ -101,7 +101,7 @@ def portrait(G):
 
     Returns
     -------
-    B (np.ndarray): a matrix B such that B[i,j] is the number of starting 
+    B (np.ndarray): a matrix B such that B[i,j] is the number of starting
     nodes in graph with j nodes in shell i.
     """
 
@@ -109,8 +109,8 @@ def portrait(G):
     N = G.number_of_nodes()
 
     # B indices are 0...dia x 0...N-1:
-    B = np.zeros((dia+1,N)) 
-    
+    B = np.zeros((dia+1,N))
+
     max_path = 1
     adj = G.adj
 
@@ -124,7 +124,7 @@ def portrait(G):
             extend = next_depth.extend
 
             for n in search_queue:
-                l = [i for i in adj[n] if i not in nodes_visited] 
+                l = [i for i in adj[n] if i not in nodes_visited]
                 extend(l)
 
                 for j in l:
@@ -132,14 +132,14 @@ def portrait(G):
 
             search_queue = next_depth
             d += 1
-            
+
         node_distances = nodes_visited.values()
         max_node_distances = max(node_distances)
-        
+
         curr_max_path = max_node_distances
         if curr_max_path > max_path:
             max_path = curr_max_path
-        
+
         # build individual distribution:
         dict_distribution = dict.fromkeys(node_distances, 0)
         for d in node_distances:
@@ -148,13 +148,13 @@ def portrait(G):
         # add individual distribution to matrix:
         for shell,count in dict_distribution.items():
             B[shell][count] += 1
-        
+
         # HACK: count starting nodes that have zero nodes in farther shells
         max_shell = dia
         while max_shell > max_node_distances:
             B[max_shell][0] += 1
             max_shell -= 1
-    
+
     return B[:max_path+1,:]
 
 
@@ -165,10 +165,10 @@ def weighted_portrait(G, paths=None, binedges=None):
 
     Params
     ------
-    G (nx.Graph or nx.DiGraph): a graph. 
+    G (nx.Graph or nx.DiGraph): a graph.
     paths (list): a list of all pairs of pahts
     binedges (list): sampled path lengths
-    
+
     Returns
     -------
     B (np.ndarray): a matrix B where B[i,j] is the number of starting nodes in graph with j nodes at distance d_i <  d < d_{i+1}.
@@ -177,16 +177,16 @@ def weighted_portrait(G, paths=None, binedges=None):
     # all pairs path lengths
     if paths is None:
         paths = list(nx.all_pairs_dijkstra_path_length(G))
-    
+
     if binedges is None:
         unique_path_lengths  = _get_unique_path_lengths(G, paths=paths)
-        sampled_path_lengths = np.percentile(unique_path_lengths, 
+        sampled_path_lengths = np.percentile(unique_path_lengths,
                                              np.arange(0, 101, 1))
     else:
         sampled_path_lengths = binedges
 
     UPL = np.array(sampled_path_lengths)
-    
+
     l_s_v = []
     for i,(s,dist_dict) in enumerate(paths):
         distances = np.array(list(dist_dict.values()))
@@ -194,7 +194,7 @@ def weighted_portrait(G, paths=None, binedges=None):
         l_s_v.append(s_v)
 
     M = np.array(l_s_v)
-    
+
     B = np.zeros((len(UPL)-1, G.number_of_nodes()+1))
 
     for i in range(len(UPL)-1):
@@ -202,7 +202,7 @@ def weighted_portrait(G, paths=None, binedges=None):
 
         for n,c in Counter(col).items():
             B[i,n] += c
-    
+
     return B
 
 
@@ -227,7 +227,7 @@ def _get_unique_path_lengths(G, paths=None):
 
     for starting_node,dist_dict in paths:
         unique_path_lengths |= set(dist_dict.values())
-    
+
     unique_path_lengths = sorted(list(unique_path_lengths))
     return unique_path_lengths
 
@@ -240,15 +240,15 @@ def pad_portraits_to_same_size(B1,B2):
     Params
     ------
     B1 (np.ndarray): Portrait matrix of a graph (k x N)
-    B2 (np.ndarray): 
-    
+    B2 (np.ndarray):
+
     Returns
     -------
     BigB1, BigB2 (np.ndarray): padded versions of B1 and B2 so they align
     """
     ns,ms = B1.shape
     nl,ml = B2.shape
-    
+
     # Bmats have N columns, find last *occupied* column and trim both down:
     lastcol1 = max(np.nonzero(B1)[1])
     lastcol2 = max(np.nonzero(B2)[1])
@@ -256,13 +256,13 @@ def pad_portraits_to_same_size(B1,B2):
 
     B1 = B1[:,:lastcol+1]
     B2 = B2[:,:lastcol+1]
-    
+
     BigB1 = np.zeros((max(ns,nl), lastcol+1))
     BigB2 = np.zeros((max(ns,nl), lastcol+1))
-    
+
     BigB1[:B1.shape[0],:B1.shape[1]] = B1
     BigB2[:B2.shape[0],:B2.shape[1]] = B2
-    
+
     return BigB1, BigB2
 
 
@@ -282,7 +282,7 @@ def _get_prob_distance(B):
     Helper function.
     """
     d,K = B.shape
-    
+
     v = np.arange(0, K)
     f = (B*v).sum(axis=1)
     return f / f.sum()
@@ -310,29 +310,22 @@ def portrait_divergence(G1, G2, N1=None, N2=None):
     JSDpq (float): the Jensen-Shannon divergence between the portraits of G1 and G2
 
     """
-    
     BG1 = _graph_or_portrait(G1)
     BG2 = _graph_or_portrait(G2)
-    BG1, BG2 = pad_portraits_to_same_size(BG1,BG2)
-    
+    BG1, BG2 = pad_portraits_to_same_size(BG1, BG2)
+
     # build joint distribution for G:
     P_L   = _get_prob_distance(BG1)
     P_KgL = _get_prob_k_given_L(BG1, N=N1)
     P_KaL = P_KgL * P_L[:, None]
-    
+
     # build joint distribution for H:
     Q_L   = _get_prob_distance(BG2)
     Q_KgL = _get_prob_k_given_L(BG2, N=N2)
     Q_KaL = Q_KgL * Q_L[:, None]
-    
+
     # flatten distribution matrices as arrays:
     P = P_KaL.ravel()
     Q = Q_KaL.ravel()
-    M = 0.5*(P+Q)
-    
-    # lastly, get JSD:
-    KLDpm = entropy(P, M, base=2)
-    KLDqm = entropy(Q, M, base=2)
-    JSDpq = 0.5*(KLDpm + KLDqm)
-    
-    return JSDpq
+
+    return entropy.js_divergence(P, Q)

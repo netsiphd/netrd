@@ -86,9 +86,9 @@ class ConvergentCrossMappingReconstructor(BaseReconstructor):
         L, N = data.shape
 
         # Raise error if there is not enough data to run the implementation
-        if L < 3 + (N-1) * (1+tau):
-            message = 'Need more data.'
-            message += ' L must be not less than 3+(N-1)*(1+tau).'
+        if L < 3 + (N - 1) * (1 + tau):
+            message = "Need more data."
+            message += " L must be not less than 3+(N-1)*(1+tau)."
             raise ValueError(message)
 
         # Create shadow data cloud for each variable
@@ -96,8 +96,7 @@ class ConvergentCrossMappingReconstructor(BaseReconstructor):
 
         # Obtain nearest neighbors of points in the shadow data clould and
         # their weights for time series estimates
-        neighbors, distances = zip(*[nearest_neighbors(shad, L)
-                                     for shad in shadows])
+        neighbors, distances = zip(*[nearest_neighbors(shad, L) for shad in shadows])
         weights = [neighbor_weights(dist) for dist in distances]
 
         # For every variable X and every other variable Y,
@@ -107,8 +106,7 @@ class ConvergentCrossMappingReconstructor(BaseReconstructor):
         correlation = np.ones((N, N), dtype=float)
         pvalue = np.zeros((N, N), dtype=float)
         for i, j in permutations(range(N), 2):
-            estimates = time_series_estimates(data[:, j],
-                                              neighbors[i], weights[i])
+            estimates = time_series_estimates(data[:, j], neighbors[i], weights[i])
             M, = estimates.shape
             correlation[i, j], pvalue[i, j] = pearsonr(estimates, data[-M:, j])
 
@@ -118,9 +116,9 @@ class ConvergentCrossMappingReconstructor(BaseReconstructor):
 
         # Save the graph object, matrices of correlation and p-values into the
         # "results" field (dictionary)
-        self.results['graph'] = G
-        self.results['weights_matrix'] = correlation
-        self.results['pvalues_matrix'] = pvalue
+        self.results["graph"] = G
+        self.results["weights_matrix"] = correlation
+        self.results["pvalues_matrix"] = pvalue
 
         return G
 
@@ -156,7 +154,7 @@ def shadow_data_cloud(data, N, tau):
 
     for j in reversed(range(N)):  # Fill in column values from the right
         delta = (N - 1 - j) * tau  # Amount of time-lag for this column
-        shadow[:, j] = data[delta:delta+M]
+        shadow[:, j] = data[delta : delta + M]
 
     return shadow
 
@@ -193,7 +191,7 @@ def nearest_neighbors(shadow, L):
     """
     M, N = shadow.shape
     k = N + 2  # Number of nearest neighbors to be found, including itself
-    method = 'ball_tree' if k < M/2 else 'brute'
+    method = "ball_tree" if k < M / 2 else "brute"
     nbrs = NearestNeighbors(n_neighbors=k, algorithm=method).fit(shadow)
     dist, nei = nbrs.kneighbors(shadow)
 
@@ -203,7 +201,7 @@ def nearest_neighbors(shadow, L):
     dist = np.delete(dist, 0, axis=1)
 
     # Modify the neighbors' indices to their time indices
-    nei += (L - M)
+    nei += L - M
 
     return nei, dist
 

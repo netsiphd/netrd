@@ -52,6 +52,6 @@ class VoterModel(BaseDynamics):
                 if noise and np.random.rand() < noise:
                     TS[i, t] = 1 if np.random.rand() < 0.5 else -1
 
-        self.results['ground_truth'] = G
-        self.results['TS'] = TS
+        self.results["ground_truth"] = G
+        self.results["TS"] = TS
         return TS

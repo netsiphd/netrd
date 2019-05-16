@@ -19,7 +19,7 @@ from ..utilities import create_graph, threshold
 
 
 class MutualInformationMatrixReconstructor(BaseReconstructor):
-    def fit(self, TS, nbins=10, threshold_type='degree', **kwargs):
+    def fit(self, TS, nbins=10, threshold_type="degree", **kwargs):
         """
         Reconstruct a network by calculating the mutual information between the
         probability distributions of the (binned) values of the time series of
@@ -45,12 +45,12 @@ class MutualInformationMatrixReconstructor(BaseReconstructor):
 
         """
 
-        N    = TS.shape[0]
+        N = TS.shape[0]
         rang = [np.min(TS), np.max(TS)]
 
         # saving these lines because there is a chance the "binned_edges" data would be useful
-#         _,bin_edges = np.histogram(TS[0], range=np.array(rang), bins=nbins)
-#         self.results['bin_edges'] = bin_edges
+        #         _,bin_edges = np.histogram(TS[0], range=np.array(rang), bins=nbins)
+        #         self.results['bin_edges'] = bin_edges
 
         # mutual information requires a joint probability and a "product probability" distribution
         IndivP = find_individual_probability_distribution(TS, rang, nbins)
@@ -60,18 +60,19 @@ class MutualInformationMatrixReconstructor(BaseReconstructor):
         # calculate the mutual information between each pair of nodes--this is the
         # mutual information matrix
         I = mutual_info_all_pairs(JointP, ProduP, N)
-        self.results['weights_matrix'] = I
+        self.results["weights_matrix"] = I
 
         # the adjacency matrix is the binarized thresholded mutual information matrix
         # tau=threshold_from_degree(deg,I)
         # A = np.array(I>tau, dtype=int)
         A = threshold(I, threshold_type, **kwargs)
-        self.results['thresholded_matrix'] = A
+        self.results["thresholded_matrix"] = A
 
         G = create_graph(A)
-        self.results['graph'] = G
+        self.results["graph"] = G
 
         return G
+
 
 def find_individual_probability_distribution(TS, rang, nbins):
     """
@@ -91,13 +92,20 @@ def find_individual_probability_distribution(TS, rang, nbins):
     """
 
     N, L = TS.shape  # N nodes and L length
-    IndivP = dict()  # create a dict to put the individual binned probability vectors into
+    IndivP = (
+        dict()
+    )  # create a dict to put the individual binned probability vectors into
 
     for j in range(N):
-        P, _ = np.histogram(TS[j], bins=nbins, range=rang) # bin node j's time series data into nbins
-        IndivP[j] = P / L # normalize that by the length of time series data to make it a vector of probs
+        P, _ = np.histogram(
+            TS[j], bins=nbins, range=rang
+        )  # bin node j's time series data into nbins
+        IndivP[j] = (
+            P / L
+        )  # normalize that by the length of time series data to make it a vector of probs
 
     return IndivP
+
 
 def find_product_probability_distribution(IndivP, N):
     """
@@ -115,13 +123,16 @@ def find_product_probability_distribution(IndivP, N):
                          are nbins x nbins arrays corresponding to products of two probability vectors
     """
 
-    ProduP = dict() # create a dict to put the product prob distributions into
+    ProduP = dict()  # create a dict to put the product prob distributions into
 
-    for l in range(N): # for each node
-        for j in range(l): # for each possible edge (this method is symmetric)
-            ProduP[(j,l)] = np.outer(IndivP[j], IndivP[l]) # outer product between two vectors
+    for l in range(N):  # for each node
+        for j in range(l):  # for each possible edge (this method is symmetric)
+            ProduP[(j, l)] = np.outer(
+                IndivP[j], IndivP[l]
+            )  # outer product between two vectors
 
     return ProduP
+
 
 def find_joint_probability_distribution(TS, rang, nbins):
     """
@@ -140,15 +151,18 @@ def find_joint_probability_distribution(TS, rang, nbins):
                          are nbins x nbins arrays corresponding to joint probability vectors
     """
 
-    N, L = TS.shape # N nodes and L length
-    JointP = dict() # create a dict to put the joint prob distributions into
+    N, L = TS.shape  # N nodes and L length
+    JointP = dict()  # create a dict to put the joint prob distributions into
 
-    for l in range(N): # for each node
-        for j in range(l): # for each possible edge
-            P, _, _ = np.histogram2d(TS[j], TS[l], bins=nbins, range=np.array([rang,rang]))
-            JointP[(j,l)] = P / L
+    for l in range(N):  # for each node
+        for j in range(l):  # for each possible edge
+            P, _, _ = np.histogram2d(
+                TS[j], TS[l], bins=nbins, range=np.array([rang, rang])
+            )
+            JointP[(j, l)] = P / L
 
     return JointP
+
 
 def mutual_info_node_pair(JointP_jl, ProduP_jl):
     """
@@ -166,13 +180,14 @@ def mutual_info_node_pair(JointP_jl, ProduP_jl):
                   Note: np.log returns an information value in nats
     """
 
-    I_jl = 0 # initialize the mutual information to zero
+    I_jl = 0  # initialize the mutual information to zero
 
-    for q,p in zip(JointP_jl.flatten(), ProduP_jl.flatten()):
-        if q > 0 and p > 0: # avoid log(0) or dividing by zero
-            I_jl += q * np.log( q / p ) # an instance of the KL divergence
+    for q, p in zip(JointP_jl.flatten(), ProduP_jl.flatten()):
+        if q > 0 and p > 0:  # avoid log(0) or dividing by zero
+            I_jl += q * np.log(q / p)  # an instance of the KL divergence
 
     return I_jl
+
 
 def mutual_info_all_pairs(JointP, ProduP, N):
     """
@@ -191,20 +206,21 @@ def mutual_info_all_pairs(JointP, ProduP, N):
     I (np.ndarray): the NxN mutual information matrix from a time series
     """
 
-    I = np.zeros((N, N)) # initialize an empty matrix
+    I = np.zeros((N, N))  # initialize an empty matrix
 
     for l in range(N):
         for j in range(l):
 
-            JointP_jl = JointP[(j,l)]
-            ProduP_jl = ProduP[(j,l)]
+            JointP_jl = JointP[(j, l)]
+            ProduP_jl = ProduP[(j, l)]
 
-            I[j,l] = mutual_info_node_pair(JointP_jl, ProduP_jl) # fill in the matrix
-            I[l,j] = I[j,l] # this method is symmetric
+            I[j, l] = mutual_info_node_pair(JointP_jl, ProduP_jl)  # fill in the matrix
+            I[l, j] = I[j, l]  # this method is symmetric
 
     return I
 
-def threshold_from_degree(deg,M):
+
+def threshold_from_degree(deg, M):
     """
     Compute the required threshold (tau) in order to yield a reconstructed graph of mean degree deg.
     Params
@@ -216,10 +232,12 @@ def threshold_from_degree(deg,M):
     tau (float): Required threshold for A=np.array(I<tau,dtype=int) to have an average of deg ones per row/column
 
     """
-    N=len(M)
-    A=np.ones((N,N)) # start with a complete graph (lowest possible threshold)
-    for tau in sorted(M.flatten()): # consider increasingly large entry-values
-        A[M==tau]=0 # remove edges of weight less than the current entry
-        if np.mean(np.sum(A,1))<deg: # stop once the matrix is trimmed down to mean degree deg
+    N = len(M)
+    A = np.ones((N, N))  # start with a complete graph (lowest possible threshold)
+    for tau in sorted(M.flatten()):  # consider increasingly large entry-values
+        A[M == tau] = 0  # remove edges of weight less than the current entry
+        if (
+            np.mean(np.sum(A, 1)) < deg
+        ):  # stop once the matrix is trimmed down to mean degree deg
             break
-    return tau # return this critical threshold value
+    return tau  # return this critical threshold value

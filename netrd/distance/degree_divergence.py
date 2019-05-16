@@ -17,6 +17,7 @@ import networkx as nx
 from .base import BaseDistance
 from ..utilities import entropy
 
+
 class DegreeDivergence(BaseDistance):
     def dist(self, G1, G2):
         """
@@ -35,6 +36,7 @@ class DegreeDivergence(BaseDistance):
         dist (float): the distance between G1 and G2.
 
         """
+
         def degree_vector_histogram(graph):
             """Return the degrees in both formats.
 
@@ -50,11 +52,11 @@ class DegreeDivergence(BaseDistance):
 
         deg1, hist1 = degree_vector_histogram(G1)
         deg2, hist2 = degree_vector_histogram(G2)
-        self.results['degree_vectors'] = deg1, deg2
-        self.results['degree_histograms'] = hist1, hist2
+        self.results["degree_vectors"] = deg1, deg2
+        self.results["degree_histograms"] = hist1, hist2
 
         max_len = max(len(hist1), len(hist2))
-        p1 = np.pad(hist1, (0, max_len - len(hist1)), 'constant', constant_values=0)
-        p2 = np.pad(hist2, (0, max_len - len(hist2)), 'constant', constant_values=0)
-        self.results['dist'] = entropy.js_divergence(p1, p2)
-        return self.results['dist']
+        p1 = np.pad(hist1, (0, max_len - len(hist1)), "constant", constant_values=0)
+        p2 = np.pad(hist2, (0, max_len - len(hist2)), "constant", constant_values=0)
+        self.results["dist"] = entropy.js_divergence(p1, p2)
+        return self.results["dist"]

@@ -50,33 +50,32 @@ class SISModel(BaseDynamics):
             mu = 1 / H.number_of_nodes()
 
         i0s = np.random.permutation(
-            np.concatenate([np.repeat(1, i0),
-                            np.repeat(0, N - i0)]))
+            np.concatenate([np.repeat(1, i0), np.repeat(0, N - i0)])
+        )
         TS[:, 0] = i0s
-        nx.set_node_attributes(H, {i: x
-                                   for i, x in enumerate(i0s)}, 'infected')
-        nx.set_node_attributes(H, 0, 'next_infected')
+        nx.set_node_attributes(H, {i: x for i, x in enumerate(i0s)}, "infected")
+        nx.set_node_attributes(H, 0, "next_infected")
 
         # SIS dynamics
         for t in range(1, L):
             nodes = np.random.permutation(H.nodes)
             for i in nodes:
-                if H.nodes[i]['infected']:
+                if H.nodes[i]["infected"]:
                     neigh = H.neighbors(i)
                     for j in neigh:
                         if np.random.random() < beta:
-                            H.nodes[j]['next_infected'] = 1
+                            H.nodes[j]["next_infected"] = 1
                     if np.random.random() < mu:
-                        H.nodes[i]['infected'] = 0
-            infections = nx.get_node_attributes(H, 'infected')
-            next_infections = nx.get_node_attributes(H, 'next_infected')
+                        H.nodes[i]["infected"] = 0
+            infections = nx.get_node_attributes(H, "infected")
+            next_infections = nx.get_node_attributes(H, "next_infected")
 
             # store SIS dynamics for time t
             TS[:, t] = np.array(list(infections.values()))
-            nx.set_node_attributes(H, next_infections, 'infected')
-            nx.set_node_attributes(H, 0, 'next_infected')
+            nx.set_node_attributes(H, next_infections, "infected")
+            nx.set_node_attributes(H, 0, "next_infected")
 
-        self.results['ground_truth'] = H
-        self.results['TS'] = TS
+        self.results["ground_truth"] = H
+        self.results["TS"] = TS
 
         return TS

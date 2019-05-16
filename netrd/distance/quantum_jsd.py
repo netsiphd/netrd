@@ -84,8 +84,7 @@ class QuantumJSD(BaseDistance):
             raise ValueError("beta must be positive.")
 
         if q and q >= 2:
-            warnings.warn("JSD is only a metric for 0 ≤ q < 2.",
-                          RuntimeWarning)
+            warnings.warn("JSD is only a metric for 0 ≤ q < 2.", RuntimeWarning)
 
         def density_matrix(A, beta):
             """
@@ -121,7 +120,7 @@ class QuantumJSD(BaseDistance):
                 H = -1 * np.sum(eigs * np.log2(eigs))
             else:
                 prefactor = 1 / (1 - q)
-                H = prefactor * np.log2((eigs**q).sum())
+                H = prefactor * np.log2((eigs ** q).sum())
             return H
 
         A1 = nx.to_numpy_array(G1)
@@ -137,11 +136,11 @@ class QuantumJSD(BaseDistance):
 
         dist = np.sqrt(H0 - 0.5 * (H1 + H2))
 
-        self.results['density_matrix_1'] = rho1
-        self.results['density_matrix_2'] = rho2
-        self.results['mixture_matrix'] = mix
-        self.results['entropy_1'] = H1
-        self.results['entropy_2'] = H2
-        self.results['entropy_mixture'] = H0
-        self.results['dist'] = dist
+        self.results["density_matrix_1"] = rho1
+        self.results["density_matrix_2"] = rho2
+        self.results["mixture_matrix"] = mix
+        self.results["entropy_1"] = H1
+        self.results["entropy_2"] = H2
+        self.results["entropy_mixture"] = H0
+        self.results["dist"] = dist
         return dist

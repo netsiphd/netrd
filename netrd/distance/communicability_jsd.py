@@ -23,6 +23,7 @@ import numpy as np
 import scipy as sp
 from .base import BaseDistance
 
+
 class CommunicabilityJSD(BaseDistance):
     def dist(self, G1, G2):
         """
@@ -91,13 +92,13 @@ class CommunicabilityJSD(BaseDistance):
         H0 = sp.stats.entropy(P0)
         dist = np.sqrt(H0 - 0.5 * (H1 + H2))
 
-        self.results['P1'] = P1
-        self.results['P2'] = P2
-        self.results['P0'] = P0
+        self.results["P1"] = P1
+        self.results["P2"] = P2
+        self.results["P0"] = P0
 
-        self.results['entropy_1']       = H1
-        self.results['entropy_2']       = H2
-        self.results['entropy_mixture'] = H0
-        self.results['dist'] = dist
+        self.results["entropy_1"] = H1
+        self.results["entropy_2"] = H2
+        self.results["entropy_mixture"] = H0
+        self.results["dist"] = dist
 
         return dist

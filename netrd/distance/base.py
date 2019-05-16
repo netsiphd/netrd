@@ -33,7 +33,7 @@ class BaseDistance:
         distance (float).
 
         """
-        dist = -1                   # compute the distance
-        self.results['dist'] = dist # store dist in self.results
+        dist = -1  # compute the distance
+        self.results["dist"] = dist  # store dist in self.results
         # self.results[..] = ..     # also store other values if needed
-        return dist                 # return only one value!
+        return dist  # return only one value!

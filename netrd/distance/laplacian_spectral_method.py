@@ -24,8 +24,17 @@ from scipy.sparse.linalg import eigsh
 
 
 class LaplacianSpectralMethod(BaseDistance):
-    def dist(self, G1, G2, normed=True, kernel='normal', hwhm=0.011775,
-             measure='jensen-shannon', k=None, which='LM'):
+    def dist(
+        self,
+        G1,
+        G2,
+        normed=True,
+        kernel="normal",
+        hwhm=0.011775,
+        measure="jensen-shannon",
+        k=None,
+        which="LM",
+    ):
         """Graph distances using different measure between the Laplacian
         spectra of the two graphs
 
@@ -90,60 +99,60 @@ class LaplacianSpectralMethod(BaseDistance):
 
         """
 
-        #get the adjacency matrices
+        # get the adjacency matrices
         adj1 = nx.to_numpy_array(G1)
         adj2 = nx.to_numpy_array(G2)
-        self.results['adjacency_matrices'] = adj1, adj2
+        self.results["adjacency_matrices"] = adj1, adj2
 
-        #verify if the graphs are directed (at least one)
+        # verify if the graphs are directed (at least one)
         directed = nx.is_directed(G1) or nx.is_directed(G2)
 
         if directed:
-            #create augmented adjacency matrices
+            # create augmented adjacency matrices
             N1 = len(G1)
             N2 = len(G2)
-            null_mat1 = np.zeros((N1,N1))
-            null_mat2 = np.zeros((N2,N2))
-            adj1 = np.block([[null_mat1, adj1.T],[adj1, null_mat1]])
-            adj2 = np.block([[null_mat2, adj2.T],[adj2, null_mat2]])
-            self.results['augmented_adjacency_matrices'] = adj1, adj2
+            null_mat1 = np.zeros((N1, N1))
+            null_mat2 = np.zeros((N2, N2))
+            adj1 = np.block([[null_mat1, adj1.T], [adj1, null_mat1]])
+            adj2 = np.block([[null_mat2, adj2.T], [adj2, null_mat2]])
+            self.results["augmented_adjacency_matrices"] = adj1, adj2
 
-        #get the laplacian matrices
+        # get the laplacian matrices
         lap1 = laplacian(adj1, normed=normed)
         lap2 = laplacian(adj2, normed=normed)
-        self.results['laplacian_matrices'] = lap1, lap2
+        self.results["laplacian_matrices"] = lap1, lap2
 
-        #get the eigenvalues of the laplacian matrices
+        # get the eigenvalues of the laplacian matrices
         if k is None:
             ev1 = np.abs(eigvalsh(lap1))
             ev2 = np.abs(eigvalsh(lap2))
         else:
-            #transform the dense laplacian matrices to sparse representations
+            # transform the dense laplacian matrices to sparse representations
             lap1 = csgraph_from_dense(lap1)
             lap2 = csgraph_from_dense(lap2)
             ev1 = np.abs(eigsh(lap1, k=k, which=which)[0])
             ev2 = np.abs(eigsh(lap2, k=k, which=which)[0])
-        self.results['eigenvalues'] = ev1, ev2
+        self.results["eigenvalues"] = ev1, ev2
 
         if kernel is not None:
-            #define the proper support
+            # define the proper support
             a = 0
             if normed:
                 b = 2
             else:
                 b = np.inf
 
-            #create continuous spectra
+            # create continuous spectra
             density1 = _create_continuous_spectrum(ev1, kernel, hwhm, a, b)
             density2 = _create_continuous_spectrum(ev2, kernel, hwhm, a, b)
 
-            #compare the spectra
+            # compare the spectra
             dist = _spectra_comparison(density1, density2, a, b, measure)
-            self.results['dist'] = dist
+            self.results["dist"] = dist
         else:
-            #euclidean distance between the two discrete spectra
+            # euclidean distance between the two discrete spectra
             dist = np.linalg.norm(ev1 - ev2)
-            self.results['dist'] = dist
+            self.results["dist"] = dist
 
         return dist
 
@@ -173,19 +182,20 @@ def _create_continuous_spectrum(eigenvalues, kernel, hwhm, a, b):
     density.
 
     """
-    #define density and repartition function for each eigenvalue
+    # define density and repartition function for each eigenvalue
     if kernel == "normal":
-        std = hwhm/1.1775
-        f = lambda x, xp: np.exp(-(x-xp)**2/(2*std**2))\
-                /np.sqrt(2*np.pi*std**2)
-        F = lambda x, xp: (1 + erf((x-xp)/(np.sqrt(2)*std)))/2
+        std = hwhm / 1.1775
+        f = lambda x, xp: np.exp(-(x - xp) ** 2 / (2 * std ** 2)) / np.sqrt(
+            2 * np.pi * std ** 2
+        )
+        F = lambda x, xp: (1 + erf((x - xp) / (np.sqrt(2) * std))) / 2
     elif kernel == "lorentzian":
-        f = lambda x, xp: hwhm/(np.pi*(hwhm**2 + (x-xp)**2))
-        F = lambda x, xp: np.arctan((x-xp)/hwhm)/np.pi + 1/2
+        f = lambda x, xp: hwhm / (np.pi * (hwhm ** 2 + (x - xp) ** 2))
+        F = lambda x, xp: np.arctan((x - xp) / hwhm) / np.pi + 1 / 2
 
-    #compute normalization factor and define density function
+    # compute normalization factor and define density function
     Z = np.sum(F(b, eigenvalues) - F(a, eigenvalues))
-    density = lambda x: np.sum(f(x, eigenvalues))/Z
+    density = lambda x: np.sum(f(x, eigenvalues)) / Z
 
     return density
 
@@ -210,22 +220,25 @@ def _spectra_comparison(density1, density2, a, b, measure):
 
     """
     if measure == "jensen-shannon":
-        M = lambda x: (density1(x) + density2(x))/2
-        jensen_shannon = (_kullback_leiber(density1, M, a, b)
-                          + _kullback_leiber(density2, M, a, b))/2
+        M = lambda x: (density1(x) + density2(x)) / 2
+        jensen_shannon = (
+            _kullback_leiber(density1, M, a, b) + _kullback_leiber(density2, M, a, b)
+        ) / 2
         dist = np.sqrt(jensen_shannon)
 
     elif measure == "euclidean":
-        integrand = lambda x: (density1(x) - density2(x))**2
+        integrand = lambda x: (density1(x) - density2(x)) ** 2
         dist = np.sqrt(quad(integrand, a, b)[0])
 
     return dist
 
+
 def _kullback_leiber(f1, f2, a, b):
     def integrand(x):
         if f1(x) > 0 and f2(x) > 0:
-            result = f1(x)*np.log(f1(x)/f2(x))
+            result = f1(x) * np.log(f1(x) / f2(x))
         else:
             result = 0
         return result
+
     return quad(integrand, a, b)[0]

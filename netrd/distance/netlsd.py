@@ -39,11 +39,12 @@ class NetLSD(BaseDistance):
 
         """
         if normalization is None:
-            normalization = 'none'
+            normalization = "none"
         if timescales is None:
             timescales = np.logspace(-2, 2, 256)
         assert isinstance(
-            normalization, str), 'Normalization parameter must be of string type'
+            normalization, str
+        ), "Normalization parameter must be of string type"
 
         lap1 = nx.normalized_laplacian_matrix(G1)
         lap2 = nx.normalized_laplacian_matrix(G2)
@@ -55,10 +56,10 @@ class NetLSD(BaseDistance):
         hkt1 = _lsd_signature(eigs1, timescales, normalization)
         hkt2 = _lsd_signature(eigs2, timescales, normalization)
 
-        self.results['signatures'] = (hkt1, hkt2)
-        self.results['dist'] = np.linalg.norm(hkt1 - hkt2)
+        self.results["signatures"] = (hkt1, hkt2)
+        self.results["dist"] = np.linalg.norm(hkt1 - hkt2)
 
-        return self.results['dist']
+        return self.results["dist"]
 
 
 def _lsd_signature(eigenvalues, timescales, normalization):
@@ -82,8 +83,8 @@ def _lsd_signature(eigenvalues, timescales, normalization):
     hkt = np.zeros(timescales.shape)
     for idx, t in enumerate(timescales):
         hkt[idx] = np.sum(np.exp(-t * eigenvalues))
-    if normalization == 'empty':
+    if normalization == "empty":
         return hkt / nv
-    if normalization == 'complete':
+    if normalization == "complete":
         return hkt / (1 + (nv - 1) * np.exp(-(1 + 1 / (nv - 1)) * timescales))
     return hkt

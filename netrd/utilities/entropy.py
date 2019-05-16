@@ -14,8 +14,8 @@ from scipy.stats import entropy as sp_entropy
 
 def js_divergence(P, Q):
     """Jenson-Shannon divergence between P and Q."""
-    M = 0.5*(P+Q)
-    return 0.5*(sp_entropy(P, M, base=2) + sp_entropy(Q, M, base=2))
+    M = 0.5 * (P + Q)
+    return 0.5 * (sp_entropy(P, M, base=2) + sp_entropy(Q, M, base=2))
 
 
 def entropy(var):
@@ -144,8 +144,9 @@ def linear_bins(raw, n_bins):
     """
     _min = raw.min(axis=0)
     _max = raw.max(axis=0)
-    bins = np.array([np.linspace(start, end, num=n_bins+1)
-                     for start, end in zip(_min, _max)])
+    bins = np.array(
+        [np.linspace(start, end, num=n_bins + 1) for start, end in zip(_min, _max)]
+    )
     bins = bins.T
 
     return bins

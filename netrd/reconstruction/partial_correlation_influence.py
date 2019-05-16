@@ -25,11 +25,7 @@ from ..utilities import create_graph, threshold
 
 
 class PartialCorrelationInfluenceReconstructor(BaseReconstructor):
-    def fit(self,
-            TS,
-            index=None,
-            threshold_type='range',
-            **kwargs):
+    def fit(self, TS, index=None, threshold_type="range", **kwargs):
         """
         Reconstruct a network from time series data using the
         *average effect of a series Z on the correlation between
@@ -66,7 +62,7 @@ class PartialCorrelationInfluenceReconstructor(BaseReconstructor):
 
         if index:
             p_cor = partial_corr(TS, index=index)
-            n_TS  = p_cor.shape[0]
+            n_TS = p_cor.shape[0]
             p_cor = np.delete(p_cor, index, axis=0)
             p_cor = np.delete(p_cor, index, axis=1)
         else:
@@ -76,11 +72,11 @@ class PartialCorrelationInfluenceReconstructor(BaseReconstructor):
 
         n = p_cor.shape[0]
 
-        p_cor_zs = np.zeros((n,n,n))
+        p_cor_zs = np.zeros((n, n, n))
 
         if index:
-            for k, z in enumerate(np.delete(range(n_TS),index)):
-                index_z = np.append(index,z)
+            for k, z in enumerate(np.delete(range(n_TS), index)):
+                index_z = np.append(index, z)
                 p_cor_z = partial_corr(TS, index=index_z)
                 p_cor_z = np.delete(p_cor_z, index, axis=0)
                 p_cor_z = np.delete(p_cor_z, index, axis=1)
@@ -89,7 +85,7 @@ class PartialCorrelationInfluenceReconstructor(BaseReconstructor):
                 p_cor_z[k, :] = -np.inf
                 p_cor_zs[z] = p_cor_z
         else:
-            index = np.array([],dtype=int)
+            index = np.array([], dtype=int)
             for z in range(n):
                 index_z = z
                 p_cor_z = partial_corr(TS, index=index_z)
@@ -98,18 +94,18 @@ class PartialCorrelationInfluenceReconstructor(BaseReconstructor):
                 p_cor_z[z, :] = -np.inf
                 p_cor_zs[z] = p_cor_z
 
-        p_cor_inf = np.nanmean(p_cor_zs, axis=2) # mean over the Y axis
+        p_cor_inf = np.nanmean(p_cor_zs, axis=2)  # mean over the Y axis
 
-        self.results['weights_matrix'] = p_cor_inf
+        self.results["weights_matrix"] = p_cor_inf
 
         # threshold the network
         W_thresh = threshold(p_cor_inf, threshold_type, **kwargs)
 
         # construct the network
-        self.results['graph'] = create_graph(W_thresh)
-        self.results['thresholded_matrix'] = W_thresh
+        self.results["graph"] = create_graph(W_thresh)
+        self.results["thresholded_matrix"] = W_thresh
 
-        G = self.results['graph']
+        G = self.results["graph"]
 
         return G
 
@@ -173,14 +169,16 @@ def partial_corr(C, index=None):
                 idx = np.ones(p, dtype=np.bool)
                 idx[i] = False
                 idx[j] = False
-            elif type(index) is int or \
-            (isinstance(index, np.ndarray) and
-             issubclass(index.dtype.type, np.integer)):
+            elif type(index) is int or (
+                isinstance(index, np.ndarray)
+                and issubclass(index.dtype.type, np.integer)
+            ):
                 idx = np.zeros(p, dtype=np.bool)
                 idx[index] = True
             else:
-                raise ValueError("Index must be an integer, an array of "
-                                 "integers, or None.")
+                raise ValueError(
+                    "Index must be an integer, an array of " "integers, or None."
+                )
 
             beta_i = linalg.lstsq(C[:, idx], C[:, j])[0]
             beta_j = linalg.lstsq(C[:, idx], C[:, i])[0]

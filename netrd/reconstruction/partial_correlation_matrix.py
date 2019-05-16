@@ -17,13 +17,15 @@ from ..utilities import create_graph, threshold
 
 
 class PartialCorrelationMatrixReconstructor(BaseReconstructor):
-    def fit(self,
-            TS,
-            index=None,
-            drop_index=True,
-            of_residuals=False,
-            threshold_type='range',
-            **kwargs):
+    def fit(
+        self,
+        TS,
+        index=None,
+        drop_index=True,
+        of_residuals=False,
+        threshold_type="range",
+        **kwargs
+    ):
         """
         Reconstruct a network from time series data using a regularized
         form of the precision matrix. After [this tutorial](
@@ -62,17 +64,16 @@ class PartialCorrelationMatrixReconstructor(BaseReconstructor):
         if of_residuals:
             p_cor = partial_corr(p_cor, index=None)
 
-        self.results['weights_matrix'] = p_cor
+        self.results["weights_matrix"] = p_cor
 
         # threshold the network
         W_thresh = threshold(p_cor, threshold_type, **kwargs)
 
         # construct the network
-        self.results['graph'] = create_graph(W_thresh)
-        self.results['thresholded_matrix'] = W_thresh
+        self.results["graph"] = create_graph(W_thresh)
+        self.results["thresholded_matrix"] = W_thresh
 
-        G = self.results['graph']
-
+        G = self.results["graph"]
 
         return G
 
@@ -136,14 +137,16 @@ def partial_corr(C, index=None):
                 idx = np.ones(p, dtype=np.bool)
                 idx[i] = False
                 idx[j] = False
-            elif type(index) is int or \
-            (isinstance(index, np.ndarray) and
-             issubclass(index.dtype.type, np.integer)):
+            elif type(index) is int or (
+                isinstance(index, np.ndarray)
+                and issubclass(index.dtype.type, np.integer)
+            ):
                 idx = np.zeros(p, dtype=np.bool)
                 idx[index] = True
             else:
-                raise ValueError("Index must be an integer, an array of "
-                                 "integers, or None.")
+                raise ValueError(
+                    "Index must be an integer, an array of " "integers, or None."
+                )
 
             beta_i = linalg.lstsq(C[:, idx], C[:, j])[0]
             beta_j = linalg.lstsq(C[:, idx], C[:, i])[0]

@@ -17,7 +17,14 @@ from ..utilities import create_graph, threshold
 
 
 class MarchenkoPastur(BaseReconstructor):
-    def fit(self, TS, remove_largest=False, metric_distance=False, threshold_type='range', **kwargs):
+    def fit(
+        self,
+        TS,
+        remove_largest=False,
+        metric_distance=False,
+        threshold_type="range",
+        **kwargs
+    ):
         """Create a correlation-based graph using Marchenko-Pastur law to remove noise.
         
         A signed graph is built by constructing a projection of the empirical correlation 
@@ -112,43 +119,44 @@ class MarchenkoPastur(BaseReconstructor):
 
         """
         N, L = TS.shape
-        if N>L:
+        if N > L:
             raise ValueError("L must be greater or equal than N.")
 
-        Q = L/N
-        C = np.corrcoef(TS) # Empirical correlation matrix
+        Q = L / N
+        C = np.corrcoef(TS)  # Empirical correlation matrix
 
-        w, v = np.linalg.eigh(C) # Spectral decomposition of C
+        w, v = np.linalg.eigh(C)  # Spectral decomposition of C
 
-        w_min = (1+1/Q-2*np.sqrt(1/Q))
-        w_max = (1+1/Q+2*np.sqrt(1/Q))
+        w_min = 1 + 1 / Q - 2 * np.sqrt(1 / Q)
+        w_max = 1 + 1 / Q + 2 * np.sqrt(1 / Q)
 
-        selected = (w<w_min)|(w>w_max)
+        selected = (w < w_min) | (w > w_max)
 
-        if selected.sum()==0:
+        if selected.sum() == 0:
             G = nx.empty_graph(n=N)
-            self.results['graph'] = G
+            self.results["graph"] = G
             return G
 
         if remove_largest:
             selected[-1] = False
 
         w_signal = w[selected]
-        v_signal = v[:,selected]
+        v_signal = v[:, selected]
 
         C_signal = v_signal.dot(np.diag(w_signal)).dot(v_signal.T)
 
         if metric_distance:
-            C_signal = np.sqrt(2*(1-C_signal))
+            C_signal = np.sqrt(2 * (1 - C_signal))
 
-        self.results['weights_matrix'] = C_signal
+        self.results["weights_matrix"] = C_signal
 
-        #threshold signal matrix
+        # threshold signal matrix
 
-        self.results['thresholded_matrix'] = threshold(C_signal, threshold_type, **kwargs)
+        self.results["thresholded_matrix"] = threshold(
+            C_signal, threshold_type, **kwargs
+        )
 
-        G = create_graph(self.results['thresholded_matrix'])
+        G = create_graph(self.results["thresholded_matrix"])
 
-        self.results['graph'] = G
+        self.results["graph"] = G
         return G
-

@@ -31,23 +31,26 @@ def threshold_in_range(mat, **kwargs):
 
     """
 
-    if 'cutoffs' in kwargs:
-        cutoffs = kwargs['cutoffs']
+    if "cutoffs" in kwargs:
+        cutoffs = kwargs["cutoffs"]
     else:
         warnings.warn(
             "Setting 'cutoffs' argument is strongly encouraged. Using cutoff range of (-1, 1).",
-            RuntimeWarning)
+            RuntimeWarning,
+        )
         cutoffs = [(-1, 1)]
 
-    mask_function = np.vectorize(lambda x: any([x>=cutoff[0] and x<=cutoff[1] for cutoff in cutoffs]))
+    mask_function = np.vectorize(
+        lambda x: any([x >= cutoff[0] and x <= cutoff[1] for cutoff in cutoffs])
+    )
     mask = mask_function(mat)
 
     thresholded_mat = mat * mask
 
-    if kwargs.get('binary', False):
+    if kwargs.get("binary", False):
         thresholded_mat = np.abs(np.sign(thresholded_mat))
 
-    if kwargs.get('remove_self_loops', False):
+    if kwargs.get("remove_self_loops", False):
         np.fill_diagonal(thresholded_mat, 0)
 
     return thresholded_mat
@@ -68,15 +71,16 @@ def threshold_on_quantile(mat, **kwargs):
     thresholded_mat: the thresholded numpy array
 
     """
-    if 'quantile' in kwargs:
-        quantile = kwargs['quantile']
+    if "quantile" in kwargs:
+        quantile = kwargs["quantile"]
     else:
         warnings.warn(
             "Setting 'quantile' argument is strongly recommended. Using target quantile of 0.9 for thresholding.",
-            RuntimeWarning)
+            RuntimeWarning,
+        )
         quantile = 0.9
 
-    if kwargs.get('remove_self_loops', False):
+    if kwargs.get("remove_self_loops", False):
         np.fill_diagonal(A, 0)
 
     if quantile != 0:
@@ -84,7 +88,7 @@ def threshold_on_quantile(mat, **kwargs):
     else:
         thresholded_mat = mat
 
-    if kwargs.get('binary', False):
+    if kwargs.get("binary", False):
         thresholded_mat = np.abs(np.sign(thresholded_mat))
 
     return thresholded_mat
@@ -105,19 +109,20 @@ def threshold_on_degree(mat, **kwargs):
 
     """
 
-    if 'avg_k' in kwargs:
-        avg_k = kwargs['avg_k']
+    if "avg_k" in kwargs:
+        avg_k = kwargs["avg_k"]
     else:
         warnings.warn(
             "Setting 'avg_k' argument is strongly encouraged. Using average "
             "degree of 1 for thresholding.",
-            RuntimeWarning)
+            RuntimeWarning,
+        )
         avg_k = 1
 
     n = len(mat)
     A = np.ones((n, n))
 
-    if kwargs.get('remove_self_loops', False):
+    if kwargs.get("remove_self_loops", False):
         np.fill_diagonal(A, 0)
         np.fill_diagonal(mat, 0)
 
@@ -131,7 +136,7 @@ def threshold_on_degree(mat, **kwargs):
                 break
         thresholded_mat = mat * (mat > m)
 
-    if kwargs.get('binary', False):
+    if kwargs.get("binary", False):
         thresholded_mat = np.abs(np.sign(thresholded_mat))
 
     return thresholded_mat
@@ -155,13 +160,13 @@ def threshold(mat, rule, **kwargs):
     """
 
     try:
-        if rule == 'degree':
+        if rule == "degree":
             return threshold_on_degree(mat, **kwargs)
-        elif rule == 'range':
+        elif rule == "range":
             return threshold_in_range(mat, **kwargs)
-        elif rule == 'quantile':
+        elif rule == "quantile":
             return threshold_on_quantile(mat, **kwargs)
-        elif rule == 'custom':
-            return kwargs['custom_thresholder'](mat)
+        elif rule == "custom":
+            return kwargs["custom_thresholder"](mat)
     except KeyError:
         raise ValueError("missing threshold parameter")

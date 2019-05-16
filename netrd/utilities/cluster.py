@@ -14,7 +14,7 @@ import networkx as nx
 from scipy.cluster.hierarchy import dendrogram, linkage
 
 
-def clusterGraph(G, method='single', metric='euclidean', optimal_ordering=False):
+def clusterGraph(G, method="single", metric="euclidean", optimal_ordering=False):
     """
     Function for creating seriated adjacency matrix 
 
@@ -41,7 +41,7 @@ def clusterGraph(G, method='single', metric='euclidean', optimal_ordering=False)
     adj = nx.to_numpy_matrix(G)
     link = linkage(adj, method, metric, optimal_ordering)
     dend = dendrogram(link, no_plot=True)
-    order = dend['leaves']
-    adjClustered = adj[order,:]
-    adjClustered = adjClustered[:,order]
+    order = dend["leaves"]
+    adjClustered = adj[order, :]
+    adjClustered = adjClustered[:, order]
     return adjClustered, order, dend, link

@@ -16,8 +16,18 @@ from scipy.integrate import ode
 
 
 class LotkaVolterra(BaseDynamics):
-    def simulate(self, G, L, init=None, gr=None, cap=None, inter=None,
-                 dt=1e-2, stochastic=True, pertb=None):
+    def simulate(
+        self,
+        G,
+        L,
+        init=None,
+        gr=None,
+        cap=None,
+        inter=None,
+        dt=1e-2,
+        stochastic=True,
+        pertb=None,
+    ):
         """Simulate time series on a network from the Lotka-Vottera model.
 
         The Lotka-Vottera model was designed to describe dynamics of species
@@ -77,7 +87,6 @@ class LotkaVolterra(BaseDynamics):
 
         """
 
-
         N = G.number_of_nodes()
         adjmat = nx.to_numpy_array(G)
 
@@ -110,31 +119,31 @@ class LotkaVolterra(BaseDynamics):
 
         # Simulate the time series
         if isinstance(dt, float):
-            dt = dt * np.ones(L-1)
+            dt = dt * np.ones(L - 1)
 
         # Deterministic dynamics
         if not stochastic:
-            integrator = ode(dyn).set_integrator('dopri5')
+            integrator = ode(dyn).set_integrator("dopri5")
             integrator.set_initial_value(init, 0.0)
-            for t in range(L-1):
+            for t in range(L - 1):
                 if integrator.succesful():
-                    TS[:, t+1] = integrator.integrate(integrator.t + dt[t])
+                    TS[:, t + 1] = integrator.integrate(integrator.t + dt[t])
                 else:
-                    message = 'Integration not succesful. '
-                    message += 'Change sizes of time steps or the parameters.'
+                    message = "Integration not succesful. "
+                    message += "Change sizes of time steps or the parameters."
                     raise RuntimeError(message)
 
         # Stochastic dynamics
         else:
-            for t in range(L-1):
+            for t in range(L - 1):
                 state = TS[:, t].copy()
                 _next = state + dyn(t, state) * dt[t]
                 _next += state * normal(scale=pertb) * np.sqrt(dt[t])
-                TS[:, t+1] = _next
+                TS[:, t + 1] = _next
 
         # Store the results
-        self.results['ground_truth'] = G
-        self.results['time_steps'] = np.cumsum(dt)
-        self.results['TS'] = TS
+        self.results["ground_truth"] = G
+        self.results["time_steps"] = np.cumsum(dt)
+        self.results["TS"] = TS
 
         return TS

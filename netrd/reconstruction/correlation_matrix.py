@@ -15,9 +15,8 @@ import networkx as nx
 from ..utilities import create_graph, threshold
 
 
-
 class CorrelationMatrixReconstructor(BaseReconstructor):
-    def fit(self, TS, threshold_type='range', **kwargs):
+    def fit(self, TS, threshold_type="range", **kwargs):
         """
         Reconstruct a network from time series data using an unregularized form of
         the precision matrix. After [this tutorial](
@@ -40,14 +39,14 @@ class CorrelationMatrixReconstructor(BaseReconstructor):
 
         # get the correlation matrix
         cor = np.corrcoef(TS)
-        self.results['weights_matrix'] = cor
+        self.results["weights_matrix"] = cor
 
         # threshold the correlation matrix
         A = threshold(cor, threshold_type, **kwargs)
-        self.results['thresholded_matrix'] = A
+        self.results["thresholded_matrix"] = A
 
         # construct the network
-        self.results['graph'] = create_graph(A)
-        G = self.results['graph']
+        self.results["graph"] = create_graph(A)
+        G = self.results["graph"]
 
         return G

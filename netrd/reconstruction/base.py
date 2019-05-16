@@ -34,6 +34,6 @@ class BaseReconstructor:
 
         """
         G = nx.Graph()  # reconstruct the graph
-        self.results['graph'] = G  # and store it in self.results
+        self.results["graph"] = G  # and store it in self.results
         # self.results[..] = ..   # also store other values if needed
         return G

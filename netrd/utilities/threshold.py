@@ -44,8 +44,11 @@ def threshold_in_range(mat, **kwargs):
 
     thresholded_mat = mat * mask
 
-    if 'binary' in kwargs and kwargs['binary']:
+    if kwargs.get('binary', False):
         thresholded_mat = np.abs(np.sign(thresholded_mat))
+
+    if kwargs.get('remove_self_loops', False):
+        np.fill_diagonal(thresholded_mat, 0)
 
     return thresholded_mat
 
@@ -73,12 +76,15 @@ def threshold_on_quantile(mat, **kwargs):
             RuntimeWarning)
         quantile = 0.9
 
+    if kwargs.get('remove_self_loops', False):
+        np.fill_diagonal(A, 0)
+
     if quantile != 0:
         thresholded_mat = mat * (mat > np.percentile(mat, quantile * 100))
     else:
         thresholded_mat = mat
 
-    if 'binary' in kwargs and kwargs['binary']:
+    if kwargs.get('binary', False):
         thresholded_mat = np.abs(np.sign(thresholded_mat))
 
     return thresholded_mat
@@ -103,12 +109,17 @@ def threshold_on_degree(mat, **kwargs):
         avg_k = kwargs['avg_k']
     else:
         warnings.warn(
-            "Setting 'avg_k' argument is strongly encouraged. Using average degree of 1 for thresholding.",
+            "Setting 'avg_k' argument is strongly encouraged. Using average "
+            "degree of 1 for thresholding.",
             RuntimeWarning)
         avg_k = 1
 
     n = len(mat)
     A = np.ones((n, n))
+
+    if kwargs.get('remove_self_loops', False):
+        np.fill_diagonal(A, 0)
+        np.fill_diagonal(mat, 0)
 
     if np.mean(np.sum(A, 1)) <= avg_k:
         # degenerate case: threshold the whole matrix
@@ -120,7 +131,7 @@ def threshold_on_degree(mat, **kwargs):
                 break
         thresholded_mat = mat * (mat > m)
 
-    if 'binary' in kwargs and kwargs['binary']:
+    if kwargs.get('binary', False):
         thresholded_mat = np.abs(np.sign(thresholded_mat))
 
     return thresholded_mat

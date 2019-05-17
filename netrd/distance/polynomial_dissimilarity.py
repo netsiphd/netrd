@@ -21,7 +21,7 @@ from .base import BaseDistance
 
 
 class PolynomialDissimilarity(BaseDistance):
-    def dist(self, G1, G2,k=5,alpha=1):
+    def dist(self, G1, G2, k=5, alpha=1):
         """
         The function calculates the distance between two graphs by
         comparing the polynomials of the eigenvalue decomposition of 
@@ -45,24 +45,32 @@ class PolynomialDissimilarity(BaseDistance):
         """
         A1 = nx.to_numpy_array(G1)
         A2 = nx.to_numpy_array(G2)
-    
-        P_A1 = calculate_polynomial(A1,k,alpha)
-        P_A2 = calculate_polynomial(A2,k,alpha)
-    
-        dist = np.linalg.norm(P_A1-P_A2,ord='fro')/A1.shape[0]**2
+
+        P_A1 = calculate_polynomial(A1, k, alpha)
+        P_A2 = calculate_polynomial(A2, k, alpha)
+
+        dist = np.linalg.norm(P_A1 - P_A2, ord='fro') / A1.shape[0] ** 2
 
         self.results['adjacency_matrices'] = A1, A2
         self.results['dist'] = dist
         return dist
-        
 
-def calculate_polynomial(A,k,alpha):
-    eig_vals,Q = np.linalg.eig(A)
-    
+
+def calculate_polynomial(A, k, alpha):
+    eig_vals, Q = np.linalg.eig(A)
+
     n = A.shape[0]
-    W = np.diag(sum(list(map(lambda kp:eig_vals**kp/(n-1)**(alpha*kp-1), range(1,k+1)))))
-    
-    P_A  = np.dot(np.dot(Q,W),Q.T)
+    W = np.diag(
+        sum(
+            list(
+                map(
+                    lambda kp: eig_vals ** kp / (n - 1) ** (alpha * kp - 1),
+                    range(1, k + 1),
+                )
+            )
+        )
+    )
+
+    P_A = np.dot(np.dot(Q, W), Q.T)
 
     return P_A
-

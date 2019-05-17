@@ -50,11 +50,10 @@ class SISModel(BaseDynamics):
             mu = 1 / H.number_of_nodes()
 
         i0s = np.random.permutation(
-            np.concatenate([np.repeat(1, i0),
-                            np.repeat(0, N - i0)]))
+            np.concatenate([np.repeat(1, i0), np.repeat(0, N - i0)])
+        )
         TS[:, 0] = i0s
-        nx.set_node_attributes(H, {i: x
-                                   for i, x in enumerate(i0s)}, 'infected')
+        nx.set_node_attributes(H, {i: x for i, x in enumerate(i0s)}, 'infected')
         nx.set_node_attributes(H, 0, 'next_infected')
 
         # SIS dynamics

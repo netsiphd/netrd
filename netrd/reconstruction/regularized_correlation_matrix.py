@@ -14,6 +14,7 @@ import numpy as np
 import networkx as nx
 from ..utilities import create_graph, threshold
 
+
 class RegularizedCorrelationMatrixReconstructor(BaseReconstructor):
     def fit(self, TS, num_eigs=10, threshold_type='quantile', **kwargs):
         """
@@ -44,8 +45,10 @@ class RegularizedCorrelationMatrixReconstructor(BaseReconstructor):
         N = TS.shape[0]
 
         if num_eigs > N:
-            raise ValueError("The number of eigenvalues used must be less "
-                             "than the number of sensors.")
+            raise ValueError(
+                "The number of eigenvalues used must be less "
+                "than the number of sensors."
+            )
 
         # get the correlation matrix
         X = np.corrcoef(TS)
@@ -57,10 +60,10 @@ class RegularizedCorrelationMatrixReconstructor(BaseReconstructor):
         vecs = vecs[:, idx]
 
         # construct the precision matrix and store it
-        P = (vecs[:, :num_eigs]) @\
-            (1 / (vals[:num_eigs]).reshape(num_eigs, 1) * (vecs[:, :num_eigs]).T)
-        P = P / (np.sqrt(np.diag(P)).reshape(N, 1) @\
-                 np.sqrt(np.diag(P)).reshape(1, N))
+        P = (vecs[:, :num_eigs]) @ (
+            1 / (vals[:num_eigs]).reshape(num_eigs, 1) * (vecs[:, :num_eigs]).T
+        )
+        P = P / (np.sqrt(np.diag(P)).reshape(N, 1) @ np.sqrt(np.diag(P)).reshape(1, N))
         self.results['weights_matrix'] = P
 
         # threshold the precision matrix

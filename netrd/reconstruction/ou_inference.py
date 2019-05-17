@@ -45,18 +45,18 @@ class OUInferenceReconstructor(BaseReconstructor):
         """
         N, T = np.shape(TS)
 
-        temperatures = np.mean((TS[:,1:] - TS[:,:-1])**2, 1) / 2
-        index = np.where(temperatures>0)
+        temperatures = np.mean((TS[:, 1:] - TS[:, :-1]) ** 2, 1) / 2
+        index = np.where(temperatures > 0)
         Y = TS[index, :][0]
 
         yCovariance = np.cov(Y)
         index_pair = np.array([(i, j) for i in index for j in index])
         weights = inverse_method(-yCovariance, temperatures)
-        self.results['covariance_matrix'] = np.zeros([N, N]);
-        self.results['covariance_matrix'][index_pair] = yCovariance;
+        self.results['covariance_matrix'] = np.zeros([N, N])
+        self.results['covariance_matrix'][index_pair] = yCovariance
 
-        self.results['weights_matrix'] = np.zeros([N, N]);
-        self.results['weights_matrix'][index_pair] = weights;
+        self.results['weights_matrix'] = np.zeros([N, N])
+        self.results['weights_matrix'][index_pair] = weights
 
         # threshold the network
         W_thresh = threshold(self.results['weights_matrix'], threshold_type, **kwargs)
@@ -103,7 +103,7 @@ def inverse_method(covariance, temperatures):
     e_mat = np.matmul(eig_vec.T, np.matmul(T, eig_vec))
 
     eig_val = np.matmul(np.ones([n, n]), eig_val)
-    eig_val = (eig_val + eig_val.T)**(-1)
+    eig_val = (eig_val + eig_val.T) ** (-1)
     eig_val = eig_val.real
     weights = -np.matmul(eig_vec, np.matmul(2 * eig_val * e_mat, eig_vec.T))
 

@@ -43,7 +43,8 @@ class NetLSD(BaseDistance):
         if timescales is None:
             timescales = np.logspace(-2, 2, 256)
         assert isinstance(
-            normalization, str), 'Normalization parameter must be of string type'
+            normalization, str
+        ), 'Normalization parameter must be of string type'
 
         lap1 = nx.normalized_laplacian_matrix(G1)
         lap2 = nx.normalized_laplacian_matrix(G2)

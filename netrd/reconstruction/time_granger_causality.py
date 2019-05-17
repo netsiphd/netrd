@@ -23,7 +23,7 @@ from ..utilities import create_graph, threshold
 
 
 class TimeGrangerCausalityReconstructor(BaseReconstructor):
-    def fit(self, TS, lag=1, threshold_type = 'range', **kwargs):
+    def fit(self, TS, lag=1, threshold_type='range', **kwargs):
         """
         Reconstruct a network based on the Granger causality. To evaluate the
         effect of a time series (j) over another (i), it first evaluates the
@@ -62,7 +62,9 @@ class TimeGrangerCausalityReconstructor(BaseReconstructor):
                 reg2 = LinearRegression().fit(X, Y)
                 err1 = yi - reg1.predict(xi)
                 err2 = Y - reg2.predict(X)
-                self.results['weights_matrix'][j, i] = np.log(np.std(err1) / np.std(err2))
+                self.results['weights_matrix'][j, i] = np.log(
+                    np.std(err1) / np.std(err2)
+                )
 
         # threshold the network
         W_thresh = threshold(self.results['weights_matrix'], threshold_type, **kwargs)
@@ -73,6 +75,7 @@ class TimeGrangerCausalityReconstructor(BaseReconstructor):
         G = self.results['graph']
 
         return G
+
 
 def get_training_data(TS, lag):
     """From a single node time series, it returns a training dataset with
@@ -98,8 +101,7 @@ def get_training_data(TS, lag):
     targets = np.zeros(T - lag - 1)
 
     for t in range(T - lag - 1):
-        inputs[t, :] = TS[t:lag + t]
+        inputs[t, :] = TS[t : lag + t]
         targets[t] = TS[t + lag + 1]
 
     return inputs, targets
-

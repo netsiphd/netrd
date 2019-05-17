@@ -173,15 +173,28 @@ Once you have completed the above steps, you are ready to choose an algorithm to
 
 ## After you finish coding
 
-1. After updating your local code in the previous step, the first thing to
-   do is tell git which files you have been working on. (This is called
-   staging.) If you worked on a distance algorithm, for example, do
+1. This project enforces a consistent coding style through the use of the
+   [Black](https://black.readthedocs.io/en/stable/) autoformatter. Before
+   committing your changes, please run Black to make sure your code passes our
+   automated tests.
+
+   ```
+   # if you don't have black installed on your system, just pip install:
+   # pip install black
+
+   black --skip-string-normalization netrd/
+   black --skip-string-normalization tests/
+   ```
+
+2. After updating your local code, the first thing to do is tell git which files
+   you have been working on. (This is called staging.) If you worked on a
+   distance algorithm, for example, do
 
    ```
    git add netrd/distance/<your_file> netrd/distance/__init__.py
    ```
 
-2. Next tell git to commit (or save) your changes:
+3. Next tell git to commit (or save) your changes:
 
 	```
 	git commit -m 'Write a commit message here. This will be public and
@@ -191,7 +204,7 @@ Once you have completed the above steps, you are ready to choose an algorithm to
 	implementation of SomeMethod, based on SomeAuthor and/or SomeCode.'
 	```
 
-3. Now you have to tell git to do two things. First, `pull` the latest changes from
+4. Now you have to tell git to do two things. First, `pull` the latest changes from
    the upstream repository (in case someone made changes while you were coding), 
    then `push` your changes and the updated code from your machine to your fork:
 
@@ -204,7 +217,7 @@ Once you have completed the above steps, you are ready to choose an algorithm to
 	conflicts that must be merged. If you run in to trouble here, ask
 	for help!
 
-4. Finally, you need to tell this (the upstream) repository to include your
+5. Finally, you need to tell this (the upstream) repository to include your
    contributions. For this, we use the GitHub web interface. At the top of
    this page, there is a 'New Pull Request' button. Click on it, and it
    will take you to a page titled 'Compare Changes'. Right below the title,

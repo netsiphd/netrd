@@ -9,8 +9,7 @@ Submitted as part of the 2019 NetSI Collabathon
 import numpy as np
 import networkx as nx
 
-
-def read_time_series(filename, delimiter=","):
+def read_time_series(filename, delimiter=','):
     """
     Read an NxL time series from a file into a numpy.ndarray.
     This function expects filename to be a comma separated

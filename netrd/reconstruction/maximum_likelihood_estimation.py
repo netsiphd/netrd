@@ -13,7 +13,7 @@ from ..utilities import create_graph, threshold
 
 
 class MaximumLikelihoodEstimationReconstructor(BaseReconstructor):
-    def fit(self, TS, rate=1.0, stop_criterion=True, threshold_type="degree", **kwargs):
+    def fit(self, TS, rate=1.0, stop_criterion=True, threshold_type='degree', **kwargs):
         """
         Given an NxL time series, infer inter-node coupling weights using 
         maximum likelihood estimation methods. 
@@ -38,42 +38,42 @@ class MaximumLikelihoodEstimationReconstructor(BaseReconstructor):
         G (nx.Graph or nx.DiGraph): a reconstructed graph.
 
         """
-
-        N, L = np.shape(TS)  # N nodes, length L
+        
+        N, L = np.shape(TS)             # N nodes, length L
         rate = rate / L
 
-        s1 = TS[:, :-1]
-        W = np.zeros((N, N))
+        s1 = TS[:,:-1]
+        W = np.zeros((N,N))
 
-        nloop = 10000
+        nloop = 10000 
         for i0 in range(N):
-            st1 = TS[i0, 1:]  # time series activity of single node
+            st1 = TS[i0,1:]             # time series activity of single node
 
-            w = np.zeros(N)
-            h = np.zeros(L - 1)
-            cost = np.full(nloop, 100.0)
+            w    = np.zeros(N)
+            h    = np.zeros(L-1) 
+            cost = np.full(nloop,100.)
 
             for iloop in range(nloop):
                 dw = np.dot(s1, (st1 - np.tanh(h)))
 
                 w += rate * dw
-                h = np.dot(s1.T, w)
+                h  = np.dot(s1.T, w)
 
-                cost[iloop] = ((st1 - np.tanh(h)) ** 2).mean()
+                cost[iloop] = ((st1 - np.tanh(h))**2).mean()
 
-                if stop_criterion and cost[iloop] >= cost[iloop - 1]:
+                if stop_criterion and cost[iloop] >= cost[iloop-1]: 
                     break
 
-            W[i0, :] = w
+            W[i0,:] = w
 
         # threshold the network
         W_thresh = threshold(W, threshold_type, **kwargs)
 
         # construct the network
 
-        self.results["graph"] = create_graph(W_thresh)
-        self.results["weights_matrix"] = W
-        self.results["thresholded_matrix"] = W_thresh
-        G = self.results["graph"]
+        self.results['graph'] = create_graph(W_thresh)
+        self.results['weights_matrix'] = W
+        self.results['thresholded_matrix'] = W_thresh
+        G = self.results['graph']
 
         return G

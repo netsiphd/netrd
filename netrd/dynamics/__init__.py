@@ -9,11 +9,11 @@ from .voter import VoterModel
 from .SIS import SISModel
 
 __all__ = [
-    "SherringtonKirkpatrickIsing",
-    "SingleUnbiasedRandomWalker",
-    "Kuramoto",
-    "LotkaVolterra",
-    "IsingGlauber",
-    "BranchingModel",
-    "VoterModel",
+    'SherringtonKirkpatrickIsing',
+    'SingleUnbiasedRandomWalker',
+    'Kuramoto',
+    'LotkaVolterra',
+    'IsingGlauber',
+    'BranchingModel',
+    'VoterModel'
 ]

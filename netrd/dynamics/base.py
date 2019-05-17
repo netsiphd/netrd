@@ -35,6 +35,6 @@ class BaseDynamics:
 
         """
         N = G.number_of_nodes()
-        self.results["ground_truth"] = G
-        self.results["TS"] = np.ones((N, L))
-        return self.results["TS"]
+        self.results['ground_truth'] = G
+        self.results['TS'] = np.ones((N, L))
+        return self.results['TS']

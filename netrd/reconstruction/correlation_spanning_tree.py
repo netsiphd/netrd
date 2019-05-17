@@ -18,7 +18,7 @@ from scipy.sparse.csgraph import minimum_spanning_tree
 
 
 class CorrelationSpanningTree(BaseReconstructor):
-    def fit(self, TS, distance="root_inv", **kwargs):
+    def fit(self, TS, distance='root_inv', **kwargs):
         """Create a minimum spanning tree connecting the sensors.
 
         The empirical correlation matrix is used to first compute a distance matrix
@@ -95,18 +95,16 @@ class CorrelationSpanningTree(BaseReconstructor):
         """
         N, L = TS.shape
 
-        C = np.corrcoef(TS)  # Empirical correlation matrix
+        C = np.corrcoef(TS) # Empirical correlation matrix
 
-        D = (
-            np.sqrt(2 * (1 - C)) if distance == "root_inv" else 1 - np.square(C)
-        )  # Distance matrix
+        D = np.sqrt(2*(1-C)) if distance=='root_inv' else 1-np.square(C) # Distance matrix
 
-        self.results["distance_matrix"] = D
+        self.results['distance_matrix'] = D
 
-        MST = minimum_spanning_tree(D)  # Minimum Spanning Tree
+        MST = minimum_spanning_tree(D) # Minimum Spanning Tree
 
         G = nx.from_scipy_sparse_matrix(MST)
 
-        self.results["graph"] = G
+        self.results['graph'] = G
 
         return G

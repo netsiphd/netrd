@@ -18,7 +18,7 @@ from ..utilities import create_graph, threshold
 
 
 class RandomReconstructor(BaseReconstructor):
-    def fit(self, TS, threshold_type="range", **kwargs):
+    def fit(self, TS, threshold_type='range', **kwargs):
         """
         Reconstruct a network from a time serues -- just kidding, simply return 
         a random correlation matrix with a threshold.
@@ -44,8 +44,8 @@ class RandomReconstructor(BaseReconstructor):
 
         G = create_graph(A)
 
-        self.results["graph"] = G
-        self.results["weights_matrix"] = W
-        self.results["thresholded_matrix"] = A
+        self.results['graph'] = G
+        self.results['weights_matrix'] = W
+        self.results['thresholded_matrix'] = A
 
         return G

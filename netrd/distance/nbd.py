@@ -22,7 +22,7 @@ class NBD(BaseDistance):
 
     """
 
-    def dist(self, G1, G2, topk="automatic", batch=100, tol=1e-5):
+    def dist(self, G1, G2, topk='automatic', batch=100, tol=1e-5):
         """NBD between two graphs.
 
         Params
@@ -47,11 +47,12 @@ class NBD(BaseDistance):
         mass = lambda num: np.ones(num) / num
         vals_dist = distance_matrix(vals1, vals2)
         dist = emd2(mass(vals1.shape[0]), mass(vals2.shape[0]), vals_dist)
-        self.results["vals"] = (vals1, vals2)
+        self.results['vals'] = (vals1, vals2)
         return dist
 
 
-def nbvals(graph, topk="automatic", batch=100, tol=1e-5):
+
+def nbvals(graph, topk='automatic', batch=100, tol=1e-5):
     """Compute the largest-magnitude non-backtracking eigenvalues.
 
     Params
@@ -86,22 +87,22 @@ def nbvals(graph, topk="automatic", batch=100, tol=1e-5):
     matrix = pseudo_hashimoto(core)
     if not isinstance(topk, str) and topk > matrix.shape[0] - 1:
         topk = matrix.shape[0] - 2
-        print("Computing only {} eigenvalues".format(topk))
+        print('Computing only {} eigenvalues'.format(topk))
 
-    if topk == "automatic":
-        batch = min(batch, 2 * graph.order() - 4)
-        if 2 * graph.order() - 4 < batch:
-            print("Using batch size {}".format(batch))
+    if topk == 'automatic':
+        batch = min(batch, 2*graph.order() - 4)
+        if 2*graph.order() - 4 < batch:
+            print('Using batch size {}'.format(batch))
         topk = batch
     eigs = lambda k: sparse.linalg.eigs(matrix, k=k, return_eigenvectors=False, tol=tol)
     count = 1
     while True:
-        vals = eigs(topk * count)
+        vals = eigs(topk*count)
         largest = np.sqrt(abs(max(vals, key=abs)))
-        if abs(vals[0]) <= largest or topk != "automatic":
+        if abs(vals[0]) <= largest or topk != 'automatic':
             break
         count += 1
-    if topk == "automatic":
+    if topk == 'automatic':
         vals = vals[abs(vals) > largest]
 
     # The eigenvalues are returned in no particular order, which may yield
@@ -129,7 +130,8 @@ def shave(graph):
     """
     core = graph.copy()
     while True:
-        to_remove = [node for node, neighbors in core.adj.items() if len(neighbors) < 2]
+        to_remove = [node for node, neighbors in core.adj.items()
+                     if len(neighbors) < 2]
         core.remove_nodes_from(to_remove)
         if len(to_remove) == 0:
             break
@@ -165,10 +167,10 @@ def pseudo_hashimoto(graph):
     adj = nx.adjacency_matrix(graph)
     ident = sparse.eye(graph.order())
     pseudo = sparse.bmat([[None, degrees - ident], [-ident, adj]])
-    return pseudo.asformat("csr")
+    return pseudo.asformat('csr')
 
 
-def half_incidence(graph, ordering="blocks", return_ordering=False):
+def half_incidence(graph, ordering='blocks', return_ordering=False):
     """Return the 'half-incidence' matrices of the graph.
 
     If the graph has n nodes and m *undirected* edges, then the
@@ -217,12 +219,12 @@ def half_incidence(graph, ordering="blocks", return_ordering=False):
     numnodes = graph.order()
     numedges = graph.size()
 
-    if ordering == "blocks":
+    if ordering == 'blocks':
         src_pairs = lambda i, u, v: [(u, i), (v, numedges + i)]
         tgt_pairs = lambda i, u, v: [(v, i), (u, numedges + i)]
-    if ordering == "consecutive":
-        src_pairs = lambda i, u, v: [(u, 2 * i), (v, 2 * i + 1)]
-        tgt_pairs = lambda i, u, v: [(v, 2 * i), (u, 2 * i + 1)]
+    if ordering == 'consecutive':
+        src_pairs = lambda i, u, v: [(u, 2*i), (v, 2*i + 1)]
+        tgt_pairs = lambda i, u, v: [(v, 2*i), (u, 2*i + 1)]
 
     def make_coo(make_pairs):
         """Make a sparse 0-1 matrix.
@@ -231,26 +233,21 @@ def half_incidence(graph, ordering="blocks", return_ordering=False):
         returned by make_pairs, for all (idx, node1, node2) edge triples.
 
         """
-        coords = list(
-            zip(
-                *(
-                    pair
-                    for idx, (node1, node2) in enumerate(graph.edges())
-                    for pair in make_pairs(idx, node1, node2)
-                )
-            )
-        )
-        data = np.ones(2 * graph.size())
-        return sparse.coo_matrix((data, coords), shape=(numnodes, 2 * numedges))
+        coords = list(zip(*(pair
+                            for idx, (node1, node2) in enumerate(graph.edges())
+                            for pair in make_pairs(idx, node1, node2))))
+        data = np.ones(2*graph.size())
+        return sparse.coo_matrix((data, coords),
+                                 shape=(numnodes, 2*numedges))
 
-    src = make_coo(src_pairs).asformat("csr")
-    tgt = make_coo(tgt_pairs).asformat("csr")
+    src = make_coo(src_pairs).asformat('csr')
+    tgt = make_coo(tgt_pairs).asformat('csr')
 
     if return_ordering:
-        if ordering == "blocks":
+        if ordering == 'blocks':
             func = lambda x: (x, numedges + x)
         else:
-            func = lambda x: (2 * x, 2 * x + 1)
+            func = lambda x: (2*x, 2*x + 1)
         return src, tgt, func
     else:
         return src, tgt

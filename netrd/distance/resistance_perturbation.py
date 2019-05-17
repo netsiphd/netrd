@@ -15,7 +15,6 @@ import scipy.sparse as ss
 from .base import BaseDistance
 from ..utilities import ensure_undirected
 
-
 class ResistancePerturbation(BaseDistance):
     def dist(self, G1, G2, p=2):
         """The resistance perturbation graph distance is the p-norm of the
@@ -58,30 +57,28 @@ class ResistancePerturbation(BaseDistance):
 
         """
 
+
         # Coerce to undirected, if needed.
         G1 = ensure_undirected(G1)
         G2 = ensure_undirected(G2)
 
         # Check for connected graphs
         if not nx.is_connected(G1) or not nx.is_connected(G2):
-            raise ValueError(
-                "Resistance perturbation is undefined for disconnected graphs."
-            )
+            raise ValueError("Resistance perturbation is undefined for disconnected graphs.")
 
         # Get resistance matrices
         R1 = get_resistance_matrix(G1)
         R2 = get_resistance_matrix(G2)
-        self.results["resistance_matrices"] = R1, R2
+        self.results['resistance_matrices'] = R1, R2
 
         # Get resistance perturbation distance
         if not np.isinf(p):
-            dist = np.power(np.sum(np.power(np.abs(R1 - R2), p)), 1 / p)
+            dist = np.power(np.sum(np.power(np.abs(R1 - R2), p)), 1/p)
         else:
             dist = np.amax(np.abs(R1 - R2))
-        self.results["dist"] = dist
+        self.results['dist'] = dist
 
         return dist
-
 
 def get_resistance_matrix(G):
     """Get the resistance matrix of a networkx graph.
@@ -108,12 +105,12 @@ def get_resistance_matrix(G):
     # Get Moore-Penrose pseudoinverses of Laplacian
     # Note: converts to dense matrix and introduces n^2 operation here
     I = np.eye(n)
-    J = (1 / n) * np.ones((n, n))
-    L_i = np.linalg.solve(L + J, I) - J
+    J = (1/n)*np.ones((n,n))
+    L_i = np.linalg.solve(L+J, I) - J
     # Get resistance matrix
     ones = np.ones(n)
-    ones = ones.reshape((1, n))
+    ones = ones.reshape((1,n))
     L_i_diag = np.diag(L_i)
-    L_i_diag = L_i_diag.reshape((n, 1))
-    R = np.dot(L_i_diag, ones) + np.dot(ones.T, L_i_diag.T) - 2 * L_i
+    L_i_diag = L_i_diag.reshape((n,1))
+    R = np.dot(L_i_diag, ones) + np.dot(ones.T, L_i_diag.T) - 2*L_i
     return R

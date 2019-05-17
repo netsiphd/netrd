@@ -60,18 +60,16 @@ class DeltaCon(BaseDistance):
         L2 = nx.laplacian_matrix(G2).toarray()
         D2 = L2 + A2
 
-        eps_1 = 1 / (1 + np.max(D1))
-        eps_2 = 1 / (1 + np.max(D2))
+        eps_1 = 1/(1+np.max(D1))
+        eps_2 = 1/(1+np.max(D2))
 
         if exact:
-            S1 = np.linalg.inv(np.eye(N) + (eps_1 ** 2) * D1 - eps_1 * A1)
-            S2 = np.linalg.inv(np.eye(N) + (eps_2 ** 2) * D2 - eps_2 * A2)
+            S1 = np.linalg.inv(np.eye(N) + (eps_1**2) * D1 - eps_1 * A1)
+            S2 = np.linalg.inv(np.eye(N) + (eps_2**2) * D2 - eps_2 * A2)
         else:
-            raise NotImplementedError(
-                "The efficient algorithm is not "
-                "implemented. Please use the exact "
-                "algorithm."
-            )
+            raise NotImplementedError("The efficient algorithm is not "
+                                      "implemented. Please use the exact "
+                                      "algorithm.")
 
         def matusita_dist(X, Y):
             """
@@ -87,8 +85,8 @@ class DeltaCon(BaseDistance):
 
         dist = matusita_dist(S1, S2)
 
-        self.results["belief_matrix_1"] = S1
-        self.results["belief_matrix_2"] = S2
+        self.results['belief_matrix_1'] = S1
+        self.results['belief_matrix_2'] = S2
 
-        self.results["dist"] = dist
+        self.results['dist'] = dist
         return dist

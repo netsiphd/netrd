@@ -20,9 +20,8 @@ from .base import BaseDistance
 from functools import reduce
 from netrd.utilities import ensure_undirected
 
-
 class OnionDivergence(BaseDistance):
-    def dist(self, G1, G2, dist="lccm"):
+    def dist(self, G1, G2, dist='lccm'):
         """
         Return the Jenson-Shannon divergence between two graphs feature
         distribution fixed by dist.
@@ -50,37 +49,35 @@ class OnionDivergence(BaseDistance):
         dist (float): the distance between G1 and G2.
 
         """
-        # take the simple graph version
+        #take the simple graph version
         G1_simple = ensure_undirected(G1)
         G2_simple = ensure_undirected(G2)
         G1_simple.remove_edges_from(nx.selfloop_edges(G1_simple))
         G2_simple.remove_edges_from(nx.selfloop_edges(G2_simple))
 
-        # get sparse matrices values for each graph
+        #get sparse matrices values for each graph
         matrices_G1 = _create_sparse_matrices_for_graph(G1_simple)
         matrices_G2 = _create_sparse_matrices_for_graph(G2_simple)
 
-        # get the different distances
-        cm_dist = _divergence_of_sparse_matrices(*matrices_G1["cm"], *matrices_G2["cm"])
-        ccm_dist = _divergence_of_sparse_matrices(
-            *matrices_G1["ccm"], *matrices_G2["ccm"]
-        )
+        #get the different distances
+        cm_dist = _divergence_of_sparse_matrices(*matrices_G1['cm'],
+                                                 *matrices_G2['cm'])
+        ccm_dist = _divergence_of_sparse_matrices(*matrices_G1['ccm'],
+                                                  *matrices_G2['ccm'])
         lccm_node_dist = _divergence_of_sparse_matrices(
-            *matrices_G1["lccm_node"], *matrices_G2["lccm_node"]
-        )
-        lccm_dist = _divergence_of_sparse_matrices(
-            *matrices_G1["lccm"], *matrices_G2["lccm"]
-        )
-        # store the distances
-        self.results["cm_dist"] = cm_dist
-        self.results["ccm_dist"] = ccm_dist
-        self.results["lccm_node_dist"] = lccm_node_dist
-        self.results["lccm_dist"] = lccm_dist
-        dist_id = "{}_dist".format(dist)
-        self.results["dist"] = self.results[dist_id]
+            *matrices_G1['lccm_node'],
+            *matrices_G2['lccm_node'])
+        lccm_dist = _divergence_of_sparse_matrices(*matrices_G1['lccm'],
+                                                   *matrices_G2['lccm'])
+        #store the distances
+        self.results['cm_dist'] = cm_dist
+        self.results['ccm_dist'] = ccm_dist
+        self.results['lccm_node_dist'] = lccm_node_dist
+        self.results['lccm_dist'] = lccm_dist
+        dist_id = '{}_dist'.format(dist)
+        self.results['dist'] = self.results[dist_id]
 
         return self.results[dist_id]
-
 
 def _onion_decomposition(G):
     # Creates a copy of the graph (to be able to remove vertices and edges)
@@ -95,9 +92,9 @@ def _onion_decomposition(G):
     local_layer = 1
     while G_copy.number_of_nodes() > 0:
         # Sets properly the current core.
-        degree_sequence = [d for n, d in G_copy.degree()]
-        min_degree = min(degree_sequence)
-        if min_degree >= (current_core + 1):
+        degree_sequence = [d for n,d in G_copy.degree()]
+        min_degree =  min(degree_sequence)
+        if min_degree >= (current_core+1):
             current_core = min_degree
             local_layer = 1
         # Identifies vertices in the current layer.
@@ -118,24 +115,22 @@ def _onion_decomposition(G):
     # each vertices.
     return (layer_map, local_layer_map, coreness_map)
 
-
 def _update_sparse_matrix(dictionary, values, key, index):
     # Creates entry if it doesn't exist or else update the corresponding value
-    if not key in dictionary:
+    if(not key in dictionary):
         index_i = index
         dictionary[key] = index
         values.append(1)
         index += 1
     else:
         index_i = dictionary[key]
-        values[index_i] += 1
+        values[index_i]+=1
     # Returns new index (i.e. the nb of nonzero entry in sparse matrix)
     return index
 
-
 def _create_sparse_matrices_for_graph(G):
     onion, local_layer, kcore = _onion_decomposition(G)
-    # creates of copy of the graph
+    #creates of copy of the graph
     G_copy = G.copy()
     cm_sparse_stub_matrix = {}
     ccm_sparse_stub_matrix = {}
@@ -153,10 +148,11 @@ def _create_sparse_matrices_for_graph(G):
         d1 = G_copy.degree(n)
         c1 = kcore[n]
         l1 = local_layer[n]
-        cm_index = _update_sparse_matrix(cm_sparse_stub_matrix, cm_values, d1, cm_index)
-        lccm_node_index = _update_sparse_matrix(
-            lccm_sparse_node_matrix, lccm_node_values, (d1, c1, l1), lccm_node_index
-        )
+        cm_index = _update_sparse_matrix(cm_sparse_stub_matrix, cm_values,
+                                        d1, cm_index)
+        lccm_node_index = _update_sparse_matrix(lccm_sparse_node_matrix,
+                                               lccm_node_values, (d1,c1,l1),
+                                               lccm_node_index)
     for e in G_copy.edges():
         d1 = G_copy.degree(e[0])
         d2 = G_copy.degree(e[1])
@@ -164,47 +160,42 @@ def _create_sparse_matrices_for_graph(G):
         c2 = kcore[e[1]]
         l1 = local_layer[e[0]]
         l2 = local_layer[e[1]]
-        ccm_index = _update_sparse_matrix(
-            ccm_sparse_stub_matrix, ccm_values, (d1, d2), ccm_index
-        )
-        lccm_index = _update_sparse_matrix(
-            lccm_sparse_stub_matrix, lccm_values, (d1, c1, l1, d2, c2, l2), lccm_index
-        )
-        ccm_index = _update_sparse_matrix(
-            ccm_sparse_stub_matrix, ccm_values, (d2, d1), ccm_index
-        )
-        lccm_index = _update_sparse_matrix(
-            lccm_sparse_stub_matrix, lccm_values, (d2, c2, l2, d1, c1, l1), lccm_index
-        )
+        ccm_index = _update_sparse_matrix(ccm_sparse_stub_matrix,ccm_values,
+                                         (d1,d2),ccm_index)
+        lccm_index = _update_sparse_matrix(lccm_sparse_stub_matrix,lccm_values,
+                                          (d1,c1,l1,d2,c2,l2),lccm_index)
+        ccm_index = _update_sparse_matrix(ccm_sparse_stub_matrix,ccm_values,
+                                         (d2,d1),ccm_index)
+        lccm_index = _update_sparse_matrix(lccm_sparse_stub_matrix,lccm_values,
+                                          (d2,c2,l2,d1,c1,l1),lccm_index)
     cm_values = [x / G_copy.number_of_nodes() for x in cm_values]
-    ccm_values = [x / (2 * G_copy.number_of_edges()) for x in ccm_values]
-    lccm_values = [x / (2 * G_copy.number_of_edges()) for x in lccm_values]
+    ccm_values = [x / (2*G_copy.number_of_edges()) for x in ccm_values]
+    lccm_values = [x / (2*G_copy.number_of_edges()) for x in lccm_values]
     lccm_node_values = [x / G_copy.number_of_nodes() for x in lccm_node_values]
 
-    # output the results in a dictionary
+    #output the results in a dictionary
     results = dict()
-    results["cm"] = (cm_sparse_stub_matrix, cm_values)
-    results["ccm"] = (ccm_sparse_stub_matrix, ccm_values)
-    results["lccm"] = (lccm_sparse_stub_matrix, lccm_values)
-    results["lccm_node"] = (lccm_sparse_node_matrix, lccm_node_values)
+    results['cm'] = (cm_sparse_stub_matrix, cm_values)
+    results['ccm'] = (ccm_sparse_stub_matrix, ccm_values)
+    results['lccm'] = (lccm_sparse_stub_matrix, lccm_values)
+    results['lccm_node'] = (lccm_sparse_node_matrix, lccm_node_values)
     return results
 
-
-def _divergence_of_sparse_matrices(keys1, values1, keys2, values2):
+def _divergence_of_sparse_matrices(keys1,values1,keys2,values2):
     keys = reduce(set.union, map(set, map(dict.keys, [keys1, keys2])))
     JSD = 0
     for key in keys:
-        if key in keys1:
+        if(key in keys1):
             value1 = values1[keys1[key]]
         else:
             value1 = 0.0
-        if key in keys2:
+        if(key in keys2):
             value2 = values2[keys2[key]]
         else:
             value2 = 0.0
-        avg = (value1 + value2) / 2
-        if value1 > 0:
-            JSD += 0.5 * value1 * np.log2(value1 / avg)
-        if value2 > 0:
-            JSD += 0.5 * value2 * np.log2(value2 / avg)
+        avg = (value1+value2)/2
+        if(value1>0):
+            JSD += 0.5*value1*np.log2(value1/avg)
+        if(value2>0):
+            JSD += 0.5*value2*np.log2(value2/avg)
     return JSD

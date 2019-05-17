@@ -46,7 +46,7 @@ def create_graph(A, create_using=None, remove_self_loops=True):
 
 
 def ensure_undirected(G):
-    """
+    '''
     Ensure the graph G is undirected. If it is not, coerce it to undirected
     and warn the user.
 
@@ -60,10 +60,11 @@ def ensure_undirected(G):
 
     G (networkx graph): Undirected version of the input graph
 
-    """
+    '''
 
     if nx.is_directed(G):
         G = nx.to_undirected(G)
         warnings.warn("Coercing directed graph to undirected.", RuntimeWarning)
 
     return G
+

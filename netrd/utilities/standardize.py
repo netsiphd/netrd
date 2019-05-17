@@ -13,9 +13,8 @@ Submitted as part of the 2019 NetSI Collabathon
 import numpy as np
 import networkx as nx
 
-
 def mean_GNP_distance(n, prob, distance, samples=10, **kwargs):
-    """
+    '''
     Compute the mean distance between _samples_ GNP graphs with
     parameters N=n,p=prob using distance function _distance_,
     whose parameters are passed with **kwargs.
@@ -49,7 +48,7 @@ def mean_GNP_distance(n, prob, distance, samples=10, **kwargs):
     kwargs = {'p':2}
     mean, std, dists = netrd.utilities.mean_GNP_distance(100, 0.1, dist_obj.dist, **kwargs)
 
-    """
+    '''
     graphs = [nx.fast_gnp_random_graph(n, prob) for _ in range(samples)]
     dis_mat = np.full((samples, samples), np.nan)
     for i in range(samples):

@@ -6,7 +6,7 @@ setuptools.setup(
     author='NetSI 2019 Collabathon Team',
     author_email='leo@leotrs.com',
     description='Repository of network reconstruction and distance methods',
-    url='https://github.com/netsiphd/scale-free-networks-are-awesome',
+    url='https://github.com/netsiphd/netrd',
     packages=setuptools.find_packages(),
     classifiers=['Programming Language :: Python :: 3',
                  'License :: OSI Approved :: MIT License',

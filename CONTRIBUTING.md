@@ -186,6 +186,9 @@ Once you have completed the above steps, you are ready to choose an algorithm to
    black --skip-string-normalization tests/
    ```
 
+   If you do not do this, our tests will likely fail and your code will not be
+   merged without further changes.
+
 2. After updating your local code, the first thing to do is tell git which files
    you have been working on. (This is called staging.) If you worked on a
    distance algorithm, for example, do

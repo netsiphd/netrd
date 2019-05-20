@@ -34,6 +34,7 @@ install:
   - pip install -r requirements.txt
   - pip install POT
   - if [[ $TRAVIS_PYTHON_VERSION == 3.6 ]]; then pip install black; fi
+  - if [ "$TRAVIS_OS_NAME" == "osx" ]; then pip install pytest; fi
 before_script: cd tests/
 script:
   - pytest

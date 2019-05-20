@@ -53,23 +53,23 @@ class NaiveTransferEntropyReconstructor(BaseReconstructor):
         G (nx.Graph): a reconstructed graph with $N$ nodes.
         """
 
-        N, L = TS.shape # get the shape and length of the time series
+        N, L = TS.shape  # get the shape and length of the time series
 
         if delay_max >= L:
-            delay_max = int(L/2)-1
+            delay_max = int(L / 2) - 1
 
-        TE = np.zeros((N,N)) # initialize an empty time series
+        TE = np.zeros((N, N))  # initialize an empty time series
 
-        for i in range(N): # for each node, i
-            for j in range(N): # and for each node j
-                if i!=j: # zeros on the diagnoals
-                    te_list = [] 
+        for i in range(N):  # for each node, i
+            for j in range(N):  # and for each node j
+                if i != j:  # zeros on the diagnoals
+                    te_list = []
                     # check several delay values and average them together
-                    for delay in range(1, delay_max): 
-                        te_list.append(transfer_entropy(TS[i,:],TS[j,:],delay))
+                    for delay in range(1, delay_max):
+                        te_list.append(transfer_entropy(TS[i, :], TS[j, :], delay))
 
-                    TE[i,j] = np.mean(te_list) 
-                    # this average is naive, but appears to be sufficient in 
+                    TE[i, j] = np.mean(te_list)
+                    # this average is naive, but appears to be sufficient in
                     # some circumstances
 
         self.results['weights_matrix'] = TE
@@ -102,19 +102,18 @@ def map_in_array(values):
     data (np.ndarray): this is either a 2 or 3 x L dimensional matrix
 
     '''
-    if len(values)==2:
+    if len(values) == 2:
         X = values[0]
         Y = values[1]
-        data = np.array( list(map(lambda x,y: [x,y], X,Y)))
-#         data = np.array( map(lambda x,y: [x,y], X,Y))
+        data = np.array(list(map(lambda x, y: [x, y], X, Y)))
+        #         data = np.array( map(lambda x,y: [x,y], X,Y))
         return data
-    if len(values)==3:
+    if len(values) == 3:
         X = values[0]
         Y = values[1]
         Z = values[2]
-        data = np.array( list(map(lambda x,y,z: [x,y,z], X,Y,Z)))
+        data = np.array(list(map(lambda x, y, z: [x, y, z], X, Y, Z)))
         return data
-
 
 
 def transfer_entropy(X, Y, delay=1, gaussian_sigma=None):
@@ -139,7 +138,7 @@ def transfer_entropy(X, Y, delay=1, gaussian_sigma=None):
 
     '''
 
-    if len(X)!=len(Y):
+    if len(X) != len(Y):
         raise ValueError('time series entries need to have same length')
 
     n = float(len(X[delay:]))
@@ -147,31 +146,26 @@ def transfer_entropy(X, Y, delay=1, gaussian_sigma=None):
     # number of bins for X and Y using Freeman-Diaconis rule
     # histograms built with np.histogramdd
 
-    binX = int( (max(X)-min(X)) / (2* stats.iqr(X) / (len(X)**(1.0/3))) )
-    binY = int( (max(Y)-min(Y)) / (2* stats.iqr(Y) / (len(Y)**(1.0/3))) )
+    binX = int((max(X) - min(X)) / (2 * stats.iqr(X) / (len(X) ** (1.0 / 3))))
+    binY = int((max(Y) - min(Y)) / (2 * stats.iqr(Y) / (len(Y) ** (1.0 / 3))))
 
-    p3,bin_p3 = np.histogramdd(
-        sample = map_in_array( [X[delay:],Y[:-delay],X[:-delay]] ),
-        bins = [binX,binY,binX]
-        )
-    p2,bin_p2 = np.histogramdd(
-        sample = map_in_array( [X[delay:],Y[:-delay]] ),
-        bins=[binX,binY]
-        )
-    p2delay,bin_p2delay = np.histogramdd(
-        sample = map_in_array( [X[delay:],X[:-delay]] ),
-        bins=[binX,binX]
-        )
-    p1,bin_p1 = np.histogramdd(
-        sample = np.array(X[delay:]),
-        bins=binX
-        )
+    p3, bin_p3 = np.histogramdd(
+        sample=map_in_array([X[delay:], Y[:-delay], X[:-delay]]),
+        bins=[binX, binY, binX],
+    )
+    p2, bin_p2 = np.histogramdd(
+        sample=map_in_array([X[delay:], Y[:-delay]]), bins=[binX, binY]
+    )
+    p2delay, bin_p2delay = np.histogramdd(
+        sample=map_in_array([X[delay:], X[:-delay]]), bins=[binX, binX]
+    )
+    p1, bin_p1 = np.histogramdd(sample=np.array(X[delay:]), bins=binX)
 
     # histograms normalized to obtain densities
-    p1 = p1/n
-    p2 = p2/n
-    p2delay = p2delay/n
-    p3 = p3/n
+    p1 = p1 / n
+    p2 = p2 / n
+    p2delay = p2delay / n
+    p3 = p3 / n
 
     # apply (or not) gaussian filters at given sigma to the distributions
     if gaussian_sigma is not None:
@@ -196,15 +190,15 @@ def transfer_entropy(X, Y, delay=1, gaussian_sigma=None):
                 pxx2 = p2delay[i][k]
                 pxyx2 = p3[i][j][k]
 
-                arg1 = float(pxy*pxx2)
-                arg2 = float(pxyx2*px)
-                #corrections avoding log(0)
+                arg1 = float(pxy * pxx2)
+                arg2 = float(pxyx2 * px)
+                # corrections avoding log(0)
                 if arg1 == 0.0:
                     arg1 = float(1e-12)
                 if arg2 == 0.0:
                     arg2 = float(1e-12)
 
-                term = pxyx2*np.log2(arg2) - pxyx2*np.log2(arg1) 
+                term = pxyx2 * np.log2(arg2) - pxyx2 * np.log2(arg1)
                 elements.append(term)
 
     TE_ij = sum(elements)

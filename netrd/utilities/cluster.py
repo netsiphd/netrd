@@ -42,6 +42,6 @@ def clusterGraph(G, method='single', metric='euclidean', optimal_ordering=False)
     link = linkage(adj, method, metric, optimal_ordering)
     dend = dendrogram(link, no_plot=True)
     order = dend['leaves']
-    adjClustered = adj[order,:]
-    adjClustered = adjClustered[:,order]
+    adjClustered = adj[order, :]
+    adjClustered = adjClustered[:, order]
     return adjClustered, order, dend, link

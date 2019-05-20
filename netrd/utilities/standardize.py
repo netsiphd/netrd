@@ -13,6 +13,7 @@ Submitted as part of the 2019 NetSI Collabathon
 import numpy as np
 import networkx as nx
 
+
 def mean_GNP_distance(n, prob, distance, samples=10, **kwargs):
     '''
     Compute the mean distance between _samples_ GNP graphs with

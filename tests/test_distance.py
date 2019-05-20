@@ -39,6 +39,7 @@ def test_different_graphs():
             dist = obj().dist(G1, G2)
             assert dist > 0.0
 
+
 def test_symmetry():
     """The distance between two graphs must be symmetric."""
 
@@ -61,20 +62,19 @@ def test_quantum_jsd():
     """
 
     with warnings.catch_warnings():
-        warnings.filterwarnings("ignore",
-                                message="JSD is only a metric for 0 ≤ q < 2.")
+        warnings.filterwarnings("ignore", message="JSD is only a metric for 0 ≤ q < 2.")
         JSD = distance.QuantumJSD()
         G = nx.karate_club_graph()
-        dist = JSD.dist(G, G, beta=.1, q=2)
+        dist = JSD.dist(G, G, beta=0.1, q=2)
         assert dist == 0.0
 
         G1 = nx.fast_gnp_random_graph(100, 0.1)
         G2 = nx.barabasi_albert_graph(100, 5)
-        dist = JSD.dist(G1, G2, beta=.1, q=2)
+        dist = JSD.dist(G1, G2, beta=0.1, q=2)
         assert dist > 0.0
 
         G1 = nx.barabasi_albert_graph(100, 4)
         G2 = nx.fast_gnp_random_graph(100, 0.1)
-        dist1 = JSD.dist(G1, G2, beta=.1, q=2)
-        dist2 = JSD.dist(G2, G1, beta=.1, q=2)
+        dist1 = JSD.dist(G1, G2, beta=0.1, q=2)
+        dist2 = JSD.dist(G2, G1, beta=0.1, q=2)
         assert np.isclose(dist1, dist2)

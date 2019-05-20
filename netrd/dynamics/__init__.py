@@ -15,5 +15,5 @@ __all__ = [
     'LotkaVolterra',
     'IsingGlauber',
     'BranchingModel',
-    'VoterModel'
+    'VoterModel',
 ]

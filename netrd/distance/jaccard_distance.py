@@ -16,7 +16,6 @@ import networkx as nx
 import numpy as np
 
 
-
 class JaccardDistance(BaseDistance):
     def dist(self, G1, G2):
         """Computes the average jaccard index between two sparse matrices
@@ -47,4 +46,3 @@ class JaccardDistance(BaseDistance):
         self.results['dist'] = dist
         self.results['adjacency_matrices'] = adj1, adj2
         return dist
-

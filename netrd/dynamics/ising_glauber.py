@@ -47,7 +47,6 @@ class IsingGlauber(BaseDynamics):
 
         """
 
-
         N = G.number_of_nodes()
         adjmat = nx.to_numpy_array(G, dtype=float)
         degs = adjmat.sum(axis=0)
@@ -59,7 +58,7 @@ class IsingGlauber(BaseDynamics):
         TS[:, 0] = np.round(init).astype(int)
 
         # Simulate the time series
-        for t in range(L-1):
+        for t in range(L - 1):
             state = TS[:, t].copy()  # State for each node
             num_act_nei = np.dot(state, adjmat)  # Number of active neighbors
 
@@ -69,7 +68,7 @@ class IsingGlauber(BaseDynamics):
             probs = np.where(state == 0, thrds, 1 - thrds)
 
             _next = np.where(rand(N) < probs, 1 - state, state)
-            TS[:, t+1] = _next
+            TS[:, t + 1] = _next
 
         self.results['ground_truth'] = G
         self.results['TS'] = TS

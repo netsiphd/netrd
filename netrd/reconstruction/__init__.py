@@ -38,5 +38,5 @@ __all__ = [
     'NaiveTransferEntropyReconstructor',
     'TimeGrangerCausalityReconstructor',
     'OptimalCausationEntropyReconstructor',
-    'CorrelationSpanningTree'
+    'CorrelationSpanningTree',
 ]

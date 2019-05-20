@@ -19,10 +19,19 @@ import numpy as np
 
 class BranchingModel(BaseDynamics):
     def __init__(self):
-        self.results={}
+        self.results = {}
 
-    def simulate(self, G, L, initial_fraction=0.1, m=0.9975, target_Ahat=0.2, 
-                 distribution_type='unif', scale=0.95, noise=True):
+    def simulate(
+        self,
+        G,
+        L,
+        initial_fraction=0.1,
+        m=0.9975,
+        target_Ahat=0.2,
+        distribution_type='unif',
+        scale=0.95,
+        noise=True,
+    ):
         """
         Simulate a branching processs dynamics (sand-pile-like) on a network.
         
@@ -50,56 +59,61 @@ class BranchingModel(BaseDynamics):
         
         """
 
-        N  = G.number_of_nodes()  # number of nodes
-        M  = G.number_of_edges()  # number of edges
-        A  = nx.to_numpy_array(G) # adjacency matrix
-        W  = np.zeros(A.shape)    # transition probability matrix (for weights)
+        N = G.number_of_nodes()  # number of nodes
+        M = G.number_of_edges()  # number of edges
+        A = nx.to_numpy_array(G)  # adjacency matrix
+        W = np.zeros(A.shape)  # transition probability matrix (for weights)
         for i in range(A.shape[0]):
-            if A[i].sum()>0:
-                W[i] = A[i]/A[i].sum()
+            if A[i].sum() > 0:
+                W[i] = A[i] / A[i].sum()
         Gw = nx.from_numpy_array(W)
-        G = nx.to_directed(Gw)    # convert back into a graph object
-        
+        G = nx.to_directed(Gw)  # convert back into a graph object
+
         TS = initialize_history(N, L, initial_fraction, m, target_Ahat, noise)
 
         # because there's noise added, dont want to get false positives
-        new_activity_times = np.nonzero(np.round(TS[:,1:].sum(axis=0), 3))[0]
+        new_activity_times = np.nonzero(np.round(TS[:, 1:].sum(axis=0), 3))[0]
 
-        # store 
-        cache = initialize_threshold_cache(M*L, distribution_type, scale)
-        
+        # store
+        cache = initialize_threshold_cache(M * L, distribution_type, scale)
+
         # now run dynamics
-        
-        for t in range(L-1):
+
+        for t in range(L - 1):
             if t not in list(new_activity_times):
-                current_state = TS[:,t]
-                
+                current_state = TS[:, t]
+
                 # because there's noise added, dont want to get false positives
-                active_nodes  = list(np.nonzero(np.round(current_state, 3))[0]) 
-                active_edges  = G.out_edges(nbunch=active_nodes, data=True)
-                
+                active_nodes = list(np.nonzero(np.round(current_state, 3))[0])
+                active_edges = G.out_edges(nbunch=active_nodes, data=True)
+
                 if len(active_edges) != 0:
                     current_sources = list(list(zip(*active_edges))[0])
                     current_targets = list(list(zip(*active_edges))[1])
-                    weights_array   = np.array([j[2]['weight'] for j in active_edges])
+                    weights_array = np.array([j[2]['weight'] for j in active_edges])
 
                     if len(cache) <= len(weights_array):
-                        cache = initialize_threshold_cache(M*L, distribution_type, scale)
+                        cache = initialize_threshold_cache(
+                            M * L, distribution_type, scale
+                        )
 
-                    # find edges with edges that will exceed the weights cache 
+                    # find edges with edges that will exceed the weights cache
                     # and thus will successfully propagate the information
-                    over_the_threshold = weights_array > cache[:len(weights_array)] 
-                    cache = cache[ (len(weights_array)+1) :] # update the cache
+                    over_the_threshold = weights_array > cache[: len(weights_array)]
+                    cache = cache[(len(weights_array) + 1) :]  # update the cache
 
-                    next_active_units = np.unique(np.array(current_targets)[over_the_threshold])
-                    TS[next_active_units,t+1] = 1
+                    next_active_units = np.unique(
+                        np.array(current_targets)[over_the_threshold]
+                    )
+                    TS[next_active_units, t + 1] = 1
 
         # save the ground-truth network to results
-        self.results['ground_truth']=G
+        self.results['ground_truth'] = G
         # save the timeseries data to results
-        self.results['TS']=TS
-        
+        self.results['TS'] = TS
+
         return TS
+
 
 def initialize_history(N, L, initial_fraction, m, target_Ahat, noise):
     """
@@ -125,34 +139,34 @@ def initialize_history(N, L, initial_fraction, m, target_Ahat, noise):
                           the first column
     
     """
-    
-    TS_init  = np.zeros((N, L))
+
+    TS_init = np.zeros((N, L))
     num_init = np.round(initial_fraction * N).astype('int')
-    
+
     TS_init[np.random.permutation(N)[0:num_init], 0] = 1
-    
+
     # maybe also here initialize TS_init with external drives?
     if m != 1.0:
-        N_nodes = 1000 
+        N_nodes = 1000
         if N > 1000:
-            N_nodes = N 
-        h_vals = np.random.poisson(target_Ahat*N_nodes * np.abs(1 - m), L)
+            N_nodes = N
+        h_vals = np.random.poisson(target_Ahat * N_nodes * np.abs(1 - m), L)
     else:
-        N_nodes = 100 
+        N_nodes = 100
         if N > 100:
-            N_nodes = N 
+            N_nodes = N
         h_vals = np.random.poisson(0.01, L)
-#         h_vals = np.random.poisson(target_Ahat*N_nodes * 0.01, L)
-    
+    #         h_vals = np.random.poisson(target_Ahat*N_nodes * 0.01, L)
+
     sum_h_vals = sum(h_vals)
-    external_drive_timestamps = sorted( list( np.nonzero(h_vals)[0] ) )
-    external_drive_activenodes = list( np.random.choice(N, sum_h_vals) )
-    
+    external_drive_timestamps = sorted(list(np.nonzero(h_vals)[0]))
+    external_drive_activenodes = list(np.random.choice(N, sum_h_vals))
+
     for timestamp in external_drive_timestamps:
         num_pops = h_vals[timestamp]
         active_nodes = [external_drive_activenodes.pop() for i in range(num_pops)]
-        TS_init[active_nodes,timestamp] = 1 # or maybe equals 1?
-        
+        TS_init[active_nodes, timestamp] = 1  # or maybe equals 1?
+
     if noise:
         TS_init += np.random.uniform(-np.exp(-12), np.exp(-12), TS_init.shape)
 
@@ -177,11 +191,11 @@ def initialize_threshold_cache(num_edges, distribution_type='unif', scale=1.0):
                         will topple and send information to the following node.
     
     """
-    
+
     if distribution_type == 'unif':
         edges = scale * np.random.rand(num_edges)
         return edges
-    
+
     elif distribution_type == 'normal':
         edges = scale * np.random.randn(num_edges)
         return edges

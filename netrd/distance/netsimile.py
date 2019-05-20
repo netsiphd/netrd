@@ -18,6 +18,7 @@ from scipy.stats import skew, kurtosis
 
 from .base import BaseDistance
 
+
 class NetSimile(BaseDistance):
     def dist(self, G1, G2):
         """A scalable approach to network similarity.
@@ -53,7 +54,6 @@ class NetSimile(BaseDistance):
 
         if directed_flag:
             warnings.warn("Coercing directed graph to undirected.", RuntimeWarning)
-
 
         # find the graph node feature matrices
         G1_node_features = feature_extraction(G1)
@@ -92,7 +92,7 @@ def feature_extraction(G):
     node_degree_dict = dict(G.degree())
     node_clustering_dict = dict(nx.clustering(G))
     egonets = [nx.ego_graph(G, n) for n in node_list]
-    egonet_dict = {node:egonet for node, egonet in zip(node_list, egonets)}
+    egonet_dict = {node: egonet for node, egonet in zip(node_list, egonets)}
 
     # node degrees
     degs = [node_degree_dict[n] for n in node_list]
@@ -102,37 +102,50 @@ def feature_extraction(G):
 
     # average degree of neighborhood
     neighbor_degs = [
-        np.mean([node_degree_dict[m]
-                 for m in egonets[n].nodes if m != n]) if node_degree_dict[n] > 0 else 0
+        np.mean([node_degree_dict[m] for m in egonets[n].nodes if m != n])
+        if node_degree_dict[n] > 0
+        else 0
         for n in node_list
     ]
 
     # average clustering coefficient of neighborhood
     neighbor_clusts = [
-        np.mean([node_clustering_dict[m]
-                 for m in egonets[n].nodes if m != n]) if node_degree_dict[n] > 0 else 0
+        np.mean([node_clustering_dict[m] for m in egonets[n].nodes if m != n])
+        if node_degree_dict[n] > 0
+        else 0
         for n in node_list
     ]
 
     # number of edges in the neighborhood
     neighbor_edges = [
-        egonets[n].number_of_edges()
-        if node_degree_dict[n] > 0 else 0 for n in node_list
+        egonets[n].number_of_edges() if node_degree_dict[n] > 0 else 0
+        for n in node_list
     ]
 
     # number of outgoing edges from the neighborhood
     # the sum of neighborhood degrees = 2*(internal edges) + external edges
-    #node_features[:,5] = node_features[:,0] * node_features[:,2] - 2*node_features[:,4]
-    neighbor_outgoing_edges = [len([edge for edge in
-                                    set.union(*[set(G.edges(j)) for j in egonets[i].nodes]) if not
-                                    egonets[i].has_edge(*edge)]) for i in node_list]
+    # node_features[:,5] = node_features[:,0] * node_features[:,2] - 2*node_features[:,4]
+    neighbor_outgoing_edges = [
+        len(
+            [
+                edge
+                for edge in set.union(*[set(G.edges(j)) for j in egonets[i].nodes])
+                if not egonets[i].has_edge(*edge)
+            ]
+        )
+        for i in node_list
+    ]
 
     # number of neighbors of neighbors (not in neighborhood)
     neighbors_of_neighbors = [
         len(
-            set([p for m in G.neighbors(n)
-                 for p in G.neighbors(m)]) - set(G.neighbors(n)) - set([n]))
-        if node_degree_dict[n] > 0 else 0 for n in node_list
+            set([p for m in G.neighbors(n) for p in G.neighbors(m)])
+            - set(G.neighbors(n))
+            - set([n])
+        )
+        if node_degree_dict[n] > 0
+        else 0
+        for n in node_list
     ]
 
     # assembling the features
@@ -148,22 +161,23 @@ def feature_extraction(G):
 
 
 def graph_signature(node_features):
-    signature_vec = np.zeros(7*5)
-    
+    signature_vec = np.zeros(7 * 5)
+
     # for each of the 7 features
     for k in range(7):
         # find the mean
-        signature_vec[k*5] = node_features[:,k].mean()
+        signature_vec[k * 5] = node_features[:, k].mean()
         # find the median
-        signature_vec[k*5 + 1] = np.median(node_features[:,k])
+        signature_vec[k * 5 + 1] = np.median(node_features[:, k])
         # find the std
-        signature_vec[k*5 + 2] = node_features[:,k].std()
+        signature_vec[k * 5 + 2] = node_features[:, k].std()
         # find the skew
-        signature_vec[k*5 + 3] = skew(node_features[:,k])
+        signature_vec[k * 5 + 3] = skew(node_features[:, k])
         # find the kurtosis
-        signature_vec[k*5 + 4] = kurtosis(node_features[:,k])
-        
+        signature_vec[k * 5 + 4] = kurtosis(node_features[:, k])
+
     return signature_vec
+
 
 """
 # sample usage

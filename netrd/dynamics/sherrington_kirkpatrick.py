@@ -11,8 +11,8 @@ from .base import BaseDynamics
 import networkx as nx
 import numpy as np
 
-class SherringtonKirkpatrickIsing(BaseDynamics):
 
+class SherringtonKirkpatrickIsing(BaseDynamics):
     def __init__(self):
         self.results = {}
 
@@ -48,24 +48,23 @@ class SherringtonKirkpatrickIsing(BaseDynamics):
         """
 
         N = G.number_of_nodes()
-        
+
         # get transition probability matrix of G
-        A = nx.to_numpy_array(G) 
+        A = nx.to_numpy_array(G)
         W = np.zeros(A.shape)
         for i in range(A.shape[0]):
-            if A[i].sum()>0:
-                W[i] = A[i]/A[i].sum()
-        
+            if A[i].sum() > 0:
+                W[i] = A[i] / A[i].sum()
+
         # initialize a time series of ones
         ts = np.ones((L, N))
-        for t in range(1, L-1):
-            h = np.sum(W[:,:] * ts[t,:], axis=1) # Wij from j to i
-            p = 1 / ( 1 + np.exp(-2*h) )
+        for t in range(1, L - 1):
+            h = np.sum(W[:, :] * ts[t, :], axis=1)  # Wij from j to i
+            p = 1 / (1 + np.exp(-2 * h))
             if noisy:
-                ts[t+1,:] = p - np.random.rand(N)
+                ts[t + 1, :] = p - np.random.rand(N)
             else:
-                ts[t+1,:] = sign_vec(p - np.random.rand(N))
-
+                ts[t + 1, :] = sign_vec(p - np.random.rand(N))
 
         self.results['ground_truth'] = G
         self.results['TS'] = ts.T
@@ -78,7 +77,8 @@ def sign(x):
     np.sign(0) = 0 but here to avoid value 0, 
     we redefine it as def sign(0) = 1
     """
-    return 1. if x >= 0 else -1.
+    return 1.0 if x >= 0 else -1.0
+
 
 def sign_vec(x):
     """

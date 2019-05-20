@@ -67,4 +67,3 @@ def ensure_undirected(G):
         warnings.warn("Coercing directed graph to undirected.", RuntimeWarning)
 
     return G
-

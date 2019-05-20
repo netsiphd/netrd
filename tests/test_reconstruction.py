@@ -21,9 +21,8 @@ def test_graph_size():
     size = 50
     for label, obj in reconstruction.__dict__.items():
         if label in [
-                'PartialCorrelationMatrixReconstructor',
-                'NaiveTransferEntropyReconstructor'
-                'OptimalCausationEntropyReconstructor'
+            'PartialCorrelationMatrixReconstructor',
+            'NaiveTransferEntropyReconstructor' 'OptimalCausationEntropyReconstructor',
         ]:
             continue
         if isinstance(obj, type) and BaseReconstructor in obj.__bases__:
@@ -40,10 +39,9 @@ def test_naive_transfer_entropy():
     """
     size = 25
     TS = np.random.random((size, 100))
-    G = reconstruction.NaiveTransferEntropyReconstructor().fit(TS,
-                                                               delay_max=2,
-                                                               threshold_type = 'range',
-                                                               cutoffs=[(-np.inf, np.inf)])
+    G = reconstruction.NaiveTransferEntropyReconstructor().fit(
+        TS, delay_max=2, threshold_type='range', cutoffs=[(-np.inf, np.inf)]
+    )
     assert G.order() == size
 
 
@@ -54,9 +52,9 @@ def test_oce():
 
     size = 25
     TS = np.random.random((size, 50))
-    G = reconstruction.OptimalCausationEntropyReconstructor().fit(TS,
-                                                                  threshold_type='range',
-                                                                  cutoffs=[(-np.inf, np.inf)])
+    G = reconstruction.OptimalCausationEntropyReconstructor().fit(
+        TS, threshold_type='range', cutoffs=[(-np.inf, np.inf)]
+    )
     assert G.order() == size
 
 
@@ -72,9 +70,7 @@ def test_convergent_cross_mapping():
 
     TS = np.loadtxt(filepath, delimiter=',')
     recon = ConvergentCrossMappingReconstructor()
-    G = recon.fit(TS,
-                  threshold_type='range',
-                  cutoffs=[(-np.inf, np.inf)])
+    G = recon.fit(TS, threshold_type='range', cutoffs=[(-np.inf, np.inf)])
     el = set(G.edges())
     res = recon.results.keys()
 
@@ -92,12 +88,12 @@ def test_partial_correlation():
         for index in [0, None]:
             for size in [10, 100]:
                 if index is None and resid is True:
-                    pass # this shouldn't be a valid parameterization
+                    pass  # this shouldn't be a valid parameterization
                 else:
                     TS = np.random.random((size, 50))
-                    G = reconstruction.PartialCorrelationMatrixReconstructor().fit(TS,
-                                                                                   index=index,
-                                                                                   cutoffs=[(-np.inf, np.inf)])
+                    G = reconstruction.PartialCorrelationMatrixReconstructor().fit(
+                        TS, index=index, cutoffs=[(-np.inf, np.inf)]
+                    )
                     if index is None:
                         assert G.order() == size
                     else:

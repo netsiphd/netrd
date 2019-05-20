@@ -24,8 +24,8 @@ class BaseReconstructor:
     def fit(self, TS, **kwargs):
         """Reconstruct a graph from time series TS.
 
-        Params
-        ------
+        Parameters
+        ----------
         TS (np.ndarray): Array consisting of $L$ observations from $N$ sensors.
 
         Returns

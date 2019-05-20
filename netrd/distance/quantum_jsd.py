@@ -65,8 +65,8 @@ class QuantumJSD(BaseDistance):
         exponentiation is performed using the Padé approximation and because of
         imprecision in the calculation of the eigenvalues of the density matrix.
 
-        Params
-        ------
+        Parameters
+        ----------
 
         G1, G2 (nx.Graph): two networkx graphs to be compared.
         beta (float): time parameter for diffusion propagator

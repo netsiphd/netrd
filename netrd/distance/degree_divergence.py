@@ -25,8 +25,8 @@ class DegreeDivergence(BaseDistance):
 
         Note: The method assumes undirected networks.
 
-        Params
-        ------
+        Parameters
+        ----------
 
         G1, G2 (nx.Graph): two networkx graphs to be compared.
 

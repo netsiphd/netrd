@@ -29,8 +29,8 @@ class DeltaCon(BaseDistance):
         matrix inversion, there is a faster, roughly linear, algorithm that
         gives approximate results.
 
-        Params
-        ------
+        Parameters
+        ----------
 
         G1, G2 (nx.Graph): two networkx graphs to be compared.
         exact (bool): if True, use the slower but exact algorithm (DeltaCon_0)

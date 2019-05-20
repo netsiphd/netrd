@@ -29,8 +29,8 @@ class OnionDivergence(BaseDistance):
 
         Note: The method assumes simple graphs.
 
-        Params
-        ------
+        Parameters
+        ----------
 
         G1, G2 (nx.Graph): two networkx graphs to be compared.
         dist (str): type of distribution divergence to output. Choices are

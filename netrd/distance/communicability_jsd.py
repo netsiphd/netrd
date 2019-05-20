@@ -51,13 +51,13 @@ class CommunicabilityJSD(BaseDistance):
         distance scalar, `self.results` stores the two vectors $P1$ and $P2$, 
         their mixed vector, $P0$, and their associated entropies.
 
-        Params
-        ------
+        Parameters
+        ----------
         G1 (nx.Graph): the first graph
         G2 (nx.Graph): the second graph
         
         Returns
-        -------
+        -----------
         dist (float): between zero and one, this is the communicability 
                       sequence distance bewtween G1 and G2.
         

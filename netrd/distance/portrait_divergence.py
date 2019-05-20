@@ -25,8 +25,8 @@ class PortraitDivergence(BaseDistance):
         matrices in the key `'adjacency_matrices'` and the portrait matrices in
         `'portrait_matrices'`.
 
-        Params
-        ------
+        Parameters
+        ----------
         G1 (nx.Graph): a graph
         G2 (nx.Graph): a second graph
         bins (int): width of bins in percentiles
@@ -97,8 +97,8 @@ class PortraitDivergence(BaseDistance):
 
 def portrait(G):
     """
-    Params
-    ------
+    Parameters
+    ----------
     G (nx.Graph or nx.DiGraph): a graph.
 
     Returns
@@ -165,8 +165,8 @@ def weighted_portrait(G, paths=None, binedges=None):
     Compute weighted portrait, using Dijkstra's algorithm for finding
     shortest paths.
 
-    Params
-    ------
+    Parameters
+    ----------
     G (nx.Graph or nx.DiGraph): a graph.
     paths (list): a list of all pairs of pahts
     binedges (list): sampled path lengths
@@ -211,8 +211,8 @@ def _get_unique_path_lengths(G, paths=None):
     """
     Compute the unique path lengths.
 
-    Params
-    ------
+    Parameters
+    ----------
     G (nx.Graph or DiGraph): a graph.
     paths (list): list of paths.
 
@@ -238,8 +238,8 @@ def pad_portraits_to_same_size(B1, B2):
     Make sure that two matrices are padded with zeros and/or trimmed of
     zeros to be the same dimensions.
 
-    Params
-    ------
+    Parameters
+    ----------
     B1 (np.ndarray): Portrait matrix of a graph (k x N)
     B2 (np.ndarray):
 
@@ -302,8 +302,8 @@ def portrait_divergence(G1, G2, N1=None, N2=None):
     """
     Compute the portrait divergence between graphs G1 and G2.
 
-    Params
-    ------
+    Parameters
+    ----------
     G1 (nx.Graph or nx.DiGraph): a graph.
     G2 (nx.Graph or nx.DiGraph): a graph.
 

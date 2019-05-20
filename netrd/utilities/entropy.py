@@ -22,8 +22,8 @@ def entropy(var):
     """
     Return the Shannon entropy of a variable.
 
-    Params
-    ------
+    Parameters
+    ----------
     var (np.ndarray): 1D array of observations of the variable.
 
     Notes
@@ -39,8 +39,8 @@ def joint_entropy(data):
     """
     Return the joint entropy of all variables in the data.
 
-    Params
-    ------
+    Parameters
+    ----------
     data (np.ndarray): Array of data with variables as columns and observations
                        as rows.
 
@@ -70,8 +70,8 @@ def conditional_entropy(data, given):
     Return the conditional entropy of variables in the data conditioned on
     a given set of variables.
 
-    Params
-    ------
+    Parameters
+    ----------
     data (np.ndarray): Array of data with variables of interests as columns
                        and observations as rows.
 
@@ -100,8 +100,8 @@ def categorized_data(raw, n_bins):
     Return the categorized data where an entry in the returned array is the
     index of bin of the linearly-binned raw continuous data.
 
-    Params
-    ------
+    Parameters
+    ----------
     raw (np.ndarray): Array of raw continuous data.
 
     n_bins (int): A universal number of bins for all the variables.
@@ -125,8 +125,8 @@ def linear_bins(raw, n_bins):
     """
     Return the separators of linear bins for each variable in the raw data.
 
-    Params
-    ------
+    Parameters
+    ----------
     raw (np.ndarray): Array of raw continuous data.
 
     n_bins (int): A universal number of bins for all the variables.

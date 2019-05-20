@@ -33,8 +33,8 @@ class GraphicalLassoReconstructor(BaseReconstructor):
         """Reconstruct a network from time series by performing a graphical lasso
         from [1, 2].
 
-        Params
-        ------
+        Parameters
+        ----------
         TS (np.ndarray): Array consisting of $L$ observations from $N$ sensors.
         alpha (float, default=0.01): Coefficient of penalization, higher values
         means more sparseness
@@ -75,8 +75,8 @@ class GraphicalLassoReconstructor(BaseReconstructor):
 def graphical_lasso(TS, alpha=0.01, max_iter=100, convg_threshold=0.001):
     """ This function computes the graphical lasso algorithm as outlined in [1].
         
-    Params
-    ------
+    Parameters
+    ----------
     TS (np.ndarray): Array consisting of $L$ observations from $N$ sensors.
 
     alpha (float, default=0.01): Coefficient of penalization, higher values
@@ -144,8 +144,8 @@ def cov_estimator(TS):
     """
     Computes the covariance estimate for the time series.
 
-    Params
-    ------
+    Parameters
+    ----------
     TS (np.ndarray): Array consisting of $L$ observations from $N$ sensors.
 
     Returns
@@ -161,8 +161,8 @@ def _dual_gap(emp_cov, precision, alpha):
     is given in Duchi "Projected Subgradient Methods for Learning Sparse
     Gaussians".
 
-    Params
-    ------
+    Parameters
+    ----------
     emp_cov (np.ndarray): Empirical covariance matrix
 
     precision (np.ndarray): Precision matrix

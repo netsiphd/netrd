@@ -42,8 +42,8 @@ class PartialCorrelationInfluenceReconstructor(BaseReconstructor):
         as `'weights_matrix'` and the thresholded version of the partial
         correlation matrix as `'thresholded_matrix'`.
 
-        Params
-        ------
+        Parameters
+        ----------
 
         index (int, array of ints, or None): Take the partial correlations of
         each pair of elements holding constant an index variable or set of

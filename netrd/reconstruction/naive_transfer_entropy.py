@@ -39,8 +39,8 @@ class NaiveTransferEntropyReconstructor(BaseReconstructor):
         The results dictionary also stores the weight matrix as `'weights_matrix'`
         and the thresholded version of the weight matrix as `'thresholded_matrix'`.
 
-        Params
-        ------
+        Parameters
+        ----------
         TS (np.ndarray): array consisting of $L$ observations from $N$ sensors.
         delay_max (int): the number of timesteps in the past to 
                          aggregate and average in order to get TE_ij
@@ -91,8 +91,8 @@ def map_in_array(values):
     function to build arrays with correct shape for np.histogramdd()
     from 2 (or 3) time series of scalars. It is quite similar to np.vstack()
     
-    Params
-    ------
+    Parameters
+    ----------
     values (np.ndarray): this is either a L x 2 or 3 dimensional matrix, which 
                          is the stitched-together matrix of two or three nodes'
                          time series activity.
@@ -124,8 +124,8 @@ def transfer_entropy(X, Y, delay=1, gaussian_sigma=None):
     amount of information from Y to X. Calculated through the Kullback-Leibler 
     divergence with conditional probabilities.
 
-    Params
-    ------
+    Parameters
+    ----------
     X (np.ndarray): time series of scalars from node_i
     Y (np.ndarray): time series of scalars from node_j
     delay (int): step in tuple (x_n, y_n, x_(n - delay))

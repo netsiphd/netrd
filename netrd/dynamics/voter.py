@@ -23,8 +23,8 @@ class VoterModel(BaseDynamics):
 
         The results dictionary also stores the ground truth network as `'ground_truth'`.
 
-        Params
-        ------
+        Parameters
+        ----------
         G (nx.Graph): the input (ground-truth) graph with $N$ nodes.
         L (int): the length of the desired time series.
         noise (float or None): if noise is present, with this probability a node's

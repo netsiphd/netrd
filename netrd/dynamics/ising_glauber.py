@@ -28,8 +28,8 @@ class IsingGlauber(BaseDynamics):
 
         The results dictionary also stores the ground truth network as `'ground_truth'`.
 
-        Params
-        ------
+        Parameters
+        ----------
         G (nx.Graph): Underlying ground-truth network of simulated time series
                       which has $N$ nodes.
 

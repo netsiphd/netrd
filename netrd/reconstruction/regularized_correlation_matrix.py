@@ -26,8 +26,8 @@ class RegularizedCorrelationMatrixReconstructor(BaseReconstructor):
         The results dictionary also stores the weight matrix as `'weights_matrix'`
         and the thresholded version of the weight matrix as `'thresholded_matrix'`.
 
-        Params
-        ------
+        Parameters
+        ----------
         TS (np.ndarray): Array consisting of $L$ observations from $N$ sensors
         num_eigs (int): The number of eigenvalues to use. (This corresponds
         to the amount of regularization.) The number of eigenvalues used must

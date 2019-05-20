@@ -31,8 +31,8 @@ class Hamming(BaseDistance):
         The results dictionary also stores a 2-tuple of the underlying adjacency
         matrices in the key `'adjacency_matrices'`.
 
-        Params
-        ------
+        Parameters
+        ----------
 
         G1, G2 (nx.Graph): two networkx graphs to be compared.
 

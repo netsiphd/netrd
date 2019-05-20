@@ -32,8 +32,8 @@ class Kuramoto(BaseDynamics):
 		TS = dynamics.simulate(G, L, dt=0.04, K=0.3)
 		#######
 
-        Params
-        ------
+        Parameters
+        ----------
         G (nx.Graph): the input (ground-truth) graph with $N$ nodes.
         L (int): the length of the desired time series.
         dt (float): size of timestep for numerical integration.

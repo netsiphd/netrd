@@ -40,8 +40,8 @@ class LotkaVolterra(BaseDynamics):
         The results dictionary also stores the ground truth network as `'ground_truth'`
         and the intermediate time steps as `'time_steps'`.
 
-        Params
-        ------
+        Parameters
+        ----------
         G (nx.Graph): Underlying ground-truth network of simulated time series
                       which has $N$ nodes.
 

@@ -24,8 +24,8 @@ class NetLSD(BaseDistance):
         The results dictionary includes the underlying signature vectors in
         `'signatures'`.
 
-        Params
-        ------
+        Parameters
+        ----------
 
         G1, G2 (nx.Graph): two undirected networkx graphs to be compared.
         normalization (str): type of normalization of the heat kernel vectors.
@@ -67,7 +67,7 @@ def _lsd_signature(eigenvalues, timescales, normalization):
     Computes heat kernel trace from given eigenvalues, timescales, and normalization.
 
     Parameters
-    ----------
+    --------------
     eigenvalues (numpy.ndarray): Eigenvalue vector
     timescales (numpy.ndarray): Vector of discrete timesteps for the kernel computation
     normalization (str):

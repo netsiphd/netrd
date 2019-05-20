@@ -29,8 +29,8 @@ class NetSimile(BaseDistance):
         `'feature_matrices'` and the underlying signature vectors in
         `'signature_vectors'`.
 
-        Params
-        ------
+        Parameters
+        ----------
 
         G1, G2 (nx.Graph): two undirected networkx graphs to be compared.
 
@@ -76,8 +76,8 @@ class NetSimile(BaseDistance):
 def feature_extraction(G):
     """Node feature extraction.
 
-        Params
-        ------
+        Parameters
+        ----------
 
         G (nx.Graph): a networkx graph.
 

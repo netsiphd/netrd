@@ -34,8 +34,8 @@ class PartialCorrelationMatrixReconstructor(BaseReconstructor):
         The results dictionary also stores the weight matrix as `'weights_matrix'`
         and the thresholded version of the weight matrix as `'thresholded_matrix'`.
 
-        Params
-        ------
+        Parameters
+        ----------
         index (int, array of ints, or None): Take the partial correlations of
         each pair of elements holding constant an index variable or set of
         index variables. If None, take the partial correlations of the
@@ -114,7 +114,7 @@ def partial_corr(C, index=None):
 
 
     Parameters
-    ----------
+    --------------
     C : array-like, shape (p, n)
         Array with the different variables. Each row of C is taken as a variable
 

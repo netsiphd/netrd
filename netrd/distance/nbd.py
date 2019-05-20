@@ -25,8 +25,8 @@ class NBD(BaseDistance):
     def dist(self, G1, G2, topk='automatic', batch=100, tol=1e-5):
         """NBD between two graphs.
 
-        Params
-        ------
+        Parameters
+        ----------
 
         G1, G2 (nx.Graph): The graphs to compare.
 
@@ -54,8 +54,8 @@ class NBD(BaseDistance):
 def nbvals(graph, topk='automatic', batch=100, tol=1e-5):
     """Compute the largest-magnitude non-backtracking eigenvalues.
 
-    Params
-    ------
+    Parameters
+    ----------
 
     graph (nx.Graph): The graph.
 
@@ -147,8 +147,8 @@ def pseudo_hashimoto(graph):
     is the adjacency matrix.  The eigenvalues of B' are always eigenvalues
     of B, the non-backtracking or Hashimoto matrix.
 
-    Params
-    ------
+    Parameters
+    ----------
 
     graph (nx.Graph): A NetworkX graph object.
 
@@ -179,8 +179,8 @@ def half_incidence(graph, ordering='blocks', return_ordering=False):
     at (n, e) is equal to 1 if node n is the target (or head) of edge e,
     and 0 otherwise.
 
-    Params
-    ------
+    Parameters
+    ----------
 
     graph (nx.Graph): The graph.
 

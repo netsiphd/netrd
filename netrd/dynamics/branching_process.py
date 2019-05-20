@@ -36,8 +36,8 @@ class BranchingModel(BaseDynamics):
         Simulate a branching processs dynamics (sand-pile-like) on a network.
         
         The results dictionary also stores the ground truth network as `'ground_truth'`.
-        Params
-        ------
+        Parameters
+        ----------
         G (nx.Graph): directed or undirected ground truth graph
         L (int): desired length of time series
         initial_fraction (float): fraction of nodes that start as active
@@ -121,8 +121,8 @@ def initialize_history(N, L, initial_fraction, m, target_Ahat, noise):
     parameters corresponding to the initial_fraction of active nodes, 
     the branching ratio, m, and the target number of avalanches.
     
-    Params
-    ------
+    Parameters
+    ----------
     N (int): number of nodes
     L (int): desired length of time series
     initial_fraction (float): fraction of nodes that start as active
@@ -178,8 +178,8 @@ def initialize_threshold_cache(num_edges, distribution_type='unif', scale=1.0):
     A cache of random numbers. This is useful for speed, as calling the numpy
     random number generator can get costly with large networks and time series.
     
-    Params
-    ------
+    Parameters
+    ----------
     num_edges (int): the length of the cache, which should correspond to the 
                      combination of all possible activity over the simulation.
     distribution_type (str): string that describes which type of random numbers.

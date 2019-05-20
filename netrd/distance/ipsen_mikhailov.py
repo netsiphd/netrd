@@ -31,8 +31,8 @@ class IpsenMikhailov(BaseDistance):
 
         Note : The method requires undirected networks.
 
-        Params
-        ------
+        Parameters
+        ----------
 
         G1, G2 (nx.Graph): two networkx graphs to be compared.
 
@@ -68,8 +68,8 @@ def _im_distance(adj1, adj2, hwhm):
 
     Note : this is also used by the file hamming_ipsen_mikhailov.py
 
-    Params
-    ------
+    Parameters
+    ----------
 
     adj1, adj2 (array): adjacency matrices.
 

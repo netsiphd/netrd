@@ -34,8 +34,8 @@ class MarchenkoPastur(BaseReconstructor):
         The results dictionary also stores the weight matrix as `'weights_matrix'`
         and the thresholded version of the weight matrix as `'thresholded_matrix'`.
 
-        Params
-        ------
+        Parameters
+        ----------
         TS (np.ndarray): $N \\times L$ array consisting of $L$ observations 
                          from $N$ sensors.
         remove_largest (bool), optional:  If ``False``, all the eigenvectors

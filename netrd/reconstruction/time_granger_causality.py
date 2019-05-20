@@ -37,8 +37,8 @@ class TimeGrangerCausalityReconstructor(BaseReconstructor):
         The results dictionary also stores the weight matrix as `'weights_matrix'`
         and the thresholded version of the weight matrix as `'thresholded_matrix'`.
 
-        Params
-        ------
+        Parameters
+        ----------
         TS (np.ndarray): Array consisting of $L$ observations from $N$ sensors.
         lag (int): Time lag.
         threshold_type (str): Which thresholding function to use on the matrix of
@@ -81,8 +81,8 @@ def get_training_data(TS, lag):
     """From a single node time series, it returns a training dataset with
     corresponding targets.
 
-    Params
-    ------
+    Parameters
+    ----------
 
     TS (np.ndarray): Array consisting of $L$ observations from $N$ sensors.
 

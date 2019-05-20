@@ -57,8 +57,8 @@ class ConvergentCrossMappingReconstructor(BaseReconstructor):
         between elements (`'weights_matrix'`) and their associated p-values
         (`'pvalues_matrix'`).
 
-        Params
-        ------
+        Parameters
+        ----------
         TS (np.ndarray): $N \times L$ array consisting of $L$ observations
                          from $N$ sensors.
 
@@ -126,8 +126,8 @@ class ConvergentCrossMappingReconstructor(BaseReconstructor):
 def shadow_data_cloud(data, N, tau):
     """Return the lagged-vector data cloud of a given variable's time series.
 
-    Params
-    ------
+    Parameters
+    ----------
     data (np.ndarray): Length-$L$ 1D array of a single variable's times series.
 
     N (int): Number of variables.
@@ -164,8 +164,8 @@ def nearest_neighbors(shadow, L):
     Return time indices of the N+1 nearest neighbors for every point in the
     shadow data cloud and their corresponding Euclidean distances.
 
-    Params
-    ------
+    Parameters
+    ----------
     shadow (np.ndarray): Array of the shadow data cloud.
 
     L (int): Number of observations in the time series.
@@ -209,8 +209,8 @@ def nearest_neighbors(shadow, L):
 def neighbor_weights(dist):
     """Return the weights of neighbors in time seires estimates.
 
-    Params
-    ------
+    Parameters
+    ----------
     dist (np.ndarray): $M \times (N+1)$ array of Euclidean distances between a
                        point to its nearest neighbors in the shadow data cloud
                        (sorted by increasing order of distances), where $M$ is
@@ -240,8 +240,8 @@ def neighbor_weights(dist):
 def time_series_estimates(data_y, nei_x, wei_x):
     """Return estimates of variable $Y$ from variable $X$'s shadow data cloud.
 
-    Params
-    ------
+    Parameters
+    ----------
     data_y (np.ndarray): 1D array of variable $Y$'s time series data.
 
     nei_x (np.ndarray): $M \times (N+1)$ array of time indices of nearest

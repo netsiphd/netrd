@@ -45,8 +45,8 @@ class OptimalCausationEntropyReconstructor(BaseReconstructor):
         The results dictionary stores the causal parents of individual nodes in
         `'parents'` and the raw adjacency matrix in `'adjacency_matrix'`.
 
-        Params
-        ------
+        Parameters
+        ----------
         TS (np.ndarray): $N \times L$ array consisting of $L$ observations
                          from $N$ sensors.
 
@@ -104,8 +104,8 @@ def causal_superset(nodes_I, data, atol):
     Return a superset of causal parents for a set of nodes $I$ by a heuristic
     (adding node that maximizes causation entropy aggregatively).
 
-    Params
-    ------
+    Parameters
+    ----------
     nodes_I (set): Set of node indices.
 
     data (np.ndarray): Array of categorical data with nodes as columns and
@@ -147,8 +147,8 @@ def remove_noncausal(superset, nodes_I, data, atol):
     Remove noncausal nodes in the superset of nodes $I$'s causal parents,
     where noncausal nodes are identified via zero causation entropy.
 
-    Params
-    ------
+    Parameters
+    ----------
     superset (set): Set of node indices, which contains the causal parents.
 
     nodes_I (set): Set of node indices.
@@ -176,8 +176,8 @@ def causation_entropy(data, nodes_I, nodes_J, nodes_K):
     Return the causation entropy from a set of nodes $J$ to nodes $I$
     conditioning on nodes $K$.
 
-    Params
-    ------
+    Parameters
+    ----------
     data (np.ndarray): Array of categorical data with nodes as columns and
                        observations of quantity on nodes as rows.
 

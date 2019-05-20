@@ -30,8 +30,8 @@ class CorrelationSpanningTree(BaseReconstructor):
         The results dictionary also stores the distance matrix (computed from the correlations)
         as `'distance_matrix'`.
 
-        Params
-        ------
+        Parameters
+        ----------
         TS (np.ndarray): $N \\times L$ array consisting of $L$ observations
                          from $N$ sensors.
 

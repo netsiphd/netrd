@@ -46,8 +46,8 @@ class ResistancePerturbation(BaseDistance):
         The results dictionary also stores a 2-tuple of the underlying resistance
         matrices in the key `'resistance_matrices'`.
 
-        Params
-        ------
+        Parameters
+        ----------
         G1, G2 (nx.Graph): two networkx graphs to be compared.
         p (float or str, optional): $p$-norm to take of the difference between
             the resistance matrices. Specify `np.inf` to take $\infty$-norm.
@@ -90,8 +90,8 @@ def get_resistance_matrix(G):
     $R = \text{diag}(L_i) 1^T + 1 \text{diag}(L_i)^T - 2L_i$,
     where L_i is the Moore-Penrose pseudoinverse of the Laplacian of $G$.
 
-    Params
-    ------
+    Parameters
+    ----------
     G (nx.Graph): networkx graph from which to get its resistance matrix
 
     Returns

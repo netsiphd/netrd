@@ -31,8 +31,8 @@ class OUInferenceReconstructor(BaseReconstructor):
         `'weights_matrix'`, the covariance matrix in `covariance_matrix` and
         the thresholded version of the weight matrix as `'thresholded_matrix'`.
 
-        Params
-        ------
+        Parameters
+        ----------
         TS (np.ndarray): Array consisting of $L$ observations from $N$ sensors.
         threshold_type (str): Which thresholding function to use on the matrix of
         weights. See `netrd.utilities.threshold.py` for documentation. Pass additional
@@ -74,8 +74,8 @@ def inverse_method(covariance, temperatures):
     process 
     covariance  = covariance matrix of the zero-mean signal
 
-    Params
-    ------
+    Parameters
+    ----------
 
     covariance (np.ndarray): Covariance matrix of the zero-mean signal.
 

@@ -15,8 +15,8 @@ def read_time_series(filename, delimiter=','):
     Read an NxL time series from a file into a numpy.ndarray.
     This function expects filename to be a comma separated
     text file with _only_ data.
-    Params
-    ------
+    Parameters
+    ----------
     filename: (str) path to a file that will be read
     Returns
     -------

@@ -37,8 +37,8 @@ class SherringtonKirkpatrickIsing(BaseDynamics):
 		TS = dynamics.simulate(G, L)
 		#######
 		
-        Params
-        ------
+        Parameters
+        ----------
         G (nx.Graph): the input (ground-truth) graph with $N$ nodes.
         L (int): the length of the desired time series.
 

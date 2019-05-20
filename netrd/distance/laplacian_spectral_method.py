@@ -55,8 +55,8 @@ class LaplacianSpectralMethod(BaseDistance):
         proposed for the Hamming-Ipsen-Mikhailov. See paper :
         https://ieeexplore.ieee.org/abstract/document/7344816.
 
-        Params
-        ------
+        Parameters
+        ----------
 
         G1, G2 (nx.Graph): two networkx graphs to be compared.
 
@@ -163,8 +163,8 @@ def _create_continuous_spectrum(eigenvalues, kernel, hwhm, a, b):
     The discret spectrum (sum of dirac delta) is convolved with a kernel and
     renormalized.
 
-    Params
-    ------
+    Parameters
+    ----------
 
     eigenvalues (array): list of eigenvalues.
 
@@ -203,8 +203,8 @@ def _create_continuous_spectrum(eigenvalues, kernel, hwhm, a, b):
 def _spectra_comparison(density1, density2, a, b, measure):
     """Apply a metric to compare the continuous spectra
 
-    Params
-    ------
+    Parameters
+    ----------
 
     density1, density2 (function): one argument functions for the continuous
     spectral densities.

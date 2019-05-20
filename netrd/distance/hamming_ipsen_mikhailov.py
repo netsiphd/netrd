@@ -49,8 +49,8 @@ class HammingIpsenMikhailov(BaseDistance):
         range [0,1]). Both (H and IM) are also saved in the results
         dictionary.
 
-        Params
-        ------
+        Parameters
+        ----------
 
         G1, G2 (nx.Graph): two networkx graphs to be compared.
 
@@ -119,8 +119,8 @@ def _get_hwhm_undirected(N):
 
     For undirected networks.
 
-    Params
-    ------
+    Parameters
+    ----------
 
     N (int): Number of nodes.
 
@@ -153,8 +153,8 @@ def _get_hwhm_directed(N):
 
     For directed networks.
 
-    Params
-    ------
+    Parameters
+    ----------
 
     N (int): Number of nodes.
 

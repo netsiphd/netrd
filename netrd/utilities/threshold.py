@@ -50,7 +50,7 @@ def threshold_in_range(mat, **kwargs):
     if kwargs.get('binary', False):
         thresholded_mat = np.abs(np.sign(thresholded_mat))
 
-    if kwargs.get('remove_self_loops', False):
+    if kwargs.get('remove_self_loops', True):
         np.fill_diagonal(thresholded_mat, 0)
 
     return thresholded_mat
@@ -80,7 +80,7 @@ def threshold_on_quantile(mat, **kwargs):
         )
         quantile = 0.9
 
-    if kwargs.get('remove_self_loops', False):
+    if kwargs.get('remove_self_loops', True):
         np.fill_diagonal(A, 0)
 
     if quantile != 0:
@@ -122,7 +122,7 @@ def threshold_on_degree(mat, **kwargs):
     n = len(mat)
     A = np.ones((n, n))
 
-    if kwargs.get('remove_self_loops', False):
+    if kwargs.get('remove_self_loops', True):
         np.fill_diagonal(A, 0)
         np.fill_diagonal(mat, 0)
 

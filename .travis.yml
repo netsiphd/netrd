@@ -10,10 +10,12 @@ matrix:
         - os: osx
           language: generic
           python: "3.5"
+          env: PYVER="3.5"
 
         - os: osx
           language: generic
           python: "3.6"
+          env: PYVER="3.6
 
 before_install:
   - |
@@ -22,8 +24,8 @@ before_install:
     brew install openssl readline
     brew outdated pyenv || brew upgrade pyenv
     brew install pyenv-virtualenv
-    pyenv install "${PYTHON}.0"
-    export PYENV_VERSION="${PYTHON}.0"
+    pyenv install "${PYVER}.0"
+    export PYENV_VERSION="${PYVER}.0"
     export PATH="/Users/travis/.pyenv/shims:${PATH}"
     pyenv virtualenv venv
     source ~/.pyenv/versions/venv/bin/activate

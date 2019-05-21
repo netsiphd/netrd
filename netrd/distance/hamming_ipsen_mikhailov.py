@@ -29,11 +29,15 @@ class HammingIpsenMikhailov(BaseDistance):
 
         The global (spectral) metric IM is the Ipsen-Mikailov distance,
         corresponding to the square-root of the squared difference of the
-        laplacian spectrum for each network.
+        Laplacian spectrum for each network.
 
         The Hamming-Ipsen-Mikhailov (HIM) distance is an Euclidean metric
-        on the space created by the cartesian product of the metric space
-        associated with H and IM.
+        on the space created by the Cartesian product of the metric space
+        associated with H and IM. The trade-off between global and local
+        information is governed by a combination factor: when this is
+        one, local and global information are balanced; when it is zero,
+        it reduces to the (local) Hamming distance; and as it approaches
+        infinity it becomes the (global) Ipsen-Mikhailov distance.
 
         The results dictionary also stores a 2-tuple of the underlying
         adjacency matrices in the key `'adjacency_matrices'`, the Hamming

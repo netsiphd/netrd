@@ -22,26 +22,33 @@ from .base import BaseDistance
 
 class PolynomialDissimilarity(BaseDistance):
     def dist(self, G1, G2, k=5, alpha=1):
-        """
-        The function calculates the distance between two graphs by
-        comparing the polynomials of the eigenvalue decomposition of 
-        their adjacency matrices, where $A^k$ is the adjacency matrix 
-        raised to the kth power and the the elements correspond to 
-        the number of paths of length k between nodes i and j.
+        """Compares the polynomials of the eigenvalue decomposition of
+        two adjacency matrices.
 
-        The results dictionary also stores a 2-tuple of the underlying adjacency
-        matrices in the key `'adjacency_matrices'`.
+        Note that the :math:`ij`-th element of where $A^k$ corresponds to
+        the number of paths of length :math:`k` between nodes :math:`i` and
+        :math:`j`.
+
+        The results dictionary also stores a 2-tuple of the underlying
+        adjacency matrices in the key `'adjacency_matrices'`.
 
         Parameters
         ----------
 
-        G1, G2 (nx.Graph): two networkx graphs to be compared.
-        k (float): maximum degree of the polynomial
-        alpha (float): weighting factor
+        G1, G2 (nx.Graph)
+            two networkx graphs to be compared.
+
+        k (float)
+            maximum degree of the polynomial
+
+        alpha (float)
+            weighting factor
 
         Returns
         -------
-        dist (float): Polynomial Dissimilarity
+        dist (float)
+            Polynomial Dissimilarity between G1, G2
+
         """
         A1 = nx.to_numpy_array(G1)
         A2 = nx.to_numpy_array(G2)

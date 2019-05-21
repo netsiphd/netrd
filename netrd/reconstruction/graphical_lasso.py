@@ -30,32 +30,54 @@ class GraphicalLassoReconstructor(BaseReconstructor):
         threshold_type='degree',
         **kwargs
     ):
-        """Reconstruct a network from time series by performing a graphical lasso
-        from [1, 2].
+        """Performs a graphical lasso.
 
-        Parameters
-        ----------
-        TS (np.ndarray): Array consisting of $L$ observations from $N$ sensors.
-        alpha (float, default=0.01): Coefficient of penalization, higher values
-        means more sparseness
-        max_iter (int, default=100): Maximum number of iterations.
-        convg_threshold (float, default=0.001): Stop the algorithm when the
-        duality gap is below a certain threshold.
-        threshold_type (str): Which thresholding function to use on the matrix of
-        weights. See `netrd.utilities.threshold.py` for documentation. Pass additional
-        arguments to the thresholder using `**kwargs`.
+        For details see [1, 2].
 
         The results dictionary also stores the covariance matrix as
         `'weights_matrix'`, the precision matrix as `'precision_matrix'`, and
         the thresholded version of the covariance matrix as
         `'thresholded_matrix'`.
 
+        Parameters
+        ----------
+
+        TS (np.ndarray)
+            Array consisting of :math:`L` observations from :math:`N`
+            sensors.
+
+        alpha (float, default=0.01)
+            Coefficient of penalization, higher values means more
+            sparseness
+
+        max_iter (int, default=100)
+            Maximum number of iterations.
+
+        convg_threshold (float, default=0.001)
+            Stop the algorithm when the duality gap is below a certain
+            threshold.
+
+        threshold_type (str)
+            Which thresholding function to use on the matrix of
+            weights. See `netrd.utilities.threshold.py` for
+            documentation. Pass additional arguments to the thresholder
+            using `**kwargs`.
+
         Returns
         -------
-        G (nx.Graph): A reconstructed graph with $N$ nodes.
+
+        G (nx.Graph)
+            A reconstructed graph with :math:`N` nodes.
+
+        References
+        ----------
+
+        [1] J. Friedman, T. Hastie, R. Tibshirani, "Sparse inverse covariance estimation with
+        the graphical lasso", Biostatistics 9, pp. 432–441 (2008).
+
+        [2] https://github.com/CamDavidsonPilon/Graphical-Lasso-in-Finance
 
         """
-
         cov, prec = graphical_lasso(TS, alpha, max_iter, convg_threshold)
         self.results['weights_matrix'] = cov
         self.results['precision_matrix'] = prec
@@ -74,7 +96,7 @@ class GraphicalLassoReconstructor(BaseReconstructor):
 
 def graphical_lasso(TS, alpha=0.01, max_iter=100, convg_threshold=0.001):
     """ This function computes the graphical lasso algorithm as outlined in [1].
-        
+
     Parameters
     ----------
     TS (np.ndarray): Array consisting of $L$ observations from $N$ sensors.
@@ -88,7 +110,7 @@ def graphical_lasso(TS, alpha=0.01, max_iter=100, convg_threshold=0.001):
     Returns
     -------
     cov (np.ndarray): Estimator of the inverse covariance matrix with sparsity.
-    
+
     """
 
     TS = TS.T

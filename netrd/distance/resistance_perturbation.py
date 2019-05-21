@@ -18,46 +18,61 @@ from ..utilities import ensure_undirected
 
 class ResistancePerturbation(BaseDistance):
     def dist(self, G1, G2, p=2):
-        """The resistance perturbation graph distance is the p-norm of the
-        difference between two graph resistance matrices.
+        r"""The p-norm of the difference between two graph resistance matrices.
 
-        The resistance perturbation distance changes if either graph is relabeled
-        (it is not invariant under graph isomorphism), so node labels should be
-        consistent between the two graphs being compared. The distance is not
-        normalized.
+        The resistance perturbation distance changes if either graph is
+        relabeled (it is not invariant under graph isomorphism), so node
+        labels should be consistent between the two graphs being
+        compared. The distance is not normalized.
 
-        The resistance matrix of a graph $G$ is calculated as
-        $R = \text{diag}(L_i) 1^T + 1 \text{diag}(L_i)^T - 2L_i$,
-        where L_i is the Moore-Penrose pseudoinverse of the Laplacian of $G$.
+        The resistance matrix of a graph :math:`G` is calculated as
+        :math:`R = \text{diag}(L_i) 1^T + 1 \text{diag}(L_i)^T - 2L_i`,
+        where :math:`L_i` is the Moore-Penrose pseudoinverse of the
+        Laplacian of :math:`G`.
 
-        The resistance perturbation graph distance of $G_1$ and $G_2$ is
-        calculated as the $p$-norm of the differenc in their resitance matrices,
-        $d_{r(p)} = ||R^{(1)} - R_^{(2)}|| = [\sum_{i,j \in V} |R^{(1)}_{i,j} - R^{(2)}_{i,j}|^p]^{1/p}$,
-        where R^{(1)} and R^{(2)} are the resistance matrices of $G_1$ and $G_2$
-        respectively. When $p = \infty$,
-        $d_{r(\infty)} = \max_{i,j \in V} |R^{(1)}_{i,j} - R^{(2)}_{i,j}|$.
+        The resistance perturbation distance between :math:`G_1` and
+        :math:`G_2` is calculated as the :math:`p`-norm of the difference
+        in their resitance matrices,
 
-        This method assumes that the input graphs are undirected; if directed
-        graphs are used, it will coerce them to undirected graphs and emit a
-        RuntimeWarning.
+        .. math::
+            d_{r(p)} = | R^{(1)} - R^{(2)} | = ( \sum_{i,j \in V} | R^{(1)}_{i,j} - R^{(2)}_{i,j} |^p )^{1/p},
 
-        For details, see https://arxiv.org/abs/1605.01091v2
+        where :math:`R^{(1)}` and :math:`R^{(2)}` are the resistance
+        matrices of :math:`G_1` and :math:`G_2` respectively. When :math:`p
+        = \infty`, we have
 
-        The results dictionary also stores a 2-tuple of the underlying resistance
-        matrices in the key `'resistance_matrices'`.
+        .. math::
+            d_{r(\infty)} = \max_{i,j \in V} |R^{(1)}_{i,j} - R^{(2)}_{i,j}|.
+
+
+        This method assumes that the input graphs are undirected; if
+        directed graphs are used, it will coerce them to undirected graphs
+        and emit a RuntimeWarning.
+
+        The results dictionary also stores a 2-tuple of the underlying
+        resistance matrices in the key `'resistance_matrices'`.
 
         Parameters
         ----------
-        G1, G2 (nx.Graph): two networkx graphs to be compared.
-        p (float or str, optional): $p$-norm to take of the difference between
-            the resistance matrices. Specify `np.inf` to take $\infty$-norm.
+
+        G1, G2 (nx.Graph)
+            two networkx graphs to be compared.
+
+        p (float or str, optional)
+            :math:`p`-norm to take of the difference between the resistance
+            matrices. Specify :math:`np.inf` to take :math:`\infty`-norm.
 
         Returns
         -------
-        dist (float): the distance between G1 and G2.
+        dist (float)
+            the distance between G1 and G2.
+
+        References
+        ----------
+
+        [1] https://arxiv.org/abs/1605.01091v2
 
         """
-
         # Coerce to undirected, if needed.
         G1 = ensure_undirected(G1)
         G2 = ensure_undirected(G2)
@@ -86,9 +101,9 @@ class ResistancePerturbation(BaseDistance):
 def get_resistance_matrix(G):
     """Get the resistance matrix of a networkx graph.
 
-    The resistance matrix of a graph $G$ is calculated as
-    $R = \text{diag}(L_i) 1^T + 1 \text{diag}(L_i)^T - 2L_i$,
-    where L_i is the Moore-Penrose pseudoinverse of the Laplacian of $G$.
+    The resistance matrix of a graph :math:`G` is calculated as
+    :math:`R = \text{diag}(L_i) 1^T + 1 \text{diag}(L_i)^T - 2L_i`,
+    where L_i is the Moore-Penrose pseudoinverse of the Laplacian of :math:`G`.
 
     Parameters
     ----------

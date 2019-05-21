@@ -20,31 +20,41 @@ from ..utilities import create_graph, threshold
 
 class MutualInformationMatrixReconstructor(BaseReconstructor):
     def fit(self, TS, nbins=10, threshold_type='degree', **kwargs):
-        """
-        Reconstruct a network by calculating the mutual information between the
-        probability distributions of the (binned) values of the time series of
-        pairs of nodes, i and j.
+        """Calculates the mutual information between the probability distributions
+        of the (binned) values of the time series of pairs of nodes.
 
-        First, the mutual information is computed between each pair of vertices.
-        Then, a thresholding condition is applied to obtain edges.
+        First, the mutual information is computed between each pair of
+        vertices.  Then, a thresholding condition is applied to obtain
+        edges.
 
-        The results dictionary also stores the weight matrix as `'weights_matrix'`
-        and the thresholded version of the weight matrix as `'thresholded_matrix'`.
+        The results dictionary also stores the weight matrix as
+        `'weights_matrix'` and the thresholded version of the weight matrix
+        as `'thresholded_matrix'`.
 
         Parameters
         ----------
-        TS (np.ndarray): Array consisting of $L$ observations from $N$ sensors.
-        nbins (int): number of bins for the pre-processing step (to yield a discrete probability distribution)
-        threshold_type (str): Which thresholding function to use on the matrix of
-        weights. See `netrd.utilities.threshold.py` for documentation. Pass additional
-        arguments to the thresholder using `**kwargs`.
+
+        TS (np.ndarray)
+            Array consisting of :math:`L` observations from :math:`N`
+            sensors.
+
+        nbins (int)
+            number of bins for the pre-processing step (to yield a discrete
+            probability distribution)
+
+        threshold_type (str)
+            Which thresholding function to use on the matrix of
+            weights. See `netrd.utilities.threshold.py` for
+            documentation. Pass additional arguments to the thresholder
+            using `**kwargs`.
 
         Returns
         -------
-        G (nx.Graph): A reconstructed graph with $N$ nodes.
+
+        G (nx.Graph)
+            A reconstructed graph with :math:`N` nodes.
 
         """
-
         N = TS.shape[0]
         rang = [np.min(TS), np.max(TS)]
 

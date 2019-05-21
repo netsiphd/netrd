@@ -19,7 +19,8 @@ class NetLSD(BaseDistance):
     def dist(self, G1, G2, normalization=None, timescales=None):
         """NetLSD: Hearing the Shape of a Graph.
 
-        A network similarity measure based on spectral node signature distributions.
+        A network similarity measure based on spectral node signature
+        distributions.
 
         The results dictionary includes the underlying signature vectors in
         `'signatures'`.
@@ -27,15 +28,26 @@ class NetLSD(BaseDistance):
         Parameters
         ----------
 
-        G1, G2 (nx.Graph): two undirected networkx graphs to be compared.
-        normalization (str): type of normalization of the heat kernel vectors.
-        either `'complete'`, `'empty'` or `'none'`
-        timescales (np.ndarray): timescales for the comparison. None yields default.
+        G1, G2 (nx.Graph)
+            two undirected networkx graphs to be compared.
+
+        normalization (str)
+            type of normalization of the heat kernel vectors. either
+            `'complete'`, `'empty'` or `'none'`
+
+        timescales (np.ndarray)
+            timescales for the comparison. None yields default.
 
         Returns
         -------
 
         dist (float): the distance between G1 and G2.
+
+        References
+        ----------
+
+        [1] A. Tsitsulin, D. Mottin, P. Karras, A. Bronstein &
+        E. Müller. NetLSD: Hearing the Shape of a Graph. KDD 2018
 
         """
         if normalization is None:

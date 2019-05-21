@@ -15,17 +15,21 @@ from .base import BaseDistance
 
 class Hamming(BaseDistance):
     def dist(self, G1, G2):
-        """The Hamming distance between two graphs is the proportion of
-        disagreeing nodes between two flattened adjacency matricies. If
-        $u$ and $v$ are boolean vectors, then Hamming distance is:
+        r"""The proportion of disagreeing nodes between the flattened adjacency
+        matricies.
 
-            $\\frac{c_{01} + c_{10}}{n}$
+        If :math:`u` and :math:`v` are boolean vectors, then Hamming
+        distance is:
 
-        where $c_{ij}$ is the number of occurrences of where $u[k] = i$ and 
-        $v[k] = j$ for $k < n$.
+        .. math::
 
-        The graphs must have the same number of nodes. A small modification to 
-        this code could allow weights can be applied, but only one set of 
+            \frac{c_{01} + c_{10}}{n}
+
+        where :math:`c_{ij}` is the number of occurrences of where
+        :math:`u[k] = i` and :math:`v[k] = j` for :math:`k < n`.
+
+        The graphs must have the same number of nodes. A small modification to
+        this code could allow weights can be applied, but only one set of
         weights that apply to both graphs.
 
         The results dictionary also stores a 2-tuple of the underlying adjacency
@@ -34,12 +38,14 @@ class Hamming(BaseDistance):
         Parameters
         ----------
 
-        G1, G2 (nx.Graph): two networkx graphs to be compared.
+        G1, G2 (nx.Graph)
+            two networkx graphs to be compared.
 
         Returns
         -------
 
-        dist (float): the distance between G1 and G2.
+        dist (float)
+            the distance between G1 and G2.
 
         """
 

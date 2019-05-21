@@ -22,30 +22,35 @@ from .base import BaseDistance
 
 class DeltaCon(BaseDistance):
     def dist(self, G1, G2, exact=True, g=None):
-        """
-        Return the DeltaCon distance between two graphs. DeltaCon is based
-        on the Matsusita between matrices created from fast belief propagation
-        (FBP) on graphs G1 and G2. Because the FBP algorithm requires a costly
-        matrix inversion, there is a faster, roughly linear, algorithm that
-        gives approximate results.
+        """DeltaCon is based on the Matsusita between matrices created from fast
+        belief propagation (FBP) on graphs G1 and G2.
+
+        Because the FBP algorithm requires a costly matrix inversion, there
+        is a faster, roughly linear, algorithm that gives approximate
+        results.
 
         Parameters
         ----------
 
-        G1, G2 (nx.Graph): two networkx graphs to be compared.
-        exact (bool): if True, use the slower but exact algorithm (DeltaCon_0)
-        g (int): the number of groups to use in the efficient algorithm. If
-                 exact is set to False but g is not set, the efficient algorithm
-                 will still behave like the exact algorithm, since each node
-                 is put in its own group.
+        G1, G2 (nx.Graph)
+            two networkx graphs to be compared.
+
+        exact (bool)
+            if True, use the slower but exact algorithm (DeltaCon_0)
+
+        g (int)
+            the number of groups to use in the efficient algorithm. If
+            exact is set to False but g is not set, the efficient algorithm
+            will still behave like the exact algorithm, since each node is
+            put in its own group.
 
         Returns
         -------
 
-        dist (float): the distance between G1 and G2.
+        dist (float)
+            the distance between G1 and G2.
 
         """
-
         assert G1.number_of_nodes() == G2.number_of_nodes()
         N = G1.number_of_nodes()
 
@@ -74,12 +79,12 @@ class DeltaCon(BaseDistance):
             )
 
         def matusita_dist(X, Y):
-            """
-            Return the Matusita distance
+            r""" Return the Matusita distance
 
-            $$
-            \sqrt{\sum_i \sum_j \left( \sqrt{X_{ij}} - \sqrt{Y_{ij}} \right)^{2}}
-            $$
+            .. math::
+
+                \sqrt{\sum_i \sum_j \left( \sqrt{X_{ij}} - \sqrt{Y_{ij}} \right)^{2}}
+
 
             between X and Y.
             """

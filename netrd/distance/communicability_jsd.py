@@ -2,12 +2,12 @@
 communicability_jsd.py
 --------------------------
 
-Distance measure based on the Jensen-Shannon Divergence 
-between the communicability sequence of two graphs as 
+Distance measure based on the Jensen-Shannon Divergence
+between the communicability sequence of two graphs as
 defined in:
 
-Chen, D., Shi, D. D., Qin, M., Xu, S. M., & Pan, G. J. (2018). 
-Complex network comparison based on communicability 
+Chen, D., Shi, D. D., Qin, M., Xu, S. M., & Pan, G. J. (2018).
+Complex network comparison based on communicability
 sequence entropy. Physical Review E, 98(1), 012319.
 
 https://journals.aps.org/pre/abstract/10.1103/PhysRevE.98.012319
@@ -26,41 +26,54 @@ from .base import BaseDistance
 
 class CommunicabilityJSD(BaseDistance):
     def dist(self, G1, G2):
-        """
-        This distance is based on the communicability matrix, $C$, of a graph 
-        consisting of elements $c_{ij}$ which are values corresponding to the 
-        numbers of shortest paths of length $k$ between nodes $i$ and $j$.
-        
-        See: Estrada, E., & Hatano, N. (2008). Communicability in complex 
-        networks. Physical Review E, 77(3), 036111.
-        https://journals.aps.org/pre/abstract/10.1103/PhysRevE.77.036111
-        for a full introduction.
+        r"""Compares the communicability matrix of two graphs.
 
-        The commmunicability matrix is symmetric, which means the 
+        This distance is based on the communicability matrix, :math:`C`, of a
+        graph consisting of elements :math:`c_{ij}` which are values
+        corresponding to the numbers of shortest paths of length :math:`k`
+        between nodes :math:`i` and :math:`j`.
+
+        The commmunicability matrix is symmetric, which means the
         communicability sequence is formed by flattening the upper
-         triangular of $C$, which is then normalized to create the 
-        communicability sequence, $P$. 
+        triangular of :math:`C`, which is then normalized to create the
+        communicability sequence, :math:`P`.
 
-        The communicability sequence entropy distance between two graphs, $G1$ 
-        and $G2$, is the Jensen-Shannon divergence between these communicability 
-        sequence distributions, $P1$ and $P2$ of the two graphs. 
-
-        Note: this function uses the networkx approximation of the 
-        communicability of a graph, `nx.communicability_exp`, which requires 
-        G1 and G2 to be simple undirected networks. In addition to the final
-        distance scalar, `self.results` stores the two vectors $P1$ and $P2$, 
-        their mixed vector, $P0$, and their associated entropies.
+        The communicability sequence entropy distance between two graphs,
+        :math:`G1` and :math:`G2`, is the Jensen-Shannon divergence between these
+        communicability sequence distributions, :math:`P1` and :math:`P2` of the two
+        graphs.
 
         Parameters
         ----------
-        G1 (nx.Graph): the first graph
-        G2 (nx.Graph): the second graph
-        
+
+        G1, G2 (nx.Graph)
+            two graphs
+
         Returns
-        -----------
-        dist (float): between zero and one, this is the communicability 
-                      sequence distance bewtween G1 and G2.
-        
+        -------
+
+        dist (float)
+            between zero and one, this is the communicability sequence
+            distance bewtween G1 and G2.
+
+        Notes
+        -----
+
+        This function uses the networkx approximation of the
+        communicability of a graph, `nx.communicability_exp`, which
+        requires G1 and G2 to be simple undirected networks. In addition to
+        the final distance scalar, `self.results` stores the two vectors
+        :math:`P1` and :math:`P2`, their mixed vector, :math:`P0`, and
+        their associated entropies.
+
+
+        References
+        ----------
+
+        [1] Estrada, E., & Hatano, N. (2008). Communicability in complex
+        networks. Physical Review E, 77(3), 036111.
+        https://journals.aps.org/pre/abstract/10.1103/PhysRevE.77.036111
+
         """
 
         N1 = G1.number_of_nodes()

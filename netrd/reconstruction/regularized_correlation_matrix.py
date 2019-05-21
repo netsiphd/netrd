@@ -17,31 +17,41 @@ from ..utilities import create_graph, threshold
 
 class RegularizedCorrelationMatrixReconstructor(BaseReconstructor):
     def fit(self, TS, num_eigs=10, threshold_type='quantile', **kwargs):
-        """
-        Reconstruct a network from time series data using a regularized
-        form of the precision matrix. After [this tutorial](
-        https://bwlewis.github.io/correlation-regularization/) in R.
+        """Uses a regularized form of the precision matrix.
 
-
-        The results dictionary also stores the weight matrix as `'weights_matrix'`
-        and the thresholded version of the weight matrix as `'thresholded_matrix'`.
+        The results dictionary also stores the weight matrix as
+        `'weights_matrix'` and the thresholded version of the weight matrix
+        as `'thresholded_matrix'`. For details see [1].
 
         Parameters
         ----------
-        TS (np.ndarray): Array consisting of $L$ observations from $N$ sensors
-        num_eigs (int): The number of eigenvalues to use. (This corresponds
-        to the amount of regularization.) The number of eigenvalues used must
-        be less than $N$.
-        threshold_type (str): Which thresholding function to use on the matrix of
-        weights. See `netrd.utilities.threshold.py` for documentation. Pass additional
-        arguments to the thresholder using `**kwargs`.
+
+        TS (np.ndarray)
+            Array consisting of :math:`L` observations from :math:`N` sensors
+
+        num_eigs (int)
+            The number of eigenvalues to use. (This corresponds to the
+            amount of regularization.) The number of eigenvalues used must
+            be less than :math:`N`.
+
+        threshold_type (str)
+            Which thresholding function to use on the matrix of
+            weights. See `netrd.utilities.threshold.py` for
+            documentation. Pass additional arguments to the thresholder
+            using `**kwargs`.
 
         Returns
         -------
-        G: a reconstructed graph.
+        G (nx.Graph)
+            a reconstructed graph.
+
+
+        References
+        ----------
+
+        [1] https://bwlewis.github.io/correlation-regularization/
 
         """
-
         N = TS.shape[0]
 
         if num_eigs > N:

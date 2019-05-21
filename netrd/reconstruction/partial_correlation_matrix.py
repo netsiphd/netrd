@@ -26,32 +26,47 @@ class PartialCorrelationMatrixReconstructor(BaseReconstructor):
         threshold_type='range',
         **kwargs
     ):
-        """
-        Reconstruct a network from time series data using a regularized
-        form of the precision matrix. After [this tutorial](
-        https://bwlewis.github.io/correlation-regularization/) in R.
+        """Uses a regularized form of the precision matrix.
 
-        The results dictionary also stores the weight matrix as `'weights_matrix'`
-        and the thresholded version of the weight matrix as `'thresholded_matrix'`.
+        The results dictionary also stores the weight matrix as
+        `'weights_matrix'` and the thresholded version of the weight matrix
+        as `'thresholded_matrix'`. For details see [1].
 
         Parameters
         ----------
-        index (int, array of ints, or None): Take the partial correlations of
-        each pair of elements holding constant an index variable or set of
-        index variables. If None, take the partial correlations of the
-        variables holding constant all other variables.
-        drop_index (bool): If True, drop the index variables after calculating
-        the partial correlations.
-        of_residuals (bool): If True, after calculating the partial correlations (
-        presumably using a dropped index variable), recalculate the partial
-        correlations between each variable, holding constant all other variables.
-        threshold_type (str): Which thresholding function to use on the matrix of
-        weights. See `netrd.utilities.threshold.py` for documentation. Pass additional
-        arguments to the thresholder using `**kwargs`.
+
+        index (int, array of ints, or None)
+            Take the partial correlations of each pair of elements holding
+            constant an index variable or set of index variables. If None,
+            take the partial correlations of the variables holding constant
+            all other variables.
+
+        drop_index (bool)
+            If True, drop the index variables after calculating the partial
+            correlations.
+
+        of_residuals (bool)
+            If True, after calculating the partial correlations (presumably
+            using a dropped index variable), recalculate the partial
+            correlations between each variable, holding constant all other
+            variables.
+
+        threshold_type (str)
+            Which thresholding function to use on the matrix of
+            weights. See `netrd.utilities.threshold.py` for
+            documentation. Pass additional arguments to the thresholder
+            using `**kwargs`.
 
         Returns
         -------
-        G: a reconstructed graph.
+
+        G (nx.Graph)
+            a reconstructed graph.
+
+        References
+        ----------
+
+        [1] https://bwlewis.github.io/correlation-regularization/
 
         """
 
@@ -84,8 +99,8 @@ class PartialCorrelationMatrixReconstructor(BaseReconstructor):
 """
 Partial Correlation in Python (clone of Matlab's partialcorr)
 
-This uses the linear regression approach to compute the partial 
-correlation (might be slow for a huge number of variables). The 
+This uses the linear regression approach to compute the partial
+correlation (might be slow for a huge number of variables). The
 algorithm is detailed here:
 
     http://en.wikipedia.org/wiki/Partial_correlation#Using_linear_regression
@@ -97,7 +112,7 @@ the algorithm can be summarized as
     2) calculate the residuals in Step #1
     3) perform a normal linear least-squares regression with Y as the target and Z as the predictor
     4) calculate the residuals in Step #3
-    5) calculate the correlation coefficient between the residuals from Steps #2 and #4; 
+    5) calculate the correlation coefficient between the residuals from Steps #2 and #4;
 
     The result is the partial correlation between X and Y while controlling for the effect of Z
 

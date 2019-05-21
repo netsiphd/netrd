@@ -8,29 +8,38 @@ class SingleUnbiasedRandomWalker(BaseDynamics):
         self.results = {}
 
     def simulate(self, G, L, initial_node=None):
-        """
-        Simulate single random-walker dynamics on a ground truth network.
-        Generates an N x L time series TS; TS[j,t]==1 if the walker is at
-        node j at time t, and TS[j,t]==0 otherwise.
+        r"""Simulate single random-walker dynamics on a ground truth network.
 
-        The results dictionary also stores the ground truth network as `'ground_truth'`.
+        Generates an :math:`N \times L` time series `TS`; `TS[j,t]==1` if
+        the walker is at node :math:`j` at time :math:`t`, and `TS[j,t]==0`
+        otherwise.
 
-        Example Usage:
-        #######
-        G = nx.ring_of_cliques(4,16)
-        L = 2001
-        dynamics = SingleUnbiasedRandomWalker()
-        TS = dynamics.simulate(G, L)
-        #######
+        The results dictionary also stores the ground truth network as
+        `'ground_truth'`.
+
+        Examples
+        --------
+        .. code:: python
+
+            G = nx.ring_of_cliques(4,16)
+            L = 2001
+            dynamics = SingleUnbiasedRandomWalker()
+            TS = dynamics.simulate(G, L)
+
 
         Parameters
         ----------
-        G (nx.Graph): the input (ground-truth) graph with $N$ nodes.
-        L (int): the length of the desired time series.
+        G (nx.Graph)
+            The input (ground-truth) graph with :math:`N` nodes.
+
+        L (int)
+            The length of the desired time series.
 
         Returns
         -------
-        TS (np.ndarray): an $N \times L$ array of synthetic time series data.
+        TS (np.ndarray)
+            An :math:`N \times L` array of synthetic time series data.
+
         """
         # get adjacency matrix and set up vector of indices
         A = nx.to_numpy_array(G)

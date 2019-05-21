@@ -1,7 +1,7 @@
 """
 thouless_anderson_palmer.py
 ---------------------
-Reconstruction of graphs using a Thouless-Anderson-Palmer 
+Reconstruction of graphs using a Thouless-Anderson-Palmer
 mean field approximation
 author: Brennan Klein
 email: brennanjamesklein at gmail dot com
@@ -17,31 +17,41 @@ from ..utilities import create_graph, threshold
 
 class ThoulessAndersonPalmerReconstructor(BaseReconstructor):
     def fit(self, TS, threshold_type='range', **kwargs):
-        """
-        Given a (N,L) time series, infer inter-node coupling weights using a
-        Thouless-Anderson-Palmer mean field approximation.
-        After [this tutorial]
-        (https://github.com/nihcompmed/network-inference/blob/master/sphinx/codesource/inference.py)
-        in python.
+        """Infer inter-node coupling weights using a Thouless-Anderson-Palmer mean
+        field approximation.
 
-        From the paper: "Similar to naive mean field, TAP works well only in
-        the regime of large sample sizes and small coupling variability.
+        From the paper: "Similar to naive mean field, TAP works well only
+        in the regime of large sample sizes and small coupling variability.
         However, this method leads to poor inference results in the regime
-        of small sample sizes and/or large coupling variability."
+        of small sample sizes and/or large coupling variability." For
+        details see [1].
 
-        The results dictionary also stores the weight matrix as `'weights_matrix'`
-        and the thresholded version of the weight matrix as `'thresholded_matrix'`.
+        The results dictionary also stores the weight matrix as
+        `'weights_matrix'` and the thresholded version of the weight matrix
+        as `'thresholded_matrix'`.
 
         Parameters
         ----------
-        TS (np.ndarray): Array consisting of $L$ observations from $N$ sensors.
-        threshold_type (str): Which thresholding function to use on the matrix of
-        weights. See `netrd.utilities.threshold.py` for documentation. Pass additional
-        arguments to the thresholder using `**kwargs`.
+
+        TS (np.ndarray)
+            Array consisting of :math:`L` observations from :math:`N`
+            sensors.
+
+        threshold_type (str)
+            Which thresholding function to use on the matrix of
+            weights. See `netrd.utilities.threshold.py` for
+            documentation. Pass additional arguments to the thresholder
+            using `**kwargs`.
 
         Returns
         -------
-        G (nx.Graph or nx.DiGraph): a reconstructed graph.
+        G (nx.Graph or nx.DiGraph)
+            a reconstructed graph.
+
+        References
+        -----------
+
+        [1] https://github.com/nihcompmed/network-inference/blob/master/sphinx/codesource/inference.py
 
         """
 
@@ -112,9 +122,9 @@ class ThoulessAndersonPalmerReconstructor(BaseReconstructor):
 
 
 def cross_cov(a, b):
-    """ 
+    """
     cross_covariance
-    a,b -->  <(a - <a>)(b - <b>)>  (axis=0) 
+    a,b -->  <(a - <a>)(b - <b>)>  (axis=0)
     """
     da = a - np.mean(a, axis=0)
     db = b - np.mean(b, axis=0)

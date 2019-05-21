@@ -23,23 +23,26 @@ class NBD(BaseDistance):
     """
 
     def dist(self, G1, G2, topk='automatic', batch=100, tol=1e-5):
-        """NBD between two graphs.
+        """Non-Backtracking Distance between two graphs.
 
         Parameters
         ----------
 
-        G1, G2 (nx.Graph): The graphs to compare.
+        G1, G2 (nx.Graph)
+            The graphs to compare.
 
-        topk (int or 'automatic'): The number of eigenvalues to compute.
-        If 'automatic' (default), use only the eigenvalues that are larger
-        than the square root of the largest eigenvalue.  Note this may
-        yield different number of eigenvalues for each graph.
+        topk (int or 'automatic')
+            The number of eigenvalues to compute. If 'automatic' (default),
+            use only the eigenvalues that are larger than the square root
+            of the largest eigenvalue.  Note this may yield different
+            number of eigenvalues for each graph.
 
-        batch (int): If topk is 'automatic', this is the number of
-        eigenvalues to compute each time until the condition is met.
-        Default 100.
+        batch (int)
+            If topk is 'automatic', this is the number of eigenvalues to
+            compute each time until the condition is met. Default 100.
 
-        tol (float): Numerical tolerance when computing eigenvalues.
+        tol (float)
+            Numerical tolerance when computing eigenvalues.
 
         """
         vals1 = nbvals(G1, topk, batch, tol)

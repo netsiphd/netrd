@@ -32,15 +32,23 @@ class NetSimile(BaseDistance):
         Parameters
         ----------
 
-        G1, G2 (nx.Graph): two undirected networkx graphs to be compared.
+        G1, G2 (nx.Graph)
+            two undirected networkx graphs to be compared.
 
         Returns
         -------
 
-        dist (float): the distance between G1 and G2.
+        dist (float)
+            the distance between G1 and G2.
+
+        References
+        ----------
+
+        [1] Michele Berlingerio, Danai Koutra, Tina Eliassi-Rad, Christos
+        Faloutsos: NetSimile: A Scalable Approach to Size-Independent
+        Network Similarity. CoRR abs/1209.2684 (2012)
 
         """
-
         # NOTE: the measure only works for undirected
         # graphs. For now we will silently convert a
         # directed graph to be undirected.

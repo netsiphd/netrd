@@ -2,7 +2,7 @@
 kuramoto.py
 ---------------------
 
-author: Harrison Hartle 
+author: Harrison Hartle
 """
 
 from .base import BaseDynamics
@@ -16,36 +16,48 @@ class Kuramoto(BaseDynamics):
         self.results = {}
 
     def simulate(self, G, L, dt=0.01, K=1, ICs=[], freqs=[]):
-        """
-        Simulate Kuramoto model on a ground truth network.
+        r"""Simulate Kuramoto model on a ground truth network.
 
-	    Generates an N x L time series.
-
-        The results dictionary also stores the ground truth network as `'ground_truth'`
-        and the internal frequencies of the process as `'internal_frequencies'`.
-
-	    Example Usage:
-		#######
-		G = nx.ring_of_cliques(4,16)
-		L = int(1e4)
-		dynamics = Kuramoto()
-		TS = dynamics.simulate(G, L, dt=0.04, K=0.3)
-		#######
+        The results dictionary also stores the ground truth network as
+        `'ground_truth'` and the internal frequencies of the process as
+        `'internal_frequencies'`.
 
         Parameters
         ----------
-        G (nx.Graph): the input (ground-truth) graph with $N$ nodes.
-        L (int): the length of the desired time series.
-        dt (float): size of timestep for numerical integration.
-        K (float): coupling strength (prefactor for interaction terms).
-        ICs (np.ndarray): an $N x 1$ array of initial phase-angles.
-        freqs (np.ndarray): an $N x 1$ array of internal frequencies.
+        G (nx.Graph)
+            the input (ground-truth) graph with :math:`N` nodes.
+
+        L (int)
+            the length of the desired time series.
+
+        dt (float)
+            size of timestep for numerical integration.
+
+        K (float)
+            coupling strength (prefactor for interaction terms).
+
+        ICs (np.ndarray)
+            an :math:`N \times 1` array of initial phase-angles.
+
+        freqs (np.ndarray)
+            an :math:`N \times 1` array of internal frequencies.
 
         Returns
         -------
-        TS (np.ndarray): an $N x L$ array of synthetic time series data.
-        """
+        TS (np.ndarray)
+            an :math:`N \times L` array of synthetic time series data.
 
+        Examples
+        --------
+        .. code:: python
+
+            G = nx.ring_of_cliques(4,16)
+            L = int(1e4)
+            dynamics = Kuramoto()
+            TS = dynamics.simulate(G, L, dt=0.04, K=0.3)
+
+
+        """
         # get network features
         A = nx.to_numpy_array(G)
         N = G.number_of_nodes()

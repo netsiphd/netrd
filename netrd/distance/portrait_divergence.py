@@ -17,45 +17,39 @@ from ..utilities import entropy
 
 class PortraitDivergence(BaseDistance):
     def dist(self, G1, G2, bins=None, binedges=None):
-        """
-        Given two graphs, G1 and G2, the portrait divergence provides a
-        distance measure based on the two graphs' "portraits".
+        """Distance measure based on the two graphs' "portraits".
 
-        The results dictionary also stores a 2-tuple of the underlying adjacency
-        matrices in the key `'adjacency_matrices'` and the portrait matrices in
-        `'portrait_matrices'`.
+        The results dictionary also stores a 2-tuple of the underlying
+        adjacency matrices in the key `'adjacency_matrices'` and the
+        portrait matrices in `'portrait_matrices'`.
 
         Parameters
         ----------
-        G1 (nx.Graph): a graph
-        G2 (nx.Graph): a second graph
-        bins (int): width of bins in percentiles
-        binedges (list) vector of bin edges (mutually exclusive from bins)
+
+        G1, G2 (nx.Graph)
+            two graphs
+
+        bins (int)
+            width of bins in percentiles
+
+        binedges (list)
+            vector of bin edges (mutually exclusive from bins)
 
 
         Returns
         -------
-        dist (float): the portrait divergence between two graphs.
+        dist (float)
+            the portrait divergence between two graphs.
 
 
-        From
-        ----
-        An information-theoretic, all-scales approach to comparing networks
+        References
+        ----------
+        [1] An information-theoretic, all-scales approach to comparing networks
         James P. Bagrow and Erik M. Bollt, 2018 arXiv:1804.03665
-        and [this repository](https://github.com/bagrow/portrait-divergence)
 
-		# sample usage
-		from portrait_divergence import *
-		G1 = nx.erdos_renyi_graph(100,0.05)
-		G2 = nx.erdos_renyi_graph(100,0.05)
-		# G1 = nx.erdos_renyi_graph(100,0.5)
-		# G2 = nx.erdos_renyi_graph(100,0.5)
-
-		test = PortraitDivergence()
-		print(test.dist(G1, G2))
+        [2] https://github.com/bagrow/portrait-divergence
 
         """
-
         adj1 = nx.to_numpy_array(G1)
         adj2 = nx.to_numpy_array(G2)
 

@@ -23,25 +23,30 @@ from scipy.integrate import quad
 
 class IpsenMikhailov(BaseDistance):
     def dist(self, G1, G2, hwhm=0.08):
-        """Graph distance comparing the spectrum ot the associated Laplacian
-        matrices
+        """Compare the spectrum ot the associated Laplacian matrices.
 
-        The results dictionary also stores a 2-tuple of the underlying adjacency
-        matrices in the key `'adjacency_matrices'`.
-
-        Note : The method requires undirected networks.
+        The results dictionary also stores a 2-tuple of the underlying
+        adjacency matrices in the key `'adjacency_matrices'`.
 
         Parameters
         ----------
 
-        G1, G2 (nx.Graph): two networkx graphs to be compared.
+        G1, G2 (nx.Graph)
+            two networkx graphs to be compared.
 
-        hwhm (float): half with at half maximum of the lorentzian kernel.
+        hwhm (float)
+            half with at half maximum of the lorentzian kernel.
 
         Returns
         -------
 
-        dist (float): the distance between G1 and G2.
+        dist (float)
+            the distance between G1 and G2.
+
+        Notes
+        -----
+
+        Requires undirected networks.
 
         """
         N = len(G1)

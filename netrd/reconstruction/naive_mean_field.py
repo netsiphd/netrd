@@ -16,25 +16,35 @@ from ..utilities import create_graph, threshold
 
 class NaiveMeanFieldReconstructor(BaseReconstructor):
     def fit(self, TS, threshold_type='degree', **kwargs):
-        """
-        Given a (N,L) time series, infer inter-node coupling weights using a 
-        naive mean field approximation. After [this tutorial]
-        (https://github.com/nihcompmed/network-inference/blob/master/sphinx/codesource/inference.py) 
-        in python.
-        
-        The results dictionary also stores the weight matrix as `'weights_matrix'`
-        and the thresholded version of the weight matrix as `'thresholded_matrix'`.
+        """Infer inter-node coupling weights using a naive mean field
+        approximation.
+
+        The results dictionary also stores the weight matrix as
+        `'weights_matrix'` and the thresholded version of the weight matrix
+        as `'thresholded_matrix'`.
 
         Parameters
         ----------
-        TS (np.ndarray): Array consisting of $L$ observations from $N$ sensors.
-        threshold_type (str): Which thresholding function to use on the matrix of
-        weights. See `netrd.utilities.threshold.py` for documentation. Pass additional
-        arguments to the thresholder using `**kwargs`.
+
+        TS (np.ndarray)
+            Array consisting of :math`L` observations from :math:`N` sensors.
+
+        threshold_type (str)
+            Which thresholding function to use on the matrix of
+            weights. See `netrd.utilities.threshold.py` for
+            documentation. Pass additional arguments to the thresholder
+            using `**kwargs`.
 
         Returns
         -------
-        G (nx.Graph or nx.DiGraph): a reconstructed graph.
+
+        G (nx.Graph or nx.DiGraph)
+            a reconstructed graph.
+
+        References
+        ----------
+
+        [1] https://github.com/nihcompmed/network-inference/blob/master/sphinx/codesource/inference.py
 
         """
 
@@ -73,9 +83,9 @@ class NaiveMeanFieldReconstructor(BaseReconstructor):
 
 
 def cross_cov(a, b):
-    """ 
+    """
     cross_covariance
-    a,b -->  <(a - <a>)(b - <b>)>  (axis=0) 
+    a,b -->  <(a - <a>)(b - <b>)>  (axis=0)
     """
     da = a - np.mean(a, axis=0)
     db = b - np.mean(b, axis=0)

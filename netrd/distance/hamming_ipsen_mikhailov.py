@@ -22,44 +22,53 @@ from .ipsen_mikhailov import _im_distance
 
 class HammingIpsenMikhailov(BaseDistance):
     def dist(self, G1, G2, combination_factor=1):
-        """Graph distance combining local and global distances
+        """Graph distance combining local and global distances.
 
-        The local metric  H is the Hamming distance, corresponding to the
+        The local metric H is the Hamming distance, corresponding to the
         difference for the edges in both networks.
 
         The global (spectral) metric IM is the Ipsen-Mikailov distance,
         corresponding to the square-root of the squared difference of the
         laplacian spectrum for each network.
 
-        The Hamming-Ipsen-Mikhailov (HIM) distance is an Euclidean metric on
-        the space created by the cartesian product of the metric space
-        associated with H and IM. For more details :
-        https://ieeexplore.ieee.org/abstract/document/7344816
+        The Hamming-Ipsen-Mikhailov (HIM) distance is an Euclidean metric
+        on the space created by the cartesian product of the metric space
+        associated with H and IM.
 
-
-        The results dictionary also stores a 2-tuple of the underlying adjacency
-        matrices in the key `'adjacency_matrices'`, the Hamming distance in
-        `'hamming_dist'`, the Ipsen-Mikhailov distance in `'ipsen_mikhailov_dist'`,
-        and the Lorentzian half-width at half-maximum in `'hwhm'`. If the networks
-        being compared are directed, the augmented adjacency matrices are calculated
-        and stored in `'augmented_adjacency_matrices'`.
-
-        Note : The method requires networks with the same number of nodes.
-        The networks can be directed and weighted (with weights in the
-        range [0,1]). Both (H and IM) are also saved in the results
-        dictionary.
+        The results dictionary also stores a 2-tuple of the underlying
+        adjacency matrices in the key `'adjacency_matrices'`, the Hamming
+        distance in `'hamming_dist'`, the Ipsen-Mikhailov distance in
+        `'ipsen_mikhailov_dist'`, and the Lorentzian half-width at
+        half-maximum in `'hwhm'`. If the networks being compared are
+        directed, the augmented adjacency matrices are calculated and
+        stored in `'augmented_adjacency_matrices'`.
 
         Parameters
         ----------
 
-        G1, G2 (nx.Graph): two networkx graphs to be compared.
+        G1, G2 (nx.Graph)
+            two networkx graphs to be compared.
 
-        combination_factor (float): positive factor in front of the IM metric.
+        combination_factor (float)
+            positive factor in front of the IM metric.
 
         Returns
         -------
 
-        dist (float): the distance between G1 and G2.
+        dist (float)
+            the distance between G1 and G2.
+
+        Notes
+        -----
+        Requires networks with the same number of nodes.  The networks can
+        be directed and weighted (with weights in the range
+        :math:`[0,1]`). Both (H and IM) are also saved in the results
+        dictionary.
+
+        References
+        ----------
+
+        [1] https://ieeexplore.ieee.org/abstract/document/7344816
 
         """
         N = len(G1)

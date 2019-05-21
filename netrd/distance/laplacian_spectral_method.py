@@ -39,72 +39,80 @@ class LaplacianSpectralMethod(BaseDistance):
         spectra of the two graphs
 
         The spectra of both Laplacian matrices (normalized or not) is
-        computed. Then, the discrete spectra are convolved with a kernel
-        to produce continuous ones. Finally, these distribution are
-        compared using a metric.
+        computed. Then, the discrete spectra are convolved with a kernel to
+        produce continuous ones. Finally, these distribution are compared
+        using a metric.
 
         The results dictionary also stores a 2-tuple of the underlying
         adjacency matrices in the key `'adjacency_matrices'`, the Laplacian
-        matrices in `'laplacian_matrices'`, the eigenvalues of the Laplacians
-        in `'eigenvalues'`. If the networks being compared are directed, the
-        augmented adjacency matrices are calculated and stored in
-        `'augmented_adjacency_matrices'`.
-
-        Note : The methods are usually applied to undirected (unweighted)
-        networks. We however relax this assumption using the same method
-        proposed for the Hamming-Ipsen-Mikhailov. See paper :
-        https://ieeexplore.ieee.org/abstract/document/7344816.
+        matrices in `'laplacian_matrices'`, the eigenvalues of the
+        Laplacians in `'eigenvalues'`. If the networks being compared are
+        directed, the augmented adjacency matrices are calculated and
+        stored in `'augmented_adjacency_matrices'`.
 
         Parameters
         ----------
 
-        G1, G2 (nx.Graph): two networkx graphs to be compared.
+        G1, G2 (nx.Graph)
+            two networkx graphs to be compared.
 
-        normed (bool): If true, uses the normalized laplacian matrix,
-        otherwise the raw laplacian matrix is used.
+        normed (bool)
+            If True, uses the normalized laplacian matrix, otherwise the
+            raw laplacian matrix is used.
 
-        kernel (str): kernel to obtain a continuous spectrum. Choices
-        available are
-            -'normal'
-            -'lorentzian'
-            -None
-        If None is chosen, the discrete spectrum is used instead, and the
-        measure is simply the euclidean distance between the vector of
-        eigenvalues for each graph.
+        kernel (str)
+            kernel to obtain a continuous spectrum. Choices available are
+            'normal', 'lorentzian', or None. If None is chosen, the
+            discrete spectrum is used instead, and the measure is simply
+            the euclidean distance between the vector of eigenvalues for
+            each graph.
 
-        hwhm (float): half-width at half-maximum for the kernel. The default
-        value is chosen such that the standard deviation for the normal
-        distribution is 0.01, as in the paper
-        https://www.sciencedirect.com/science/article/pii/S0303264711001869.
-        This option is relevant only if kernel is not None.
+        hwhm (float)
+            half-width at half-maximum for the kernel. The default value is
+            chosen such that the standard deviation for the normal
+            distribution is 0.01, as in reference [1]. This option is
+            relevant only if kernel is not None.
 
-        measure (str): metric between the two continuous spectra. Choices
-        available are
-            -'jensen-shannon'
-            -'euclidean'
-        This option is relevant only if kernel is not None.
+        measure (str)
+            metric between the two continuous spectra. Choices available
+            are 'jensen-shannon' or 'euclidean'. This option is relevant
+            only if kernel is not None.
 
-        k (int): number of eigenvalues kept for the (discrete) spectrum, also
-        used to create the continuous spectrum. If None, all the eigenvalues
-        are used. k must be smaller (strictly) than the size of both graphs.
+        k (int)
+            number of eigenvalues kept for the (discrete) spectrum, also
+            used to create the continuous spectrum. If None, all the
+            eigenvalues are used. k must be smaller (strictly) than the
+            size of both graphs.
 
-        which (str): if k is not None, this option specifies the eigenvalues
-        that are kept. See the choices offered by `scipy.sparse.linalg.eigsh`.
-        The largest eigenvalues in magnitude are kept by default.
+        which (str)
+            if k is not None, this option specifies the eigenvalues that
+            are kept. See the choices offered by
+            `scipy.sparse.linalg.eigsh`.  The largest eigenvalues in
+            magnitude are kept by default.
 
         Returns
         -------
 
-        dist (float): the distance between G1 and G2.
+        dist (float)
+            the distance between G1 and G2.
+
+        References
+        ----------
+
+        [1] https://www.sciencedirect.com/science/article/pii/S0303264711001869.
+
+        Notes
+        -----
+
+        [1] The methods are usually applied to undirected (unweighted)
+        networks. We however relax this assumption using the same method
+        proposed for the Hamming-Ipsen-Mikhailov. See paper:
+        https://ieeexplore.ieee.org/abstract/document/7344816.
 
         """
-
-        # get the adjacency matrices
         adj1 = nx.to_numpy_array(G1)
         adj2 = nx.to_numpy_array(G2)
         self.results['adjacency_matrices'] = adj1, adj2
-
-        # verify if the graphs are directed (at least one)
         directed = nx.is_directed(G1) or nx.is_directed(G2)
 
         if directed:

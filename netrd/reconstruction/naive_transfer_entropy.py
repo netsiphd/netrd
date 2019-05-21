@@ -21,38 +21,56 @@ from ..utilities import create_graph, threshold
 
 class NaiveTransferEntropyReconstructor(BaseReconstructor):
     def fit(self, TS, delay_max=10, threshold_type='range', **kwargs):
-        """
-        Reconstruct a network by calculating the transfer entropy from i --> j.
-        The resulting network is asymmetric, and each element TE_ij represents
-        the amount of information contained about the future states of i by 
-        knowing the past states of i and past states of j. Presumably, if one 
-        time series (i) does not depend on the other (j), knowing all of i 
-        does not increase your certainty about the next state of i.
+        r"""Calculates the transfer entropy from i --> j.
 
-        The reason that this method is referred to as "naive" transfer entropy 
-        is because it appears there are much more complicated conditional 
-        mutual informations that need to be calculated in order for this 
-        method to be true to the notion of information transfer. These are 
-        implemented in state of the art algorighms, as in the Java Information 
-        Dynamics Toolkit: https://github.com/jlizier/jidt 
+        The resulting network is asymmetric, and each element
+        :math:`TE_{ij}` represents the amount of information contained
+        about the future states of :math:`i` by knowing the past states of
+        :math:`i` and past states of :math:`j`. Presumably, if one time
+        series :math:`i` does not depend on the other :math:`j`, knowing
+        all of i does not increase your certainty about the next state of
+        :math:`i`.
 
-        The results dictionary also stores the weight matrix as `'weights_matrix'`
-        and the thresholded version of the weight matrix as `'thresholded_matrix'`.
+        The reason that this method is referred to as "naive" transfer
+        entropy is because it appears there are much more complicated
+        conditional mutual informations that need to be calculated in order
+        for this method to be true to the notion of information
+        transfer. These are implemented in state of the art algorighms, as
+        in the Java Information Dynamics Toolkit [1]
+
+        The results dictionary also stores the weight matrix as
+        `'weights_matrix'` and the thresholded version of the weight matrix
+        as `'thresholded_matrix'`.
 
         Parameters
         ----------
-        TS (np.ndarray): array consisting of $L$ observations from $N$ sensors.
-        delay_max (int): the number of timesteps in the past to 
-                         aggregate and average in order to get TE_ij
-        threshold_type (str): Which thresholding function to use on the matrix of
-        weights. See `netrd.utilities.threshold.py` for documentation. Pass additional
-        arguments to the thresholder using `**kwargs`.
+
+        TS (np.ndarray)
+            array consisting of :math:`L` observations from :math:`N`
+            sensors.
+
+        delay_max (int)
+            the number of timesteps in the past to aggregate and average in
+            order to get :math:`TE_{ij}`
+
+        threshold_type (str)
+            Which thresholding function to use on the matrix of
+            weights. See `netrd.utilities.threshold.py` for
+            documentation. Pass additional arguments to the thresholder
+            using `**kwargs`.
 
         Returns
         -------
-        G (nx.Graph): a reconstructed graph with $N$ nodes.
-        """
 
+        G (nx.Graph)
+            a reconstructed graph with :math:`N` nodes.
+
+        References
+        ----------
+
+        [1] https://github.com/jlizier/jidt
+
+        """
         N, L = TS.shape  # get the shape and length of the time series
 
         if delay_max >= L:
@@ -87,13 +105,13 @@ class NaiveTransferEntropyReconstructor(BaseReconstructor):
 
 def map_in_array(values):
     '''
-    Following https://github.com/notsebastiano/transfer_entropy, this is a 
+    Following https://github.com/notsebastiano/transfer_entropy, this is a
     function to build arrays with correct shape for np.histogramdd()
     from 2 (or 3) time series of scalars. It is quite similar to np.vstack()
-    
+
     Parameters
     ----------
-    values (np.ndarray): this is either a L x 2 or 3 dimensional matrix, which 
+    values (np.ndarray): this is either a L x 2 or 3 dimensional matrix, which
                          is the stitched-together matrix of two or three nodes'
                          time series activity.
 
@@ -118,10 +136,10 @@ def map_in_array(values):
 
 def transfer_entropy(X, Y, delay=1, gaussian_sigma=None):
     '''
-    Following https://github.com/notsebastiano/transfer_entropy, this is a 
-    TE implementation: asymmetric statistic measuring the reduction in 
-    uncertainty for a future value of X given the history of X and Y. Or the 
-    amount of information from Y to X. Calculated through the Kullback-Leibler 
+    Following https://github.com/notsebastiano/transfer_entropy, this is a
+    TE implementation: asymmetric statistic measuring the reduction in
+    uncertainty for a future value of X given the history of X and Y. Or the
+    amount of information from Y to X. Calculated through the Kullback-Leibler
     divergence with conditional probabilities.
 
     Parameters
@@ -133,7 +151,7 @@ def transfer_entropy(X, Y, delay=1, gaussian_sigma=None):
 
     Returns
     -------
-    TE_ij (float): the transfer entropy between nodes i and j, 
+    TE_ij (float): the transfer entropy between nodes i and j,
                    given the history of i
 
     '''

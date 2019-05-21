@@ -16,24 +16,36 @@ from ..utilities import create_graph, threshold
 
 class FreeEnergyMinimizationReconstructor(BaseReconstructor):
     def fit(self, TS, threshold_type='degree', **kwargs):
-        """
-        Given a (N,L) time series, infer inter-node coupling weights by 
-        minimizing a free energy over the data structure. After [this tutorial]
-        (https://github.com/nihcompmed/network-inference/blob/master/sphinx/codesource/inference.py) in python.
-        
-        The results dictionary also stores the weight matrix as `'weights_matrix'`
-        and the thresholded version of the weight matrix as `'thresholded_matrix'`.
+        """Infer inter-node coupling weights by minimizing a free energy over the
+        data structure.
+
+        The results dictionary also stores the weight matrix as
+        `'weights_matrix'` and the thresholded version of the weight matrix
+        as `'thresholded_matrix'`. For details see [1].
 
         Parameters
         ----------
-        TS (np.ndarray): Array consisting of $L$ observations from $N$ sensors.
-        threshold_type (str): Which thresholding function to use on the matrix of
-        weights. See `netrd.utilities.threshold.py` for documentation. Pass additional
-        arguments to the thresholder using `**kwargs`.
+
+        TS (np.ndarray)
+            Array consisting of :math:`L` observations from :math.`N`
+            sensors.
+
+        threshold_type (str)
+            Which thresholding function to use on the matrix of
+            weights. See `netrd.utilities.threshold.py` for
+            documentation. Pass additional arguments to the thresholder
+            using `**kwargs`.
 
         Returns
         -------
-        G (nx.Graph or nx.DiGraph): a reconstructed graph.
+
+        G (nx.Graph or nx.DiGraph)
+            a reconstructed graph.
+
+        References
+        ----------
+
+        [1] https://github.com/nihcompmed/network-inference/blob/master/sphinx/codesource/inference.py
 
         """
 

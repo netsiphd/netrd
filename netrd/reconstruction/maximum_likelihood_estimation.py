@@ -14,28 +14,40 @@ from ..utilities import create_graph, threshold
 
 class MaximumLikelihoodEstimationReconstructor(BaseReconstructor):
     def fit(self, TS, rate=1.0, stop_criterion=True, threshold_type='degree', **kwargs):
-        """
-        Given an NxL time series, infer inter-node coupling weights using 
-        maximum likelihood estimation methods. 
-        After [this tutorial]
-        (https://github.com/nihcompmed/network-inference/blob/master/sphinx/codesource/inference.py) 
-        in python.
-        
-        The results dictionary also stores the weight matrix as `'weights_matrix'`
-        and the thresholded version of the weight matrix as `'thresholded_matrix'`.
+        """Infer inter-node coupling weights using maximum likelihood estimation
+        methods.
+
+        The results dictionary also stores the weight matrix as
+        `'weights_matrix'` and the thresholded version of the weight matrix
+        as `'thresholded_matrix'`.
 
         Parameters
         ----------
-        TS (np.ndarray): Array consisting of $L$ observations from $N$ sensors.
-        rate (float): rate term in maximum likelihood
-        stop_criterion (bool): if True, prevent overly-long runtimes
-        threshold_type (str): Which thresholding function to use on the matrix of
-        weights. See `netrd.utilities.threshold.py` for documentation. Pass additional
-        arguments to the thresholder using `**kwargs`.
-        
+
+        TS (np.ndarray)
+            Array consisting of :math:`L` observations from :math:`N` sensors.
+
+        rate (float)
+            rate term in maximum likelihood
+
+        stop_criterion (bool)
+            if True, prevent overly-long runtimes
+
+        threshold_type (str)
+            Which thresholding function to use on the matrix of
+            weights. See `netrd.utilities.threshold.py` for
+            documentation. Pass additional arguments to the thresholder
+            using `**kwargs`.
+
         Returns
         -------
-        G (nx.Graph or nx.DiGraph): a reconstructed graph.
+        G (nx.Graph or nx.DiGraph)
+            a reconstructed graph.
+
+        References
+        ----------
+
+        [1] https://github.com/nihcompmed/network-inference/blob/master/sphinx/codesource/inference.py
 
         """
 

@@ -3,11 +3,11 @@ branching_process.py
 --------------------
 
 Adapted from:
-Levina, Anna, and Viola Priesemann. "Subsampling scaling." 
+Levina, Anna, and Viola Priesemann. "Subsampling scaling."
 Nature communications 8 (2017): 15140.
 at [this link](https://www.nature.com/articles/ncomms15140)
 
-author: Brennan Klein 
+author: Brennan Klein
 email: brennanjamesklein at gmail dot com
 submitted as part of the 2019 NetSI Collabathon
 """
@@ -32,33 +32,52 @@ class BranchingModel(BaseDynamics):
         scale=0.95,
         noise=True,
     ):
-        """
-        Simulate a branching processs dynamics (sand-pile-like) on a network.
-        
-        The results dictionary also stores the ground truth network as `'ground_truth'`.
-        Params
-        ------
-        G (nx.Graph): directed or undirected ground truth graph
-        L (int): desired length of time series
-        initial_fraction (float): fraction of nodes that start as active
-        m (float): branching ratio of the dynamical process. m=1.0 means the 
-                   system will be at criticality
-        target_Ahat (float): desired average activity. This will ensure the
-                             process does not reach a stationary state and 
-                             will always have some external drive.
-        num_edges (int): the length of the cache, which should correspond 
-                         to the combination of all possible activity over 
-                         the simulation.
-        distribution_type (str): string describing which type of random numbers
-        scale (float): scale for how likely nodes are to topple
-        noise (bool): add nonzero values to the time series
-        
+        r"""Simulate a branching processs dynamics (sand-pile-like).
+
+        The results dictionary also stores the ground truth network as
+        `'ground_truth'`.
+
+        Parameters
+        ----------
+
+        G (nx.Graph)
+            directed or undirected ground truth graph
+
+        L (int)
+            desired length of time series
+
+        initial_fraction (float)
+            fraction of nodes that start as active
+
+        m (float)
+            branching ratio of the dynamical process. :math:`m=1.0` means
+            the system will be at criticality
+
+        target_Ahat (float)
+            desired average activity. This will ensure the process does not
+            reach a stationary state and will always have some external
+            drive.
+
+        num_edges (int)
+            the length of the cache, which should correspond to the
+            combination of all possible activity over the simulation.
+
+        distribution_type (str)
+            string describing which type of random numbers
+
+        scale (float)
+            scale for how likely nodes are to topple
+
+        noise (bool)
+            add nonzero values to the time series
+
+
         Returns
         -------
-        TS (np.ndarray): an N x L time series
-        
-        """
+        TS (np.ndarray)
+            an :math:`N \times L` time series
 
+        """
         N = G.number_of_nodes()  # number of nodes
         M = G.number_of_edges()  # number of edges
         A = nx.to_numpy_array(G)  # adjacency matrix
@@ -117,27 +136,27 @@ class BranchingModel(BaseDynamics):
 
 def initialize_history(N, L, initial_fraction, m, target_Ahat, noise):
     """
-    Initializes the TS of this simulation based on a configuration of 
-    parameters corresponding to the initial_fraction of active nodes, 
+    Initializes the TS of this simulation based on a configuration of
+    parameters corresponding to the initial_fraction of active nodes,
     the branching ratio, m, and the target number of avalanches.
-    
-    Params
-    ------
+
+    Parameters
+    ----------
     N (int): number of nodes
     L (int): desired length of time series
     initial_fraction (float): fraction of nodes that start as active
-    m (float): branching ratio of the branching process    
+    m (float): branching ratio of the branching process
     target_Ahat (float): desired average activity. This will ensure the
-                         process does not reach a stationary state and 
+                         process does not reach a stationary state and
                          will always have some external drive.
     noise (bool): add nonzero values to the time series
-                         
-    
+
+
     Returns
     -------
-    TS_init (np.ndarray): an N x L time series with nonzero entries in 
+    TS_init (np.ndarray): an N x L time series with nonzero entries in
                           the first column
-    
+
     """
 
     TS_init = np.zeros((N, L))
@@ -177,10 +196,10 @@ def initialize_threshold_cache(num_edges, distribution_type='unif', scale=1.0):
     """
     A cache of random numbers. This is useful for speed, as calling the numpy
     random number generator can get costly with large networks and time series.
-    
-    Params
-    ------
-    num_edges (int): the length of the cache, which should correspond to the 
+
+    Parameters
+    ----------
+    num_edges (int): the length of the cache, which should correspond to the
                      combination of all possible activity over the simulation.
     distribution_type (str): string that describes which type of random numbers.
     scale (float): scale for how likely nodes are to topple
@@ -189,7 +208,7 @@ def initialize_threshold_cache(num_edges, distribution_type='unif', scale=1.0):
     -------
     edges (np.ndarray): a vector of probability thresholds, above which the node
                         will topple and send information to the following node.
-    
+
     """
 
     if distribution_type == 'unif':

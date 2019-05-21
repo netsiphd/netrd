@@ -18,50 +18,64 @@ from ..utilities import create_graph
 
 class OptimalCausationEntropyReconstructor(BaseReconstructor):
     def fit(self, TS, n_bins=40, atol=1e-6, **kwargs):
-        """Reconstruct causal parents of nodes by optimizing causation entropy.
+        r"""Reconstruct causal parents of nodes by optimizing causation entropy.
 
         Optimal causation entropy method reconstructs parents of nodes in a
-        causal diagram for systems that rest on three Markov assumptions: Let
-        $X_t$ be the system state at time $t$, denote node $i$'s causal parents
-        as $N_i$ and its state as $X_t^{(i)}$. The following three statements
-        hold for every node $i$:
-        1. $P(X_t | X_{t-1}, X_{t-2}, ...) = P(X_t | X_{t-1}) = P(X_{t'} | X_{t'-1})$
-        2. $P(X_t^{(i)} | X_{t-1}) = P(X_t^{(i)} | X_{t-1}^{(N_i)})$
-        3. $P(X_t^{(i)} | X_{t-1}^{(J)}) \neq P(X_t^{(i) | X_{t-1}^{(K)}})$
-           whenever $J, K$ are sets of nodes such that $J \cap N_i \neq K \cap N_i$
+        causal diagram for systems that rest on three Markov assumptions:
+        Let :math:`X_t` be the system state at time :math:`t`, denote node
+        :math:`i`'s causal parents as :math:`N_i` and its state as
+        :math:`X_t^{(i)}`. The following three statements hold for every
+        node :math:`i`:
 
-        Sun et al. proved that for any set of nodes $I$ in systems satisfying
-        the above three conditions, its causal parents $N_I$ is the minimal
-        set of nodes $K$ that maximizes the causation entropy $C_{K \rightarrow I}$.
-        The more general form of causation entropy is defined as
-        $C_{J \rightarrow I | K} = H(X_{t+1}^{(I)} | X_t^{(K)}) - H(X_{t+1}^{(I)} | X_t^{(K)}, X_t^{(J)})$
-        where $H(X|Y)$ is the conditional entropy of $X$ conditioned on $Y$.
-        Sun et al. also showed that the causal parents $N_I$ can be efficiently
-        found by first building a superset $S \supset N_I$ via heuristic and
-        then removing noncausal nodes in $S$. The causal diagram can hence be
-        reconstructed from time series data by applying the proposed algorithm
-        to every node.
+        1. :math:`P(X_t | X_{t-1}, X_{t-2}, ...) = P(X_t | X_{t-1}) = P(X_{t'} | X_{t'-1})`
 
-        The results dictionary stores the causal parents of individual nodes in
-        `'parents'` and the raw adjacency matrix in `'adjacency_matrix'`.
+        2. :math:`P(X_t^{(i)} | X_{t-1}) = P(X_t^{(i)} | X_{t-1}^{(N_i)})`
 
-        Params
-        ------
-        TS (np.ndarray): $N \times L$ array consisting of $L$ observations
-                         from $N$ sensors.
+        3. :math:`P(X_t^{(i)} | X_{t-1}^{(J)}) \neq P(X_t^{(i) | X_{t-1}^{(K)}})`
+           whenever :math:`J, K` are sets of nodes such that :math:`J \cap N_i \neq K \cap N_i`
 
-        data (np.ndarray): Array of data with nodes as columns and observations
-                           of quantity on nodes as rows.
+        Sun et al. proved that for any set of nodes :math:`I` in systems
+        satisfying the above three conditions, its causal parents
+        :math:`N_I` is the minimal set of nodes :math:`K` that maximizes
+        the causation entropy :math:`C_{K \rightarrow I}`.  The more
+        general form of causation entropy is defined as :math:`C_{J
+        \rightarrow I | K} = H(X_{t+1}^{(I)} | X_t^{(K)}) - H(X_{t+1}^{(I)}
+        | X_t^{(K)}, X_t^{(J)})` where :math:`H(X|Y)` is the conditional
+        entropy of :math:`X` conditioned on :math:`Y`.  Sun et al. also
+        showed that the causal parents :math:`N_I` can be efficiently found
+        by first building a superset :math:`S \supset N_I` via heuristic
+        and then removing noncausal nodes in :math:`S`. The causal diagram
+        can hence be reconstructed from time series data by applying the
+        proposed algorithm to every node.
 
-        n_bins (int): Number of bins when transforming continuous data into its
-                      binned categorical version (universal for all nodes).
+        The results dictionary stores the causal parents of individual
+        nodes in :math:`'parents'` and the raw adjacency matrix in
+        :math:`'adjacency_matrix'`.
 
-        atol (float): Absolute tolerance to determine whether causal entropy is
-                      closed to zero.
+        Parameters
+        ----------
+
+        TS (np.ndarray)
+            :math:`N \times L` array consisting of :math:`L` observations
+            from :math:`N` sensors.
+
+        data (np.ndarray)
+            Array of data with nodes as columns and observations of
+            quantity on nodes as rows.
+
+        n_bins (int)
+            Number of bins when transforming continuous data into its
+            binned categorical version (universal for all nodes).
+
+        atol (float)
+            Absolute tolerance to determine whether causalentropy is closed
+            to zero.
 
         Returns
         -------
-        G (nx.Graph): A reconstructed graph with $N$ nodes.
+
+        G (nx.Graph)
+            A reconstructed graph with :math:`N` nodes.
 
         Notes
         -----
@@ -73,6 +87,11 @@ class OptimalCausationEntropyReconstructor(BaseReconstructor):
            suggested to perform a permutation test for every causation entropy
            computed to determine its siginificance, which is more costly on
            computations.
+
+        References
+        ----------
+
+        [1] Sun et al., SIAM (2015) https://doi.org/10.1137/140956166
 
         """
         data = TS.T  # Transpose the time series to make observations the rows
@@ -101,11 +120,11 @@ class OptimalCausationEntropyReconstructor(BaseReconstructor):
 
 def causal_superset(nodes_I, data, atol):
     """
-    Return a superset of causal parents for a set of nodes $I$ by a heuristic
+    Return a superset of causal parents for a set of nodes :math:`I` by a heuristic
     (adding node that maximizes causation entropy aggregatively).
 
-    Params
-    ------
+    Parameters
+    ----------
     nodes_I (set): Set of node indices.
 
     data (np.ndarray): Array of categorical data with nodes as columns and
@@ -144,11 +163,11 @@ def causal_superset(nodes_I, data, atol):
 
 def remove_noncausal(superset, nodes_I, data, atol):
     """
-    Remove noncausal nodes in the superset of nodes $I$'s causal parents,
+    Remove noncausal nodes in the superset of nodes :math:`I`'s causal parents,
     where noncausal nodes are identified via zero causation entropy.
 
-    Params
-    ------
+    Parameters
+    ----------
     superset (set): Set of node indices, which contains the causal parents.
 
     nodes_I (set): Set of node indices.
@@ -173,11 +192,11 @@ def remove_noncausal(superset, nodes_I, data, atol):
 
 def causation_entropy(data, nodes_I, nodes_J, nodes_K):
     """
-    Return the causation entropy from a set of nodes $J$ to nodes $I$
-    conditioning on nodes $K$.
+    Return the causation entropy from a set of nodes :math:`J` to nodes :math:`I`
+    conditioning on nodes :math:`K`.
 
-    Params
-    ------
+    Parameters
+    ----------
     data (np.ndarray): Array of categorical data with nodes as columns and
                        observations of quantity on nodes as rows.
 
@@ -186,10 +205,10 @@ def causation_entropy(data, nodes_I, nodes_J, nodes_K):
     Returns
     -------
     entrp (float): Causation entropy defined as
-                   $C_{J \rightarrow I | K} = H(X_{t+1}^{(I)} | X_t^{(K)}) -
-                    H(X_{t+1}^{(I)} | X_t^{(K)}, X_t^{(J)})$
-                   where $H(X|Y)$ is the conditional entropy of $X$
-                   conditioned on $Y$.
+                   :math:`C_{J \rightarrow I | K} = H(X_{t+1}^{(I)} | X_t^{(K)}) -
+                    H(X_{t+1}^{(I)} | X_t^{(K)}, X_t^{(J)})`
+                   where :math:`H(X|Y)` is the conditional entropy of :math:`X`
+                   conditioned on :math:`Y`.
 
     """
     # If nodes_J is a subset of nodes_K, return 0 to avoid redundancy

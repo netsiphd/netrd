@@ -26,8 +26,8 @@ def mean_GNP_distance(n, prob, distance, samples=10, **kwargs):
     reusing samples. The diagonal of the distance matrix is excluded, i.e.,
     do not compute the distance between a sample graph and itself.
 
-    Params
-    ------
+    Parameters
+    ----------
 
     n (int): Number of nodes in ER graphs to be generated
     prob (float): Probability of edge in ER graphs to be generated.

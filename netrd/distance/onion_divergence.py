@@ -23,31 +23,32 @@ from netrd.utilities import ensure_undirected
 
 class OnionDivergence(BaseDistance):
     def dist(self, G1, G2, dist='lccm'):
-        """
-        Return the Jenson-Shannon divergence between two graphs feature
-        distribution fixed by dist.
+        """Jenson-Shannon divergence between the feature distributions fixed by dist.
 
-        Note: The method assumes simple graphs.
+        Assumes simple graphs.
 
-        Params
-        ------
+        Parameters
+        ----------
 
-        G1, G2 (nx.Graph): two networkx graphs to be compared.
-        dist (str): type of distribution divergence to output. Choices are
-                    'cm', 'ccm', 'lccm_node' and 'lccm'. The type stand for
-                    the associated random graph ensemble. 'cm' compares only
-                    the degree distribution. 'ccm' compares the networks
-                    according to the edges degree-degree distribution.
-                    'lccm_node' compares the distribution of nodes according
-                    to their onion centrality (degree, coreness, and layer
-                    within core). Finally, 'lccm' compares the networks
-                    according to the edges joint degree,coreness and layer
-                    distribution for both endpoints.
+        G1, G2 (nx.Graph)
+            two networkx graphs to be compared.
+
+        dist (str)
+            type of distribution divergence to output. Choices are 'cm',
+            'ccm', 'lccm_node' and 'lccm'. The type stand for the
+            associated random graph ensemble. 'cm' compares only the degree
+            distribution. 'ccm' compares the networks according to the
+            edges degree-degree distribution.  'lccm_node' compares the
+            distribution of nodes according to their onion centrality
+            (degree, coreness, and layer within core). Finally, 'lccm'
+            compares the networks according to the edges joint
+            degree,coreness and layer distribution for both endpoints.
 
         Returns
         -------
 
-        dist (float): the distance between G1 and G2.
+        dist (float)
+            the distance between G1 and G2.
 
         """
         # take the simple graph version

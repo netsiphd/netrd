@@ -18,8 +18,8 @@ def create_graph(A, create_using=None, remove_self_loops=True):
     """
     Function for flexibly creating a networkx graph from a numpy array.
 
-    Params
-    ------
+    Parameters
+    ----------
     A (np.ndarray): A numpy array.
     create_using (nx.Graph or None): Create the graph using a specific networkx graph.
     Can be used for forcing an asymmetric matrix to create an undirected graph, for example.
@@ -50,8 +50,8 @@ def ensure_undirected(G):
     Ensure the graph G is undirected. If it is not, coerce it to undirected
     and warn the user.
 
-    Params
-    ------
+    Parameters
+    ----------
 
     G (networkx graph): The graph to be checked
 

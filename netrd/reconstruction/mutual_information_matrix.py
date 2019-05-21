@@ -20,31 +20,41 @@ from ..utilities import create_graph, threshold
 
 class MutualInformationMatrixReconstructor(BaseReconstructor):
     def fit(self, TS, nbins=10, threshold_type='degree', **kwargs):
-        """
-        Reconstruct a network by calculating the mutual information between the
-        probability distributions of the (binned) values of the time series of
-        pairs of nodes, i and j.
+        """Calculates the mutual information between the probability distributions
+        of the (binned) values of the time series of pairs of nodes.
 
-        First, the mutual information is computed between each pair of vertices.
-        Then, a thresholding condition is applied to obtain edges.
+        First, the mutual information is computed between each pair of
+        vertices.  Then, a thresholding condition is applied to obtain
+        edges.
 
-        The results dictionary also stores the weight matrix as `'weights_matrix'`
-        and the thresholded version of the weight matrix as `'thresholded_matrix'`.
+        The results dictionary also stores the weight matrix as
+        `'weights_matrix'` and the thresholded version of the weight matrix
+        as `'thresholded_matrix'`.
 
-        Params
-        ------
-        TS (np.ndarray): Array consisting of $L$ observations from $N$ sensors.
-        nbins (int): number of bins for the pre-processing step (to yield a discrete probability distribution)
-        threshold_type (str): Which thresholding function to use on the matrix of
-        weights. See `netrd.utilities.threshold.py` for documentation. Pass additional
-        arguments to the thresholder using `**kwargs`.
+        Parameters
+        ----------
+
+        TS (np.ndarray)
+            Array consisting of :math:`L` observations from :math:`N`
+            sensors.
+
+        nbins (int)
+            number of bins for the pre-processing step (to yield a discrete
+            probability distribution)
+
+        threshold_type (str)
+            Which thresholding function to use on the matrix of
+            weights. See `netrd.utilities.threshold.py` for
+            documentation. Pass additional arguments to the thresholder
+            using `**kwargs`.
 
         Returns
         -------
-        G (nx.Graph): A reconstructed graph with $N$ nodes.
+
+        G (nx.Graph)
+            A reconstructed graph with :math:`N` nodes.
 
         """
-
         N = TS.shape[0]
         rang = [np.min(TS), np.max(TS)]
 
@@ -79,8 +89,8 @@ def find_individual_probability_distribution(TS, rang, nbins):
     Assign each node to a vector of length nbins where each element is the probability of the
     node in the time series being in that binned "state"
 
-    Params
-    ------
+    Parameters
+    ----------
     TS (np.ndarray): Array consisting of $L$ observations from $N$ sensors.
     rang (list): list of the minimum and maximum value in the time series
     nbins (int): number of bins for the pre-processing step (to yield a discrete probability distribution)
@@ -112,8 +122,8 @@ def find_product_probability_distribution(IndivP, N):
     Assign each node j to a vector of length nbins where each element is the product of its own
     individual_probability_distribution and its neighbors'. P(x) * P(y) <-- as opposed to P(x,y)
 
-    Params
-    ------
+    Parameters
+    ----------
     IndivP (dict): dictionary that gets output by find_individual_probability_distribution()
     N (int): number of nodes in the graph
 
@@ -139,8 +149,8 @@ def find_joint_probability_distribution(TS, rang, nbins):
     Assign each node j to a vector of length nbins where each element is the product of its own
     individual_probability_distribution and its neighbors'. P(x) * P(y) <-- as opposed to P(x,y)
 
-    Params
-    ------
+    Parameters
+    ----------
     TS (np.ndarray): Array consisting of $L$ observations from $N$ sensors.
     rang (list): list of the minimum and maximum value in the time series
     nbins (int): number of bins for the pre-processing step (to yield a discrete probability distribution)
@@ -168,8 +178,8 @@ def mutual_info_node_pair(JointP_jl, ProduP_jl):
     """
     Calculate the mutual information between two nodes.
 
-    Params
-    ------
+    Parameters
+    ----------
     JointP_jl (np.ndarray): nbins x nbins array of two nodes' joint probability distributions
     ProduP_jl (np.ndarray): nbins x nbins array of two nodes' product probability distributions
 
@@ -193,8 +203,8 @@ def mutual_info_all_pairs(JointP, ProduP, N):
     """
     Calculate the mutual information between all pairs of nodes.
 
-    Params
-    ------
+    Parameters
+    ----------
     JointP (dict): a dictionary where the keys are pairs of nodes in the graph and the
                    are nbins x nbins arrays corresponding to joint probability vectors
     ProduP (dict): a dictionary where the keys are pairs of nodes in the graph and the values
@@ -223,8 +233,8 @@ def mutual_info_all_pairs(JointP, ProduP, N):
 def threshold_from_degree(deg, M):
     """
     Compute the required threshold (tau) in order to yield a reconstructed graph of mean degree deg.
-    Params
-    ------
+    Parameters
+    ----------
     deg (int): Target degree for which the appropriate threshold will be computed
     M (np.ndarray): Pre-thresholded NxN array
     Returns

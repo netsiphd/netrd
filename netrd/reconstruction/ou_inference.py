@@ -22,25 +22,32 @@ from ..utilities import create_graph, threshold
 
 class OUInferenceReconstructor(BaseReconstructor):
     def fit(self, TS, threshold_type='range', **kwargs):
-        """
-        Reconstruct a network by inferring the coupling coefficients provided
-        that the generative model of the time series is an Orstein-Uhlenbeck
-        process.
+        """Infers the coupling coefficients assuming a Orstein-Uhlenbeck process
+        generative model.
 
         The results dictionary also stores the weight matrix as
-        `'weights_matrix'`, the covariance matrix in `covariance_matrix` and
-        the thresholded version of the weight matrix as `'thresholded_matrix'`.
+        `'weights_matrix'`, the covariance matrix in `covariance_matrix`
+        and the thresholded version of the weight matrix as
+        `'thresholded_matrix'`.
 
-        Params
-        ------
-        TS (np.ndarray): Array consisting of $L$ observations from $N$ sensors.
-        threshold_type (str): Which thresholding function to use on the matrix of
-        weights. See `netrd.utilities.threshold.py` for documentation. Pass additional
-        arguments to the thresholder using `**kwargs`.
+        Parameters
+        ----------
+
+        TS (np.ndarray)
+            Array consisting of :math:`L` observations from :math:`N`
+            sensors.
+
+        threshold_type (str)
+            Which thresholding function to use on the matrix of
+            weights. See `netrd.utilities.threshold.py` for
+            documentation. Pass additional arguments to the thresholder
+            using `**kwargs`.
 
         Returns
         -------
-        G (nx.Graph): A reconstructed graph with $N$ nodes.
+
+        G (nx.Graph)
+            A reconstructed graph with :math:`N` nodes.
 
         """
         N, T = np.shape(TS)
@@ -70,12 +77,12 @@ class OUInferenceReconstructor(BaseReconstructor):
 
 
 def inverse_method(covariance, temperatures):
-    """This function finds the weights of an heterogenous Ornstein-Uhlenbeck 
-    process 
+    """This function finds the weights of an heterogenous Ornstein-Uhlenbeck
+    process
     covariance  = covariance matrix of the zero-mean signal
 
-    Params
-    ------
+    Parameters
+    ----------
 
     covariance (np.ndarray): Covariance matrix of the zero-mean signal.
 

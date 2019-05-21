@@ -17,23 +17,33 @@ from ..utilities import create_graph, threshold
 
 class CorrelationMatrixReconstructor(BaseReconstructor):
     def fit(self, TS, threshold_type='range', **kwargs):
-        """
-        Reconstruct a network from time series data using an unregularized form of
-        the precision matrix. After [this tutorial](
-        https://github.com/valeria-io/visualising_stocks_correlations/blob/master/corr_matrix_viz.ipynb).
-        The results dictionary also stores the raw correlation matrix as `'weights_matrix'`
-        and the thresholded version of the correlation matrix as `'thresholded_matrix'`.
+        """Uses an unregularized form of the precision matrix.
 
-        Params
-        ------
-        TS (np.ndarray): Array consisting of $L$ observations from $N$ sensors
-        threshold_type (str): Which thresholding function to use on the matrix of
-        weights. See `netrd.utilities.threshold.py` for documentation. Pass additional
-        arguments to the thresholder using `**kwargs`.
+        The results dictionary also stores the raw correlation matrix as
+        `'weights_matrix'` and the thresholded version of the correlation
+        matrix as `'thresholded_matrix'`. For details see [1].
+
+        Parameters
+        ----------
+
+        TS (np.ndarray)
+            Array consisting of $L$ observations from $N$ sensors
+
+        threshold_type (str)
+            Which thresholding function to use on the matrix of
+            weights. See `netrd.utilities.threshold.py` for
+            documentation. Pass additional arguments to the thresholder
+            using `**kwargs`.
 
         Returns
         -------
-        G: a reconstructed graph.
+        G (nx.Graph)
+            a reconstructed graph.
+
+        References
+        ----------
+
+        [1] https://github.com/valeria-io/visualising_stocks_correlations/blob/master/corr_matrix_viz.ipynb
 
         """
 

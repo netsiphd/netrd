@@ -2,7 +2,7 @@
 random.py
 ---------
 
-Reconstruct a network from a random matrix 
+Reconstruct a network from a random matrix
 not taking the time series into account.
 
 author: Brennan Klein
@@ -19,23 +19,29 @@ from ..utilities import create_graph, threshold
 
 class RandomReconstructor(BaseReconstructor):
     def fit(self, TS, threshold_type='range', **kwargs):
-        """
-        Reconstruct a network from a time serues -- just kidding, simply return 
-        a random correlation matrix with a threshold.
+        """Return a random correlation matrix with a threshold.
 
-        The results dictionary also stores the weight matrix as `'weights_matrix'`
-        and the thresholded version of the weight matrix as `'thresholded_matrix'`.
+        The results dictionary also stores the weight matrix as
+        `'weights_matrix'` and the thresholded version of the weight matrix
+        as `'thresholded_matrix'`.
 
-        Params
-        ------
-        TS (np.ndarray): array consisting of $L$ observations from $N$ sensors.
-        threshold_type (str): Which thresholding function to use on the matrix of
-        weights. See `netrd.utilities.threshold.py` for documentation. Pass additional
-        arguments to the thresholder using `**kwargs`.
+        Parameters
+        ----------
+
+        TS (np.ndarray)
+            array consisting of :math:`L` observations from :math:`N` sensors.
+
+        threshold_type (str)
+            Which thresholding function to use on the matrix of
+            weights. See `netrd.utilities.threshold.py` for
+            documentation. Pass additional arguments to the thresholder
+            using `**kwargs`.
 
         Returns
         -------
-        G (nx.Graph): a reconstructed graph with $N$ nodes.
+        G (nx.Graph)
+            a reconstructed graph with :math:`N` nodes.
+
         """
 
         N, L = TS.shape

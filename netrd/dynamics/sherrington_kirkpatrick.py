@@ -17,34 +17,42 @@ class SherringtonKirkpatrickIsing(BaseDynamics):
         self.results = {}
 
     def simulate(self, G, L, noisy=False):
-        """
-        Simulate Kinetic Ising model dynamics on a ground truth network.
-        from D. Sherrington and S. Kirkpatrick, Phys. Rev. Lett. 35, 1792 (1975)
-        
-        and from Hoang, D.T., Song, J., Periwal, V. and Jo, J., Network inference 
-        in stochastic systems from neurons to currencies: Improved performance at 
-        small sample size. (2019)
+        r"""Simulate Kinetic Ising model dynamics on a ground truth network.
 
-	    Generates an N x L time series.
+        The results dictionary also stores the ground truth network as
+        `'ground_truth'`.
 
-        The results dictionary also stores the ground truth network as `'ground_truth'`.
+        Parameters
+        ----------
+        G (nx.Graph)
+            The input (ground-truth) graph with :math:`N` nodes.
 
-	    Example Usage:
-		#######
-		G = nx.ring_of_cliques(4,16)
-		L = 2001
-		dynamics = SherringtonKirkpatrickIsing()
-		TS = dynamics.simulate(G, L)
-		#######
-		
-        Params
-        ------
-        G (nx.Graph): the input (ground-truth) graph with $N$ nodes.
-        L (int): the length of the desired time series.
+        L (int)
+            The length of the desired time series.
 
         Returns
         -------
-        TS (np.ndarray): an $N \times L$ array of synthetic time series data.
+        TS (np.ndarray)
+            An :math:`N \times L` array of synthetic time series data.
+
+        Examples
+        --------
+        .. code:: python
+
+            G = nx.ring_of_cliques(4,16)
+            L = 2001
+            dynamics = SherringtonKirkpatrickIsing()
+            TS = dynamics.simulate(G, L)
+
+
+        References
+        ----------
+        [1] D. Sherrington and S. Kirkpatrick, Phys. Rev. Lett. 35, 1792 (1975).
+
+        [2] Hoang, D.T., Song, J., Periwal, V. and Jo, J., Network
+        inference in stochastic systems from neurons to currencies:
+        Improved performance at small sample size. (2019)
+
         """
 
         N = G.number_of_nodes()
@@ -74,7 +82,7 @@ class SherringtonKirkpatrickIsing(BaseDynamics):
 
 def sign(x):
     """
-    np.sign(0) = 0 but here to avoid value 0, 
+    np.sign(0) = 0 but here to avoid value 0,
     we redefine it as def sign(0) = 1
     """
     return 1.0 if x >= 0 else -1.0

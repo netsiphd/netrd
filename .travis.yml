@@ -51,5 +51,5 @@ install:
 before_script: cd tests/
 script:
   - pytest
-  - if [[ $TRAVIS_PYTHON_VERSION != 3.5 ]]; then black --skip-string-normalization --check ../netrd; fi
-  - if [[ $TRAVIS_PYTHON_VERSION != 3.5 ]]; then black --skip-string-normalization --check ../tests; fi
+  - if [[ $TRAVIS_PYTHON_VERSION == 3.6 ] || [ $TRAVIS_PYTHON_VERSION == 3.7 ]]; then black --skip-string-normalization --check ../netrd; fi
+  - if [[ $TRAVIS_PYTHON_VERSION == 3.6 ] || [ $TRAVIS_PYTHON_VERSION == 3.7 ]]; then black --skip-string-normalization --check ../tests; fi

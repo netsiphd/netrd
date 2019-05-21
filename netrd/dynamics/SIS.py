@@ -23,8 +23,8 @@ class SISModel(BaseDynamics):
         The results dictionary also stores the ground truth network as
         `'ground_truth'`.
 
-        Params
-        ------
+        Parameters
+        ----------
         G (nx.Graph): the input (ground-truth) graph with $N$ nodes.
         L (int): the length of the desired time series.
         i0 (int): the number of initially infected nodes.

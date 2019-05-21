@@ -17,45 +17,39 @@ from ..utilities import entropy
 
 class PortraitDivergence(BaseDistance):
     def dist(self, G1, G2, bins=None, binedges=None):
-        """
-        Given two graphs, G1 and G2, the portrait divergence provides a
-        distance measure based on the two graphs' "portraits".
+        """Distance measure based on the two graphs' "portraits".
 
-        The results dictionary also stores a 2-tuple of the underlying adjacency
-        matrices in the key `'adjacency_matrices'` and the portrait matrices in
-        `'portrait_matrices'`.
+        The results dictionary also stores a 2-tuple of the underlying
+        adjacency matrices in the key `'adjacency_matrices'` and the
+        portrait matrices in `'portrait_matrices'`.
 
-        Params
-        ------
-        G1 (nx.Graph): a graph
-        G2 (nx.Graph): a second graph
-        bins (int): width of bins in percentiles
-        binedges (list) vector of bin edges (mutually exclusive from bins)
+        Parameters
+        ----------
+
+        G1, G2 (nx.Graph)
+            two graphs
+
+        bins (int)
+            width of bins in percentiles
+
+        binedges (list)
+            vector of bin edges (mutually exclusive from bins)
 
 
         Returns
         -------
-        dist (float): the portrait divergence between two graphs.
+        dist (float)
+            the portrait divergence between two graphs.
 
 
-        From
-        ----
-        An information-theoretic, all-scales approach to comparing networks
+        References
+        ----------
+        [1] An information-theoretic, all-scales approach to comparing networks
         James P. Bagrow and Erik M. Bollt, 2018 arXiv:1804.03665
-        and [this repository](https://github.com/bagrow/portrait-divergence)
 
-		# sample usage
-		from portrait_divergence import *
-		G1 = nx.erdos_renyi_graph(100,0.05)
-		G2 = nx.erdos_renyi_graph(100,0.05)
-		# G1 = nx.erdos_renyi_graph(100,0.5)
-		# G2 = nx.erdos_renyi_graph(100,0.5)
-
-		test = PortraitDivergence()
-		print(test.dist(G1, G2))
+        [2] https://github.com/bagrow/portrait-divergence
 
         """
-
         adj1 = nx.to_numpy_array(G1)
         adj2 = nx.to_numpy_array(G2)
 
@@ -97,8 +91,8 @@ class PortraitDivergence(BaseDistance):
 
 def portrait(G):
     """
-    Params
-    ------
+    Parameters
+    ----------
     G (nx.Graph or nx.DiGraph): a graph.
 
     Returns
@@ -165,8 +159,8 @@ def weighted_portrait(G, paths=None, binedges=None):
     Compute weighted portrait, using Dijkstra's algorithm for finding
     shortest paths.
 
-    Params
-    ------
+    Parameters
+    ----------
     G (nx.Graph or nx.DiGraph): a graph.
     paths (list): a list of all pairs of pahts
     binedges (list): sampled path lengths
@@ -211,8 +205,8 @@ def _get_unique_path_lengths(G, paths=None):
     """
     Compute the unique path lengths.
 
-    Params
-    ------
+    Parameters
+    ----------
     G (nx.Graph or DiGraph): a graph.
     paths (list): list of paths.
 
@@ -238,8 +232,8 @@ def pad_portraits_to_same_size(B1, B2):
     Make sure that two matrices are padded with zeros and/or trimmed of
     zeros to be the same dimensions.
 
-    Params
-    ------
+    Parameters
+    ----------
     B1 (np.ndarray): Portrait matrix of a graph (k x N)
     B2 (np.ndarray):
 
@@ -302,8 +296,8 @@ def portrait_divergence(G1, G2, N1=None, N2=None):
     """
     Compute the portrait divergence between graphs G1 and G2.
 
-    Params
-    ------
+    Parameters
+    ----------
     G1 (nx.Graph or nx.DiGraph): a graph.
     G2 (nx.Graph or nx.DiGraph): a graph.
 

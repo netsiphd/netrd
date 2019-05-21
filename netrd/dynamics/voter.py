@@ -15,25 +15,34 @@ import networkx as nx
 
 class VoterModel(BaseDynamics):
     def simulate(self, G, L, noise=None):
-        """
-        Simulate voter-model-style dynamics on a network. Nodes
-        are randomly assigned a state in {-1, 1}; at each time step
-        all nodes asynchronously update by choosing their new state uniformly
-        from their neighbors. Generates an $N \times L$ time series.
+        r"""Simulate voter-model-style dynamics on a network.
 
-        The results dictionary also stores the ground truth network as `'ground_truth'`.
+        Nodes are randomly assigned a state in :math:`\{-1, 1\}`; at each
+        time step all nodes asynchronously update by choosing their new
+        state uniformly from their neighbors. Generates an :math:`N \times
+        L` time series.
 
-        Params
-        ------
-        G (nx.Graph): the input (ground-truth) graph with $N$ nodes.
-        L (int): the length of the desired time series.
-        noise (float or None): if noise is present, with this probability a node's
-        state will be randomly redrawn from {-1, 1} independent of its neighbors'
-        states.
+        The results dictionary also stores the ground truth network as
+        `'ground_truth'`.
+
+        Parameters
+        ----------
+        G (nx.Graph)
+            the input (ground-truth) graph with `N` nodes.
+
+        L (int)
+            the length of the desired time series.
+
+        noise (float or None)
+            if noise is present, with this probability a node's state will
+            be randomly redrawn from :math:`\{-1, 1\}` independent of its
+            neighbors' states.
 
         Returns
         -------
-        TS (np.ndarray): an $N \times L$ array of synthetic time series data.
+        TS (np.ndarray)
+            an :math:`N \times L` array of synthetic time series data.
+
         """
 
         N = G.number_of_nodes()

@@ -23,23 +23,26 @@ class NBD(BaseDistance):
     """
 
     def dist(self, G1, G2, topk='automatic', batch=100, tol=1e-5):
-        """NBD between two graphs.
+        """Non-Backtracking Distance between two graphs.
 
-        Params
-        ------
+        Parameters
+        ----------
 
-        G1, G2 (nx.Graph): The graphs to compare.
+        G1, G2 (nx.Graph)
+            The graphs to compare.
 
-        topk (int or 'automatic'): The number of eigenvalues to compute.
-        If 'automatic' (default), use only the eigenvalues that are larger
-        than the square root of the largest eigenvalue.  Note this may
-        yield different number of eigenvalues for each graph.
+        topk (int or 'automatic')
+            The number of eigenvalues to compute. If 'automatic' (default),
+            use only the eigenvalues that are larger than the square root
+            of the largest eigenvalue.  Note this may yield different
+            number of eigenvalues for each graph.
 
-        batch (int): If topk is 'automatic', this is the number of
-        eigenvalues to compute each time until the condition is met.
-        Default 100.
+        batch (int)
+            If topk is 'automatic', this is the number of eigenvalues to
+            compute each time until the condition is met. Default 100.
 
-        tol (float): Numerical tolerance when computing eigenvalues.
+        tol (float)
+            Numerical tolerance when computing eigenvalues.
 
         """
         vals1 = nbvals(G1, topk, batch, tol)
@@ -54,8 +57,8 @@ class NBD(BaseDistance):
 def nbvals(graph, topk='automatic', batch=100, tol=1e-5):
     """Compute the largest-magnitude non-backtracking eigenvalues.
 
-    Params
-    ------
+    Parameters
+    ----------
 
     graph (nx.Graph): The graph.
 
@@ -147,8 +150,8 @@ def pseudo_hashimoto(graph):
     is the adjacency matrix.  The eigenvalues of B' are always eigenvalues
     of B, the non-backtracking or Hashimoto matrix.
 
-    Params
-    ------
+    Parameters
+    ----------
 
     graph (nx.Graph): A NetworkX graph object.
 
@@ -179,8 +182,8 @@ def half_incidence(graph, ordering='blocks', return_ordering=False):
     at (n, e) is equal to 1 if node n is the target (or head) of edge e,
     and 0 otherwise.
 
-    Params
-    ------
+    Parameters
+    ----------
 
     graph (nx.Graph): The graph.
 

@@ -21,65 +21,78 @@ from ..utilities import create_graph
 
 class ConvergentCrossMappingReconstructor(BaseReconstructor):
     def fit(self, TS, tau=1, alpha=0.05, **kwargs):
-        """Infer causal relation applying Takens Theorem of dynamical systems.
+        r"""Infer causal relation applying Takens Theorem of dynamical systems.
 
         Convergent cross-mapping infers dynamical causal relation between
-        vairiables from time series data. Time series data portray an attractor
-        manifold of the dynamical system of interests. Existing approaches of
-        attractor reconstruction involved building the shadow manifold for a
-        single variable $X$, which is defined by the time-lagged vectors
-        $(X(t), X(t-\tau), X(t-2\tau), ..., X(t-(N-1)\tau))$ where $N$ denotes
-        number of variables in the system and $\tau$ is an arbitrary time-
-        lagged interval. Takens theorem and its generalization indicated that
-        if a variable $X$ is causally influencing another variable $Y$ in a
-        dynamical system, then there exists a one-to-one and local-structure-
-        preserving mapping from $X$'s shadow manifold to $Y$'s.
+        vairiables from time series data. Time series data portray an
+        attractor manifold of the dynamical system of interests. Existing
+        approaches of attractor reconstruction involved building the shadow
+        manifold for a single variable :math:`X`, which is defined by the
+        time-lagged vectors :math:`(X(t), X(t-\tau), X(t-2\tau), ...,
+        X(t-(N-1)\tau))` where :math:`N` denotes number of variables in the
+        system and :math:`\tau` is an arbitrary time- lagged
+        interval. Takens theorem and its generalization indicated that if a
+        variable :math:`X` is causally influencing another variable
+        :math:`Y` in a dynamical system, then there exists a one-to-one and
+        local-structure- preserving mapping from :math:`X`'s shadow
+        manifold to :math:`Y`'s.
 
-        The convergent cross-mapping algorithm first constructs the shadow data
-        cloud (a portray of the shadow manifold) for every variable, and it
-        then examines the mutual predictability for all pairs of them.
-        Specifically, for a point $u(t)$ in $X$'s shadow data cloud, the time
-        indices $\{t_1, t_2, ..., t_{N+1}\}$ of its $N+1$ nearest neighbors are
-        obtained, which are mapped to a neighborhood in $Y$'s shadow data cloud
-        $\{v(t_1), v(t_2), ..., v(t_{N+1})\}$. The estimate $\hat{Y}(t)$ is
-        computed as an average over this neighborhood, with weights decaying
-        exponentially with corresponding distance in $X$'s shadow data clould.
-        The algorithm concludes a causal link from $X$ to $Y$ if correlation
-        between $Y$ and $\hat{Y}$ is significant.
+        The convergent cross-mapping algorithm first constructs the shadow
+        data cloud (a portray of the shadow manifold) for every variable,
+        and it then examines the mutual predictability for all pairs of
+        them.  Specifically, for a point :math:`u(t)` in :math:`X`'s shadow
+        data cloud, the time indices :math:`\{t_1, t_2, ..., t_{N+1}\}` of
+        its :math:`N+1` nearest neighbors are obtained, which are mapped to
+        a neighborhood in :math:`Y`'s shadow data cloud :math:`\{v(t_1),
+        v(t_2), ..., v(t_{N+1})\}`. The estimate :math:`\hat{Y}(t)` is
+        computed as an average over this neighborhood, with weights
+        decaying exponentially with corresponding distance in :math:`X`'s
+        shadow data clould.  The algorithm concludes a causal link from
+        :math:`X` to :math:`Y` if correlation between :math:`Y` and
+        :math:`\hat{Y}` is significant.
 
         Furthermore, Sugihara et al.'s simulation suggested that the
-        correlation converging to 1 as the length of time series data grows is
-        a necessary condition for $X$ causally affects $Y$ in a deterministic
-        dynamical system. The convergent cross-mapping approach is thus
-        numerically validated to infer causal relation from time series data.
+        correlation converging to 1 as the length of time series data grows
+        is a necessary condition for :math:`X` causally affects :math:`Y`
+        in a deterministic dynamical system. The convergent cross-mapping
+        approach is thus numerically validated to infer causal relation
+        from time series data.
 
         The results dictionary also includes the raw Pearson correlations
-        between elements (`'weights_matrix'`) and their associated p-values
-        (`'pvalues_matrix'`).
+        between elements (`'weights_matrix'`) and their associated
+        p-values (`'pvalues_matrix'`).
 
-        Params
-        ------
-        TS (np.ndarray): $N \times L$ array consisting of $L$ observations
-                         from $N$ sensors.
+        Parameters
+        ----------
 
-        tau (int): Number of time steps for a single time-lag.
+        TS (np.ndarray)
+            :math:`N \times L` array consisting of :math:`L` observations
+            from :math:`N` sensors.
 
-        alpha (float): Significance level of statistical test for correlation.
+        tau (int)
+            Number of time steps for a single time-lag.
+
+        alpha (float)
+            Significance level of statistical test for correlation.
 
         Returns
         -------
-        G (nx.Graph): A reconstructed graph with $N$ nodes.
+
+        G (nx.Graph)
+            A reconstructed graph with :math:`N` nodes.
 
         Notes
         -----
         1. The length of time series data must be long enough such that
-           $L \geq 3 + (N-1)(1+\tau)$.
+           :math:`L \geq 3 + (N-1)(1+\tau)`.
 
-        2. The $\[i, j\]$ of the correlation matrix entails the correlation
-           between the $j$th variable and its estimate from the $i$th variable.
-           A similar rule applies to the p-value matrix.
+        2. The :math:`(i,j)`-th entry of the correlation matrix entails the
+           correlation between the :math:`j`-th variable and its estimate
+           from the :math:`i`-th variable.  A similar rule applies to the
+           p-value matrix.
 
-        3. The computation complexity of this implementation is $O(N^3 L)$.
+        3. The computation complexity of this implementation is
+        :math:`O(N^3 L)`.
 
         """
         data = TS.T  # Transpose the time series to make observations the rows
@@ -126,9 +139,9 @@ class ConvergentCrossMappingReconstructor(BaseReconstructor):
 def shadow_data_cloud(data, N, tau):
     """Return the lagged-vector data cloud of a given variable's time series.
 
-    Params
-    ------
-    data (np.ndarray): Length-$L$ 1D array of a single variable's times series.
+    Parameters
+    ----------
+    data (np.ndarray): Length-:math:`L` 1D array of a single variable's times series.
 
     N (int): Number of variables.
 
@@ -136,16 +149,16 @@ def shadow_data_cloud(data, N, tau):
 
     Returns
     -------
-    shadow (np.ndarray): $M \times N$ array of the lagged-vector data cloud,
-                         where $M = L - (N-1) * \tau$ is the number of points
+    shadow (np.ndarray): :math:`M \times N` array of the lagged-vector data cloud,
+                         where :math:`M = L - (N-1) * \tau` is the number of points
                          in the data cloud.
 
     Notes
     -----
-    Given the data $(x_1(t), x_2(t), ..., x_N(t)), t = 1, 2, ..., L$, the
-    $M$ lagged vectors for the $i$th variable are defined as
-    $(x_i(t), x_i(t-tau), x_i(t-2*tau), ..., x_i(t-(N-1)*tau))$
-    for $t = (N-1)*tau + 1, (N-1)*tau + 2, ..., L$.
+    Given the data :math:`(x_1(t), x_2(t), ..., x_N(t)), t = 1, 2, ..., L`, the
+    :math:`M` lagged vectors for the :math:`i`th variable are defined as
+    :math:`(x_i(t), x_i(t-tau), x_i(t-2*tau), ..., x_i(t-(N-1)*tau))`
+    for :math:`t = (N-1)*tau + 1, (N-1)*tau + 2, ..., L`.
 
     """
     L, = data.shape
@@ -164,19 +177,19 @@ def nearest_neighbors(shadow, L):
     Return time indices of the N+1 nearest neighbors for every point in the
     shadow data cloud and their corresponding Euclidean distances.
 
-    Params
-    ------
+    Parameters
+    ----------
     shadow (np.ndarray): Array of the shadow data cloud.
 
     L (int): Number of observations in the time series.
 
     Returns
     -------
-    nei (np.ndarray): $M \times (N+1)$ array of time indices of nearest
-                      neighbors where $M$ is the number of points in the
+    nei (np.ndarray): :math:`M \times (N+1)` array of time indices of nearest
+                      neighbors where :math:`M` is the number of points in the
                       shadow data cloud.
 
-    dist (np.ndarray): $M \times (N+1)$ array of corresponding Euclidean
+    dist (np.ndarray): :math:`M \times (N+1)` array of corresponding Euclidean
                        distance between the data point to the neighbors.
 
     Notes
@@ -209,25 +222,25 @@ def nearest_neighbors(shadow, L):
 def neighbor_weights(dist):
     """Return the weights of neighbors in time seires estimates.
 
-    Params
-    ------
-    dist (np.ndarray): $M \times (N+1)$ array of Euclidean distances between a
+    Parameters
+    ----------
+    dist (np.ndarray): :math:`M \times (N+1)` array of Euclidean distances between a
                        point to its nearest neighbors in the shadow data cloud
-                       (sorted by increasing order of distances), where $M$ is
+                       (sorted by increasing order of distances), where :math:`M` is
                        the number of points in the shadow data cloud.
 
     Returns
     -------
-    wei (np.ndarray): $M \times (N+1)$ array of exponentially decaying weights
+    wei (np.ndarray): :math:`M \times (N+1)` array of exponentially decaying weights
                       of the nearest neighbors.
 
     Notes
     -----
-    For every point $u(t)$ in the shadow data cloud, based on its Euclidean
-    distance to the nearest neighbors $d(u(t), u(t_k))$, $l = 1, 2, ..., N+1$
-    (sorted by increasing order of distances), the weight of neighbor $k$ is
-    $w_k = f_k / \sum_{l=1}^{N+1} f_l$ where
-    $f_k = e^{-\[ d(u(t), u(t_k)) / d(u(t), u(t_1)) \]}$.
+    For every point :math:`u(t)` in the shadow data cloud, based on its Euclidean
+    distance to the nearest neighbors :math:`d(u(t), u(t_k))`, :math:`l = 1, 2, ..., N+1`
+    (sorted by increasing order of distances), the weight of neighbor :math:`k` is
+    :math:`w_k = f_k / \sum_{l=1}^{N+1} f_l` where
+    :math:`f_k = e^{-\[ d(u(t), u(t_k)) / d(u(t), u(t_1)) \]}`.
 
     """
     expn = dist / dist[:, 0, np.newaxis]
@@ -238,28 +251,28 @@ def neighbor_weights(dist):
 
 
 def time_series_estimates(data_y, nei_x, wei_x):
-    """Return estimates of variable $Y$ from variable $X$'s shadow data cloud.
+    """Return estimates of variable :math:`Y` from variable :math:`X`'s shadow data cloud.
 
-    Params
-    ------
-    data_y (np.ndarray): 1D array of variable $Y$'s time series data.
+    Parameters
+    ----------
+    data_y (np.ndarray): 1D array of variable :math:`Y`'s time series data.
 
-    nei_x (np.ndarray): $M \times (N+1)$ array of time indices of nearest
-                        neighbors in $X$'s shadow data cloud, where $M$ is the
+    nei_x (np.ndarray): :math:`M \times (N+1)` array of time indices of nearest
+                        neighbors in :math:`X`'s shadow data cloud, where :math:`M` is the
                         number of points in the shadow data cloud.
 
     wei_x (np.ndarray): Array of corresponding weights of the nearest
-                        neighbors in $X$'s shadow data cloud.
+                        neighbors in :math:`X`'s shadow data cloud.
 
     Returns
     -------
-    ests (np.ndarray): Length-$M$ 1D array of estimates of $Y$'s time series.
+    ests (np.ndarray): Length-:math:`M` 1D array of estimates of :math:`Y`'s time series.
 
     Notes
     -----
-    Let $t_1, t_2, ..., t_{N+1}$ be the time indices of nearest neighbor of
-    point $t$ in $X$'s shadow data cloud. Its corresponding estimates of $Y$
-    is $\hat{Y}(t) = \sum_{k=1}^{N+1} w(t_k) Y(t_k)$, where $w$s are weights of
+    Let :math:`t_1, t_2, ..., t_{N+1}` be the time indices of nearest neighbor of
+    point :math:`t` in :math:`X`'s shadow data cloud. Its corresponding estimates of :math:`Y`
+    is :math:`\hat{Y}(t) = \sum_{k=1}^{N+1} w(t_k) Y(t_k)`, where :math:`w`s are weights of
     nearest neighbors.
 
     """

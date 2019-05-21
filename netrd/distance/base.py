@@ -22,13 +22,13 @@ class BaseDistance:
         Values computed as side effects of the distance method can be foun
         in self.results.
 
-        Params
-        ------
+        Parameters
+        ----------
 
         G1, G2 (nx.Graph): two graphs.
 
         Returns
-        -------
+        -----------
 
         distance (float).
 

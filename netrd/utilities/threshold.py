@@ -17,8 +17,8 @@ def threshold_in_range(mat, **kwargs):
     """
     Threshold a numpy array by setting values not within a list of ranges to zero.
 
-    Params
-    ------
+    Parameters
+    ----------
     mat: (np.ndarray): A numpy array.
     cutoffs (list of tuples): When thresholding, include only edges whose
     correlations fall within a given range or set of ranges. The lower
@@ -60,8 +60,8 @@ def threshold_on_quantile(mat, **kwargs):
     """
     Threshold a numpy array by setting values below a given quantile to zero.
 
-    Params
-    ------
+    Parameters
+    ----------
     mat: (np.ndarray): A numpy array.
     quantile (float): The threshold above which to keep an element of the array,
     e.g., set to zero elements below the 90th quantile of the array.
@@ -98,8 +98,8 @@ def threshold_on_degree(mat, **kwargs):
     """
     Threshold a numpy array by setting values below a given quantile to zero.
 
-    Params
-    ------
+    Parameters
+    ----------
     mat: (np.ndarray): A numpy array.
     avg_k (float): The average degree to target when thresholding the matrix.
 
@@ -146,8 +146,8 @@ def threshold(mat, rule, **kwargs):
     """
     A flexible interface to other thresholding functions.
 
-    Params
-    ------
+    Parameters
+    ----------
     mat: (np.ndarray): A numpy array.
     rule (str): A string indicating which thresholding function to invoke.
     kwargs (dict): Named arguments to pass to the underlying threshold function.

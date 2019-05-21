@@ -18,25 +18,29 @@ import numpy as np
 
 class JaccardDistance(BaseDistance):
     def dist(self, G1, G2):
-        """Computes the average jaccard index between two sparse matrices
+        """Average jaccard index between two sparse matrices.
 
-        implementation details here:
-        https://scikit-learn.org/stable/modules/model_evaluation.html#jaccard-similarity-score
-        and here:
-        https://scikit-learn.org/stable/modules/generated/sklearn.metrics.jaccard_similarity_score.html
+        The `'results'` dictionary also stores a 2-tuple of the underlying
+        adjacency matrices in the key `'adjacency_matrices'`.
 
-        The results dictionary also stores a 2-tuple of the underlying adjacency
-        matrices in the key `'adjacency_matrices'`.
+        Parameters
+        ----------
 
-        Params
-        ------
-
-        G1, G2 (nx.Graph): two networkx graphs to be compared.
+        G1, G2 (nx.Graph)
+            two graphs to be compared.
 
         Returns
         -------
 
-        dist (float): the distance between G1 and G2.
+        dist (float)
+            the distance between G1 and G2.
+
+        References
+        ----------
+
+        [1] https://scikit-learn.org/stable/modules/model_evaluation.html#jaccard-similarity-score
+
+        [2] https://scikit-learn.org/stable/modules/generated/sklearn.metrics.jaccard_similarity_score.html
 
         """
         ## jaccard_similarity_score requires binary matrices

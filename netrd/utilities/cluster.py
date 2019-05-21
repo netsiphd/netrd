@@ -18,8 +18,8 @@ def clusterGraph(G, method='single', metric='euclidean', optimal_ordering=False)
     """
     Function for creating seriated adjacency matrix 
 
-    Params
-    ------
+    Parameters
+    ----------
     G: a networkx graph
     
     method: the clustering algorithm to use for options see:

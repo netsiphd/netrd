@@ -22,8 +22,8 @@ before_install:
     brew install openssl readline
     brew outdated pyenv || brew upgrade pyenv
     brew install pyenv-virtualenv
-    pyenv install "${TRAVIS_PYTHON_VERSION}.0"
-    export PYENV_VERSION="${TRAVIS_PYTHON_VERSION}.0"
+    pyenv install "${PYTHON}.0"
+    export PYENV_VERSION="${PYTHON}.0"
     export PATH="/Users/travis/.pyenv/shims:${PATH}"
     pyenv virtualenv venv
     source ~/.pyenv/versions/venv/bin/activate

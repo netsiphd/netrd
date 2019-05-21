@@ -26,40 +26,51 @@ from ..utilities import create_graph, threshold
 
 class PartialCorrelationInfluenceReconstructor(BaseReconstructor):
     def fit(self, TS, index=None, threshold_type='range', **kwargs):
-        """
-        Reconstruct a network from time series data using the
-        *average effect of a series Z on the correlation between
-        a series X and all other series*
+        r"""Uses the average effect of a series Z on the correlation between a
+        series X and all other series.
 
         The partial correlation influence:
-        d(X:Z)=<d(X,Y:Z)>_Y!=X where
-        d(X,Y:Z) = ρ(X,Y) - ρ(X,Y:Z)
+
+        .. math::
+
+            d(X:Z) = <d(X,Y:Z)>_Y \neq X,
+
+        where :math:`d(X,Y:Z) = \rho(X,Y) - \rho(X,Y:Z)`
+
 
         If an index is given, both terms become partial correlations:
-        d(X,Y:Z) ≡ ρ(X,Y:M) − ρ(X,Y:M,Z)
 
-        The results dictionary also stores the matrix of partial correlations
-        as `'weights_matrix'` and the thresholded version of the partial
-        correlation matrix as `'thresholded_matrix'`.
+        .. math::
 
-        Params
-        ------
+            d(X,Y:Z) ≡ ρ(X,Y:M) − ρ(X,Y:M,Z)
 
-        index (int, array of ints, or None): Take the partial correlations of
-        each pair of elements holding constant an index variable or set of
-        index variables. If None, take the partial correlations of the
-        variables holding constant all other variables.
 
-        threshold_type (str): Which thresholding function to use on the matrix of
-        weights. See `netrd.utilities.threshold.py` for documentation. Pass additional
-        arguments to the thresholder using `**kwargs`.
+        The results dictionary also stores the matrix of partial
+        correlations as `'weights_matrix'` and the thresholded version of
+        the partial correlation matrix as `'thresholded_matrix'`.
+
+        Parameters
+        ----------
+
+        index (int, array of ints, or None)
+            Take the partial correlations of each pair of elements holding
+            constant an index variable or set of index variables. If None,
+            take the partial correlations of the variables holding constant
+            all other variables.
+
+        threshold_type (str):
+            Which thresholding function to use on the matrix of
+            weights. See `netrd.utilities.threshold.py` for
+            documentation. Pass additional arguments to the thresholder
+            using `**kwargs`.
 
         Returns
         -------
-        G: a reconstructed graph.
+
+        G (nx.Graph)
+            a reconstructed graph.
 
         """
-
         if index:
             p_cor = partial_corr(TS, index=index)
             n_TS = p_cor.shape[0]

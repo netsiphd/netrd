@@ -16,34 +16,42 @@ from numpy.random import rand
 
 class IsingGlauber(BaseDynamics):
     def simulate(self, G, L, init=None, beta=2):
-        """Simulate time series on a network from the Ising-Glauber model.
+        r"""Simulate time series on a network from the Ising-Glauber model.
 
-        In the Ising Glauber model, eahc node has its binary state. At every
-        time step, nodes switch their state with certain probaility. For
-        inactive nodes, this probaility is $1 / (1 + e^{\beta (k - 2m) / k})$
-        where $\beta$ is a parameter tuning the likelihood of switching state,
-        $k$ is degree of the node and $m$ is the number of its active
-        neighbors; for active nodes the switch-state probability is
-        $1 - 1 / (1 + e^{\beta (k - 2m) / k})$ instead.
+        In the Ising Glauber model, eahc node has its binary state. At
+        every time step, nodes switch their state with certain
+        probaility. For inactive nodes, this probaility is :math:`1 / (1 +
+        e^{\beta (k - 2m) / k})` where :math:`\beta` is a parameter tuning
+        the likelihood of switching state, :math:`k` is degree of the node
+        and :math:`m` is the number of its active neighbors; for active
+        nodes the switch-state probability is :math:`1 - 1 / (1 + e^{\beta
+        (k - 2m) / k})` instead.
 
-        The results dictionary also stores the ground truth network as `'ground_truth'`.
+        The results dictionary also stores the ground truth network as
+        `'ground_truth'`.
 
-        Params
-        ------
-        G (nx.Graph): Underlying ground-truth network of simulated time series
-                      which has $N$ nodes.
+        Parameters
+        ----------
+        G (nx.Graph)
+            Underlying ground-truth network of simulated time series which
+            has :math:`N` nodes.
 
-        L (int): Length of time series.
+        L (int)
+            Length of time series.
 
-        init (np.ndarray): Length-$N$ 1D array of nodes' initial condition,
-                           which must have binary value (0 or 1).
+        init (np.ndarray)
+            Length-:math:`N` 1D array of nodes' initial condition, which
+            must have binary value (0 or 1).
 
-        beta (float): Inversed temperature tuning the likelihood that a node
-                      switches its state. Default to 2.
+        beta (float)
+            Inversed temperature tuning the likelihood that a node switches
+            its state. Default to :math:`2`.
 
         Returns
         -------
-        TS (np.ndarray): $N \times L$ array of $L$ observations on $N$ nodes.
+        TS (np.ndarray)
+            :math:`N \times L` array of :math:`L` observations on :math:`N`
+            nodes.
 
         """
 

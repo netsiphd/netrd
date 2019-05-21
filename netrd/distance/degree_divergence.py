@@ -20,20 +20,21 @@ from ..utilities import entropy
 
 class DegreeDivergence(BaseDistance):
     def dist(self, G1, G2):
-        """
-        Return the Jenson-Shannon divergence between two graphs.
+        """Jenson-Shannon divergence between degree distributions.
 
-        Note: The method assumes undirected networks.
+        Assumes undirected networks.
 
-        Params
-        ------
+        Parameters
+        ----------
 
-        G1, G2 (nx.Graph): two networkx graphs to be compared.
+        G1, G2 (nx.Graph)
+            two networkx graphs to be compared.
 
         Returns
         -------
 
-        dist (float): the distance between G1 and G2.
+        dist (float)
+            the distance between G1 and G2.
 
         """
 

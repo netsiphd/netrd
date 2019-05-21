@@ -18,34 +18,45 @@ from ..utilities import create_graph, threshold
 
 class ExactMeanFieldReconstructor(BaseReconstructor):
     def fit(self, TS, stop_criterion=True, threshold_type='range', **kwargs):
-        """
-        Given an NxL time series, infer inter-node coupling weights using an
-        exact mean field approximation. 
-        After [this tutorial]
-        (https://github.com/nihcompmed/network-inference/blob/master/sphinx/codesource/inference.py) 
-        in python.
+        """Infer inter-node coupling weights using an exact mean field
+        approximation.
 
         From the paper: "Exact mean field (eMF) is another mean field
-        approximation, similar to naive mean field and thouless anderson 
-        palmer. We can improve the performance of this method by adding our 
-        stopping criterion. In general, eMF outperforms nMF and TAP, but it is
-        still worse than FEM and MLE, especially in the limit of small sample 
-        sizes and large coupling variability."
+        approximation, similar to naive mean field and thouless anderson
+        palmer. We can improve the performance of this method by adding our
+        stopping criterion. In general, eMF outperforms nMF and TAP, but it
+        is still worse than FEM and MLE, especially in the limit of small
+        sample sizes and large coupling variability." For details see [1].
 
-        The results dictionary also stores the weight matrix as `'weights_matrix'`
-        and the thresholded version of the weight matrix as `'thresholded_matrix'`.
+        The results dictionary also stores the weight matrix as
+        `'weights_matrix'` and the thresholded version of the weight matrix
+        as `'thresholded_matrix'`.
 
-        Params
-        ------
-        TS (np.ndarray): Array consisting of $L$ observations from $N$ sensors.
-        stop_criterion (bool): if True, prevent overly-long runtimes
-        threshold_type (str): Which thresholding function to use on the matrix of
-        weights. See `netrd.utilities.threshold.py` for documentation. Pass additional
-        arguments to the thresholder using `**kwargs`.
+        Parameters
+        ----------
+
+        TS (np.ndarray)
+            Array consisting of :math:`L` observations from :math:`N` sensors.
+
+        stop_criterion (bool)
+            if True, prevent overly-long runtimes
+
+        threshold_type (str)
+            Which thresholding function to use on the matrix of
+            weights. See `netrd.utilities.threshold.py` for
+            documentation. Pass additional arguments to the thresholder
+            using `**kwargs`.
 
         Returns
         -------
-        G (nx.Graph or nx.DiGraph): a reconstructed graph.
+
+        G (nx.Graph or nx.DiGraph)
+            a reconstructed graph.
+
+        References
+        ----------
+
+        [1] https://github.com/nihcompmed/network-inference/blob/master/sphinx/codesource/inference.py
 
         """
 
@@ -131,9 +142,9 @@ class ExactMeanFieldReconstructor(BaseReconstructor):
 
 
 def cross_cov(a, b):
-    """ 
+    """
     cross_covariance
-    a,b -->  <(a - <a>)(b - <b>)>  (axis=0) 
+    a,b -->  <(a - <a>)(b - <b>)>  (axis=0)
     """
     da = a - np.mean(a, axis=0)
     db = b - np.mean(b, axis=0)

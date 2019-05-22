@@ -1,12 +1,13 @@
 """
 cluster.py
---------
+----------
 
-Utilities for creating a seriated/ordered adjacency matrix with hierarchical clustering.
+Utilities for creating a seriated/ordered adjacency matrix with
+hierarchical clustering.
 
-author: David Saffo
-email: saffo.d@husky.neu.edu
-Submitted as part of the 2019 NetSI Collabathon
+author: David Saffo (saffo.d@husky.neu.edu)
+
+Submitted as part of the 2019 NetSI Collabathon.
 
 """
 import numpy as np
@@ -15,27 +16,42 @@ from scipy.cluster.hierarchy import dendrogram, linkage
 
 
 def clusterGraph(G, method='single', metric='euclidean', optimal_ordering=False):
-    """
-    Function for creating seriated adjacency matrix 
+    """Create seriated adjacency matrix.
 
     Parameters
     ----------
-    G: a networkx graph
-    
-    method: the clustering algorithm to use for options see:
-    https://docs.scipy.org/doc/scipy/reference/generated/scipy.cluster.hierarchy.linkage.html
-    
-    metric: distance method to use
-    
-    optimal_ordering: if true tries to minimize the distance of succesive indexes 
+
+    G (nx.Graph)
+        a networkx graph
+
+    method
+        the clustering algorithm to use for options see [1].
+
+    metric (str)
+        linkage method to use
+
+    optimal_ordering (bool)
+        if true tries to minimize the distance of succesive indexes
 
     Returns
     -------
-    adjClustered: a numpy matrix with rows and columns reordered based on clustering
-    order: a list with the new index order for rows and columns
-    dend: a dictionary with the hierarchy for the dendogram
-    link: a linkage matrix with results from clustering
-    
+
+    adjClustered (np.ndarray)
+        a numpy matrix with rows and columns reordered based on clustering
+
+    order (list)
+        a list with the new index order for rows and columns
+
+    dend (dict)
+        a dictionary with the hierarchy for the dendogram
+
+    link (np.ndarray)
+        a linkage matrix with results from clustering
+
+    References
+    ----------
+
+    [1] https://docs.scipy.org/doc/scipy/reference/generated/scipy.cluster.hierarchy.linkage.html
 
     """
     adj = nx.to_numpy_matrix(G)

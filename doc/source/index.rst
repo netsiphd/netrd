@@ -16,8 +16,8 @@ To see the library in action, visit the `netrd explorer`_.
 .. _netrd explorer: https://netrdexplorer.herokuapp.com/
 
 .. toctree::
-   :maxdepth: 2
-   :caption: Contents:
+   :maxdepth: 1
+   :caption: API Reference
 
    dynamics
    distance

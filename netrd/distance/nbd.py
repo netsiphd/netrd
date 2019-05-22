@@ -15,8 +15,8 @@ from .base import BaseDistance
 
 
 class NBD(BaseDistance):
-    """The distance between two graphs is earth mover distance between the
-    empirical spectral distribution of their non-backtracking matrices.
+    """Compares the empirical spectral distribution of the non-backtracking
+matrices.
 
     The eigenvalues are stored in the results dictionary.
 
@@ -32,17 +32,23 @@ class NBD(BaseDistance):
             The graphs to compare.
 
         topk (int or 'automatic')
-            The number of eigenvalues to compute. If 'automatic' (default),
+            The number of eigenvalues to compute. If `'automatic'` (default),
             use only the eigenvalues that are larger than the square root
             of the largest eigenvalue.  Note this may yield different
             number of eigenvalues for each graph.
 
         batch (int)
-            If topk is 'automatic', this is the number of eigenvalues to
-            compute each time until the condition is met. Default 100.
+            If topk is `'automatic'`, this is the number of eigenvalues to
+            compute each time until the condition is met. Default
+            :math:`100`.
 
         tol (float)
             Numerical tolerance when computing eigenvalues.
+
+        Returns
+        -------
+        float
+            The distance between `G1` and `G2`
 
         """
         vals1 = nbvals(G1, topk, batch, tol)

@@ -1,18 +1,27 @@
+"""
+single_unbiased_random_walker.py
+--------------------------------
+
+Simulate a lonely walker on a network.
+
+"""
 from .base import BaseDynamics
 import networkx as nx
 import numpy as np
 
 
 class SingleUnbiasedRandomWalker(BaseDynamics):
+    """Random walk dynamics."""
+
     def __init__(self):
         self.results = {}
 
     def simulate(self, G, L, initial_node=None):
         r"""Simulate single random-walker dynamics on a ground truth network.
 
-        Generates an :math:`N \times L` time series `TS`; `TS[j,t]==1` if
-        the walker is at node :math:`j` at time :math:`t`, and `TS[j,t]==0`
-        otherwise.
+        Generates an :math:`N \times L` time series `TS` with
+        ``TS[j,t]==1`` if the walker is at node :math:`j` at time
+        :math:`t`, and ``TS[j,t]==0`` otherwise.
 
         The results dictionary also stores the ground truth network as
         `'ground_truth'`.

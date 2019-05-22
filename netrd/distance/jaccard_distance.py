@@ -17,6 +17,8 @@ import numpy as np
 
 
 class JaccardDistance(BaseDistance):
+    """Average Jaccard index of the adjacency matrices."""
+
     def dist(self, G1, G2):
         """Average jaccard index between two sparse matrices.
 

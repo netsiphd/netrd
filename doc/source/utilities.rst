@@ -1,7 +1,16 @@
 Utilities
 =========
 
+Common utilities for use within ``netrd``.
 
-.. automodule:: netrd.utilities
-    :members:
-    :undoc-members:
+
+.. toctree::
+   :maxdepth: 2
+   :caption: Submodules
+
+   cluster
+   entropy
+   graph
+   read
+   standardize
+   threshold

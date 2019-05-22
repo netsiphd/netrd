@@ -18,6 +18,8 @@ import numpy as np
 
 
 class BranchingModel(BaseDynamics):
+    """A sand-pile-like brancing process."""
+
     def __init__(self):
         self.results = {}
 
@@ -32,7 +34,7 @@ class BranchingModel(BaseDynamics):
         scale=0.95,
         noise=True,
     ):
-        r"""Simulate a branching processs dynamics (sand-pile-like).
+        r"""Simulate a (sand-pile-like) branching processs dynamics .
 
         The results dictionary also stores the ground truth network as
         `'ground_truth'`.
@@ -71,11 +73,17 @@ class BranchingModel(BaseDynamics):
         noise (bool)
             add nonzero values to the time series
 
-
         Returns
         -------
         TS (np.ndarray)
             an :math:`N \times L` time series
+
+        References
+        ----------
+
+        .. [1] Levina, Anna, and Viola Priesemann. "Subsampling scaling."
+           Nature communications 8 (2017) 15140.
+           https://www.nature.com/articles/ncomms15140
 
         """
         N = G.number_of_nodes()  # number of nodes

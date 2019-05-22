@@ -13,6 +13,8 @@ import numpy as np
 
 
 class SherringtonKirkpatrickIsing(BaseDynamics):
+    """Ising model-like dynamics."""
+
     def __init__(self):
         self.results = {}
 
@@ -47,11 +49,12 @@ class SherringtonKirkpatrickIsing(BaseDynamics):
 
         References
         ----------
-        [1] D. Sherrington and S. Kirkpatrick, Phys. Rev. Lett. 35, 1792 (1975).
+        .. [1] D. Sherrington and S. Kirkpatrick, Phys. Rev. Lett. 35, 1792
+               (1975).
 
-        [2] Hoang, D.T., Song, J., Periwal, V. and Jo, J., Network
-        inference in stochastic systems from neurons to currencies:
-        Improved performance at small sample size. (2019)
+        .. [2] Hoang, D.T., Song, J., Periwal, V. and Jo, J., Network
+               inference in stochastic systems from neurons to currencies:
+               Improved performance at small sample size. (2019)
 
         """
 

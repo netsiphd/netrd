@@ -1,13 +1,10 @@
 """
 correlation_matrix.py
 ---------------------
-
 Reconstruction of graphs using the correlation matrix.
-
 author: Stefan McCabe
 email: stefanmccabe at gmail dot com
 Submitted as part of the 2019 NetSI Collabathon
-
 """
 from .base import BaseReconstructor
 import numpy as np
@@ -16,6 +13,8 @@ from ..utilities import create_graph, threshold
 
 
 class CorrelationMatrixReconstructor(BaseReconstructor):
+    """Uses the correlation matrix."""
+
     def fit(self, TS, num_eigs=None, threshold_type='range', **kwargs):
         """Uses the correlation matrix.
 
@@ -23,15 +22,13 @@ class CorrelationMatrixReconstructor(BaseReconstructor):
         unregularized correlation matrix. Otherwise, construct a regularized
         precision matrix using ``num_eigs`` eigenvectors and eigenvalues of the
         correlation matrix. For details on the regularization method, see [1].
-
         The results dictionary also stores the raw correlation matrix
         (potentially regularized) as `'weights_matrix'` and the thresholded
         version of the correlation matrix as `'thresholded_matrix'`. For
-        details see [2].
+        details see [2]_.
 
         Parameters
         ----------
-
         TS (np.ndarray)
             Array consisting of :math:`L` observations from :math:`N` sensors
 
@@ -53,13 +50,11 @@ class CorrelationMatrixReconstructor(BaseReconstructor):
 
         References
         ----------
+        .. [1] https://bwlewis.github.io/correlation-regularization/
 
-        [1] https://bwlewis.github.io/correlation-regularization/
-
-        [2] https://github.com/valeria-io/visualising_stocks_correlations/blob/master/corr_matrix_viz.ipynb
+        .. [2] https://github.com/valeria-io/visualising_stocks_correlations/blob/master/corr_matrix_viz.ipynb
 
         """
-
         # get the correlation matrix
         cor = np.corrcoef(TS)
 

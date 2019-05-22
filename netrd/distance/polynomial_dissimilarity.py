@@ -21,13 +21,15 @@ from .base import BaseDistance
 
 
 class PolynomialDissimilarity(BaseDistance):
+    """Compares polynomials relating to the eigenvalues of the adjacency matrices."""
+
     def dist(self, G1, G2, k=5, alpha=1):
-        """Compares the polynomials of the eigenvalue decomposition of
+        r"""Compares the polynomials of the eigenvalue decomposition of
         two adjacency matrices.
 
-        Note that the :math:`ij`-th element of where $A^k$ corresponds to
-        the number of paths of length :math:`k` between nodes :math:`i` and
-        :math:`j`.
+        Note that the :math:`ij`-th element of where :math:`A^k`
+        corresponds to the number of paths of length :math:`k` between
+        nodes :math:`i` and :math:`j`.
 
         The results dictionary also stores a 2-tuple of the underlying
         adjacency matrices in the key `'adjacency_matrices'`.
@@ -47,7 +49,13 @@ class PolynomialDissimilarity(BaseDistance):
         Returns
         -------
         dist (float)
-            Polynomial Dissimilarity between G1, G2
+            Polynomial Dissimilarity between `G1`, `G2`
+
+        References
+        ----------
+        .. [1] Donnat, Claire, and Susan Holmes. "Tracking network
+               dynamics: A survey of distances and similarity metrics."
+               arXiv preprint arXiv:1801.07351 (2018).
 
         """
         A1 = nx.to_numpy_array(G1)

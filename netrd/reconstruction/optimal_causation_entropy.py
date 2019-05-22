@@ -17,6 +17,8 @@ from ..utilities import create_graph
 
 
 class OptimalCausationEntropyReconstructor(BaseReconstructor):
+    """Optimizes causation entropy."""
+
     def fit(self, TS, n_bins=40, atol=1e-6, **kwargs):
         r"""Reconstruct causal parents of nodes by optimizing causation entropy.
 
@@ -49,8 +51,8 @@ class OptimalCausationEntropyReconstructor(BaseReconstructor):
         proposed algorithm to every node.
 
         The results dictionary stores the causal parents of individual
-        nodes in :math:`'parents'` and the raw adjacency matrix in
-        :math:`'adjacency_matrix'`.
+        nodes in `'parents'` and the raw adjacency matrix in
+        `'adjacency_matrix'`.
 
         Parameters
         ----------
@@ -79,7 +81,7 @@ class OptimalCausationEntropyReconstructor(BaseReconstructor):
 
         Notes
         -----
-        1. Nodes' causal parents can be found in results['parents'].
+        1. Nodes' causal parents can be found in ``results['parents']``.
 
         2. Current implementation naively thresholds the causation entropy to
            determine whether it's closed to zero or not. This can potentially
@@ -91,7 +93,7 @@ class OptimalCausationEntropyReconstructor(BaseReconstructor):
         References
         ----------
 
-        [1] Sun et al., SIAM (2015) https://doi.org/10.1137/140956166
+        .. [1] Sun et al., SIAM (2015) https://doi.org/10.1137/140956166
 
         """
         data = TS.T  # Transpose the time series to make observations the rows

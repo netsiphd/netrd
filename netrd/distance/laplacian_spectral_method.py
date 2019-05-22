@@ -24,6 +24,8 @@ from scipy.sparse.linalg import eigsh
 
 
 class LaplacianSpectralMethod(BaseDistance):
+    """Flexible distance able to compare the spectrum of the Laplacian in many ways."""
+
     def dist(
         self,
         G1,
@@ -70,8 +72,8 @@ class LaplacianSpectralMethod(BaseDistance):
         hwhm (float)
             half-width at half-maximum for the kernel. The default value is
             chosen such that the standard deviation for the normal
-            distribution is 0.01, as in reference [1]. This option is
-            relevant only if kernel is not None.
+            distribution is :math:`0.01`, as in reference [1]_. This option
+            is relevant only if kernel is not None.
 
         measure (str)
             metric between the two continuous spectra. Choices available
@@ -99,12 +101,11 @@ class LaplacianSpectralMethod(BaseDistance):
         References
         ----------
 
-        [1] https://www.sciencedirect.com/science/article/pii/S0303264711001869.
+        .. [1] https://www.sciencedirect.com/science/article/pii/S0303264711001869.
 
         Notes
         -----
-
-        [1] The methods are usually applied to undirected (unweighted)
+        The methods are usually applied to undirected (unweighted)
         networks. We however relax this assumption using the same method
         proposed for the Hamming-Ipsen-Mikhailov. See paper:
         https://ieeexplore.ieee.org/abstract/document/7344816.

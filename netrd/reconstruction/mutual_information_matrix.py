@@ -19,6 +19,8 @@ from ..utilities import create_graph, threshold
 
 
 class MutualInformationMatrixReconstructor(BaseReconstructor):
+    """Uses the mutual information between nodes."""
+
     def fit(self, TS, nbins=10, threshold_type='degree', **kwargs):
         """Calculates the mutual information between the probability distributions
         of the (binned) values of the time series of pairs of nodes.
@@ -46,7 +48,7 @@ class MutualInformationMatrixReconstructor(BaseReconstructor):
             Which thresholding function to use on the matrix of
             weights. See `netrd.utilities.threshold.py` for
             documentation. Pass additional arguments to the thresholder
-            using `**kwargs`.
+            using ``**kwargs``.
 
         Returns
         -------

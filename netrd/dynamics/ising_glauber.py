@@ -15,17 +15,19 @@ from numpy.random import rand
 
 
 class IsingGlauber(BaseDynamics):
+    """Ising-Glauber model."""
+
     def simulate(self, G, L, init=None, beta=2):
         r"""Simulate time series on a network from the Ising-Glauber model.
 
-        In the Ising Glauber model, eahc node has its binary state. At
-        every time step, nodes switch their state with certain
-        probaility. For inactive nodes, this probaility is :math:`1 / (1 +
-        e^{\beta (k - 2m) / k})` where :math:`\beta` is a parameter tuning
-        the likelihood of switching state, :math:`k` is degree of the node
-        and :math:`m` is the number of its active neighbors; for active
-        nodes the switch-state probability is :math:`1 - 1 / (1 + e^{\beta
-        (k - 2m) / k})` instead.
+        In the Ising Glauber model, each node has a binary state. At every
+        time step, nodes switch their state with certain probability. For
+        inactive nodes, this probaility is :math:`1 / (1 + e^{\beta (k -
+        2m) / k})` where :math:`\beta` is a parameter tuning the likelihood
+        of switching state, :math:`k` is degree of the node and :math:`m`
+        is the number of its active neighbors; for active nodes the
+        switch-state probability is :math:`1 - 1 / (1 + e^{\beta (k - 2m) /
+        k})` instead.
 
         The results dictionary also stores the ground truth network as
         `'ground_truth'`.

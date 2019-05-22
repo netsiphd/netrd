@@ -42,12 +42,11 @@ def test_different_graphs():
 
 def test_symmetry():
     """The distance between two graphs must be symmetric."""
-
     G1 = nx.barabasi_albert_graph(100, 4)
     G2 = nx.fast_gnp_random_graph(100, 0.1)
 
     for label, obj in distance.__dict__.items():
-        if label in ['NBD']:
+        if label in ['NonBacktrackingSpectral']:
             continue
         if isinstance(obj, type) and BaseDistance in obj.__bases__:
             dist1 = obj().dist(G1, G2)

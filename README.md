@@ -1,10 +1,16 @@
+[![ReadTheDocs](https://img.shields.io/readthedocs/netrd.svg)](
+    https://netrd.readthedocs.io)
+![Travis](https://img.shields.io/travis/netsiphd/netrd.svg)](
+    https://travis-ci.org/netsiphd/netrd)
+
 # `netrd`: A library for network {reconstruction, distances, dynamics}
 
 NOTE: This library is pre-alpha. **Use at your own risk.**
 
 This library provides a consistent, NetworkX-based interface to various
-utilities for graph distances, graph reconstruction from time series data, and
-simulated dynamics on networks. 
+utilities for graph distances, graph reconstruction from time series data,
+and simulated dynamics on networks. For the API reference visit
+[this link](https://netrd.readthedocs.io/en/latest/).
 
 # Installation
 

@@ -34,6 +34,12 @@ wanted" is open to whoever wants to implement it.
 Look through the GitHub issues for features. Anything tagged with "enhancement"
 and "help wanted" is open to whoever wants to implement it.
 
+#### Improve documentation
+
+Documentation is just as important as the code it documents. Please feel
+free to submit PRs that are focused on fixing, improving, correcting, or
+refactoring documentation. Documentation lives [here](https://netrd.readthedocs.io/en/latest/).
+
 #### Submit Feedback
 
 The best way to send feedback is to open an issue at https://github.com/netsiphd/netrd/issues.

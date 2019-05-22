@@ -89,10 +89,10 @@ class CorrelationMatrixReconstructor(BaseReconstructor):
             mat = cor
 
         # store the appropriate source matrix
-        self.results['weights_matrix'] = cor
+        self.results['weights_matrix'] = mat
 
         # threshold the correlation matrix
-        A = threshold(cor, threshold_type, **kwargs)
+        A = threshold(mat, threshold_type, **kwargs)
         self.results['thresholded_matrix'] = A
 
         # construct the network

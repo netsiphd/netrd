@@ -11,6 +11,10 @@ of different algorithms for constructing a network from time series data,
 as well as for comparing two networks. It is the product of the Network
 Science Insitute 2019 Collabathon.
 
+To see the library in action, visit the `netrd explorer`_.
+
+.. _netrd explorer: https://netrdexplorer.herokuapp.com/
+
 .. toctree::
    :maxdepth: 2
    :caption: Contents:

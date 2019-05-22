@@ -16,10 +16,11 @@ from scipy.optimize import fsolve
 from ..utilities import create_graph, threshold
 
 
-class ExactMeanFieldReconstructor(BaseReconstructor):
-    def fit(self, TS, stop_criterion=True, threshold_type='range', **kwargs):
-        """Infer inter-node coupling weights using an exact mean field
-        approximation.
+class MeanFieldReconstructor(BaseReconstructor):
+    def fit(
+        self, TS, exact=True, stop_criterion=True, threshold_type='range', **kwargs
+    ):
+        """Infer inter-node coupling weights using a mean field approximation.
 
         From the paper: "Exact mean field (eMF) is another mean field
         approximation, similar to naive mean field and thouless anderson
@@ -38,8 +39,13 @@ class ExactMeanFieldReconstructor(BaseReconstructor):
         TS (np.ndarray)
             Array consisting of :math:`L` observations from :math:`N` sensors.
 
+        exact (bool)
+            If True, use the exact mean field approximation. If False, use the
+            naive mean field approximation.
+
         stop_criterion (bool)
-            if True, prevent overly-long runtimes
+            If True, prevent overly-long runtimes. Only applies for exact mean
+            field.
 
         threshold_type (str)
             Which thresholding function to use on the matrix of
@@ -65,6 +71,7 @@ class ExactMeanFieldReconstructor(BaseReconstructor):
 
         # A matrix
         A = 1 - m ** 2
+        A_inv = np.diag(1 / A)
         A = np.diag(A)
 
         ds = TS.T - m  # equal time correlation
@@ -78,55 +85,58 @@ class ExactMeanFieldReconstructor(BaseReconstructor):
         # predict naive mean field W:
         B = np.dot(D, C_inv)
 
-        # ---------------------------------------------------------------
-        fun1 = (
-            lambda x, H: (1 / np.sqrt(2 * np.pi))
-            * np.exp(-x ** 2 / 2)
-            * np.tanh(H + x * np.sqrt(delta))
-        )
+        if exact:
+            # ---------------------------------------------------------------
+            fun1 = (
+                lambda x, H: (1 / np.sqrt(2 * np.pi))
+                * np.exp(-x ** 2 / 2)
+                * np.tanh(H + x * np.sqrt(delta))
+            )
 
-        fun2 = (
-            lambda x: (1 / np.sqrt(2 * np.pi))
-            * np.exp(-x ** 2 / 2)
-            * (1 - np.square(np.tanh(H + x * np.sqrt(delta))))
-        )
+            fun2 = (
+                lambda x: (1 / np.sqrt(2 * np.pi))
+                * np.exp(-x ** 2 / 2)
+                * (1 - np.square(np.tanh(H + x * np.sqrt(delta))))
+            )
 
-        W_EMF = np.empty((N, N))
+            W = np.empty((N, N))
 
-        nloop = 100
+            nloop = 100
 
-        for i0 in range(N):
-            cost = np.zeros(nloop + 1)
-            delta = 1.0
+            for i0 in range(N):
+                cost = np.zeros(nloop + 1)
+                delta = 1.0
 
-            def integrand(H):
-                """
-                Return the integrand of this function
-                """
-                y, err = quad(fun1, -np.inf, np.inf, args=(H,))
+                def integrand(H):
+                    """
+                    Return the integrand of this function
+                    """
+                    y, err = quad(fun1, -np.inf, np.inf, args=(H,))
 
-                return y - m[i0]
+                    return y - m[i0]
 
-            for iloop in range(1, nloop):
-                H = fsolve(integrand, 0.0)
-                H = float(H)
+                for iloop in range(1, nloop):
+                    H = fsolve(integrand, 0.0)
+                    H = float(H)
 
-                a, err = quad(fun2, -np.inf, np.inf)
-                a = float(a)
+                    a, err = quad(fun2, -np.inf, np.inf)
+                    a = float(a)
 
-                if a != 0:
-                    delta = (1 / (a ** 2)) * np.sum((B[i0, :] ** 2) * (1 - m[:] ** 2))
-                    W_temp = B[i0, :] / a
+                    if a != 0:
+                        delta = (1 / (a ** 2)) * np.sum(
+                            (B[i0, :] ** 2) * (1 - m[:] ** 2)
+                        )
+                        W_temp = B[i0, :] / a
 
-                H_temp = np.dot(TS[:, :-1].T, W_temp)
-                cost[iloop] = np.mean((s1.T[:, i0] - np.tanh(H_temp)) ** 2)
+                    H_temp = np.dot(TS[:, :-1].T, W_temp)
+                    cost[iloop] = np.mean((s1.T[:, i0] - np.tanh(H_temp)) ** 2)
 
-                if stop_criterion and cost[iloop] >= cost[iloop - 1]:
-                    break
+                    if stop_criterion and cost[iloop] >= cost[iloop - 1]:
+                        break
 
-            W_EMF[i0, :] = W_temp[:]
-
-        W = W_EMF
+                W[i0, :] = W_temp[:]
+        else:
+            W = np.dot(A_inv, B)
 
         # threshold the network
         W_thresh = threshold(W, threshold_type, **kwargs)

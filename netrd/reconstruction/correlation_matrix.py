@@ -16,18 +16,29 @@ from ..utilities import create_graph, threshold
 
 
 class CorrelationMatrixReconstructor(BaseReconstructor):
-    def fit(self, TS, threshold_type='range', **kwargs):
-        """Uses an unregularized form of the precision matrix.
+    def fit(self, TS, num_eigs=None, threshold_type='range', **kwargs):
+        """Uses the correlation matrix.
 
-        The results dictionary also stores the raw correlation matrix as
-        `'weights_matrix'` and the thresholded version of the correlation
-        matrix as `'thresholded_matrix'`. For details see [1].
+        If ``num_eigs`` is `None`, perform the reconstruction using the
+        unregularized correlation matrix. Otherwise, construct a regularized
+        precision matrix using ``num_eigs`` eigenvectors and eigenvalues of the
+        correlation matrix. For details on the regularization method, see [1].
+
+        The results dictionary also stores the raw correlation matrix
+        (potentially regularized) as `'weights_matrix'` and the thresholded
+        version of the correlation matrix as `'thresholded_matrix'`. For
+        details see [2].
 
         Parameters
         ----------
 
         TS (np.ndarray)
-            Array consisting of $L$ observations from $N$ sensors
+            Array consisting of :math:`L` observations from :math:`N` sensors
+
+        num_eigs (int)
+            The number of eigenvalues to use. (This corresponds to the
+            amount of regularization.) The number of eigenvalues used must
+            be less than :math:`N`.
 
         threshold_type (str)
             Which thresholding function to use on the matrix of
@@ -43,12 +54,41 @@ class CorrelationMatrixReconstructor(BaseReconstructor):
         References
         ----------
 
-        [1] https://github.com/valeria-io/visualising_stocks_correlations/blob/master/corr_matrix_viz.ipynb
+        [1] https://bwlewis.github.io/correlation-regularization/
+
+        [2] https://github.com/valeria-io/visualising_stocks_correlations/blob/master/corr_matrix_viz.ipynb
 
         """
 
         # get the correlation matrix
         cor = np.corrcoef(TS)
+
+        if num_eigs:
+            N = TS.shape[0]
+            if num_eigs > N:
+                raise ValueError(
+                    "The number of eigenvalues used must be less "
+                    "than the number of sensors."
+                )
+
+            # get eigenvalues and eigenvectors of the correlation matrix
+            vals, vecs = np.linalg.eigh(cor)
+            idx = vals.argsort()[::-1]
+            vals = vals[idx]
+            vecs = vecs[:, idx]
+
+            # construct the precision matrix and store it
+            P = (vecs[:, :num_eigs]) @ (
+                1 / (vals[:num_eigs]).reshape(num_eigs, 1) * (vecs[:, :num_eigs]).T
+            )
+            P = P / (
+                np.sqrt(np.diag(P)).reshape(N, 1) @ np.sqrt(np.diag(P)).reshape(1, N)
+            )
+            mat = P
+        else:
+            mat = cor
+
+        # store the appropriate source matrix
         self.results['weights_matrix'] = cor
 
         # threshold the correlation matrix

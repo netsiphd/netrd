@@ -1,7 +1,6 @@
 from .base import BaseReconstructor
 from .random import RandomReconstructor
 from .correlation_matrix import CorrelationMatrixReconstructor
-from .regularized_correlation_matrix import RegularizedCorrelationMatrixReconstructor
 from .partial_correlation_matrix import PartialCorrelationMatrixReconstructor
 from .partial_correlation_influence import PartialCorrelationInfluenceReconstructor
 from .free_energy_minimization import FreeEnergyMinimizationReconstructor
@@ -22,7 +21,6 @@ from .correlation_spanning_tree import CorrelationSpanningTree
 __all__ = [
     'RandomReconstructor',
     'CorrelationMatrixReconstructor',
-    'RegularizedCorrelationMatrixReconstructor',
     'PartialCorrelationMatrixReconstructor',
     'PartialCorrelationInfluenceReconstructor',
     'FreeEnergyMinimizationReconstructor',

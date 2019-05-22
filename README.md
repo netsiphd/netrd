@@ -1,6 +1,6 @@
 [![ReadTheDocs](https://img.shields.io/readthedocs/netrd.svg)](
     https://netrd.readthedocs.io)
-![Travis](https://img.shields.io/travis/netsiphd/netrd.svg)](
+[![Travis](https://img.shields.io/travis/netsiphd/netrd.svg)](
     https://travis-ci.org/netsiphd/netrd)
 
 # `netrd`: A library for network {reconstruction, distances, dynamics}

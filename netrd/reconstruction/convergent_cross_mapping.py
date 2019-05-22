@@ -20,14 +20,16 @@ from ..utilities import create_graph, threshold
 
 
 class ConvergentCrossMappingReconstructor(BaseReconstructor):
+    """Infers dynamical causal relations."""
+
     def fit(
         self, TS, tau=1, threshold_type='cutoff', cutoffs=[(0.95, np.inf)], **kwargs
     ):
-        """Infer causal relation applying Takens' Theorem of dynamical systems.
+        r"""Infer causal relation applying Takens' Theorem of dynamical systems.
 
         Convergent cross-mapping infers dynamical causal relation between
-        variables from time series data. Time series data portray an
-        attractor manifold of the dynamical system of interests. Existing
+        vairiables from time series data. Time series data portray an
+        attractor manifold of the dynamical system of interest. Existing
         approaches of attractor reconstruction involved building the shadow
         manifold for a single variable :math:`X`, which is defined by the
         time-lagged vectors :math:`(X(t), X(t-\tau), X(t-2\tau), ...,
@@ -92,7 +94,12 @@ class ConvergentCrossMappingReconstructor(BaseReconstructor):
            p-value matrix.
 
         3. The computation complexity of this implementation is
-        :math:`O(N^3 L)`.
+           :math:`O(N^3 L)`.
+
+        References
+        ----------
+        .. [1] Sugihara et al., Detecting Causality in Complex Ecosystems,
+               Science (2012) DOI: 10.1126/science.1227079
 
         """
         data = TS.T  # Transpose the time series to make observations the rows

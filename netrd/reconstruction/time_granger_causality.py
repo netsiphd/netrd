@@ -23,6 +23,8 @@ from ..utilities import create_graph, threshold
 
 
 class TimeGrangerCausalityReconstructor(BaseReconstructor):
+    """Infers Granger causality."""
+
     def fit(self, TS, lag=1, threshold_type='range', **kwargs):
         """Reconstruct a network based on the Granger causality.
 
@@ -53,13 +55,21 @@ class TimeGrangerCausalityReconstructor(BaseReconstructor):
 
         weights
             See `netrd.utilities.threshold.py` for documentation. Pass
-            additional arguments to the thresholder using `**kwargs`.
+            additional arguments to the thresholder using ``**kwargs``.
 
         Returns
         -------
 
         G (nx.Graph)
             A reconstructed graph with :math:`N` nodes.
+
+        References
+        ----------
+        .. [1] P. Desrosiers, S. Labrecque, M. Tremblay, M. Bélanger, B. De
+               Dorlodot, D. C. Côté, "Network inference from functional
+               experimental data", Proc. SPIE 9690, Clinical and
+               Translational Neurophotonics; Neural Imaging and Sensing;
+               and Optogenetics and Optical Manipulation, 969019 (2016);
 
         """
         n = TS.shape[0]

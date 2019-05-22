@@ -19,19 +19,25 @@ class BaseDynamics:
         self.results = {}
 
     def simulate(self, G, L):
-        """
-        Simulate dynamics on a ground truth network.
+        r"""Simulate dynamics on a ground truth network.
 
-        The results dictionary also stores the ground truth network as `'ground_truth'`.
+        The results dictionary stores the ground truth network as
+        `'ground_truth'`.
+
         Parameters
         ----------
-        G (nx.Graph): the input (ground-truth) graph with $N$ nodes.
-        L (int): the length of the desired time series.
+
+        G (nx.Graph)
+            the input (ground-truth) graph with :math:`N` nodes.
+
+        L (int)
+            the length of the desired time series.
 
         Returns
         -------
 
-        TS (np.ndarray): an $N \times L$ array of synthetic time series data.
+        TS (np.ndarray)
+            an :math`N \times L` array of synthetic time series data.
 
         """
         N = G.number_of_nodes()

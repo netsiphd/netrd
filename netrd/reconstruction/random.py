@@ -18,6 +18,8 @@ from ..utilities import create_graph, threshold
 
 
 class RandomReconstructor(BaseReconstructor):
+    """Returns a random graph (dummy class)."""
+
     def fit(self, TS, threshold_type='range', **kwargs):
         """Return a random correlation matrix with a threshold.
 
@@ -35,7 +37,7 @@ class RandomReconstructor(BaseReconstructor):
             Which thresholding function to use on the matrix of
             weights. See `netrd.utilities.threshold.py` for
             documentation. Pass additional arguments to the thresholder
-            using `**kwargs`.
+            using ``**kwargs``.
 
         Returns
         -------
@@ -43,15 +45,11 @@ class RandomReconstructor(BaseReconstructor):
             a reconstructed graph with :math:`N` nodes.
 
         """
-
         N, L = TS.shape
         W = np.random.rand(N, N)
         A = threshold(W, threshold_type, **kwargs)
-
         G = create_graph(A)
-
         self.results['graph'] = G
         self.results['weights_matrix'] = W
         self.results['thresholded_matrix'] = A
-
         return G

@@ -16,4 +16,5 @@ __all__ = [
     'IsingGlauber',
     'BranchingModel',
     'VoterModel',
+    'SISModel',
 ]

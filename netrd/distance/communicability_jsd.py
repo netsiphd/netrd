@@ -25,11 +25,13 @@ from .base import BaseDistance
 
 
 class CommunicabilityJSD(BaseDistance):
+    """Jensen-Shannon divergence between communicability sequences."""
+
     def dist(self, G1, G2):
         r"""Compares the communicability matrix of two graphs.
 
-        This distance is based on the communicability matrix, :math:`C`, of a
-        graph consisting of elements :math:`c_{ij}` which are values
+        This distance is based on the communicability matrix, :math:`C`, of
+        a graph consisting of elements :math:`c_{ij}` which are values
         corresponding to the numbers of shortest paths of length :math:`k`
         between nodes :math:`i` and :math:`j`.
 
@@ -39,9 +41,9 @@ class CommunicabilityJSD(BaseDistance):
         communicability sequence, :math:`P`.
 
         The communicability sequence entropy distance between two graphs,
-        :math:`G1` and :math:`G2`, is the Jensen-Shannon divergence between these
-        communicability sequence distributions, :math:`P1` and :math:`P2` of the two
-        graphs.
+        `G1` and `G2`, is the Jensen-Shannon divergence between these
+        communicability sequence distributions, :math:`P1` and :math:`P2`
+        of the two graphs.
 
         Parameters
         ----------
@@ -54,25 +56,30 @@ class CommunicabilityJSD(BaseDistance):
 
         dist (float)
             between zero and one, this is the communicability sequence
-            distance bewtween G1 and G2.
+            distance bewtween `G1` and `G2`.
 
         Notes
         -----
 
         This function uses the networkx approximation of the
         communicability of a graph, `nx.communicability_exp`, which
-        requires G1 and G2 to be simple undirected networks. In addition to
-        the final distance scalar, `self.results` stores the two vectors
-        :math:`P1` and :math:`P2`, their mixed vector, :math:`P0`, and
-        their associated entropies.
+        requires `G1` and `G2` to be simple undirected networks. In
+        addition to the final distance scalar, `self.results` stores the
+        two vectors :math:`P1` and :math:`P2`, their mixed vector,
+        :math:`P0`, and their associated entropies.
 
 
         References
         ----------
 
-        [1] Estrada, E., & Hatano, N. (2008). Communicability in complex
-        networks. Physical Review E, 77(3), 036111.
-        https://journals.aps.org/pre/abstract/10.1103/PhysRevE.77.036111
+        .. [1] Estrada, E., & Hatano, N. (2008). Communicability in complex
+               networks. Physical Review E, 77(3), 036111.
+               https://journals.aps.org/pre/abstract/10.1103/PhysRevE.77.036111
+
+        .. [2] Chen, D., Shi, D. D., Qin, M., Xu, S. M., & Pan,
+               G. J. (2018).  Complex network comparison based on
+               communicability sequence entropy. Physical Review E, 98(1),
+               012319.
 
         """
 

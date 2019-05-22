@@ -21,6 +21,8 @@ from ..utilities import create_graph, threshold
 
 
 class OUInferenceReconstructor(BaseReconstructor):
+    """Assumes a Orstein-Uhlenbeck generative model."""
+
     def fit(self, TS, threshold_type='range', **kwargs):
         """Infers the coupling coefficients assuming a Orstein-Uhlenbeck process
         generative model.
@@ -41,7 +43,7 @@ class OUInferenceReconstructor(BaseReconstructor):
             Which thresholding function to use on the matrix of
             weights. See `netrd.utilities.threshold.py` for
             documentation. Pass additional arguments to the thresholder
-            using `**kwargs`.
+            using ``**kwargs``.
 
         Returns
         -------

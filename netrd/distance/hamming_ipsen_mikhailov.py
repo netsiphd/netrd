@@ -21,6 +21,8 @@ from .ipsen_mikhailov import _im_distance
 
 
 class HammingIpsenMikhailov(BaseDistance):
+    """Combination of Hamming and Ipsen-Mikhailov distances."""
+
     def dist(self, G1, G2, combination_factor=1):
         """Graph distance combining local and global distances.
 

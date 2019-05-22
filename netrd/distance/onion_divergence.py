@@ -22,6 +22,8 @@ from netrd.utilities import ensure_undirected
 
 
 class OnionDivergence(BaseDistance):
+    """Compares various types of feature distributions."""
+
     def dist(self, G1, G2, dist='lccm'):
         """Jenson-Shannon divergence between the feature distributions fixed by dist.
 
@@ -42,13 +44,18 @@ class OnionDivergence(BaseDistance):
             distribution of nodes according to their onion centrality
             (degree, coreness, and layer within core). Finally, 'lccm'
             compares the networks according to the edges joint
-            degree,coreness and layer distribution for both endpoints.
+            degree, coreness and layer distribution for both endpoints.
 
         Returns
         -------
-
         dist (float)
-            the distance between G1 and G2.
+            the distance between `G1` and `G2`.
+
+        References
+        ----------
+        .. [1] https://www.nature.com/articles/srep31708
+
+        .. [2] https://journals.aps.org/prx/abstract/10.1103/PhysRevX.9.011023
 
         """
         # take the simple graph version

@@ -1,11 +1,12 @@
 """
 SIS.py
-----------------
+------
 
 Implementation of Susceptible-Infected-Susceptible models dynamics on a
 network.
 
 author: Stefan McCabe
+
 Submitted as part of the 2019 NetSI Collabathon.
 
 """
@@ -16,28 +17,37 @@ import networkx as nx
 
 
 class SISModel(BaseDynamics):
+    """Susceptible-Infected-Susceptible dynamical process."""
+
     def simulate(self, G, L, i0=1, beta=None, mu=None):
-        """
-        Simulate SIS model dynamics on a network.
+        r"""Simulate SIS model dynamics on a network.
 
         The results dictionary also stores the ground truth network as
         `'ground_truth'`.
 
         Parameters
         ----------
-        G (nx.Graph): the input (ground-truth) graph with $N$ nodes.
-        L (int): the length of the desired time series.
-        i0 (int): the number of initially infected nodes.
-        beta (float): the infection rate for the SIS process.
-        mu (float): the recovery rate for the SIS process.
+        G (nx.Graph)
+            the input (ground-truth) graph with :math:`N` nodes.
 
+        L (int)
+            the length of the desired time series.
+
+        i0 (int)
+            the number of initially infected nodes.
+
+        beta (float)
+            the infection rate for the SIS process.
+
+        mu (float)
+            the recovery rate for the SIS process.
 
         Returns
         -------
-        TS (np.ndarray): an $N \times L$ array of synthetic time series data.
+        TS (np.ndarray)
+            an :math:`N \times L` array of synthetic time series data.
 
         """
-
         H = G.copy()
         N = H.number_of_nodes()
         TS = np.zeros((N, L))

@@ -17,6 +17,8 @@ from ..utilities import create_graph, threshold
 
 
 class PartialCorrelationMatrixReconstructor(BaseReconstructor):
+    """Uses a regularized form of the precision matrix."""
+
     def fit(
         self,
         TS,
@@ -30,7 +32,7 @@ class PartialCorrelationMatrixReconstructor(BaseReconstructor):
 
         The results dictionary also stores the weight matrix as
         `'weights_matrix'` and the thresholded version of the weight matrix
-        as `'thresholded_matrix'`. For details see [1].
+        as `'thresholded_matrix'`. For details see [1]_.
 
         Parameters
         ----------
@@ -55,7 +57,7 @@ class PartialCorrelationMatrixReconstructor(BaseReconstructor):
             Which thresholding function to use on the matrix of
             weights. See `netrd.utilities.threshold.py` for
             documentation. Pass additional arguments to the thresholder
-            using `**kwargs`.
+            using ``**kwargs``.
 
         Returns
         -------
@@ -66,7 +68,7 @@ class PartialCorrelationMatrixReconstructor(BaseReconstructor):
         References
         ----------
 
-        [1] https://bwlewis.github.io/correlation-regularization/
+        .. [1] https://bwlewis.github.io/correlation-regularization/
 
         """
 

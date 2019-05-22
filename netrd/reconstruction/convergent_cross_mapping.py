@@ -16,24 +16,22 @@ from itertools import permutations
 from scipy.stats import pearsonr
 import networkx as nx
 from sklearn.neighbors import NearestNeighbors
-from ..utilities import create_graph, threshold
+from ..utilities import create_graph
 
 
 class ConvergentCrossMappingReconstructor(BaseReconstructor):
-    def fit(
-        self, TS, tau=1, threshold_type='cutoff', cutoffs=[(0.95, np.inf)], **kwargs
-    ):
-        """Infer causal relation applying Takens' Theorem of dynamical systems.
+    def fit(self, TS, tau=1, alpha=0.05, **kwargs):
+        r"""Infer causal relation applying Takens Theorem of dynamical systems.
 
         Convergent cross-mapping infers dynamical causal relation between
-        variables from time series data. Time series data portray an
+        vairiables from time series data. Time series data portray an
         attractor manifold of the dynamical system of interests. Existing
         approaches of attractor reconstruction involved building the shadow
         manifold for a single variable :math:`X`, which is defined by the
         time-lagged vectors :math:`(X(t), X(t-\tau), X(t-2\tau), ...,
         X(t-(N-1)\tau))` where :math:`N` denotes number of variables in the
         system and :math:`\tau` is an arbitrary time- lagged
-        interval. Takens' theorem and its generalization indicated that if a
+        interval. Takens theorem and its generalization indicated that if a
         variable :math:`X` is causally influencing another variable
         :math:`Y` in a dynamical system, then there exists a one-to-one and
         local-structure- preserving mapping from :math:`X`'s shadow
@@ -49,7 +47,7 @@ class ConvergentCrossMappingReconstructor(BaseReconstructor):
         v(t_2), ..., v(t_{N+1})\}`. The estimate :math:`\hat{Y}(t)` is
         computed as an average over this neighborhood, with weights
         decaying exponentially with corresponding distance in :math:`X`'s
-        shadow data cloud.  The algorithm concludes a causal link from
+        shadow data clould.  The algorithm concludes a causal link from
         :math:`X` to :math:`Y` if correlation between :math:`Y` and
         :math:`\hat{Y}` is significant.
 
@@ -61,9 +59,8 @@ class ConvergentCrossMappingReconstructor(BaseReconstructor):
         from time series data.
 
         The results dictionary also includes the raw Pearson correlations
-        between elements (`'correlation_matrix'`), their associated
-        p-values (`'pvalues_matrix'`), and a matrix of the p-values subtracted
-        from one (`'weights_matrix'`).
+        between elements (`'weights_matrix'`) and their associated
+        p-values (`'pvalues_matrix'`).
 
         Parameters
         ----------
@@ -74,6 +71,9 @@ class ConvergentCrossMappingReconstructor(BaseReconstructor):
 
         tau (int)
             Number of time steps for a single time-lag.
+
+        alpha (float)
+            Significance level of statistical test for correlation.
 
         Returns
         -------
@@ -123,20 +123,15 @@ class ConvergentCrossMappingReconstructor(BaseReconstructor):
             M, = estimates.shape
             correlation[i, j], pvalue[i, j] = pearsonr(estimates, data[-M:, j])
 
-        weights = 1 - pvalue
-
         # Build the reconstructed graph by finding significantly correlated
         # variables
-        A = threshold(weights, threshold_type, cutoffs=cutoffs, **kwargs)
-        G = create_graph(A, create_using=nx.DiGraph())
+        G = create_graph(pvalue.T < alpha, create_using=nx.DiGraph())
 
         # Save the graph object, matrices of correlation and p-values into the
         # "results" field (dictionary)
-        self.results['correlation_matrix'] = correlation
-        self.results['pvalues_matrix'] = pvalue
-        self.results['weights_matrix'] = weights
-        self.results['thresholded_matrix'] = A
         self.results['graph'] = G
+        self.results['weights_matrix'] = correlation
+        self.results['pvalues_matrix'] = pvalue
 
         return G
 

@@ -16,7 +16,7 @@ from scipy import stats, linalg
 from ..utilities import create_graph, threshold
 
 
-class PartialCorrelationMatrixReconstructor(BaseReconstructor):
+class PartialCorrelationMatrix(BaseReconstructor):
     """Uses a regularized form of the precision matrix."""
 
     def fit(

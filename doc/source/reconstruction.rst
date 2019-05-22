@@ -18,23 +18,23 @@ the same general usage as above.
 .. autosummary::
    :nosignatures:
 
-    netrd.reconstruction.ConvergentCrossMappingReconstructor
-    netrd.reconstruction.CorrelationMatrixReconstructor
+    netrd.reconstruction.ConvergentCrossMapping
+    netrd.reconstruction.CorrelationMatrix
     netrd.reconstruction.CorrelationSpanningTree
-    netrd.reconstruction.FreeEnergyMinimizationReconstructor
-    netrd.reconstruction.GraphicalLassoReconstructor
+    netrd.reconstruction.FreeEnergyMinimization
+    netrd.reconstruction.GraphicalLasso
     netrd.reconstruction.MarchenkoPastur
-    netrd.reconstruction.MaximumLikelihoodEstimationReconstructor
-    netrd.reconstruction.MeanFieldReconstructor
-    netrd.reconstruction.MutualInformationMatrixReconstructor
-    netrd.reconstruction.NaiveTransferEntropyReconstructor
-    netrd.reconstruction.OUInferenceReconstructor
-    netrd.reconstruction.OptimalCausationEntropyReconstructor
-    netrd.reconstruction.PartialCorrelationInfluenceReconstructor
-    netrd.reconstruction.PartialCorrelationMatrixReconstructor
+    netrd.reconstruction.MaximumLikelihoodEstimation
+    netrd.reconstruction.MeanField
+    netrd.reconstruction.MutualInformationMatrix
+    netrd.reconstruction.NaiveTransferEntropy
+    netrd.reconstruction.OUInference
+    netrd.reconstruction.OptimalCausationEntropy
+    netrd.reconstruction.PartialCorrelationInfluence
+    netrd.reconstruction.PartialCorrelationMatrix
     netrd.reconstruction.RandomReconstructor
-    netrd.reconstruction.ThoulessAndersonPalmerReconstructor
-    netrd.reconstruction.TimeGrangerCausalityReconstructor
+    netrd.reconstruction.ThoulessAndersonPalmer
+    netrd.reconstruction.TimeGrangerCausality
 
 
 Reference

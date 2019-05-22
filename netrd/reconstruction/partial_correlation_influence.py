@@ -24,7 +24,7 @@ from scipy import stats, linalg
 from ..utilities import create_graph, threshold
 
 
-class PartialCorrelationInfluenceReconstructor(BaseReconstructor):
+class PartialCorrelationInfluence(BaseReconstructor):
     """Uses average effect from a sensor to all others."""
 
     def fit(self, TS, index=None, threshold_type='range', **kwargs):

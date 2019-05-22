@@ -18,7 +18,7 @@ import networkx as nx
 from ..utilities import create_graph, threshold
 
 
-class MutualInformationMatrixReconstructor(BaseReconstructor):
+class MutualInformationMatrix(BaseReconstructor):
     """Uses the mutual information between nodes."""
 
     def fit(self, TS, nbins=10, threshold_type='degree', **kwargs):

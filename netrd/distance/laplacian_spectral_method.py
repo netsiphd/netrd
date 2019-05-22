@@ -23,7 +23,7 @@ from scipy.sparse.csgraph import laplacian
 from scipy.sparse.linalg import eigsh
 
 
-class LaplacianSpectralMethod(BaseDistance):
+class LaplacianSpectral(BaseDistance):
     """Flexible distance able to compare the spectrum of the Laplacian in many ways."""
 
     def dist(
@@ -98,17 +98,18 @@ class LaplacianSpectralMethod(BaseDistance):
         dist (float)
             the distance between G1 and G2.
 
+        Notes
+        -----
+        The methods are usually applied to undirected (unweighted)
+        networks. We however relax this assumption using the same method
+        proposed for the Hamming-Ipsen-Mikhailov. See [2]_.
+
         References
         ----------
 
         .. [1] https://www.sciencedirect.com/science/article/pii/S0303264711001869.
 
-        Notes
-        -----
-        The methods are usually applied to undirected (unweighted)
-        networks. We however relax this assumption using the same method
-        proposed for the Hamming-Ipsen-Mikhailov. See paper:
-        https://ieeexplore.ieee.org/abstract/document/7344816.
+        .. [2] https://ieeexplore.ieee.org/abstract/document/7344816.
 
         """
         adj1 = nx.to_numpy_array(G1)

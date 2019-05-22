@@ -15,7 +15,7 @@ from scipy import linalg
 from ..utilities import create_graph, threshold
 
 
-class ThoulessAndersonPalmerReconstructor(BaseReconstructor):
+class ThoulessAndersonPalmer(BaseReconstructor):
     """Uses Thouless-Anderson-Palmer mean field approximation."""
 
     def fit(self, TS, threshold_type='range', **kwargs):

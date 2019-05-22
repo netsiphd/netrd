@@ -12,7 +12,7 @@ import networkx as nx
 from ..utilities import create_graph, threshold
 
 
-class CorrelationMatrixReconstructor(BaseReconstructor):
+class CorrelationMatrix(BaseReconstructor):
     """Uses the correlation matrix."""
 
     def fit(self, TS, num_eigs=None, threshold_type='range', **kwargs):

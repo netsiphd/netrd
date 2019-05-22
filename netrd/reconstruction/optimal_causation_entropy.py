@@ -16,7 +16,7 @@ import numpy as np
 from ..utilities import create_graph
 
 
-class OptimalCausationEntropyReconstructor(BaseReconstructor):
+class OptimalCausationEntropy(BaseReconstructor):
     """Optimizes causation entropy."""
 
     def fit(self, TS, n_bins=40, atol=1e-6, **kwargs):

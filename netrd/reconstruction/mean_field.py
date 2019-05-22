@@ -16,7 +16,7 @@ from scipy.optimize import fsolve
 from ..utilities import create_graph, threshold
 
 
-class MeanFieldReconstructor(BaseReconstructor):
+class MeanField(BaseReconstructor):
     def fit(
         self, TS, exact=True, stop_criterion=True, threshold_type='range', **kwargs
     ):

@@ -19,7 +19,7 @@ from scipy import ndimage
 from ..utilities import create_graph, threshold
 
 
-class NaiveTransferEntropyReconstructor(BaseReconstructor):
+class NaiveTransferEntropy(BaseReconstructor):
     """Uses transfer entropy between sensors."""
 
     def fit(self, TS, delay_max=10, threshold_type='range', **kwargs):

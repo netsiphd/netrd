@@ -1,6 +1,6 @@
 """
 correlation_spanning_tree.py
---------------
+----------------------------
 
 Graph reconstruction algorithm based on Mantegna, R. N. (1999). Hierarchical structure in
 financial markets. The European Physical Journal B-Condensed Matter and Complex Systems,

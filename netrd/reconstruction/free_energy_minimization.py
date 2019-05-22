@@ -14,7 +14,7 @@ from scipy import linalg
 from ..utilities import create_graph, threshold
 
 
-class FreeEnergyMinimizationReconstructor(BaseReconstructor):
+class FreeEnergyMinimization(BaseReconstructor):
     """Applies free energy principle."""
 
     def fit(self, TS, threshold_type='degree', **kwargs):

@@ -26,8 +26,8 @@ same general usage as above.
     netrd.distance.HammingIpsenMikhailov
     netrd.distance.IpsenMikhailov
     netrd.distance.JaccardDistance
-    netrd.distance.LaplacianSpectralMethod
-    netrd.distance.NBD
+    netrd.distance.LaplacianSpectral
+    netrd.distance.NonBacktrackingSpectral
     netrd.distance.NetLSD
     netrd.distance.NetSimile
     netrd.distance.OnionDivergence

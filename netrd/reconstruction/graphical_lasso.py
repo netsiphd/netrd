@@ -20,7 +20,7 @@ from .base import BaseReconstructor
 from ..utilities import create_graph, threshold
 
 
-class GraphicalLassoReconstructor(BaseReconstructor):
+class GraphicalLasso(BaseReconstructor):
     """Performs graphical lasso."""
 
     def fit(

@@ -19,7 +19,7 @@ from sklearn.neighbors import NearestNeighbors
 from ..utilities import create_graph, threshold
 
 
-class ConvergentCrossMappingReconstructor(BaseReconstructor):
+class ConvergentCrossMapping(BaseReconstructor):
     """Infers dynamical causal relations."""
 
     def fit(

@@ -18,7 +18,7 @@ def test_same_graph():
     G = nx.karate_club_graph()
 
     for label, obj in distance.__dict__.items():
-        if label in ['NBD']:
+        if label in ['NonBacktrackingSpectral']:
             continue
         if isinstance(obj, type) and BaseDistance in obj.__bases__:
             dist = obj().dist(G, G)

@@ -20,7 +20,7 @@ from scipy.linalg import eig, inv
 from ..utilities import create_graph, threshold
 
 
-class OUInferenceReconstructor(BaseReconstructor):
+class OUInference(BaseReconstructor):
     """Assumes a Orstein-Uhlenbeck generative model."""
 
     def fit(self, TS, threshold_type='range', **kwargs):

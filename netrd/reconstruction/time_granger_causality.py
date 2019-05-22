@@ -22,7 +22,7 @@ from sklearn.linear_model import LinearRegression
 from ..utilities import create_graph, threshold
 
 
-class TimeGrangerCausalityReconstructor(BaseReconstructor):
+class TimeGrangerCausality(BaseReconstructor):
     """Infers Granger causality."""
 
     def fit(self, TS, lag=1, threshold_type='range', **kwargs):

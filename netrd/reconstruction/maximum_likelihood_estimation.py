@@ -12,7 +12,7 @@ import networkx as nx
 from ..utilities import create_graph, threshold
 
 
-class MaximumLikelihoodEstimationReconstructor(BaseReconstructor):
+class MaximumLikelihoodEstimation(BaseReconstructor):
     """Uses maximum likelihood estimation."""
 
     def fit(self, TS, rate=1.0, stop_criterion=True, threshold_type='degree', **kwargs):

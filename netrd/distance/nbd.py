@@ -14,7 +14,7 @@ from ot import emd2
 from .base import BaseDistance
 
 
-class NBD(BaseDistance):
+class NonBacktrackingSpectral(BaseDistance):
     """Compares the empirical spectral distribution of the non-backtracking
 matrices.
 

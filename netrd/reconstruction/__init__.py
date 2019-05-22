@@ -4,9 +4,8 @@ from .correlation_matrix import CorrelationMatrixReconstructor
 from .partial_correlation_matrix import PartialCorrelationMatrixReconstructor
 from .partial_correlation_influence import PartialCorrelationInfluenceReconstructor
 from .free_energy_minimization import FreeEnergyMinimizationReconstructor
-from .naive_mean_field import NaiveMeanFieldReconstructor
+from .mean_field import MeanFieldReconstructor
 from .thouless_anderson_palmer import ThoulessAndersonPalmerReconstructor
-from .exact_mean_field import ExactMeanFieldReconstructor
 from .maximum_likelihood_estimation import MaximumLikelihoodEstimationReconstructor
 from .convergent_cross_mapping import ConvergentCrossMappingReconstructor
 from .mutual_information_matrix import MutualInformationMatrixReconstructor
@@ -24,9 +23,8 @@ __all__ = [
     'PartialCorrelationMatrixReconstructor',
     'PartialCorrelationInfluenceReconstructor',
     'FreeEnergyMinimizationReconstructor',
-    'NaiveMeanFieldReconstructor',
     'ThoulessAndersonPalmerReconstructor',
-    'ExactMeanFieldReconstructor',
+    'MeanFieldReconstructor',
     'MaximumLikelihoodEstimationReconstructor',
     'ConvergentCrossMappingReconstructor',
     'MutualInformationMatrixReconstructor',

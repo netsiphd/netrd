@@ -12,6 +12,9 @@ utilities for graph distances, graph reconstruction from time series data,
 and simulated dynamics on networks. For the API reference visit
 [this link](https://netrd.readthedocs.io/en/latest/).
 
+To see the library in action, visit the [netrd
+explorer](https://netrdexplorer.herokuapp.com/).
+
 # Installation
 
 ```

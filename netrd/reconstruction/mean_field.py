@@ -17,7 +17,9 @@ from ..utilities import create_graph, threshold
 
 
 class MeanFieldReconstructor(BaseReconstructor):
-    def fit(self, TS, exact=True, stop_criterion=True, threshold_type='range', **kwargs):
+    def fit(
+        self, TS, exact=True, stop_criterion=True, threshold_type='range', **kwargs
+    ):
         """Infer inter-node coupling weights using a mean field approximation.
 
         From the paper: "Exact mean field (eMF) is another mean field

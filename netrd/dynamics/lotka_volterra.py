@@ -17,6 +17,7 @@ from scipy.integrate import ode
 
 class LotkaVolterra(BaseDynamics):
     """Lotka-Volterra dynamics of species abundance."""
+
     def simulate(
         self,
         G,

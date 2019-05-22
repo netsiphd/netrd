@@ -22,7 +22,9 @@ from ..utilities import create_graph, threshold
 class ConvergentCrossMappingReconstructor(BaseReconstructor):
     """Infers dynamical causal relations."""
 
-    def fit(self, TS, tau=1, threshold_type='cutoff', cutoffs=[(0.95, np.inf)], **kwargs):
+    def fit(
+        self, TS, tau=1, threshold_type='cutoff', cutoffs=[(0.95, np.inf)], **kwargs
+    ):
         r"""Infer causal relation applying Takens' Theorem of dynamical systems.
 
         Convergent cross-mapping infers dynamical causal relation between

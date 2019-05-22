@@ -21,20 +21,18 @@ the same general usage as above.
     netrd.reconstruction.ConvergentCrossMappingReconstructor
     netrd.reconstruction.CorrelationMatrixReconstructor
     netrd.reconstruction.CorrelationSpanningTree
-    netrd.reconstruction.ExactMeanFieldReconstructor
     netrd.reconstruction.FreeEnergyMinimizationReconstructor
     netrd.reconstruction.GraphicalLassoReconstructor
     netrd.reconstruction.MarchenkoPastur
     netrd.reconstruction.MaximumLikelihoodEstimationReconstructor
+    netrd.reconstruction.MeanFieldReconstructor
     netrd.reconstruction.MutualInformationMatrixReconstructor
-    netrd.reconstruction.NaiveMeanFieldReconstructor
     netrd.reconstruction.NaiveTransferEntropyReconstructor
     netrd.reconstruction.OUInferenceReconstructor
     netrd.reconstruction.OptimalCausationEntropyReconstructor
     netrd.reconstruction.PartialCorrelationInfluenceReconstructor
     netrd.reconstruction.PartialCorrelationMatrixReconstructor
     netrd.reconstruction.RandomReconstructor
-    netrd.reconstruction.RegularizedCorrelationMatrixReconstructor
     netrd.reconstruction.ThoulessAndersonPalmerReconstructor
     netrd.reconstruction.TimeGrangerCausalityReconstructor
 

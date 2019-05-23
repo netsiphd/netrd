@@ -5,15 +5,17 @@
 
 # `netrd`: A library for network {reconstruction, distances, dynamics}
 
-NOTE: This library is pre-alpha. **Use at your own risk.**
-
 This library provides a consistent, NetworkX-based interface to various
-utilities for graph distances, graph reconstruction from time series data,
-and simulated dynamics on networks. For the API reference visit
-[this link](https://netrd.readthedocs.io/en/latest/).
+utilities for graph distances, graph reconstruction from time series data, and
+simulated dynamics on networks. 
 
-To see the library in action, visit the [netrd
-explorer](https://netrdexplorer.herokuapp.com/).
+Some resources that maybe of interest:
+
+* An interactive demonstration: [netrd
+  explorer](https://netrdexplorer.herokuapp.com)
+* A [tutorial](https://netrd.readthedocs.io/en/latest/tutorial.html) on how to use the library
+* The API [reference](https://netrd.readthedocs.io/en/latest/) 
+* A [notebook](https://nbviewer.jupyter.org/github/netsiphd/netrd/blob/master/notebooks/00%20-%20netrd_introduction.ipynb) showing advanced usage
 
 # Installation
 
@@ -30,108 +32,52 @@ has dependencies on Cython and [POT](https://github.com/rflamary/POT).
 
 ## Reconstructing a graph
 
-All reconstruction algorithms provide a simple interface. First, initialize the
-reconstructor object by calling its constructor with no arguments. Then, use the
-`fit()` method to obtain the reconstructed network.
+The basic usage of a graph reconstruction algorithm is as follows:
 
-```python
-TS = np.loadtxt('data/synth_4clique_N64_simple.csv',
-                delimiter=',',
-                encoding='utf8')
-# TS is a NumPy array of shape N (number of nodes) x L (observations).
-
-recon = netrd.reconstruction.RandomReconstructor()
-G = recon.fit(TS)
+```
+>>> reconstructor = ReconstructionAlgorithm()
+>>> G = reconstructor.fit(TS, <some_params>)
+>>> # or alternately, G = reconstructor.results['graph']
 ```
 
-Many reconstruction algorithms store additional metadata in a `results`
-dictionary. 
+Here, `TS` is an N x L numpy array consisting of L
+observations for each of N sensors. This constrains the graphs
+to have integer-valued nodes.
 
-```python
-# Another way to obtain the reconstructed graph
-G = recon.results['graph']
-
-# A dense matrix of weights
-W = recon.results['weights_matrix']
-
-# The binarized matrix from which the graph is created
-A = recon.results['thresholded_matrix']
-```
-
-Many, though not all, reconstruction algorithms work by assigning each potential
-edge a weight and then thresholding the matrix to obtain a sparse
-representation. This thresholding can be controlled by setting the
-`threshold_type` argument to one of four values:
-
-* `range`: Consider only weights whose values fall within a range.
-* `degree`: Consider only the largest weights, targeting a specific average
-  degree.
-* `quantile`: Consider only weights in, e.g., the 0.90 quantile and above.
-* `custom`: Pass a custom function for thresholding the matrix yourself.
-
-Each of these has a specific argument to pass to tune the thresholding:
-
-* `cutoffs`: A list of 2-tuples specifying the values to keep. For example, to
-  keep only values whose absolute values are above 0.5, use `cutoffs=[(-np.inf,
-  -0.5), (0.5, np.inf)]`
-* `avg_k`: The desired average degree of the network.
-* `quantile`: The appropriate quantile (not percentile).
-* `custom_thresholder`: A user-defined function that returns an N x N NumPy
-  array.
-
-```python
-H = recon.fit(TS, threshold_type='degree', avg_k = 15.125)
-
-
-print(nx.info(G))
-# This network is a complete graph.
-
-print(nx.info(H))
-# This network is not.
-```
+The `results` dict object, in addition to containing the graph
+object, may also contain objects created as a side effect of
+reconstructing the network, which may be useful for debugging or
+considering goodness of fit. What is returned will vary between
+reconstruction algorithms.
 
 ## Distances between graphs
 
-Distances behave similarly to reconstructors. All distance objects have a
-`dist()` method that takes two NetworkX graphs.
+The basic usage of a distance algorithm is as follows:
 
-```python
-G1 = nx.fast_gnp_random_graph(1000, 0.1)
-G2 = nx.fast_gnp_random_graph(1000, 0.1)
-
-dist = netrd.distance.NetSimile()
-D = dist.dist(G1, G2)
+```
+>>> dist_obj = DistanceAlgorithm()
+>>> distance = dist_obj.dist(G1, G2, <some_params>)
+>>> # or alternatively: distance = dist_obj.results['dist']
 ```
 
-Some distances also store metadata in `results` dictionaries.
-
-```python
-# Another way to get the distance
-D = dist.results['dist']
-
-# The underlying features used in NetSimile
-vecs = dist.results['signature_vectors']
-```
+Here, `G1` and `G2` are `nx.Graph` objects (or subclasses such as
+`nx.DiGraph`). The results dictionary holds the distance value, as
+well as any other values that were computed as a side effect.
 
 ## Dynamics on graphs
 
-As a utility, we also implement various ways to simulate dynamics on a network.
-These have a similar interface to reconstructors and distances. Their
-`simulate()` method takes an input graph and the desired length of the dynamics,
-returning the same N x L array used in the graph reconstruction methods.
+The basic usage of a dynamics algorithm is as follows:
 
-```python
-model = netrd.dynamics.VoterModel()
-TS = model.simulate(G, 1000, noise=.001)
-
-# Another way to get the dynamics
-TS = model.results['TS']
-
-# The original graph is stored in results
-H = model.results['ground_truth']
 ```
+>>> ground_truth = nx.read_edgelist("ground_truth.txt")
+>>> dynamics_model = Dynamics()
+>>> synthetic_TS = dynamics_model.simulate(ground_truth, <some_params>)
+>>> # G = Reconstructor().fit(synthetic_TS)
+```
+
+This produces a numpy array of time series data.
+
 
 # Contributing
 
-Contributing guidelines can be found in
-[CONTRIBUTING.md](CONTRIBUTING.md).
+Contributing guidelines can be found in [CONTRIBUTING.md](CONTRIBUTING.md).

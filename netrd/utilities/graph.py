@@ -69,6 +69,6 @@ def ensure_undirected(G):
 
     """
     if nx.is_directed(G):
-        G = nx.to_undirected(G)
+        G = G.to_undirected(as_view=False)
         warnings.warn("Coercing directed graph to undirected.", RuntimeWarning)
     return G

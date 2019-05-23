@@ -82,7 +82,6 @@ class CommunicabilityJSD(BaseDistance):
                012319.
 
         """
-
         N1 = G1.number_of_nodes()
         N2 = G2.number_of_nodes()
 

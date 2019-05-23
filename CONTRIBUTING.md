@@ -150,6 +150,14 @@ Once you have completed the above steps, you are ready to choose an algorithm to
 
    This line tells the `netrd` package where to find your code.
 
+3. In order for your contribution to have automated documentation
+   generated, you need to edit the file
+   `netrd/doc/source/distance.rst`. (Or
+   `netrd/doc/source/reconstruction.rst`). Under the 'Available distances'
+   heading you will find a list of currently implemented methods inside a
+   `.. autosummary` command. Add the bane of your algorithm to this list,
+   in alphabetical order.
+
 4. Go back to editing <your_file_name>. After the line that starts with
    `class`, there is a function called `dist` for distances
    and `fit` for reconstructors. This is where the magic happens! There are

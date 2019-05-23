@@ -62,7 +62,6 @@ class NetLSD(BaseDistance):
             normalization, str
         ), 'Normalization parameter must be of string type'
 
-
         G1 = ensure_undirected(G1)
         G2 = ensure_undirected(G2)
 

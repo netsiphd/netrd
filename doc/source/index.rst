@@ -24,7 +24,9 @@ library also has dependencies on Cython and
 Tutorial
 ========
 
-A tutorial on using the library can be found `here <tutorial.html>`__.
+A tutorial on using the library can be found `here <tutorial.html>`__. To see
+more advanced usage of the library, refer to `this
+notebook <https://nbviewer.jupyter.org/github/netsiphd/netrd/blob/master/notebooks/00%20-%20netrd_introduction.ipynb>`__.
 
 Contributing
 ============

@@ -7,12 +7,15 @@
 
 This library provides a consistent, NetworkX-based interface to various
 utilities for graph distances, graph reconstruction from time series data, and
-simulated dynamics on networks. For the API reference and tutorial visit [this
-link](https://netrd.readthedocs.io/en/latest/).
+simulated dynamics on networks. 
 
-To see the library in action, visit the [netrd
-explorer](https://netrdexplorer.herokuapp.com/) or see a
-[notebook](www.google.com) demonstrating advanced usage.
+Some resources that maybe of interest:
+
+* An interactive demonstration: [netrd
+  explorer](https://netrdexplorer.herokuapp.com)
+* A [tutorial](https://netrd.readthedocs.io/en/latest/tutorial.html) on how to use the library
+* The API [reference](https://netrd.readthedocs.io/en/latest/) 
+* A [notebook](https://nbviewer.jupyter.org/github/netsiphd/netrd/blob/master/notebooks/00%20-%20netrd_introduction.ipynb) showing advanced usage
 
 # Installation
 

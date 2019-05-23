@@ -1,24 +1,44 @@
-.. netrd documentation master file, created by
-   sphinx-quickstart on Mon May 20 17:29:14 2019.
-   You can adapt this file completely to your liking, but it should at least
-   contain the root `toctree` directive.
+``netrd``: A library for network {reconstruction, distances, dynamics}
+======================================================================
 
-netrd
-=====
+This library provides a consistent, NetworkX-based interface to various
+utilities for graph distances, graph reconstruction from time series
+data, and simulated dynamics on networks.
 
-`netrd` stands for Network Reconstruction and Distances. It is a repository
-of different algorithms for constructing a network from time series data,
-as well as for comparing two networks. It is the product of the Network
-Science Insitute 2019 Collabathon.
+To see the library in action, visit the `netrd
+explorer <https://netrdexplorer.herokuapp.com/>`__.
 
-To see the library in action, visit the `netrd explorer`_.
+Installation
+============
 
-.. _netrd explorer: https://netrdexplorer.herokuapp.com/
+::
+
+   git clone https://github.com/netsiphd/netrd
+   cd netrd
+   pip install .
+
+Aside from NetworkX and the Python scientific computing stack, this
+library also has dependencies on Cython and
+`POT <https://github.com/rflamary/POT>`__.
+
+Tutorial
+========
+
+A tutorial on using the library can be found `here <tutorial.html>`__. To see
+more advanced usage of the library, refer to `this
+notebook <https://nbviewer.jupyter.org/github/netsiphd/netrd/blob/master/notebooks/00%20-%20netrd_introduction.ipynb>`__.
+
+Contributing
+============
+
+Contributing guidelines can be found in
+`CONTRIBUTING.md <CONTRIBUTING.md>`__.
 
 .. toctree::
    :maxdepth: 1
-   :caption: API Reference
+   :caption: Contents
 
+   tutorial
    dynamics
    distance
    reconstruction

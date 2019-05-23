@@ -20,7 +20,9 @@ from .base import BaseReconstructor
 from ..utilities import create_graph, threshold
 
 
-class GraphicalLassoReconstructor(BaseReconstructor):
+class GraphicalLasso(BaseReconstructor):
+    """Performs graphical lasso."""
+
     def fit(
         self,
         TS,
@@ -35,8 +37,8 @@ class GraphicalLassoReconstructor(BaseReconstructor):
         For details see [1, 2].
 
         The results dictionary also stores the covariance matrix as
-        `'weights_matrix'`, the precision matrix as `'precision_matrix'`, and
-        the thresholded version of the covariance matrix as
+        `'weights_matrix'`, the precision matrix as `'precision_matrix'`,
+        and the thresholded version of the covariance matrix as
         `'thresholded_matrix'`.
 
         Parameters
@@ -61,7 +63,7 @@ class GraphicalLassoReconstructor(BaseReconstructor):
             Which thresholding function to use on the matrix of
             weights. See `netrd.utilities.threshold.py` for
             documentation. Pass additional arguments to the thresholder
-            using `**kwargs`.
+            using ``**kwargs``.
 
         Returns
         -------
@@ -72,10 +74,11 @@ class GraphicalLassoReconstructor(BaseReconstructor):
         References
         ----------
 
-        [1] J. Friedman, T. Hastie, R. Tibshirani, "Sparse inverse covariance estimation with
-        the graphical lasso", Biostatistics 9, pp. 432–441 (2008).
+        .. [1] J. Friedman, T. Hastie, R. Tibshirani, "Sparse inverse
+               covariance estimation with the graphical lasso",
+               Biostatistics 9, pp. 432–441 (2008).
 
-        [2] https://github.com/CamDavidsonPilon/Graphical-Lasso-in-Finance
+        .. [2] https://github.com/CamDavidsonPilon/Graphical-Lasso-in-Finance
 
         """
         cov, prec = graphical_lasso(TS, alpha, max_iter, convg_threshold)

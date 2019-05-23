@@ -7,9 +7,9 @@ class BaseDistance:
     >>> distance = dist_obj.dist(G1, G2, <some_params>)
     >>> # or alternatively: distance = dist_obj.results['dist']
 
-    Here, G1 and G2 are nx.Graph objects (or subclasses such as
-    nx.DiGraph). The results dictionary holds the distance value, as well
-    as any other values that were computed as a side effect.
+    Here, `G1` and `G2` are ``nx.Graph`` objects (or subclasses such as
+    ``nx.DiGraph``). The results dictionary holds the distance value, as
+    well as any other values that were computed as a side effect.
 
     """
 

@@ -16,6 +16,8 @@ from ..utilities import entropy
 
 
 class PortraitDivergence(BaseDistance):
+    """Compares graph portraits."""
+
     def dist(self, G1, G2, bins=None, binedges=None):
         """Distance measure based on the two graphs' "portraits".
 

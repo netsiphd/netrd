@@ -22,6 +22,8 @@ from scipy.integrate import quad
 
 
 class IpsenMikhailov(BaseDistance):
+    """Compares the spectrum of the Laplacian matrices."""
+
     def dist(self, G1, G2, hwhm=0.08):
         """Compare the spectrum ot the associated Laplacian matrices.
 
@@ -47,6 +49,11 @@ class IpsenMikhailov(BaseDistance):
         -----
 
         Requires undirected networks.
+
+        References
+        ----------
+
+        .. [1] https://journals.aps.org/pre/abstract/10.1103/PhysRevE.66.046109
 
         """
         N = len(G1)

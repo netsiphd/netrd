@@ -1,11 +1,13 @@
 """
 voter.py
-----------------
+--------
 
 Implementation of voter model dynamics on a network.
 
 author: Stefan McCabe
+
 Submitted as part of the 2019 NetSI Collabathon.
+
 """
 
 from netrd.dynamics import BaseDynamics
@@ -14,6 +16,8 @@ import networkx as nx
 
 
 class VoterModel(BaseDynamics):
+    """Voter dynamics."""
+
     def simulate(self, G, L, noise=None):
         r"""Simulate voter-model-style dynamics on a network.
 

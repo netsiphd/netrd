@@ -1,6 +1,6 @@
 """
 free_energy_minimization.py
----------------------
+---------------------------
 Reconstruction of graphs by minimizing a free energy of your data
 author: Brennan Klein
 email: brennanjamesklein at gmail dot com
@@ -14,14 +14,16 @@ from scipy import linalg
 from ..utilities import create_graph, threshold
 
 
-class FreeEnergyMinimizationReconstructor(BaseReconstructor):
+class FreeEnergyMinimization(BaseReconstructor):
+    """Applies free energy principle."""
+
     def fit(self, TS, threshold_type='degree', **kwargs):
         """Infer inter-node coupling weights by minimizing a free energy over the
         data structure.
 
         The results dictionary also stores the weight matrix as
         `'weights_matrix'` and the thresholded version of the weight matrix
-        as `'thresholded_matrix'`. For details see [1].
+        as `'thresholded_matrix'`. For details see [1]_.
 
         Parameters
         ----------
@@ -34,7 +36,7 @@ class FreeEnergyMinimizationReconstructor(BaseReconstructor):
             Which thresholding function to use on the matrix of
             weights. See `netrd.utilities.threshold.py` for
             documentation. Pass additional arguments to the thresholder
-            using `**kwargs`.
+            using ``**kwargs``.
 
         Returns
         -------
@@ -45,7 +47,7 @@ class FreeEnergyMinimizationReconstructor(BaseReconstructor):
         References
         ----------
 
-        [1] https://github.com/nihcompmed/network-inference/blob/master/sphinx/codesource/inference.py
+        .. [1] https://github.com/nihcompmed/network-inference/blob/master/sphinx/codesource/inference.py
 
         """
 

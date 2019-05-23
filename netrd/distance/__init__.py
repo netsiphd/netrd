@@ -8,9 +8,9 @@ from .hamming_ipsen_mikhailov import HammingIpsenMikhailov
 from .resistance_perturbation import ResistancePerturbation
 from .netsimile import NetSimile
 from .netlsd import NetLSD
-from .laplacian_spectral_method import LaplacianSpectralMethod
+from .laplacian_spectral_method import LaplacianSpectral
 from .polynomial_dissimilarity import PolynomialDissimilarity
-from .nbd import NBD
+from .nbd import NonBacktrackingSpectral
 from .degree_divergence import DegreeDivergence
 from .onion_divergence import OnionDivergence
 from .deltacon import DeltaCon
@@ -29,9 +29,9 @@ __all__ = [
     'ResistancePerturbation',
     'NetSimile',
     'NetLSD',
-    'LaplacianSpectralMethod',
+    'LaplacianSpectral',
     'PolynomialDissimilarity',
-    'NBD',
+    'NonBacktrackingSpectral',
     'DegreeDivergence',
     'OnionDivergence',
     'DeltaCon',

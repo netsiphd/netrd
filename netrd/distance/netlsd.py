@@ -16,6 +16,8 @@ from .base import BaseDistance
 
 
 class NetLSD(BaseDistance):
+    """Compares spectral node signature distributions."""
+
     def dist(self, G1, G2, normalization=None, timescales=None):
         """NetLSD: Hearing the Shape of a Graph.
 
@@ -41,13 +43,14 @@ class NetLSD(BaseDistance):
         Returns
         -------
 
-        dist (float): the distance between G1 and G2.
+        dist (float)
+            the distance between `G1` and `G2`.
 
         References
         ----------
 
-        [1] A. Tsitsulin, D. Mottin, P. Karras, A. Bronstein &
-        E. Müller. NetLSD: Hearing the Shape of a Graph. KDD 2018
+        .. [1] A. Tsitsulin, D. Mottin, P. Karras, A. Bronstein &
+               E. Müller. NetLSD: Hearing the Shape of a Graph. KDD 2018
 
         """
         if normalization is None:

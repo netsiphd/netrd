@@ -19,6 +19,8 @@ from ..utilities import entropy
 
 
 class DegreeDivergence(BaseDistance):
+    """Compare two degree distributions."""
+
     def dist(self, G1, G2):
         """Jenson-Shannon divergence between degree distributions.
 
@@ -34,7 +36,7 @@ class DegreeDivergence(BaseDistance):
         -------
 
         dist (float)
-            the distance between G1 and G2.
+            the distance between `G1` and `G2`.
 
         """
 

@@ -16,7 +16,7 @@ from scipy.optimize import fsolve
 from ..utilities import create_graph, threshold
 
 
-class MeanFieldReconstructor(BaseReconstructor):
+class MeanField(BaseReconstructor):
     def fit(
         self, TS, exact=True, stop_criterion=True, threshold_type='range', **kwargs
     ):
@@ -27,7 +27,7 @@ class MeanFieldReconstructor(BaseReconstructor):
         palmer. We can improve the performance of this method by adding our
         stopping criterion. In general, eMF outperforms nMF and TAP, but it
         is still worse than FEM and MLE, especially in the limit of small
-        sample sizes and large coupling variability." For details see [1].
+        sample sizes and large coupling variability." For details see [1]_.
 
         The results dictionary also stores the weight matrix as
         `'weights_matrix'` and the thresholded version of the weight matrix
@@ -51,7 +51,7 @@ class MeanFieldReconstructor(BaseReconstructor):
             Which thresholding function to use on the matrix of
             weights. See `netrd.utilities.threshold.py` for
             documentation. Pass additional arguments to the thresholder
-            using `**kwargs`.
+            using ``**kwargs``.
 
         Returns
         -------
@@ -62,10 +62,9 @@ class MeanFieldReconstructor(BaseReconstructor):
         References
         ----------
 
-        [1] https://github.com/nihcompmed/network-inference/blob/master/sphinx/codesource/inference.py
+        .. [1] https://github.com/nihcompmed/network-inference/blob/master/sphinx/codesource/inference.py
 
         """
-
         N, L = np.shape(TS)  # N nodes, length L
         m = np.mean(TS, axis=1)  # empirical value
 

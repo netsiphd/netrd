@@ -1,6 +1,6 @@
 """
 partial_correlation_influence.py
----------------------
+--------------------------------
 
 Reconstruction of graphs using the partial correlation influence, as defined in:
 
@@ -24,10 +24,12 @@ from scipy import stats, linalg
 from ..utilities import create_graph, threshold
 
 
-class PartialCorrelationInfluenceReconstructor(BaseReconstructor):
+class PartialCorrelationInfluence(BaseReconstructor):
+    """Uses average effect from a sensor to all others."""
+
     def fit(self, TS, index=None, threshold_type='range', **kwargs):
-        r"""Uses the average effect of a series Z on the correlation between a
-        series X and all other series.
+        r"""Uses the average effect of a series :math:`Z` on the correlation between
+        a series :math:`X` and all other series.
 
         The partial correlation influence:
 
@@ -62,13 +64,25 @@ class PartialCorrelationInfluenceReconstructor(BaseReconstructor):
             Which thresholding function to use on the matrix of
             weights. See `netrd.utilities.threshold.py` for
             documentation. Pass additional arguments to the thresholder
-            using `**kwargs`.
+            using ``**kwargs``.
 
         Returns
         -------
 
         G (nx.Graph)
             a reconstructed graph.
+
+        References
+        -----------
+
+        .. [1] Kenett, D. Y. et al. Dominating clasp of the financial
+               sector revealed by partial correlation analysis of the stock
+               market. PLoS ONE 5, e15032 (2010).
+
+        .. [2] Kenett, D. Y., Huang, X., Vodenska, I., Havlin, S. &
+               Stanley, H. E. Partial correlation analysis: applications
+               for financial markets. Quantitative Finance 15, 569–578
+               (2015).
 
         """
         if index:

@@ -19,7 +19,9 @@ from scipy import ndimage
 from ..utilities import create_graph, threshold
 
 
-class NaiveTransferEntropyReconstructor(BaseReconstructor):
+class NaiveTransferEntropy(BaseReconstructor):
+    """Uses transfer entropy between sensors."""
+
     def fit(self, TS, delay_max=10, threshold_type='range', **kwargs):
         r"""Calculates the transfer entropy from i --> j.
 
@@ -36,7 +38,7 @@ class NaiveTransferEntropyReconstructor(BaseReconstructor):
         conditional mutual informations that need to be calculated in order
         for this method to be true to the notion of information
         transfer. These are implemented in state of the art algorighms, as
-        in the Java Information Dynamics Toolkit [1]
+        in the Java Information Dynamics Toolkit [1]_.
 
         The results dictionary also stores the weight matrix as
         `'weights_matrix'` and the thresholded version of the weight matrix
@@ -57,7 +59,7 @@ class NaiveTransferEntropyReconstructor(BaseReconstructor):
             Which thresholding function to use on the matrix of
             weights. See `netrd.utilities.threshold.py` for
             documentation. Pass additional arguments to the thresholder
-            using `**kwargs`.
+            using ``**kwargs``.
 
         Returns
         -------
@@ -68,7 +70,7 @@ class NaiveTransferEntropyReconstructor(BaseReconstructor):
         References
         ----------
 
-        [1] https://github.com/jlizier/jidt
+        .. [1] https://github.com/jlizier/jidt
 
         """
         N, L = TS.shape  # get the shape and length of the time series

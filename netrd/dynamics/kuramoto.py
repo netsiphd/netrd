@@ -1,6 +1,6 @@
 """
 kuramoto.py
----------------------
+-----------
 
 author: Harrison Hartle
 """
@@ -12,6 +12,8 @@ import scipy.integrate as it
 
 
 class Kuramoto(BaseDynamics):
+    """Kuramoto model of oscillators."""
+
     def __init__(self):
         self.results = {}
 

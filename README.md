@@ -37,11 +37,11 @@ The basic usage of a graph reconstruction algorithm is as follows:
 >>> # or alternately, G = reconstructor.results['graph']
 ```
 
-Here, `TS` is an :math:`N \times L` numpy array consisting of :math:`L`
-observations for each of :math:`N` sensors. This constrains the graphs
+Here, `TS` is an N x L numpy array consisting of L
+observations for each of N sensors. This constrains the graphs
 to have integer-valued nodes.
 
-The ``results`` dict object, in addition to containing the graph
+The `results` dict object, in addition to containing the graph
 object, may also contain objects created as a side effect of
 reconstructing the network, which may be useful for debugging or
 considering goodness of fit. What is returned will vary between
@@ -57,15 +57,13 @@ The basic usage of a distance algorithm is as follows:
 >>> # or alternatively: distance = dist_obj.results['dist']
 ```
 
-Here, `G1` and `G2` are ``nx.Graph`` objects (or subclasses such as
-``nx.DiGraph``). The results dictionary holds the distance value, as
+Here, `G1` and `G2` are `nx.Graph` objects (or subclasses such as
+`nx.DiGraph`). The results dictionary holds the distance value, as
 well as any other values that were computed as a side effect.
-
-
 
 ## Dynamics on graphs
 
-The basic usage is as follows:
+The basic usage of a dynamics algorithm is as follows:
 
 ```
 >>> ground_truth = nx.read_edgelist("ground_truth.txt")
@@ -79,5 +77,4 @@ This produces a numpy array of time series data.
 
 # Contributing
 
-Contributing guidelines can be found in
-[CONTRIBUTING.md](CONTRIBUTING.md).
+Contributing guidelines can be found in [CONTRIBUTING.md](CONTRIBUTING.md).

@@ -88,7 +88,7 @@ def threshold_on_quantile(mat, **kwargs):
         quantile = 0.9
 
     if kwargs.get('remove_self_loops', True):
-        np.fill_diagonal(A, 0)
+        np.fill_diagonal(mat, 0)
 
     if quantile != 0:
         thresholded_mat = mat * (mat > np.percentile(mat, quantile * 100))

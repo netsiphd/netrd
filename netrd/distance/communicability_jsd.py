@@ -22,6 +22,7 @@ import networkx as nx
 import numpy as np
 import scipy as sp
 from .base import BaseDistance
+from ..utilities import threshold, ensure_undirected
 
 
 class CommunicabilityJSD(BaseDistance):
@@ -82,6 +83,9 @@ class CommunicabilityJSD(BaseDistance):
                012319.
 
         """
+
+        G1 = ensure_undirected(G1)
+        G2 = ensure_undirected(G2)
 
         N1 = G1.number_of_nodes()
         N2 = G2.number_of_nodes()

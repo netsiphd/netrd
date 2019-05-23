@@ -34,7 +34,7 @@ class LotkaVolterra(BaseDynamics):
 
         The Lotka-Volterra model was designed to describe dynamics of
         species abundances in an ecosystem. Species :math:`i`'s abundance
-        change per time is :math:`\frac{d X_i}{d t} = r_i * X_i * \left(1 -
+        change per time is :math:`\frac{d X_i}{d t} = r_i X_i \left(1 -
         \frac{X_i}{K_i} + \sum_{j \neq i} W_{ij} \frac{X_j}{K_i}\right)`
         where :math:`r_i` and :math:`K_i` are the growth rate and the
         carrying capacity of species :math:`i` respectively, and

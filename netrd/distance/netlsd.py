@@ -13,6 +13,7 @@ import networkx as nx
 import scipy.linalg as spl
 
 from .base import BaseDistance
+from ..utilities import ensure_undirected
 
 
 class NetLSD(BaseDistance):
@@ -60,6 +61,10 @@ class NetLSD(BaseDistance):
         assert isinstance(
             normalization, str
         ), 'Normalization parameter must be of string type'
+
+
+        G1 = ensure_undirected(G1)
+        G2 = ensure_undirected(G2)
 
         lap1 = nx.normalized_laplacian_matrix(G1)
         lap2 = nx.normalized_laplacian_matrix(G2)

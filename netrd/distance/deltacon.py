@@ -18,6 +18,7 @@ Submitted as part of the 2019 NetSI Collabathon.
 import numpy as np
 import networkx as nx
 from .base import BaseDistance
+from ..utilities import ensure_undirected
 
 
 class DeltaCon(BaseDistance):
@@ -68,6 +69,9 @@ class DeltaCon(BaseDistance):
 
         if not exact and g is None:
             g = N
+
+        G1 = ensure_undirected(G1)
+        G2 = ensure_undirected(G2)
 
         A1 = nx.to_numpy_array(G1)
         L1 = nx.laplacian_matrix(G1).toarray()

@@ -29,12 +29,17 @@ Please include in your bug report:
 Look through the GitHub issues for bugs. Anything tagged with "bug" and "help
 wanted" is open to whoever wants to implement it.
 
-#### Implement Features
+#### Implement Features or New Methods
 
 Look through the GitHub issues for features. Anything tagged with "enhancement"
-and "help wanted" is open to whoever wants to implement it.
+and "help wanted" is open to whomever wants to implement it. If you know of a 
+method that is implemented in another programming language, feel free to 
+translate it into python here. If you don't want to translate it yourself, feel 
+free to add an issue at https://github.com/netsiphd/netrd/issues. If you have 
+read through this document and still have questions, also open an issue. When 
+in doubt, open an issue.
 
-#### Improve documentation
+#### Improve Documentation
 
 Documentation is just as important as the code it documents. Please feel
 free to submit PRs that are focused on fixing, improving, correcting, or

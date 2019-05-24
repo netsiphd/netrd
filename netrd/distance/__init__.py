@@ -19,6 +19,7 @@ from .communicability_jsd import CommunicabilityJSD
 nbd = False
 try:
     from .nbd import NonBacktrackingSpectral
+
     nbd = True
 except ImportError as e:
     pass

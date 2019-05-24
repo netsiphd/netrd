@@ -6,7 +6,7 @@ with open('requirements.txt') as file:
 
 setuptools.setup(
     name='netrd',
-    version='0.0.3',
+    version='0.1.0',
     author='NetSI 2019 Collabathon Team',
     author_email='stefanmccabe@gmail.com',
     description='Repository of network reconstruction, distance, and simulation methods',

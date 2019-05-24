@@ -2,7 +2,7 @@ import setuptools
 
 setuptools.setup(
     name='netrd',
-    version='0.0.1',
+    version='0.1.0',
     author='NetSI 2019 Collabathon Team',
     author_email='leo@leotrs.com',
     description='Repository of network reconstruction and distance methods',

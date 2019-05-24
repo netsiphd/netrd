@@ -29,10 +29,21 @@ Please include in your bug report:
 Look through the GitHub issues for bugs. Anything tagged with "bug" and "help
 wanted" is open to whoever wants to implement it.
 
-#### Implement Features
+#### Implement Features or New Methods
 
 Look through the GitHub issues for features. Anything tagged with "enhancement"
-and "help wanted" is open to whoever wants to implement it.
+and "help wanted" is open to whomever wants to implement it. If you know of a 
+method that is implemented in another programming language, feel free to 
+translate it into python here. If you don't want to translate it yourself, feel 
+free to add an issue at https://github.com/netsiphd/netrd/issues. If you have 
+read through this document and still have questions, also open an issue. When 
+in doubt, open an issue.
+
+#### Improve Documentation
+
+Documentation is just as important as the code it documents. Please feel
+free to submit PRs that are focused on fixing, improving, correcting, or
+refactoring documentation. Documentation lives [here](https://netrd.readthedocs.io/en/latest/).
 
 #### Submit Feedback
 
@@ -143,6 +154,14 @@ Once you have completed the above steps, you are ready to choose an algorithm to
     `netrd/reconstruction/__init__.py` instead, with the same line.
 
    This line tells the `netrd` package where to find your code.
+
+3. In order for your contribution to have automated documentation
+   generated, you need to edit the file
+   `netrd/doc/source/distance.rst`. (Or
+   `netrd/doc/source/reconstruction.rst`). Under the 'Available distances'
+   heading you will find a list of currently implemented methods inside a
+   `.. autosummary` command. Add the bane of your algorithm to this list,
+   in alphabetical order.
 
 4. Go back to editing <your_file_name>. After the line that starts with
    `class`, there is a function called `dist` for distances

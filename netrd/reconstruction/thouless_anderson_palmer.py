@@ -15,7 +15,9 @@ from scipy import linalg
 from ..utilities import create_graph, threshold
 
 
-class ThoulessAndersonPalmerReconstructor(BaseReconstructor):
+class ThoulessAndersonPalmer(BaseReconstructor):
+    """Uses Thouless-Anderson-Palmer mean field approximation."""
+
     def fit(self, TS, threshold_type='range', **kwargs):
         """Infer inter-node coupling weights using a Thouless-Anderson-Palmer mean
         field approximation.
@@ -24,7 +26,7 @@ class ThoulessAndersonPalmerReconstructor(BaseReconstructor):
         in the regime of large sample sizes and small coupling variability.
         However, this method leads to poor inference results in the regime
         of small sample sizes and/or large coupling variability." For
-        details see [1].
+        details see [1]_.
 
         The results dictionary also stores the weight matrix as
         `'weights_matrix'` and the thresholded version of the weight matrix
@@ -41,7 +43,7 @@ class ThoulessAndersonPalmerReconstructor(BaseReconstructor):
             Which thresholding function to use on the matrix of
             weights. See `netrd.utilities.threshold.py` for
             documentation. Pass additional arguments to the thresholder
-            using `**kwargs`.
+            using ``**kwargs``.
 
         Returns
         -------
@@ -51,7 +53,7 @@ class ThoulessAndersonPalmerReconstructor(BaseReconstructor):
         References
         -----------
 
-        [1] https://github.com/nihcompmed/network-inference/blob/master/sphinx/codesource/inference.py
+        .. [1] https://github.com/nihcompmed/network-inference/blob/master/sphinx/codesource/inference.py
 
         """
 

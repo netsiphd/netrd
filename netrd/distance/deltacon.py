@@ -18,9 +18,12 @@ Submitted as part of the 2019 NetSI Collabathon.
 import numpy as np
 import networkx as nx
 from .base import BaseDistance
+from ..utilities import ensure_undirected
 
 
 class DeltaCon(BaseDistance):
+    """Compare matrices related to Fast Belief Propagation."""
+
     def dist(self, G1, G2, exact=True, g=None):
         """DeltaCon is based on the Matsusita between matrices created from fast
         belief propagation (FBP) on graphs G1 and G2.
@@ -50,12 +53,25 @@ class DeltaCon(BaseDistance):
         dist (float)
             the distance between G1 and G2.
 
+        References
+        ----------
+
+        .. [1] Koutra, Danai, Joshua T. Vogelstein, and Christos
+               Faloutsos. 2013. "Deltacon: A Principled Massive-Graph
+               Similarity Function." In Proceedings of the 2013 SIAM
+               International Conference on Data Mining, 162–70. Society for
+               Industrial and Applied
+               Mathematics. https://doi.org/10.1137/1.9781611972832.18.
+
         """
         assert G1.number_of_nodes() == G2.number_of_nodes()
         N = G1.number_of_nodes()
 
         if not exact and g is None:
             g = N
+
+        G1 = ensure_undirected(G1)
+        G2 = ensure_undirected(G2)
 
         A1 = nx.to_numpy_array(G1)
         L1 = nx.laplacian_matrix(G1).toarray()

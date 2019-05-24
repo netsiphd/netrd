@@ -1,5 +1,5 @@
 class BaseReconstructor:
-    """Base class for graph reconstruction algorithms.
+    r"""Base class for graph reconstruction algorithms.
 
     The basic usage of a graph reconstruction algorithm is as follows:
 
@@ -7,14 +7,15 @@ class BaseReconstructor:
     >>> G = reconstructor.fit(TS, <some_params>)
     >>> # or alternately, G = reconstructor.results['graph']
 
-    Here, `TS` is an $N \times L$ numpy array consisting of $L$
-    observations for each of $N$ sensors. This constrains the graphs to have
-    integer-valued nodes.
+    Here, `TS` is an :math:`N \times L` numpy array consisting of :math:`L`
+    observations for each of :math:`N` sensors. This constrains the graphs
+    to have integer-valued nodes.
 
-    The `results` dict object, in addition to containing the graph object,
-    may also contain objects created as a side effect of reconstructing
-    the network, which may be useful for debugging or considering goodness
-    of fit. What is returned will vary between reconstruction algorithms.
+    The ``results`` dict object, in addition to containing the graph
+    object, may also contain objects created as a side effect of
+    reconstructing the network, which may be useful for debugging or
+    considering goodness of fit. What is returned will vary between
+    reconstruction algorithms.
 
     """
 

@@ -1,10 +1,11 @@
 """
 resistance_perturbation.py
---------------
+--------------------------
+
 Graph distance based on resistance perturbation (https://arxiv.org/abs/1605.01091v2)
 
 author: Ryan J. Gallagher & Jessica T. Davis
-email:
+
 Submitted as part of the 2019 NetSI Collabathon.
 
 """
@@ -17,6 +18,8 @@ from ..utilities import ensure_undirected
 
 
 class ResistancePerturbation(BaseDistance):
+    """Compares the resistance matrices."""
+
     def dist(self, G1, G2, p=2):
         r"""The p-norm of the difference between two graph resistance matrices.
 
@@ -60,7 +63,7 @@ class ResistancePerturbation(BaseDistance):
 
         p (float or str, optional)
             :math:`p`-norm to take of the difference between the resistance
-            matrices. Specify :math:`np.inf` to take :math:`\infty`-norm.
+            matrices. Specify ``np.inf`` to take :math:`\infty`-norm.
 
         Returns
         -------
@@ -70,7 +73,7 @@ class ResistancePerturbation(BaseDistance):
         References
         ----------
 
-        [1] https://arxiv.org/abs/1605.01091v2
+        .. [1] https://arxiv.org/abs/1605.01091v2
 
         """
         # Coerce to undirected, if needed.

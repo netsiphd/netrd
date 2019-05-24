@@ -8,14 +8,22 @@ from .hamming_ipsen_mikhailov import HammingIpsenMikhailov
 from .resistance_perturbation import ResistancePerturbation
 from .netsimile import NetSimile
 from .netlsd import NetLSD
-from .laplacian_spectral_method import LaplacianSpectralMethod
+from .laplacian_spectral_method import LaplacianSpectral
 from .polynomial_dissimilarity import PolynomialDissimilarity
-from .nbd import NBD
 from .degree_divergence import DegreeDivergence
 from .onion_divergence import OnionDivergence
 from .deltacon import DeltaCon
 from .quantum_jsd import QuantumJSD
 from .communicability_jsd import CommunicabilityJSD
+
+nbd = False
+try:
+    from .nbd import NonBacktrackingSpectral
+
+    nbd = True
+except ImportError as e:
+    pass
+
 
 # from .dk2_distance import dK2Distance
 
@@ -29,12 +37,14 @@ __all__ = [
     'ResistancePerturbation',
     'NetSimile',
     'NetLSD',
-    'LaplacianSpectralMethod',
+    'LaplacianSpectral',
     'PolynomialDissimilarity',
-    'NBD',
     'DegreeDivergence',
     'OnionDivergence',
     'DeltaCon',
     'QuantumJSD',
     'CommunicabilityJSD',
 ]
+
+if nbd:
+    __all__ += 'NonBacktrackingSpectral'

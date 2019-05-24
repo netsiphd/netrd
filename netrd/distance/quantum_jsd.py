@@ -23,6 +23,8 @@ from .base import BaseDistance
 
 
 class QuantumJSD(BaseDistance):
+    """Compares the spectral entropies of the density matrices."""
+
     def dist(self, G1, G2, beta=0.1, q=None):
         r"""Square root of the quantum :math:`q`-Jenson-Shannon divergence between two
         graphs.
@@ -91,10 +93,17 @@ class QuantumJSD(BaseDistance):
         -------
 
         dist (float)
-            the distance between G1 and G2.
+            the distance between `G1` and `G2`.
+
+        References
+        ----------
+
+        .. [1] De Domenico, Manlio, and Jacob Biamonte. 2016. "Spectral
+               Entropies as Information-Theoretic Tools for Complex Network
+               Comparison." Physical Review X 6
+               (4). https://doi.org/10.1103/PhysRevX.6.041062.
 
         """
-
         if beta <= 0:
             raise ValueError("beta must be positive.")
 

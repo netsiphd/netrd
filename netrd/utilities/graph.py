@@ -4,9 +4,9 @@ graph.py
 
 Utilities for creating and interacting with graph objects.
 
-author: Stefan McCabe
-email: stefanmccabe at gmail dot com
-Submitted as part of the 2019 NetSI Collabathon
+author: Stefan McCabe (stefanmccabe at gmail dot com)
+
+Submitted as part of the 2019 NetSI Collabathon.
 
 """
 import warnings
@@ -15,20 +15,26 @@ import networkx as nx
 
 
 def create_graph(A, create_using=None, remove_self_loops=True):
-    """
-    Function for flexibly creating a networkx graph from a numpy array.
+    """Flexibly creating a networkx graph from a numpy array.
 
     Parameters
     ----------
-    A (np.ndarray): A numpy array.
-    create_using (nx.Graph or None): Create the graph using a specific networkx graph.
-    Can be used for forcing an asymmetric matrix to create an undirected graph, for example.
-    remove_self_loops (bool): If True, remove the diagonal of the matrix before creating the
-    graph object.
+    A (np.ndarray)
+        A numpy array.
+
+    create_using (nx.Graph or None)
+        Create the graph using a specific networkx graph. Can be used for
+        forcing an asymmetric matrix to create an undirected graph, for
+        example.
+
+    remove_self_loops (bool)
+        If True, remove the diagonal of the matrix before creating the
+        graph object.
 
     Returns
     -------
-    G: A graph, typically a nx.Graph or nx.DiGraph.
+    G
+        A graph, typically a nx.Graph or nx.DiGraph.
 
     """
     if remove_self_loops:
@@ -46,24 +52,23 @@ def create_graph(A, create_using=None, remove_self_loops=True):
 
 
 def ensure_undirected(G):
-    '''
-    Ensure the graph G is undirected. If it is not, coerce it to undirected
-    and warn the user.
+    """Ensure the graph G is undirected.
+
+    If it is not, coerce it to undirected and warn the user.
 
     Parameters
     ----------
-
-    G (networkx graph): The graph to be checked
+    G (networkx graph)
+        The graph to be checked
 
     Returns
     -------
 
-    G (networkx graph): Undirected version of the input graph
+    G (nx.Graph)
+        Undirected version of the input graph
 
-    '''
-
+    """
     if nx.is_directed(G):
-        G = nx.to_undirected(G)
+        G = G.to_undirected(as_view=False)
         warnings.warn("Coercing directed graph to undirected.", RuntimeWarning)
-
     return G

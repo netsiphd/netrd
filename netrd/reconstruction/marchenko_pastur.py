@@ -17,6 +17,8 @@ from ..utilities import create_graph, threshold
 
 
 class MarchenkoPastur(BaseReconstructor):
+    """Uses Marchenko-Pastur law to remove noise."""
+
     def fit(
         self,
         TS,
@@ -30,7 +32,7 @@ class MarchenkoPastur(BaseReconstructor):
         A signed graph is built by constructing a projection of the
         empirical correlation matrix generated from the time series data
         after having removed noisy components.  This method combines the
-        results presented in [1],[2], and [3].
+        results presented in [1]_, [2]_, and [3]_.
 
         The results dictionary also stores the weight matrix as
         `'weights_matrix'` and the thresholded version of the weight matrix
@@ -59,7 +61,7 @@ class MarchenkoPastur(BaseReconstructor):
             (str): Which thresholding function to use on the matrix of
             weights. See `netrd.utilities.threshold.py` for
             documentation. Pass additional arguments to the thresholder
-            using `**kwargs`.
+            using ``**kwargs``.
 
         Returns
         -------
@@ -114,18 +116,21 @@ class MarchenkoPastur(BaseReconstructor):
 
         References
         ----------
-        [1] Marchenko, V. A., & Pastur, L. A. (1967). Distribution of eigenvalues for
-        some sets of random matrices. Matematicheskii Sbornik, 114(4), 507-536.
-        http://www.mathnet.ru/links/a8d2a49dec161f50c944d9a96298c35a/sm4101.pdf
+        .. [1] Marchenko, V. A., & Pastur, L. A. (1967). Distribution of
+               eigenvalues for some sets of random
+               matrices. Matematicheskii Sbornik, 114(4), 507-536.
+               http://www.mathnet.ru/links/a8d2a49dec161f50c944d9a96298c35a/sm4101.pdf
 
-        [2] Laloux, L., Cizeau, P., Bouchaud, J. P., & Potters, M. (1999). Noise dressing
-        of financial correlation matrices. Physical review letters, 83(7), 1467.
-        https://journals.aps.org/prl/abstract/10.1103/PhysRevLett.83.1467
+        .. [2] Laloux, L., Cizeau, P., Bouchaud, J. P., & Potters,
+               M. (1999). Noise dressing of financial correlation
+               matrices. Physical review letters, 83(7), 1467.
+               https://journals.aps.org/prl/abstract/10.1103/PhysRevLett.83.1467
 
-        [3] Bonanno, G., Caldarelli, G., Lillo, F., Micciche, S., Vandewalle, N., & Mantegna,
-        R. N. (2004). Networks of equities in financial markets. The European Physical Journal
-        B, 38(2), 363-371.
-        https://link.springer.com/article/10.1140/epjb/e2004-00129-6
+        .. [3] Bonanno, G., Caldarelli, G., Lillo, F., Micciche, S.,
+               Vandewalle, N., & Mantegna, R. N. (2004). Networks of
+               equities in financial markets. The European Physical Journal
+               B, 38(2), 363-371.
+               https://link.springer.com/article/10.1140/epjb/e2004-00129-6
 
         """
         N, L = TS.shape

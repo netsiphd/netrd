@@ -13,9 +13,12 @@ import networkx as nx
 import scipy.linalg as spl
 
 from .base import BaseDistance
+from ..utilities import ensure_undirected
 
 
 class NetLSD(BaseDistance):
+    """Compares spectral node signature distributions."""
+
     def dist(self, G1, G2, normalization=None, timescales=None):
         """NetLSD: Hearing the Shape of a Graph.
 
@@ -41,13 +44,14 @@ class NetLSD(BaseDistance):
         Returns
         -------
 
-        dist (float): the distance between G1 and G2.
+        dist (float)
+            the distance between `G1` and `G2`.
 
         References
         ----------
 
-        [1] A. Tsitsulin, D. Mottin, P. Karras, A. Bronstein &
-        E. Müller. NetLSD: Hearing the Shape of a Graph. KDD 2018
+        .. [1] A. Tsitsulin, D. Mottin, P. Karras, A. Bronstein &
+               E. Müller. NetLSD: Hearing the Shape of a Graph. KDD 2018
 
         """
         if normalization is None:
@@ -57,6 +61,9 @@ class NetLSD(BaseDistance):
         assert isinstance(
             normalization, str
         ), 'Normalization parameter must be of string type'
+
+        G1 = ensure_undirected(G1)
+        G2 = ensure_undirected(G2)
 
         lap1 = nx.normalized_laplacian_matrix(G1)
         lap2 = nx.normalized_laplacian_matrix(G2)

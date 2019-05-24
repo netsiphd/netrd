@@ -20,6 +20,8 @@ from .base import BaseDistance
 
 
 class NetSimile(BaseDistance):
+    """Compares node signature distributions."""
+
     def dist(self, G1, G2):
         """A scalable approach to network similarity.
 
@@ -39,14 +41,15 @@ class NetSimile(BaseDistance):
         -------
 
         dist (float)
-            the distance between G1 and G2.
+            the distance between `G1` and `G2`.
 
         References
         ----------
 
-        [1] Michele Berlingerio, Danai Koutra, Tina Eliassi-Rad, Christos
-        Faloutsos: NetSimile: A Scalable Approach to Size-Independent
-        Network Similarity. CoRR abs/1209.2684 (2012)
+        .. [1] Michele Berlingerio, Danai Koutra, Tina Eliassi-Rad,
+               Christos Faloutsos: NetSimile: A Scalable Approach to
+               Size-Independent Network Similarity. CoRR abs/1209.2684
+               (2012)
 
         """
         # NOTE: the measure only works for undirected

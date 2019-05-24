@@ -12,7 +12,9 @@ import networkx as nx
 from ..utilities import create_graph, threshold
 
 
-class MaximumLikelihoodEstimationReconstructor(BaseReconstructor):
+class MaximumLikelihoodEstimation(BaseReconstructor):
+    """Uses maximum likelihood estimation."""
+
     def fit(self, TS, rate=1.0, stop_criterion=True, threshold_type='degree', **kwargs):
         """Infer inter-node coupling weights using maximum likelihood estimation
         methods.
@@ -37,7 +39,7 @@ class MaximumLikelihoodEstimationReconstructor(BaseReconstructor):
             Which thresholding function to use on the matrix of
             weights. See `netrd.utilities.threshold.py` for
             documentation. Pass additional arguments to the thresholder
-            using `**kwargs`.
+            using '`**kwargs`'.
 
         Returns
         -------
@@ -47,7 +49,7 @@ class MaximumLikelihoodEstimationReconstructor(BaseReconstructor):
         References
         ----------
 
-        [1] https://github.com/nihcompmed/network-inference/blob/master/sphinx/codesource/inference.py
+        .. [1] https://github.com/nihcompmed/network-inference/blob/master/sphinx/codesource/inference.py
 
         """
 

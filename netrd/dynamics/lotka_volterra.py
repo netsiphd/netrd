@@ -2,7 +2,7 @@
 lotka_volterra.py
 ----------------
 
-Implementation to simulate a Lotka-Vottera model on a network.
+Implementation to simulate a Lotka-Volterra model on a network.
 
 author: Chia-Hung Yang
 Submitted as part of the 2019 NetSI Collabathon.
@@ -16,6 +16,8 @@ from scipy.integrate import ode
 
 
 class LotkaVolterra(BaseDynamics):
+    """Lotka-Volterra dynamics of species abundance."""
+
     def simulate(
         self,
         G,
@@ -28,11 +30,11 @@ class LotkaVolterra(BaseDynamics):
         stochastic=True,
         pertb=None,
     ):
-        r"""Simulate time series on a network from the Lotka-Vottera model.
+        r"""Simulate time series on a network from the Lotka-Volterra model.
 
-        The Lotka-Vottera model was designed to describe dynamics of
+        The Lotka-Volterra model was designed to describe dynamics of
         species abundances in an ecosystem. Species :math:`i`'s abundance
-        change per time is :math:`\frac{d X_i}{d t} = r_i * X_i * \left(1 -
+        change per time is :math:`\frac{d X_i}{d t} = r_i X_i \left(1 -
         \frac{X_i}{K_i} + \sum_{j \neq i} W_{ij} \frac{X_j}{K_i}\right)`
         where :math:`r_i` and :math:`K_i` are the growth rate and the
         carrying capacity of species :math:`i` respectively, and

@@ -81,8 +81,10 @@ def test_quantum_jsd():
 
 def test_directed_input():
     with warnings.catch_warnings():
-        warnings.filterwarnings("ignore", message="Coercing directed graph to undirected.")
-        G = nx.fast_gnp_random_graph(100, .1, directed=True)
+        warnings.filterwarnings(
+            "ignore", message="Coercing directed graph to undirected."
+        )
+        G = nx.fast_gnp_random_graph(100, 0.1, directed=True)
 
         for label, obj in distance.__dict__.items():
             if label in ['NonBacktrackingSpectral']:
@@ -106,4 +108,3 @@ def test_directed_input():
             if isinstance(obj, type) and BaseDistance in obj.__bases__:
                 dist = obj().dist(G1, G2)
                 assert dist > 0.0
-

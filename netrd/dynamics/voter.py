@@ -54,7 +54,7 @@ class VoterModel(BaseDynamics):
         if noise is None:
             noise = 0
         elif noise == 'automatic' or noise == 'auto':
-            noise = 1/N
+            noise = 1 / N
         elif not isinstance(noise, (int, float)):
             raise ValueError("noise must be a number, 'automatic', or None")
 

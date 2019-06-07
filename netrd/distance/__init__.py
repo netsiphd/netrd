@@ -47,4 +47,4 @@ __all__ = [
 ]
 
 if nbd:
-    __all__ += 'NonBacktrackingSpectral'
+    __all__ += ['NonBacktrackingSpectral']

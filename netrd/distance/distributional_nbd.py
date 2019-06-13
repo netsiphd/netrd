@@ -27,10 +27,20 @@ class DistributionalNBD(BaseDistance):
     arXiv:1812.05457 / 10.1103/PhysRevE.99.052309
 
     """
-    VECTOR_DISTANCES = {'euclidean': euclidean,
-                        'chebyshev': chebyshev}
 
-    def dist(self, G1, G2, sparse=False, shave=True, keep_evals=False, k=None, vector_distance='euclidean', **kwargs):
+    VECTOR_DISTANCES = {'euclidean': euclidean, 'chebyshev': chebyshev}
+
+    def dist(
+        self,
+        G1,
+        G2,
+        sparse=False,
+        shave=True,
+        keep_evals=False,
+        k=None,
+        vector_distance='euclidean',
+        **kwargs
+    ):
         """
         Distributional Non-backtracking Spectral Distance.
 
@@ -87,6 +97,7 @@ class DistributionalNBD(BaseDistance):
 
         return distance_metric(distribution_1, distribution_2)
 
+
 def shave_graph(graph):
     """
     Returns the two-core of a graph.
@@ -104,6 +115,7 @@ def shave_graph(graph):
         if len(to_remove) == 0:
             break
     return core
+
 
 def pseudo_hashimoto(graph):
     """
@@ -139,6 +151,7 @@ def pseudo_hashimoto(graph):
     pseudo = sp.bmat([[None, degrees - ident], [-ident, adj]])
     return pseudo.asformat('csr')
 
+
 def reduced_hashimoto(graph, shave=True, sparse=True):
     """
     
@@ -167,7 +180,9 @@ def reduced_hashimoto(graph, shave=True, sparse=True):
         if len(graph) == 0:
             # We can provide a workaround for this case, however it is best
             # that it is brought to the attention of the user.
-            raise Exception("Graph two-core is empty: non-backtracking methods unsuitable.")
+            raise Exception(
+                "Graph two-core is empty: non-backtracking methods unsuitable."
+            )
 
     B = pseudo_hashimoto(graph)
 
@@ -175,6 +190,7 @@ def reduced_hashimoto(graph, shave=True, sparse=True):
         B = B.todense()
 
     return B
+
 
 def nb_eigenvalues(B, k=None, **kwargs):
     """
@@ -188,43 +204,44 @@ def nb_eigenvalues(B, k=None, **kwargs):
         return np.linalg.eigvals(B)
 
     elif isinstance(B, sp.csr_matrix):
-        np.random.seed(1) # Ensures that eigenvalue calculation is deterministic.
-        return sp.linalg.eigs(B, 
-                              k=k,
-                              v0=np.random.random(B.shape[0]),
-                              return_eigenvectors=False)
+        np.random.seed(1)  # Ensures that eigenvalue calculation is deterministic.
+        return sp.linalg.eigs(
+            B, k=k, v0=np.random.random(B.shape[0]), return_eigenvectors=False
+        )
     else:
         raise Exception("Matrix must be of type np.ndarray or scipy.sparse.csr")
 
-def logr(r,rmax):
+
+def logr(r, rmax):
     """
     Logarithm to the base r. 
 
     NOTE:Maps zero to zero as a special case.
     """
-    
+
     if r == 0:
         return 0
-    return np.log(r)/np.log(rmax)
-        
+    return np.log(r) / np.log(rmax)
+
+
 def spectral_distribution(points, cumulative=True):
     """ 
     Returns the distribution of complex values (in r,theta-space).
     """
-    
+
     points = np.array([(np.abs(z), np.angle(z)) for z in points])
     r, theta = np.split(points, 2, axis=1)
-    
+
     r = np.array([logr(x, r.max()) for x in r])
-       
-    Z,R,THETA = np.histogram2d(x=r[:,0], 
-                               y=theta[:,0], 
-                               bins=(np.linspace(0,1,101),
-                                     np.linspace(0,np.pi,101))
-                              )
-    
+
+    Z, R, THETA = np.histogram2d(
+        x=r[:, 0],
+        y=theta[:, 0],
+        bins=(np.linspace(0, 1, 101), np.linspace(0, np.pi, 101)),
+    )
+
     if cumulative:
         Z = Z.cumsum(axis=0).cumsum(axis=1)
-        Z = Z/Z.max()
-        
+        Z = Z / Z.max()
+
     return Z.flatten()

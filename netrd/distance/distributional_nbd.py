@@ -2,7 +2,7 @@
 distributional_nbd.py
 ------
 
-Non-backtracking spectral distance between two graphs.
+Distributional Non-backtracking Spectral Distance.
 
 """
 
@@ -16,14 +16,23 @@ from .base import BaseDistance
 
 class DistributionalNBD(BaseDistance):
     """
+    Distributional Non-backtracking Spectral Distance.
 
+    Computes the distance between two graphs using the empirical spectral density
+    of the non-backtracking operator.
+
+    See: 
+    "Graph Comparison via the Non-backtracking Spectrum" 
+    A. Mellor & A. Grusovin
+    arXiv:1812.05457 / 10.1103/PhysRevE.99.052309
 
     """
     VECTOR_DISTANCES = {'euclidean': euclidean,
                         'chebyshev': chebyshev}
 
     def dist(self, G1, G2, sparse=False, shave=True, keep_evals=False, k=None, vector_distance='euclidean', **kwargs):
-        """Non-Backtracking Distance between two graphs.
+        """
+        Distributional Non-backtracking Spectral Distance.
 
         Parameters
         ----------
@@ -31,19 +40,26 @@ class DistributionalNBD(BaseDistance):
         G1, G2 (nx.Graph)
             The two graphs to compare.
 
-        topk (int or 'automatic')
-            The number of eigenvalues to compute. If `'automatic'` (default),
-            use only the eigenvalues that are larger than the square root
-            of the largest eigenvalue.  Note this may yield different
-            number of eigenvalues for each graph.
+        sparse (bool)
+            If sparse, matrices and eigenvalues found using sparse methods.
+            If sparse, parameter 'k' should also be specified.
+            Default: False
 
-        batch (int)
-            If topk is `'automatic'`, this is the number of eigenvalues to
-            compute each time until the condition is met. Default
-            :math:`100`.
+        k (int)
+            The number of largest eigenvalues to be calculated for the
+            spectral density.
 
-        tol (float)
-            Numerical tolerance when computing eigenvalues.
+        vector_distance (str)
+            The distance measure used to compare two empirical distributions.
+            Currently available are 'euclidean' and 'chebyshev', implemented 
+            using SciPy.
+            Default: 'euclidean'
+
+        keep_evals (bool)
+            If True, stores the eigenvalues of the reduced non-backtracking
+            matrix in self.results['evals']
+            Default: False
+
 
         Returns
         -------
@@ -72,12 +88,13 @@ class DistributionalNBD(BaseDistance):
         return distance_metric(distribution_1, distribution_2)
 
 def shave_graph(graph):
-    """Return the 2-core of a graph.
+    """
+    Returns the two-core of a graph.
 
     Iteratively remove the nodes of degree 0 or 1, until all nodes have
     degree at least 2.
 
-    Note: duplicated from "nbd.py" to avoid excessive imports.
+    NOTE: duplicated from "nbd.py" to avoid excessive imports.
 
     """
     core = graph.copy()
@@ -89,7 +106,8 @@ def shave_graph(graph):
     return core
 
 def pseudo_hashimoto(graph):
-    """Return the pseudo-Hashimoto matrix.
+    """
+    Return the pseudo-Hashimoto matrix.
 
     The pseudo Hashimoto matrix of a graph is the block matrix defined as
     B' = [0  D-I]
@@ -109,7 +127,7 @@ def pseudo_hashimoto(graph):
 
     A sparse matrix in csr format.
 
-    Note: duplicated from "nbd.py" to avoid excessive imports.
+    NOTE: duplicated from "nbd.py" to avoid excessive imports.
 
     """
     # Note: the rows of nx.adjacency_matrix(graph) are in the same order as
@@ -123,6 +141,25 @@ def pseudo_hashimoto(graph):
 
 def reduced_hashimoto(graph, shave=True, sparse=True):
     """
+    
+
+    Parameters
+    ----------
+
+    shave (bool)
+        If True, first reduce the graph to its two-core.
+        Else graph processed in its entirety.
+
+    sparse (bool)
+        If True, returned matrix will be sparse,
+        else it will be dense.
+
+    Returns
+    -------
+
+    np.ndarray/sp.csr_matrix
+        The reduced Hashimoto Matrix.
+
     """
 
     if shave:
@@ -141,6 +178,10 @@ def reduced_hashimoto(graph, shave=True, sparse=True):
 
 def nb_eigenvalues(B, k=None, **kwargs):
     """
+    Calculates the eigenvalues of a matrix B.
+
+    Detects whether B is sparse/dense and uses the appropriate method.
+    If B is sparse then parameter 'k' should be provided.
     """
 
     if isinstance(B, np.ndarray):
@@ -156,14 +197,20 @@ def nb_eigenvalues(B, k=None, **kwargs):
         raise Exception("Matrix must be of type np.ndarray or scipy.sparse.csr")
 
 def logr(r,rmax):
-    """Logarithm to the base r. Maps zero to zero."""
+    """
+    Logarithm to the base r. 
+
+    NOTE:Maps zero to zero as a special case.
+    """
     
     if r == 0:
         return 0
     return np.log(r)/np.log(rmax)
         
 def spectral_distribution(points, cumulative=True):
-    """ Returns the distribution of complex values (in r,theta-space) """
+    """ 
+    Returns the distribution of complex values (in r,theta-space).
+    """
     
     points = np.array([(np.abs(z), np.angle(z)) for z in points])
     r, theta = np.split(points, 2, axis=1)

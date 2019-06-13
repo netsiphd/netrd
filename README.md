@@ -19,6 +19,15 @@ Some resources that maybe of interest:
 
 # Installation
 
+`netrd` is easy to install through pip:
+
+```
+pip install netrd
+```
+
+If you are thinking about contributing to `netrd`, you can install a
+development version by executing
+
 ```
 git clone https://github.com/netsiphd/netrd
 cd netrd

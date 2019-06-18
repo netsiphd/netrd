@@ -1,4 +1,4 @@
-``netrd``: A library for network {reconstruction, distances, dynamics}
+netrd: A library for network {reconstruction, distances, dynamics}
 ======================================================================
 
 This library provides a consistent, NetworkX-based interface to various

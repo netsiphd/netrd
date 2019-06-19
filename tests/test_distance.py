@@ -77,3 +77,34 @@ def test_quantum_jsd():
         dist1 = JSD.dist(G1, G2, beta=0.1, q=2)
         dist2 = JSD.dist(G2, G1, beta=0.1, q=2)
         assert np.isclose(dist1, dist2)
+
+
+def test_directed_input():
+    with warnings.catch_warnings():
+        warnings.filterwarnings(
+            "ignore", message="Coercing directed graph to undirected."
+        )
+        G = nx.fast_gnp_random_graph(100, 0.1, directed=True)
+
+        for label, obj in distance.__dict__.items():
+            if label in ['NonBacktrackingSpectral']:
+                continue
+            if isinstance(obj, type) and BaseDistance in obj.__bases__:
+                dist = obj().dist(G, G)
+                assert dist == 0.0
+
+        G1 = nx.fast_gnp_random_graph(100, 0.1, directed=True)
+        G2 = nx.fast_gnp_random_graph(100, 0.1, directed=True)
+
+        for label, obj in distance.__dict__.items():
+            if label in ['NonBacktrackingSpectral']:
+                continue
+            if isinstance(obj, type) and BaseDistance in obj.__bases__:
+                dist1 = obj().dist(G1, G2)
+                dist2 = obj().dist(G2, G1)
+                assert np.isclose(dist1, dist2)
+
+        for obj in distance.__dict__.values():
+            if isinstance(obj, type) and BaseDistance in obj.__bases__:
+                dist = obj().dist(G1, G2)
+                assert dist > 0.0

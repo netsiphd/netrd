@@ -15,6 +15,7 @@ from .onion_divergence import OnionDivergence
 from .deltacon import DeltaCon
 from .quantum_jsd import QuantumJSD
 from .communicability_jsd import CommunicabilityJSD
+from .distributional_nbd import DistributionalNBD
 
 nbd = False
 try:
@@ -44,6 +45,7 @@ __all__ = [
     'DeltaCon',
     'QuantumJSD',
     'CommunicabilityJSD',
+    'DistributionalNBD',
 ]
 
 if nbd:

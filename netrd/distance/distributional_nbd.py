@@ -36,7 +36,7 @@ class DistributionalNBD(BaseDistance):
         G2,
         sparse=False,
         shave=True,
-        keep_evals=False,
+        keep_evals=True,
         k=None,
         vector_distance='euclidean',
         **kwargs

@@ -21,6 +21,7 @@ same general usage as above.
     netrd.distance.CommunicabilityJSD
     netrd.distance.DegreeDivergence
     netrd.distance.DeltaCon
+    netrd.distance.DistributionalNBD
     netrd.distance.Frobenius
     netrd.distance.Hamming
     netrd.distance.HammingIpsenMikhailov

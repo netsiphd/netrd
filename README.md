@@ -3,7 +3,7 @@
 [![Travis](https://img.shields.io/travis/netsiphd/netrd.svg)](
     https://travis-ci.org/netsiphd/netrd)
 
-# `netrd`: A library for network {reconstruction, distances, dynamics}
+# netrd: A library for network {reconstruction, distances, dynamics}
 
 This library provides a consistent, NetworkX-based interface to various
 utilities for graph distances, graph reconstruction from time series data, and
@@ -18,6 +18,15 @@ Some resources that maybe of interest:
 * A [notebook](https://nbviewer.jupyter.org/github/netsiphd/netrd/blob/master/notebooks/00%20-%20netrd_introduction.ipynb) showing advanced usage
 
 # Installation
+
+`netrd` is easy to install through pip:
+
+```
+pip install netrd
+```
+
+If you are thinking about contributing to `netrd`, you can install a
+development version by executing
 
 ```
 git clone https://github.com/netsiphd/netrd

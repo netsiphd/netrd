@@ -104,7 +104,7 @@ def nbvals(graph, topk='automatic', batch=100, tol=1e-5):
         topk = batch
 
     N = matrix.shape[0]
-    v0 = np.array([1 / N for _ in range(N)])
+    v0 = np.ones(N) / N
     eigs = lambda k: sparse.linalg.eigs(
         matrix, k=k, v0=v0, return_eigenvectors=False, tol=tol
     )

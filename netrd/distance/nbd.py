@@ -102,7 +102,13 @@ def nbvals(graph, topk='automatic', batch=100, tol=1e-5):
         if 2 * graph.order() - 4 < batch:
             print('Using batch size {}'.format(batch))
         topk = batch
-    eigs = lambda k: sparse.linalg.eigs(matrix, k=k, return_eigenvectors=False, tol=tol)
+
+    N = matrix.shape[0]
+    v0 = np.ones(N) / N
+    eigs = lambda k: sparse.linalg.eigs(
+        matrix, k=k, v0=v0, return_eigenvectors=False, tol=tol
+    )
+
     count = 1
     while True:
         vals = eigs(topk * count)

@@ -37,10 +37,10 @@ class VoterModel(BaseDynamics):
         L (int)
             the length of the desired time series.
 
-        noise (float or None)
+        noise (float, str or None)
             if noise is present, with this probability a node's state will
             be randomly redrawn from :math:`\{-1, 1\}` independent of its
-            neighbors' states.
+            neighbors' states. If 'automatic', set noise to :math:`1/N`.
 
         Returns
         -------
@@ -50,6 +50,14 @@ class VoterModel(BaseDynamics):
         """
 
         N = G.number_of_nodes()
+
+        if noise is None:
+            noise = 0
+        elif noise == 'automatic' or noise == 'auto':
+            noise = 1 / N
+        elif not isinstance(noise, (int, float)):
+            raise ValueError("noise must be a number, 'automatic', or None")
+
         transitions = nx.to_numpy_array(G)
         transitions = transitions / np.sum(transitions, axis=0)
 
@@ -62,7 +70,7 @@ class VoterModel(BaseDynamics):
             TS[:, t] = TS[:, t - 1]
             for i in indices:
                 TS[i, t] = np.random.choice(TS[:, t], p=transitions[:, i])
-                if noise and np.random.rand() < noise:
+                if np.random.rand() < noise:
                     TS[i, t] = 1 if np.random.rand() < 0.5 else -1
 
         self.results['ground_truth'] = G

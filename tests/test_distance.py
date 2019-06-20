@@ -74,6 +74,7 @@ def test_quantum_jsd():
         dist2 = JSD.dist(G2, G1, beta=0.1, q=2)
         assert np.isclose(dist1, dist2)
 
+
 def test_directed_input():
     with warnings.catch_warnings():
         warnings.filterwarnings(

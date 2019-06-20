@@ -16,6 +16,9 @@ class BaseDistance:
     def __init__(self):
         self.results = {}
 
+    def __call__(self, *args, **kwargs):
+        return self.dist(*args, **kwargs)
+
     def dist(self, G1, G2):
         """Compute distance between two graphs.
 

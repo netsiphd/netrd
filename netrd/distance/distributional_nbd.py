@@ -204,9 +204,9 @@ def nb_eigenvalues(B, k=None, **kwargs):
         return np.linalg.eigvals(B)
 
     elif isinstance(B, sp.csr_matrix):
-        np.random.seed(1)  # Ensures that eigenvalue calculation is deterministic.
+        random_state = np.random.RandomState(1) # Ensures that eigenvalue calculation is deterministic. 
         return sp.linalg.eigs(
-            B, k=k, v0=np.random.random(B.shape[0]), return_eigenvectors=False
+            B, k=k, v0=random_state.random(B.shape[0]), return_eigenvectors=False
         )
     else:
         raise Exception("Matrix must be of type np.ndarray or scipy.sparse.csr")

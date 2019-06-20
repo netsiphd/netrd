@@ -86,7 +86,7 @@ class DistributionalNBD(BaseDistance):
 
         # Save spectrum
         if keep_evals:
-            self.results['evals'] = (evals1, evals2)
+            self.results['eigenvalues'] = (evals1, evals2)
 
         # Find rescaled spectral density
         distribution_1 = spectral_distribution(evals1)

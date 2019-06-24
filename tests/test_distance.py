@@ -29,7 +29,7 @@ def test_different_graphs():
     ## networks may have the same eigenvalues, thus a method that compares
     ## their eigenvalues would result in distance 0. However, this is very
     ## unlikely in the constructed case, so we rely on it for now.
-    G1 = nx.fast_gnp_random_graph(100, 0.1)
+    G1 = nx.fast_gnp_random_graph(100, 0.3)
     G2 = nx.barabasi_albert_graph(100, 5)
 
     for obj in distance.__dict__.values():
@@ -41,7 +41,7 @@ def test_different_graphs():
 def test_symmetry():
     """The distance between two graphs must be symmetric."""
     G1 = nx.barabasi_albert_graph(100, 4)
-    G2 = nx.fast_gnp_random_graph(100, 0.1)
+    G2 = nx.fast_gnp_random_graph(100, 0.3)
 
     for label, obj in distance.__dict__.items():
         if isinstance(obj, type) and BaseDistance in obj.__bases__:
@@ -63,13 +63,13 @@ def test_quantum_jsd():
         dist = JSD.dist(G, G, beta=0.1, q=2)
         assert np.isclose(dist, 0.0)
 
-        G1 = nx.fast_gnp_random_graph(100, 0.1)
+        G1 = nx.fast_gnp_random_graph(100, 0.3)
         G2 = nx.barabasi_albert_graph(100, 5)
         dist = JSD.dist(G1, G2, beta=0.1, q=2)
         assert dist > 0.0
 
         G1 = nx.barabasi_albert_graph(100, 4)
-        G2 = nx.fast_gnp_random_graph(100, 0.1)
+        G2 = nx.fast_gnp_random_graph(100, 0.3)
         dist1 = JSD.dist(G1, G2, beta=0.1, q=2)
         dist2 = JSD.dist(G2, G1, beta=0.1, q=2)
         assert np.isclose(dist1, dist2)
@@ -80,15 +80,15 @@ def test_directed_input():
         warnings.filterwarnings(
             "ignore", message="Coercing directed graph to undirected."
         )
-        G = nx.fast_gnp_random_graph(100, 0.1, directed=True)
+        G = nx.fast_gnp_random_graph(100, 0.3, directed=True)
 
         for label, obj in distance.__dict__.items():
             if isinstance(obj, type) and BaseDistance in obj.__bases__:
                 dist = obj().dist(G, G)
                 assert np.isclose(dist, 0.0)
 
-        G1 = nx.fast_gnp_random_graph(100, 0.1, directed=True)
-        G2 = nx.fast_gnp_random_graph(100, 0.1, directed=True)
+        G1 = nx.fast_gnp_random_graph(100, 0.3, directed=True)
+        G2 = nx.fast_gnp_random_graph(100, 0.3, directed=True)
 
         for label, obj in distance.__dict__.items():
             if isinstance(obj, type) and BaseDistance in obj.__bases__:

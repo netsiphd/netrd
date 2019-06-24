@@ -20,6 +20,7 @@ import networkx as nx
 import numpy as np
 from scipy.linalg import expm
 from .base import BaseDistance
+from ..utilities import ensure_undirected
 
 
 class QuantumJSD(BaseDistance):
@@ -109,6 +110,9 @@ class QuantumJSD(BaseDistance):
 
         if q and q >= 2:
             warnings.warn("JSD is only a metric for 0 ≤ q < 2.", RuntimeWarning)
+
+        G1 = ensure_undirected(G1)
+        G2 = ensure_undirected(G2)
 
         def density_matrix(A, beta):
             """

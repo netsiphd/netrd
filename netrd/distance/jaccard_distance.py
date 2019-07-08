@@ -2,7 +2,7 @@
 jaccard_distance.py
 --------------
 
-Graph distance based on https://scikit-learn.org/stable/modules/generated/sklearn.metrics.jaccard_similarity_score.html
+Graph distance based on the Jaccard index between edge sets.
 
 author: David Saffo
 email: saffo.d@husky.neu.edu
@@ -11,19 +11,29 @@ Submitted as part of the 2019 NetSI Collabathon.
 """
 
 from .base import BaseDistance
-from sklearn.metrics import jaccard_similarity_score
 import networkx as nx
 import numpy as np
 
 
 class JaccardDistance(BaseDistance):
-    """Average Jaccard index of the adjacency matrices."""
+    """Jaccard distance between edge sets."""
 
     def dist(self, G1, G2):
-        """Average jaccard index between two sparse matrices.
+        r"""Compute the Jaccard index between two graphs.
 
-        The `'results'` dictionary also stores a 2-tuple of the underlying
-        adjacency matrices in the key `'adjacency_matrices'`.
+        The Jaccard index between two sets
+
+        .. math::
+            J(A, B) = \frac{|A \cap B|}{|A \cup B|}
+
+        provides a measure of similarity between sets. Here, we use the edge
+        sets of two graphs. The index, a measure of similarity, is converted to
+        a distance
+
+        .. math::
+            d_J(A, B) = 1 - J(A, B)
+
+        for consistency with other graph distances.
 
         Parameters
         ----------
@@ -37,18 +47,14 @@ class JaccardDistance(BaseDistance):
         dist (float)
             the distance between G1 and G2.
 
-        References
-        ----------
-
-        [1] https://scikit-learn.org/stable/modules/model_evaluation.html#jaccard-similarity-score
-
-        [2] https://scikit-learn.org/stable/modules/generated/sklearn.metrics.jaccard_similarity_score.html
-
         """
-        ## jaccard_similarity_score requires binary matrices
-        adj1 = nx.to_numpy_array(G1, weight=None)
-        adj2 = nx.to_numpy_array(G2, weight=None)
-        dist = float(1 - jaccard_similarity_score(adj1, adj2))
-        self.results['dist'] = dist
-        self.results['adjacency_matrices'] = adj1, adj2
+
+        e1 = set(G1.edges)
+        e2 = set(G2.edges)
+        cup = set.union(e1, e2)
+        cap = set.intersection(e1, e2)
+
+        dist = 1 - len(cap) / len(cup)
+
+        self.results["dist"] = dist
         return dist

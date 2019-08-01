@@ -48,7 +48,10 @@ class DegreeDivergence(BaseDistance):
 
             """
             vec = np.array(list(dict(graph.degree()).values()))
-            max_deg = max(vec)
+            if next(graph.selfloop_edges(), False):
+                max_deg = len(graph)
+            else:
+                max_deg = len(graph) - 1
             counter = Counter(vec)
             hist = np.array([counter[v] for v in range(max_deg)])
             return vec, hist

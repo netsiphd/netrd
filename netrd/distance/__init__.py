@@ -27,7 +27,6 @@ except ImportError as e:
     pass
 
 
-
 __all__ = [
     'Hamming',
     'Frobenius',

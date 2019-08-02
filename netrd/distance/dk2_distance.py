@@ -72,7 +72,7 @@ class dk2Distance(BaseDistance):
 
             # every edge should be counted once
             assert sum(list(dk2.values())) == G.size()
-            
+
             return dk2
 
         G1 = ensure_undirected(G1)
@@ -83,7 +83,7 @@ class dk2Distance(BaseDistance):
 
         N = max(len(G1), len(G2))
 
-        # note N^2 dense matrices 
+        # note N^2 dense matrices
         D1 = np.zeros((N, N))
         D2 = np.zeros((N, N))
 

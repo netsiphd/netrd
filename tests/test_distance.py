@@ -50,6 +50,20 @@ def test_symmetry():
             assert np.isclose(dist1, dist2)
 
 
+def test_triangle():
+    """The distance must obey the triangle inequality."""
+    G1 = nx.barabasi_albert_graph(100, 4)
+    G2 = nx.fast_gnp_random_graph(100, 0.3)
+    G3 = nx.newman_watts_strogatz_graph(100, 2, 0.3)
+
+    for label, obj in distance.__dict__.items():
+        if isinstance(obj, type) and BaseDistance in obj.__bases__:
+            dist1_ = obj().dist(G1, G2)
+            dist2 = obj().dist(G2, G3)
+            dist3 = obj().dist(G1, G3)
+            assert dist1 + dist2 >= dist3
+
+
 def test_quantum_jsd():
     """Run the above tests again using the collision entropy instead of the
     Von Neumann entropy to ensure that all the logic of the JSD implementation

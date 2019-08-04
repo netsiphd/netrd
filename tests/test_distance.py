@@ -58,7 +58,7 @@ def test_triangle():
 
     for label, obj in distance.__dict__.items():
         if isinstance(obj, type) and BaseDistance in obj.__bases__:
-            dist1_ = obj().dist(G1, G2)
+            dist1 = obj().dist(G1, G2)
             dist2 = obj().dist(G2, G3)
             dist3 = obj().dist(G1, G3)
             assert dist1 + dist2 >= dist3

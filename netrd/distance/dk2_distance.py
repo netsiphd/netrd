@@ -13,7 +13,7 @@ Submitted as part of the 2019 NetSI Collabathon.
 
 import networkx as nx
 import numpy as np
-from scipy.sparse import dok_matrix
+from scipy.sparse import coo_matrix
 import itertools as it
 from collections import defaultdict
 from .base import BaseDistance
@@ -56,33 +56,17 @@ class dk2Distance(BaseDistance):
 
         G1 = ensure_undirected(G1)
         G2 = ensure_undirected(G2)
-
-        G1_dk = dk2_series(G1)
-        G2_dk = dk2_series(G2)
-
-        # store the 2K-distributions
-        # We're storing here instead of later because the dict representations
-        # are more convenient than the following sparse matrix representations,
-        # and the matrix representation can be easily obtained from the dict.
-        self.results["dk_distributions"] = G1_dk, G2_dk
-
         N = max(len(G1), len(G2))
 
-        D1 = dok_matrix((N, N))
-        D2 = dok_matrix((N, N))
+        D1 = dk2_series(G1, N)
+        D2 = dk2_series(G2, N)
 
-        for (i, j), k in G1_dk.items():
-            D1[i, j] = k
-        for (i, j), k in G2_dk.items():
-            D2[i, j] = k
-
-        # these should be normalized by the number of edges
-        D1 = D1 / G1.size()
-        D2 = D2 / G2.size()
+        # store the 2K-distributions
+        self.results["dk_distributions"] = D1, D2
 
         # flatten matrices. this is safe because we've padded to the same size
-        G1_dk_normed = D1[np.triu_indices(N)].toarray().flatten()
-        G2_dk_normed = D2[np.triu_indices(N)].toarray().flatten()
+        G1_dk_normed = D1.toarray()[np.triu_indices(N)].flatten()
+        G2_dk_normed = D2.toarray()[np.triu_indices(N)].flatten()
 
         assert np.isclose(G1_dk_normed.sum(), 1)
         assert np.isclose(G2_dk_normed.sum(), 1)
@@ -120,4 +104,14 @@ def dk2_series(G, N=None):
     # every edge should be counted once
     assert sum(list(dk2.values())) == G.size()
 
-    return dk2
+    # convert from dict to sparse matrix
+    row = [i for (i, j) in dk2.keys()]
+    col = [j for (i, j) in dk2.keys()]
+    data = [x for x in dk2.values()]
+
+    D = coo_matrix((data, (row, col)), shape=(N, N))
+
+    # this should be normalized by the number of edges
+    D = D / G.size()
+
+    return D

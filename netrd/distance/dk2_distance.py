@@ -53,32 +53,6 @@ class dk2Distance(BaseDistance):
 
         """
 
-        def dk2_series(G):
-            """
-            Calculate the 2k-series (i.e. the number of edges between
-            degree-labelled edges) for G.
-            """
-
-            k_dict = dict(nx.degree(G))
-            dk2 = defaultdict(int)
-
-            for (i, j) in G.edges:
-                k_i = k_dict[i]
-                k_j = k_dict[j]
-
-                # We're enforcing order here because at the end we're going to
-                # leverage that all the information can be stored in the upper
-                # triangular for convenience.
-                if k_i <= k_j:
-                    dk2[(k_i, k_j)] += 1
-                else:
-                    dk2[(k_j, k_i)] += 1
-
-            # every edge should be counted once
-            assert sum(list(dk2.values())) == G.size()
-
-            return dk2
-
         G1 = ensure_undirected(G1)
         G2 = ensure_undirected(G2)
 
@@ -117,3 +91,29 @@ class dk2Distance(BaseDistance):
         self.results["dist"] = dist
 
         return dist
+
+def dk2_series(G):
+    """
+    Calculate the 2k-series (i.e. the number of edges between
+    degree-labelled edges) for G.
+    """
+
+    k_dict = dict(nx.degree(G))
+    dk2 = defaultdict(int)
+
+    for (i, j) in G.edges:
+        k_i = k_dict[i]
+        k_j = k_dict[j]
+
+        # We're enforcing order here because at the end we're going to
+        # leverage that all the information can be stored in the upper
+        # triangular for convenience.
+        if k_i <= k_j:
+            dk2[(k_i, k_j)] += 1
+        else:
+            dk2[(k_j, k_i)] += 1
+
+    # every edge should be counted once
+    assert sum(list(dk2.values())) == G.size()
+
+    return dk2

@@ -92,6 +92,7 @@ class dk2Distance(BaseDistance):
 
         return dist
 
+
 def dk2_series(G):
     """
     Calculate the 2k-series (i.e. the number of edges between

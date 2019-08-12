@@ -65,6 +65,10 @@ class dk2Distance(BaseDistance):
             for (i, j) in G.edges:
                 k_i = k_dict[i]
                 k_j = k_dict[j]
+
+                # We're enforcing order here because at the end we're going to
+                # leverage that all the information can be stored in the upper
+                # triangular for convenience.
                 if k_i <= k_j:
                     dk2[(k_i, k_j)] += 1
                 else:
@@ -81,6 +85,10 @@ class dk2Distance(BaseDistance):
         G1_dk = dk2_series(G1)
         G2_dk = dk2_series(G2)
 
+        # store the 2K-distributions
+        # We're storing here instead of later because the dict representations
+        # are more efficient than the following dense matrix representations,
+        # and the matrix representation can be easily obtained from the dict.
         self.results["dk_distributions"] = G1_dk, G2_dk
 
         N = max(len(G1), len(G2))

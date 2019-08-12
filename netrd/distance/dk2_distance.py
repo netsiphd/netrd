@@ -81,6 +81,8 @@ class dk2Distance(BaseDistance):
         G1_dk = dk2_series(G1)
         G2_dk = dk2_series(G2)
 
+        self.results["dk_distributions"] = G1_dk, G2_dk
+
         N = max(len(G1), len(G2))
 
         # note N^2 dense matrices

@@ -13,6 +13,7 @@ Submitted as part of the 2019 NetSI Collabathon.
 
 import networkx as nx
 import numpy as np
+from scipy.sparse import dok_matrix
 import itertools as it
 from collections import defaultdict
 from .base import BaseDistance
@@ -61,15 +62,14 @@ class dk2Distance(BaseDistance):
 
         # store the 2K-distributions
         # We're storing here instead of later because the dict representations
-        # are more efficient than the following dense matrix representations,
+        # are more convenient than the following sparse matrix representations,
         # and the matrix representation can be easily obtained from the dict.
         self.results["dk_distributions"] = G1_dk, G2_dk
 
         N = max(len(G1), len(G2))
 
-        # note N^2 dense matrices
-        D1 = np.zeros((N, N))
-        D2 = np.zeros((N, N))
+        D1 = dok_matrix((N, N))
+        D2 = dok_matrix((N, N))
 
         for (i, j), k in G1_dk.items():
             D1[i, j] = k
@@ -81,8 +81,8 @@ class dk2Distance(BaseDistance):
         D2 = D2 / G2.size()
 
         # flatten matrices. this is safe because we've padded to the same size
-        G1_dk_normed = D1[np.triu_indices(N)].ravel()
-        G2_dk_normed = D2[np.triu_indices(N)].ravel()
+        G1_dk_normed = D1[np.triu_indices(N)].toarray().flatten()
+        G2_dk_normed = D2[np.triu_indices(N)].toarray().flatten()
 
         assert np.isclose(G1_dk_normed.sum(), 1)
         assert np.isclose(G2_dk_normed.sum(), 1)

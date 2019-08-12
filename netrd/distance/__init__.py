@@ -16,7 +16,7 @@ from .deltacon import DeltaCon
 from .quantum_jsd import QuantumJSD
 from .communicability_jsd import CommunicabilityJSD
 from .distributional_nbd import DistributionalNBD
-from .dk2_distance import dk2Distance
+from .dk_series import dkSeries
 
 nbd = False
 try:

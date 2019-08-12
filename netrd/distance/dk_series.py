@@ -1,5 +1,5 @@
 """
-dk2_distance.py
+dk_series.py
 --------------------------
 
 Graph distance based on the dk-series.
@@ -20,16 +20,17 @@ from .base import BaseDistance
 from ..utilities import entropy, ensure_undirected
 
 
-class dk2Distance(BaseDistance):
-    def dist(self, G1, G2):
+class dkSeries(BaseDistance):
+    def dist(self, G1, G2, d=2):
         r"""Compute the distance between two graphs by using the Jensen-Shannon
-        divergence between the :math:`2k`-series of the graphs.
+        divergence between the :math:`dk`-series of the graphs.
 
         The :math:`dk`-series of a graph is the collection of distributions of
         size :math:`d` subgraphs, where nodes are labelled by degrees. For
-        simplicity, we consider only the :math:`2k`-series, i.e., the
+        simplicity, we currently consider only the :math:`1k`-series, i.e., the
+        degree distribution, or the :math:`2k`-series, i.e., the
         distribution of edges between nodes of degree :math:`(k_i, k_j)`. The
-        distance between these :math:`2k`-series is calculated using the
+        distance between these :math:`dk`-series is calculated using the
         Jensen-Shannon divergence.
 
         Parameters
@@ -37,6 +38,9 @@ class dk2Distance(BaseDistance):
 
         G1, G2 (nx.Graph)
             two networkx graphs to be compared
+
+        d (int)
+            the size of the subgraph to consider
 
         Returns
         -------
@@ -58,22 +62,42 @@ class dk2Distance(BaseDistance):
         G2 = ensure_undirected(G2)
         N = max(len(G1), len(G2))
 
-        D1 = dk2_series(G1, N)
-        D2 = dk2_series(G2, N)
+        if d == 1:
+            from .degree_divergence import DegreeDivergence
 
-        # store the 2K-distributions
-        self.results["dk_distributions"] = D1, D2
+            degdiv = DegreeDivergence()
+            dist = degdiv.dist()
 
-        # flatten matrices. this is safe because we've padded to the same size
-        G1_dk_normed = D1.toarray()[np.triu_indices(N)].flatten()
-        G2_dk_normed = D2.toarray()[np.triu_indices(N)].flatten()
+            # the 2k-distance stores the distribution in a sparse matrix,
+            # so here we take the output of DegreeDivergence and
+            # produce a comparable object
+            hist1, hist2 = degdiv.results['degree_histograms']
+            hist1 /= len(G1)
+            hist2 /= len(G2)
+            hist1 = coo_matrix(hist1)
+            hist2 = coo_matrix(hist2)
 
-        assert np.isclose(G1_dk_normed.sum(), 1)
-        assert np.isclose(G2_dk_normed.sum(), 1)
+            self.results["dk_distributions"] = hist1, hist2
 
-        dist = entropy.js_divergence(G1_dk_normed, G2_dk_normed)
+        elif d == 2:
+            D1 = dk2_series(G1, N)
+            D2 = dk2_series(G2, N)
+
+            # store the 2K-distributions
+            self.results["dk_distributions"] = D1, D2
+
+            # flatten matrices. this is safe because we've padded to the same size
+            G1_dk_normed = D1.toarray()[np.triu_indices(N)].flatten()
+            G2_dk_normed = D2.toarray()[np.triu_indices(N)].flatten()
+
+            assert np.isclose(G1_dk_normed.sum(), 1)
+            assert np.isclose(G2_dk_normed.sum(), 1)
+
+            dist = entropy.js_divergence(G1_dk_normed, G2_dk_normed)
+        else:
+            raise NotImplementedError()
+
         self.results["dist"] = dist
-
         return dist
 
 

@@ -96,7 +96,7 @@ class dk2Distance(BaseDistance):
 def dk2_series(G):
     """
     Calculate the 2k-series (i.e. the number of edges between
-    degree-labelled edges) for G.
+    degree-labelled nodes) for G.
     """
 
     k_dict = dict(nx.degree(G))

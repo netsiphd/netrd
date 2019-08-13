@@ -16,6 +16,7 @@ from .deltacon import DeltaCon
 from .quantum_jsd import QuantumJSD
 from .communicability_jsd import CommunicabilityJSD
 from .distributional_nbd import DistributionalNBD
+from .dk_series import dkSeries
 
 nbd = False
 try:
@@ -25,8 +26,6 @@ try:
 except ImportError as e:
     pass
 
-
-# from .dk2_distance import dK2Distance
 
 __all__ = [
     'Hamming',
@@ -46,6 +45,7 @@ __all__ = [
     'QuantumJSD',
     'CommunicabilityJSD',
     'DistributionalNBD',
+    'dkSeries',
 ]
 
 if nbd:

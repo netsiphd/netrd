@@ -45,7 +45,7 @@ __all__ = [
     'QuantumJSD',
     'CommunicabilityJSD',
     'DistributionalNBD',
-    'dk2Distance',
+    'dkSeries',
 ]
 
 if nbd:

@@ -20,9 +20,8 @@ Submitted as part of the 2019 NetSI Collabathon.
 
 import networkx as nx
 import numpy as np
-import scipy as sp
 from .base import BaseDistance
-from ..utilities import threshold, ensure_undirected
+from ..utilities import entropy, ensure_undirected
 
 
 class CommunicabilityJSD(BaseDistance):
@@ -111,20 +110,11 @@ class CommunicabilityJSD(BaseDistance):
         P2 = lil_sigma2 / big_sigma2
         P1 = np.array(sorted(P1))
         P2 = np.array(sorted(P2))
-        P0 = (P1 + P2) / 2
 
-        H1 = sp.stats.entropy(P1)
-        H2 = sp.stats.entropy(P2)
-        H0 = sp.stats.entropy(P0)
-        dist = np.sqrt(H0 - 0.5 * (H1 + H2))
+        dist = entropy.js_divergence(P1, P2)
 
         self.results['P1'] = P1
         self.results['P2'] = P2
-        self.results['P0'] = P0
-
-        self.results['entropy_1'] = H1
-        self.results['entropy_2'] = H2
-        self.results['entropy_mixture'] = H0
         self.results['dist'] = dist
 
         return dist

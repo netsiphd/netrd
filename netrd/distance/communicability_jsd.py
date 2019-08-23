@@ -109,6 +109,8 @@ class CommunicabilityJSD(BaseDistance):
 
         P1 = lil_sigma1 / big_sigma1
         P2 = lil_sigma2 / big_sigma2
+        P1 = np.array(sorted(P1))
+        P2 = np.array(sorted(P2))
         P0 = (P1 + P2) / 2
 
         H1 = sp.stats.entropy(P1)

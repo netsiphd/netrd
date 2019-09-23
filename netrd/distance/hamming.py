@@ -76,7 +76,7 @@ class Hamming(BaseDistance):
         # this corrects the implicit denominator of Hamming, which
         # should be N^2 for networks with self-loops and N(N-1) for
         # those without
-        if next(nx.selfloop_edges(G1), None) or next(nx.selfloop_edges(G2), None):
+        if next(nx.selfloop_edges(G1), False) or next(nx.selfloop_edges(G2), False):
             new_mask = np.diag_indices(N)
             mask = (np.append(mask[0], new_mask[0]), np.append(mask[1], new_mask[1]))
 

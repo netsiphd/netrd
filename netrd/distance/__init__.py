@@ -17,6 +17,7 @@ from .quantum_jsd import QuantumJSD
 from .communicability_jsd import CommunicabilityJSD
 from .distributional_nbd import DistributionalNBD
 from .dk_series import dkSeries
+from .dmeasure import DMeasure
 
 nbd = False
 try:
@@ -46,6 +47,7 @@ __all__ = [
     'CommunicabilityJSD',
     'DistributionalNBD',
     'dkSeries',
+    'DMeasure',
 ]
 
 if nbd:

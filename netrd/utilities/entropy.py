@@ -9,6 +9,7 @@ author: Chia-Hung Yang
 Submitted as part of the 2019 NetSI Collabathon.
 """
 
+from collections import defaultdict
 import numpy as np
 from scipy.stats import entropy as sp_entropy
 
@@ -74,10 +75,9 @@ def joint_entropy(data):
     """
     # Entropy is computed through summing contribution of states with
     # non-zero empirical probability in the data
-    count = dict()
+    count = defaultdict(int)
     for state in data:
         key = tuple(state)
-        count.setdefault(key, 0)
         count[key] += 1
 
     return sp_entropy(list(count.values()), base=2)

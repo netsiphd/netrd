@@ -17,13 +17,11 @@ Submitted as part of the 2019 NetSI Collabathon.
 
 """
 
-import numpy as np
-import networkx as nx
 from collections import Counter
-from .base import BaseDistance
-
-# from ..utilities import entropy
+import networkx as nx
+import numpy as np
 from scipy.stats import entropy
+from .base import BaseDistance
 from ..utilities.entropy import js_divergence
 from ..utilities import ensure_undirected
 

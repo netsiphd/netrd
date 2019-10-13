@@ -45,7 +45,7 @@ class DMeasure(BaseDistance):
         .. math::
             \mathbf{P}_i = \{p_i(j)\},
 
-        and :math:`p_i(g)` is the fraction of nodes at distance :math:`i` from
+        and :math:`p_i(j)` is the fraction of nodes at distance :math:`i` from
         node :math:`j`.
 
         The D-measure itself is a weighted sum of three components: the square
@@ -60,7 +60,7 @@ class DMeasure(BaseDistance):
         term is the sum of the square roots of the Jensen-Shannon divergences
         between the probability distributions of the alpha centralities of two
         graph and of their complements.
-        
+
 
         Parameters
         ----------

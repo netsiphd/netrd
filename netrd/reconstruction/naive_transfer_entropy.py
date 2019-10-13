@@ -91,8 +91,10 @@ class NaiveTransferEntropy(BaseReconstructor):
             # Check several delay values and average them together
             # This average is naive, but appears to be sufficient in
             # some circumstances
-            te_list = [transfer_entropy(data[:, i], data[:, j], delay)
-                       for delay in range(1, delay_max+1)]
+            te_list = [
+                transfer_entropy(data[:, i], data[:, j], delay)
+                for delay in range(1, delay_max + 1)
+            ]
             TE[i, j] = np.mean(te_list)
 
         self.results['weights_matrix'] = TE

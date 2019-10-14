@@ -8,7 +8,7 @@ Test utility functions.
 
 import numpy as np
 from netrd.utilities.entropy import categorized_data
-from netrd.utilities.entropy import entropy, joint_entropy, conditional_entropy
+from netrd.utilities.entropy import entropy_from_seq, joint_entropy, conditional_entropy
 from netrd.utilities import threshold
 
 
@@ -89,7 +89,7 @@ def test_entropies():
 
     """
     data = np.array([[1, 0, 0, 1, 1, 0, 1, 0], [0, 1, 0, 1, 1, 0, 1, 0]]).T
-    H = entropy(data[:, 0])
+    H = entropy_from_seq(data[:, 0])
     H_joint = joint_entropy(data)
     H_cond = conditional_entropy(data[:, 1, np.newaxis], data[:, 0, np.newaxis])
 

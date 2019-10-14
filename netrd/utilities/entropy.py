@@ -15,7 +15,7 @@ from scipy.stats import entropy as sp_entropy
 
 
 def js_divergence(P, Q):
-    """Jenson-Shannon divergence between `P` and `Q`.
+    """Jensen-Shannon divergence between `P` and `Q`.
 
     Parameters
     ----------

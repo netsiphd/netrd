@@ -65,7 +65,7 @@ def joint_entropy(data):
     Returns
     -------
     float
-        Joint entrpoy of the variables of interests.
+        Joint entropy of the variables of interests.
 
     Notes
     -----

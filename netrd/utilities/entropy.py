@@ -15,7 +15,7 @@ from scipy.stats import entropy as sp_entropy
 
 
 def js_divergence(P, Q):
-    """Jenson-Shannon divergence between `P` and `Q`.
+    """Jensen-Shannon divergence between `P` and `Q`.
 
     Parameters
     ----------
@@ -35,8 +35,10 @@ def js_divergence(P, Q):
     return 0.5 * (sp_entropy(P, M, base=2) + sp_entropy(Q, M, base=2))
 
 
-def entropy(var):
-    """Return the Shannon entropy of a variable.
+def entropy_from_seq(var):
+    """Return the Shannon entropy of a variable. This differs from
+    Scipy's entropy by taking a sequence of observations as input
+    rather than a histogram or probability distribution.
 
     Parameters
     ----------
@@ -65,7 +67,7 @@ def joint_entropy(data):
     Returns
     -------
     float
-        Joint entrpoy of the variables of interests.
+        Joint entropy of the variables of interests.
 
     Notes
     -----

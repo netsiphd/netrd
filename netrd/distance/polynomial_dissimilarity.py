@@ -16,7 +16,6 @@ Submitted as part of the 2019 NetSI Collabathon.
 """
 import numpy as np
 import networkx as nx
-import scipy.sparse as ss
 from .base import BaseDistance
 
 

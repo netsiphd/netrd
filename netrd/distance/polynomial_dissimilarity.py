@@ -63,10 +63,10 @@ class PolynomialDissimilarity(BaseDistance):
         P_A1 = similarity_score(A1, k, alpha)
         P_A2 = similarity_score(A2, k, alpha)
 
-        dist = np.linalg.norm(P_A1 - P_A2, ord='fro') / A1.shape[0] ** 2
+        dist = np.linalg.norm(P_A1 - P_A2, ord="fro") / A1.shape[0] ** 2
 
-        self.results['adjacency_matrices'] = A1, A2
-        self.results['dist'] = dist
+        self.results["adjacency_matrices"] = A1, A2
+        self.results["dist"] = dist
         return dist
 
 
@@ -81,6 +81,7 @@ def similarity_score(A, k, alpha):
     eig_vals, Q = np.linalg.eig(A)
 
     n = A.shape[0]
+
     def polynomial(kp):
         return eig_vals ** kp / (n - 1) ** (alpha * (kp - 1))
 

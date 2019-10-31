@@ -88,13 +88,13 @@ class MeanField(BaseReconstructor):
             # ---------------------------------------------------------------
             fun1 = (
                 lambda x, H: (1 / np.sqrt(2 * np.pi))
-                * np.exp(-x ** 2 / 2)
+                * np.exp(-(x ** 2) / 2)
                 * np.tanh(H + x * np.sqrt(delta))
             )
 
             fun2 = (
                 lambda x: (1 / np.sqrt(2 * np.pi))
-                * np.exp(-x ** 2 / 2)
+                * np.exp(-(x ** 2) / 2)
                 * (1 - np.square(np.tanh(H + x * np.sqrt(delta))))
             )
 

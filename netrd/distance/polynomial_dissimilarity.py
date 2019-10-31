@@ -76,7 +76,7 @@ def calculate_polynomial(A, k, alpha):
 
     n = A.shape[0]
     def polynomial(kp):
-        return eig_vals ** kp / (n - 1) ** (alpha * kp - 1)
+        return eig_vals ** kp / (n - 1) ** (alpha * (kp - 1))
 
     W = np.diag(sum([polynomial(k) for k in range(1, k + 1)]))
     P_A = np.dot(np.dot(Q, W), Q.T)

@@ -71,6 +71,13 @@ class PolynomialDissimilarity(BaseDistance):
 
 
 def calculate_polynomial(A, k, alpha):
+    """
+    Calculate the similarity score used in the polynomial dissimilarity
+    distance. This uses a polynomial transformation of the eigenvalues of the
+    of the adjacency matrix in combination with the eigenvectors of the
+    adjacency matrix. See p. 27 of Donnat and Holmes (2018).
+    """
+
     eig_vals, Q = np.linalg.eig(A)
 
     n = A.shape[0]

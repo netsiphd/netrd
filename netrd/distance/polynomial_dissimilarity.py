@@ -60,8 +60,8 @@ class PolynomialDissimilarity(BaseDistance):
         A1 = nx.to_numpy_array(G1)
         A2 = nx.to_numpy_array(G2)
 
-        P_A1 = calculate_polynomial(A1, k, alpha)
-        P_A2 = calculate_polynomial(A2, k, alpha)
+        P_A1 = similarity_score(A1, k, alpha)
+        P_A2 = similarity_score(A2, k, alpha)
 
         dist = np.linalg.norm(P_A1 - P_A2, ord='fro') / A1.shape[0] ** 2
 
@@ -70,7 +70,7 @@ class PolynomialDissimilarity(BaseDistance):
         return dist
 
 
-def calculate_polynomial(A, k, alpha):
+def similarity_score(A, k, alpha):
     """
     Calculate the similarity score used in the polynomial dissimilarity
     distance. This uses a polynomial transformation of the eigenvalues of the

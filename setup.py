@@ -25,7 +25,7 @@ with open('README.md') as fin:
 
 setuptools.setup(
     name='netrd',
-    version='0.2.0',
+    version='0.2.1',
     author='NetSI 2019 Collabathon Team',
     author_email='stefanmccabe@gmail.com',
     description=description,

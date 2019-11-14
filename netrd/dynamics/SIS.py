@@ -19,7 +19,7 @@ import networkx as nx
 class SISModel(BaseDynamics):
     """Susceptible-Infected-Susceptible dynamical process."""
 
-    def simulate(self, G, L, i0=1, beta=None, mu=None):
+    def simulate(self, G, L, num_seeds=1, beta=None, mu=None):
         r"""Simulate SIS model dynamics on a network.
 
         The results dictionary also stores the ground truth network as
@@ -33,7 +33,7 @@ class SISModel(BaseDynamics):
         L (int)
             the length of the desired time series.
 
-        i0 (int)
+        num_seeds (int)
             the number of initially infected nodes.
 
         beta (float)
@@ -51,6 +51,7 @@ class SISModel(BaseDynamics):
         H = G.copy()
         N = H.number_of_nodes()
         TS = np.zeros((N, L))
+        index_to_node = dict(zip(range(G.order()), list(G.nodes())))
 
         # sensible defaults for beta and mu
         if not beta:
@@ -59,11 +60,11 @@ class SISModel(BaseDynamics):
         if not mu:
             mu = 1 / H.number_of_nodes()
 
-        i0s = np.random.permutation(
-            np.concatenate([np.repeat(1, i0), np.repeat(0, N - i0)])
-        )
-        TS[:, 0] = i0s
-        nx.set_node_attributes(H, {i: x for i, x in enumerate(i0s)}, 'infected')
+        seeds = np.random.permutation(np.concatenate([
+            np.repeat(1, num_seeds), np.repeat(0, N - num_seeds)]))
+        TS[:, 0] = seeds
+        infected_attr = {index_to_node[i]: s for i, s in enumerate(seeds)}
+        nx.set_node_attributes(H, infected_attr, 'infected')
         nx.set_node_attributes(H, 0, 'next_infected')
 
         # SIS dynamics
@@ -87,5 +88,6 @@ class SISModel(BaseDynamics):
 
         self.results['ground_truth'] = H
         self.results['TS'] = TS
+        self.results['index_to_node'] = index_to_node
 
         return TS

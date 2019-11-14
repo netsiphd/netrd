@@ -60,8 +60,9 @@ class SISModel(BaseDynamics):
         if not mu:
             mu = 1 / H.number_of_nodes()
 
-        seeds = np.random.permutation(np.concatenate([
-            np.repeat(1, num_seeds), np.repeat(0, N - num_seeds)]))
+        seeds = np.random.permutation(
+            np.concatenate([np.repeat(1, num_seeds), np.repeat(0, N - num_seeds)])
+        )
         TS[:, 0] = seeds
         infected_attr = {index_to_node[i]: s for i, s in enumerate(seeds)}
         nx.set_node_attributes(H, infected_attr, 'infected')

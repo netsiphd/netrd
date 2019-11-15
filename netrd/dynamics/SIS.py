@@ -87,6 +87,14 @@ class SISModel(BaseDynamics):
             nx.set_node_attributes(H, next_infections, 'infected')
             nx.set_node_attributes(H, 0, 'next_infected')
 
+            # if the epidemic dies off, stop
+            if TS[:, t].sum() < 1:
+                break
+
+        # if the epidemic died off, pad the time series to the right shape
+        if TS.shape[1] < L:
+            TS = np.hstack([TS, np.zeros((N, L - TS.shape[1]))])
+
         self.results['ground_truth'] = H
         self.results['TS'] = TS
         self.results['index_to_node'] = index_to_node

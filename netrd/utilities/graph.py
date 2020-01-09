@@ -73,6 +73,7 @@ def ensure_undirected(G):
         warnings.warn("Coercing directed graph to undirected.", RuntimeWarning)
     return G
 
+
 def ensure_unweighted(G):
     """Ensure the graph G is unweighted.
 
@@ -100,7 +101,7 @@ def ensure_unweighted(G):
     if is_weighted:
         warnings.warn("Coercing weighted graph to unweighted.", RuntimeWarning)
         for _, _, attr in H.edges(data=True):
-            #attr['weight'] = 1.0
+            # attr['weight'] = 1.0
             attr.pop('weight', None)
 
     return H

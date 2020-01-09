@@ -12,6 +12,7 @@ from scipy.spatial import distance_matrix
 import scipy.sparse as sparse
 from ot import emd2
 from .base import BaseDistance
+from ..utilities.graph import ensure_unweighted
 
 
 class NonBacktrackingSpectral(BaseDistance):
@@ -51,6 +52,10 @@ matrices.
             The distance between `G1` and `G2`
 
         """
+
+        G1 = ensure_unweighted(G1)
+        G2 = ensure_unweighted(G2)
+
         vals1 = nbvals(G1, topk, batch, tol)
         vals2 = nbvals(G2, topk, batch, tol)
         mass = lambda num: np.ones(num) / num

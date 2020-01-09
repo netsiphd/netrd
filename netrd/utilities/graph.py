@@ -72,3 +72,35 @@ def ensure_undirected(G):
         G = G.to_undirected(as_view=False)
         warnings.warn("Coercing directed graph to undirected.", RuntimeWarning)
     return G
+
+def ensure_unweighted(G):
+    """Ensure the graph G is unweighted.
+
+    If it is not, coerce it to unweighted and warn the user.
+
+    Parameters
+    ----------
+    G (networkx graph)
+        The graph to be checked
+
+    Returns
+    -------
+
+    G (nx.Graph)
+        Unweighted version of the input graph
+
+    """
+    H = G.copy()
+    is_weighted = False
+    for _, _, attr in H.edges(data=True):
+        if attr.get('weight', 1.0) != 1.0:
+            is_weighted = True
+            break
+
+    if is_weighted:
+        warnings.warn("Coercing weighted graph to unweighted.", RuntimeWarning)
+        for _, _, attr in H.edges(data=True):
+            #attr['weight'] = 1.0
+            attr.pop('weight', None)
+
+    return H

@@ -20,7 +20,7 @@ import networkx as nx
 import numpy as np
 from scipy.linalg import expm
 from .base import BaseDistance
-from ..utilities import ensure_undirected
+from ..utilities import ensure_undirected, ensure_unweighted
 
 
 class QuantumJSD(BaseDistance):
@@ -113,6 +113,9 @@ class QuantumJSD(BaseDistance):
 
         G1 = ensure_undirected(G1)
         G2 = ensure_undirected(G2)
+
+        G1 = ensure_unweighted(G1)
+        G2 = ensure_unweighted(G2)
 
         def density_matrix(A, beta):
             """

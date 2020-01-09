@@ -18,6 +18,7 @@ import networkx as nx
 from .base import BaseDistance
 from scipy.optimize import fsolve
 from .ipsen_mikhailov import _im_distance
+from ..utilities.graph import ensure_unweighted
 
 
 class HammingIpsenMikhailov(BaseDistance):
@@ -78,6 +79,9 @@ class HammingIpsenMikhailov(BaseDistance):
 
         """
         N = len(G1)
+
+        G1 = ensure_unweighted(G1)
+        G2 = ensure_unweighted(G2)
 
         # get the adjacency matrices
         adj1 = nx.to_numpy_array(G1)

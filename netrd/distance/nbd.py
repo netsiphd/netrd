@@ -12,6 +12,7 @@ import scipy.sparse as sparse
 from .base import BaseDistance
 from collections import defaultdict, Counter
 from ortools.linear_solver import pywraplp
+from ..utilities.graph import ensure_unweighted
 
 
 class NonBacktrackingSpectral(BaseDistance):
@@ -51,6 +52,9 @@ matrices.
             The distance between `G1` and `G2`
 
         """
+
+        G1 = ensure_unweighted(G1)
+        G2 = ensure_unweighted(G2)
 
         vals1 = nbvals(G1, topk, batch, tol)
         vals2 = nbvals(G2, topk, batch, tol)
@@ -276,7 +280,8 @@ def half_incidence(graph, ordering='blocks', return_ordering=False):
 
 
 def euclidean_distance(x, y):
-    return np.sqrt(sum((a - b)**2 for (a, b) in zip(x, y)))
+    return np.sqrt(sum((a - b) ** 2 for (a, b) in zip(x, y)))
+
 
 def earthmover_distance(p1, p2):
     '''
@@ -291,7 +296,9 @@ def earthmover_distance(p1, p2):
     '''
     dist1 = {x: float(count) / len(p1) for (x, count) in Counter(p1).items()}
     dist2 = {x: float(count) / len(p2) for (x, count) in Counter(p2).items()}
-    solver = pywraplp.Solver('earthmover_distance', pywraplp.Solver.GLOP_LINEAR_PROGRAMMING)
+    solver = pywraplp.Solver(
+        'earthmover_distance', pywraplp.Solver.GLOP_LINEAR_PROGRAMMING
+    )
 
     variables = dict()
 
@@ -307,7 +314,9 @@ def earthmover_distance(p1, p2):
 
     for (x, dirt_at_x) in dist1.items():
         for (y, capacity_of_y) in dist2.items():
-            amount_to_move_x_y = solver.NumVar(0, solver.infinity(), 'z_{%s, %s}' % (x, y))
+            amount_to_move_x_y = solver.NumVar(
+                0, solver.infinity(), 'z_{%s, %s}' % (x, y)
+            )
             variables[(x, y)] = amount_to_move_x_y
             dirt_leaving_constraints[x] += amount_to_move_x_y
             dirt_filling_constraints[y] += amount_to_move_x_y
@@ -329,6 +338,10 @@ def earthmover_distance(p1, p2):
 
     return objective.Value()
 
+
+# This file borrows code (euclidean_distance and earthmover_distance) with the
+# following license:
+#
 # MIT License
 
 # Copyright (c) 2020 Jeremy Kun
@@ -350,4 +363,3 @@ def earthmover_distance(p1, p2):
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
-

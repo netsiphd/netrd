@@ -15,7 +15,7 @@ from collections import Counter
 import numpy as np
 import networkx as nx
 from .base import BaseDistance
-from ..utilities import entropy
+from ..utilities import entropy, ensure_unweighted
 
 
 class DegreeDivergence(BaseDistance):
@@ -39,6 +39,9 @@ class DegreeDivergence(BaseDistance):
             the distance between `G1` and `G2`.
 
         """
+
+        G1 = ensure_unweighted(G1)
+        G2 = ensure_unweighted(G2)
 
         def degree_vector_histogram(graph):
             """Return the degrees in both formats.

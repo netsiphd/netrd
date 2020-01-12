@@ -18,7 +18,7 @@ import numpy as np
 import networkx as nx
 from .base import BaseDistance
 from functools import reduce
-from netrd.utilities import ensure_undirected
+from netrd.utilities import ensure_undirected, ensure_unweighted
 
 
 class OnionDivergence(BaseDistance):
@@ -61,6 +61,8 @@ class OnionDivergence(BaseDistance):
         # take the simple graph version
         G1_simple = ensure_undirected(G1)
         G2_simple = ensure_undirected(G2)
+        G1_simple = ensure_unweighted(G1_simple)
+        G2_simple = ensure_unweighted(G2_simple)
         G1_simple.remove_edges_from(nx.selfloop_edges(G1_simple))
         G2_simple.remove_edges_from(nx.selfloop_edges(G2_simple))
 

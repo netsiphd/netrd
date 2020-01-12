@@ -17,6 +17,7 @@ Submitted as part of the 2019 NetSI Collabathon.
 import numpy as np
 import networkx as nx
 from .base import BaseDistance
+from ..utilities.graph import ensure_unweighted
 
 
 class PolynomialDissimilarity(BaseDistance):
@@ -57,6 +58,9 @@ class PolynomialDissimilarity(BaseDistance):
                arXiv preprint arXiv:1801.07351 (2018).
 
         """
+        G1 = ensure_unweighted(G1)
+        G2 = ensure_unweighted(G2)
+
         A1 = nx.to_numpy_array(G1)
         A2 = nx.to_numpy_array(G2)
 

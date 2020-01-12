@@ -100,3 +100,26 @@ def test_directed_input():
             if isinstance(obj, type) and BaseDistance in obj.__bases__:
                 dist = obj().dist(G1, G2)
                 assert dist > 0.0
+
+
+def test_weighted_input():
+    G1 = nx.karate_club_graph()
+    G2 = nx.karate_club_graph()
+    rand = np.random.RandomState(seed=42)
+    edge_weights = {e: rand.randint(0, 1000) for e in G2.edges}
+    nx.set_edge_attributes(G2, edge_weights, "weight")
+    assert nx.is_isomorphic(G1, G2)
+
+    for label, obj in distance.__dict__.items():
+        with warnings.catch_warnings(record=True) as w:
+            warnings.simplefilter("always")
+            if isinstance(obj, type) and BaseDistance in obj.__bases__:
+                dist = obj().dist(G1, G2)
+                warning_triggered = False
+                for warning in w:
+                    if "weighted" in str(warning.message):
+                        warning_triggered = True
+                if not warning_triggered:
+                    assert not np.isclose(dist, 0.0)
+                else:
+                    assert np.isclose(dist, 0.0)

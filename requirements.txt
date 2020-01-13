@@ -3,5 +3,6 @@ numpy>=1.16.0
 scipy>=1.0.0
 scikit-learn>=0.18.2
 numpydoc>=0.9
+ortools>=6.8
 sphinx-rtd-theme>=0.4
 Sphinx==2.0.1

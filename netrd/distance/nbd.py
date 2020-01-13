@@ -279,7 +279,6 @@ def half_incidence(graph, ordering='blocks', return_ordering=False):
         return src, tgt
 
 
-
 def earthmover_distance(p1, p2):
     '''
     Jeremy Kun's MIT-licensed (see below) implementation of the Earthmover's Distance.
@@ -316,7 +315,6 @@ def earthmover_distance(p1, p2):
 
     def euclidean_distance(x, y):
         return np.sqrt(sum((a - b) ** 2 for (a, b) in zip(x, y)))
-
 
     dist1 = {x: float(count) / len(p1) for (x, count) in Counter(p1).items()}
     dist2 = {x: float(count) / len(p2) for (x, count) in Counter(p2).items()}
@@ -361,5 +359,3 @@ def earthmover_distance(p1, p2):
             cost = euclidean_distance(x, y) * variable.solution_value()
 
     return objective.Value()
-
-

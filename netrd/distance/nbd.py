@@ -8,10 +8,10 @@ Non-backtracking spectral distance between two graphs.
 
 import numpy as np
 import networkx as nx
-from scipy.spatial import distance_matrix
 import scipy.sparse as sparse
-from ot import emd2
 from .base import BaseDistance
+from collections import defaultdict, Counter
+from ortools.linear_solver import pywraplp
 from ..utilities.graph import ensure_unweighted
 
 
@@ -58,9 +58,12 @@ matrices.
 
         vals1 = nbvals(G1, topk, batch, tol)
         vals2 = nbvals(G2, topk, batch, tol)
-        mass = lambda num: np.ones(num) / num
-        vals_dist = distance_matrix(vals1, vals2)
-        dist = emd2(mass(vals1.shape[0]), mass(vals2.shape[0]), vals_dist)
+
+        vals1 = [tuple(v) for v in vals1]
+        vals2 = [tuple(v) for v in vals2]
+
+        dist = earthmover_distance(vals1, vals2)
+
         self.results['vals'] = (vals1, vals2)
         return dist
 
@@ -274,3 +277,85 @@ def half_incidence(graph, ordering='blocks', return_ordering=False):
         return src, tgt, func
     else:
         return src, tgt
+
+
+def earthmover_distance(p1, p2):
+    '''
+    Jeremy Kun's MIT-licensed (see below) implementation of the Earthmover's Distance.
+
+    See <https://github.com/j2kun/earthmover>.
+
+    Arguments:
+     - p1: an iterable of hashable iterables of numbers (i.e., list of tuples)
+     - p2: an iterable of hashable iterables of numbers (i.e., list of tuples)
+
+    '''
+
+    # MIT License
+
+    # Copyright (c) 2020 Jeremy Kun
+
+    # Permission is hereby granted, free of charge, to any person obtaining a copy
+    # of this software and associated documentation files (the "Software"), to deal
+    # in the Software without restriction, including without limitation the rights
+    # to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+    # copies of the Software, and to permit persons to whom the Software is
+    # furnished to do so, subject to the following conditions:
+
+    # The above copyright notice and this permission notice shall be included in all
+    # copies or substantial portions of the Software.
+
+    # THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+    # IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+    # FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+    # AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+    # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+    # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+    # SOFTWARE.
+
+    def euclidean_distance(x, y):
+        return np.sqrt(sum((a - b) ** 2 for (a, b) in zip(x, y)))
+
+    dist1 = {x: float(count) / len(p1) for (x, count) in Counter(p1).items()}
+    dist2 = {x: float(count) / len(p2) for (x, count) in Counter(p2).items()}
+    solver = pywraplp.Solver(
+        'earthmover_distance', pywraplp.Solver.GLOP_LINEAR_PROGRAMMING
+    )
+
+    variables = dict()
+
+    # for each pile in dist1, the constraint that says all the dirt must leave this pile
+    dirt_leaving_constraints = defaultdict(lambda: 0)
+
+    # for each hole in dist2, the constraint that says this hole must be filled
+    dirt_filling_constraints = defaultdict(lambda: 0)
+
+    # the objective
+    objective = solver.Objective()
+    objective.SetMinimization()
+
+    for (x, dirt_at_x) in dist1.items():
+        for (y, capacity_of_y) in dist2.items():
+            amount_to_move_x_y = solver.NumVar(
+                0, solver.infinity(), 'z_{%s, %s}' % (x, y)
+            )
+            variables[(x, y)] = amount_to_move_x_y
+            dirt_leaving_constraints[x] += amount_to_move_x_y
+            dirt_filling_constraints[y] += amount_to_move_x_y
+            objective.SetCoefficient(amount_to_move_x_y, euclidean_distance(x, y))
+
+    for x, linear_combination in dirt_leaving_constraints.items():
+        solver.Add(linear_combination == dist1[x])
+
+    for y, linear_combination in dirt_filling_constraints.items():
+        solver.Add(linear_combination == dist2[y])
+
+    status = solver.Solve()
+    if status not in [solver.OPTIMAL, solver.FEASIBLE]:
+        raise Exception('Unable to find feasible solution')
+
+    for ((x, y), variable) in variables.items():
+        if variable.solution_value() != 0:
+            cost = euclidean_distance(x, y) * variable.solution_value()
+
+    return objective.Value()

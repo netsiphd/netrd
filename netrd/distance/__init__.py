@@ -18,15 +18,7 @@ from .communicability_jsd import CommunicabilityJSD
 from .distributional_nbd import DistributionalNBD
 from .dk_series import dkSeries
 from .dmeasure import DMeasure
-
-nbd = False
-try:
-    from .nbd import NonBacktrackingSpectral
-
-    nbd = True
-except ImportError as e:
-    pass
-
+from .nbd import NonBacktrackingSpectral
 
 __all__ = [
     'Hamming',
@@ -48,7 +40,5 @@ __all__ = [
     'DistributionalNBD',
     'dkSeries',
     'DMeasure',
+    'NonBacktrackingSpectral',
 ]
-
-if nbd:
-    __all__ += ['NonBacktrackingSpectral']

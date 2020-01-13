@@ -39,5 +39,4 @@ setuptools.setup(
         'License :: OSI Approved :: MIT License',
         'Operating System :: OS Independent',
     ],
-    extras_require={'doc': ['POT>=0.5.1']},
 )

@@ -17,6 +17,7 @@ from scipy.spatial.distance import canberra
 from scipy.stats import skew, kurtosis
 
 from .base import BaseDistance
+from ..utilities import ensure_undirected, ensure_unweighted
 
 
 class NetSimile(BaseDistance):
@@ -52,19 +53,10 @@ class NetSimile(BaseDistance):
                (2012)
 
         """
-        # NOTE: the measure only works for undirected
-        # graphs. For now we will silently convert a
-        # directed graph to be undirected.
-        directed_flag = False
-        if nx.is_directed(G1):
-            G1 = nx.to_undirected(G1)
-            directed_flag = True
-        if nx.is_directed(G2):
-            G2 = nx.to_undirected(G2)
-            directed_flag = True
-
-        if directed_flag:
-            warnings.warn("Coercing directed graph to undirected.", RuntimeWarning)
+        G1 = ensure_undirected(G1)
+        G2 = ensure_undirected(G2)
+        G1 = ensure_unweighted(G1)
+        G2 = ensure_unweighted(G2)
 
         # find the graph node feature matrices
         G1_node_features = feature_extraction(G1)

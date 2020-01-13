@@ -13,7 +13,7 @@ import networkx as nx
 import scipy.linalg as spl
 
 from .base import BaseDistance
-from ..utilities import ensure_undirected
+from ..utilities import ensure_undirected, ensure_unweighted
 
 
 class NetLSD(BaseDistance):
@@ -64,6 +64,9 @@ class NetLSD(BaseDistance):
 
         G1 = ensure_undirected(G1)
         G2 = ensure_undirected(G2)
+
+        G1 = ensure_unweighted(G1)
+        G2 = ensure_unweighted(G2)
 
         lap1 = nx.normalized_laplacian_matrix(G1)
         lap2 = nx.normalized_laplacian_matrix(G2)

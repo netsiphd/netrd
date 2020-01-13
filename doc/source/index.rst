@@ -17,10 +17,6 @@ Installation
    cd netrd
    pip install .
 
-Aside from NetworkX and the Python scientific computing stack, this
-library also has dependencies on Cython and
-`POT <https://github.com/rflamary/POT>`__.
-
 Tutorial
 ========
 

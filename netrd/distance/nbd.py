@@ -59,8 +59,8 @@ matrices.
         vals1 = nbvals(G1, topk, batch, tol)
         vals2 = nbvals(G2, topk, batch, tol)
 
-        vals1 = [tuple(vals1[i]) for i in range(len(vals1))]
-        vals2 = [tuple(vals2[i]) for i in range(len(vals2))]
+        vals1 = [tuple(v) for v in vals1]
+        vals2 = [tuple(v) for v in vals2]
 
         dist = earthmover_distance(vals1, vals2)
 

@@ -93,18 +93,20 @@ class Kuramoto(BaseDynamics):
         N = G.number_of_nodes()
 
         try:
-            if phases is not None and len(phases) == N:
+            if phases is not None:
+                assert len(phases) == N
                 theta_0 = phases
             else:
                 theta_0 = 2 * np.pi * np.random.rand(N)
 
-            if freqs is not None and len(freqs) == N:
+            if freqs is not None:
+                assert len(freqs) == N
                 omega = freqs
             else:
                 omega = np.random.uniform(0.9, 1.1, N)
 
         except AssertionError:
-            raise ValueError("Initial conditions must be None or " "lists of length N.")
+            raise ValueError("Initial conditions must be None or lists of length N.")
 
         t = np.linspace(dt, L * dt, L)  # time-vector
         one = np.ones(N)  # define a rate of change function

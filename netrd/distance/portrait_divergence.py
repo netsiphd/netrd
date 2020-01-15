@@ -13,6 +13,7 @@ from collections import Counter
 import numpy as np
 import networkx as nx
 from ..utilities import entropy
+from ..utilities.graph import ensure_unweighted
 
 
 class PortraitDivergence(BaseDistance):
@@ -52,6 +53,10 @@ class PortraitDivergence(BaseDistance):
         [2] https://github.com/bagrow/portrait-divergence
 
         """
+
+        G1 = ensure_unweighted(G1)
+        G2 = ensure_unweighted(G2)
+
         adj1 = nx.to_numpy_array(G1)
         adj2 = nx.to_numpy_array(G2)
 

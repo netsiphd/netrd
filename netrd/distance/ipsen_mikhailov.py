@@ -19,6 +19,7 @@ from .base import BaseDistance
 from scipy.sparse.csgraph import laplacian
 from scipy.linalg import eigh
 from scipy.integrate import quad
+from ..utilities.graph import ensure_unweighted
 
 
 class IpsenMikhailov(BaseDistance):
@@ -57,6 +58,8 @@ class IpsenMikhailov(BaseDistance):
 
         """
         N = len(G1)
+        G1 = ensure_unweighted(G1)
+        G2 = ensure_unweighted(G2)
 
         # get the adjacency matrices
         adj1 = nx.to_numpy_array(G1)

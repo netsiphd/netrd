@@ -22,31 +22,47 @@ from ..utilities import create_graph, threshold
 
 
 class TimeGrangerCausality(BaseReconstructor):
-    def fit(self, TS, lag=1, threshold_type='range', **kwargs):
-        """
-        Reconstruct a network based on the Granger causality. To evaluate the
-        effect of a time series (j) over another (i), it first evaluates the
-        error e2 given by an autoregressive model fitted to (i) alone. Then, it
-        evaluates another error e2 given by an autoregressive model training to
-        correlate the future of (i) with the past of (i) and (j). The Granger
-        causality of node (j) over (i) is simply given by
-        log(var(e1) / var(e2)). It constructs the network by calculating the
-        Granger causality for each pair of nodes.
+    """Uses the Granger causality between nodes."""
 
-        Params
-        ------
-        TS (np.ndarray): Array consisting of $L$ observations from $N$ sensors.
+    def fit(self, TS, lag=1, threshold_type="range", **kwargs):
+        r"""Reconstruct a network based on the Granger causality. To evaluate
+        the effect of a time series :math:`j` over another, :math:`i`, it first
+        evaluates the error :math:`e_1` given by an autoregressive model fit
+        with :math:`i` alone. Then, it evaluates another error :math:`e_2`
+        given by an autoregressive model trained to correlate the future of
+        :math:`i` with the past of :math:`i` and :math:`j`. The Granger
+        causality of node :math:`j` over :math:`i` is simply given by
+        :math:`log(var(e_1) / var(e_2))``.
 
-        lag (int): Time lag.
+        It reconstructs the network by calculating the Granger
+        causality for each pair of nodes.
+
+        Parameters
+        ----------
+
+        TS (np.ndarray)
+            Array consisting of :math:`L` observations from :math:`N`
+            sensors.
+
+        lag (int)
+            Time lag to consider.
+
+        threshold_type (str)
+            Which thresholding function to use on the matrix of
+            weights. See `netrd.utilities.threshold.py` for
+            documentation. Pass additional arguments to the thresholder
+            using ``**kwargs``.
 
         Returns
-        -------
-        G (nx.Graph): A reconstructed graph with $N$ nodes.
+        --------
+
+        G (nx.Graph)
+            A reconstructed graph with :math:`N` nodes.
 
         """
 
         n = TS.shape[0]
-        self.results["weights"] = np.zeros([n, n])
+        W = np.zeros([n, n])
 
         for i in range(n):
             xi, yi = TimeGrangerCausality.split_data(TS[i, :], lag)
@@ -61,42 +77,48 @@ class TimeGrangerCausality(BaseReconstructor):
 
                 std_i = np.std(err1)
                 std_ij = np.std(err2)
-                if std_i == 0:
-                    self.results["weights"][j, i] = -99999
-                elif std_ij == 0:
-                    self.results["weights"][j, i] = 99999999
-                else:
-                    self.results["weights"][j, i] = np.log(std_i) -\
-                                                    np.log(std_ij)
 
+                if std_i == 0:
+                    W[j, i] = -99999999
+                elif std_ij == 0:
+                    W[j, i] = 99999999
+                else:
+                    W[j, i] = np.log(std_i) - np.log(std_ij)
+
+        self.results["weights_matrix"] = W
         # threshold the network
-        W_thresh = threshold(self.results["weights"], threshold_type, **kwargs)
-        self.results['thresholded_matrix'] = W_thresh
+        W_thresh = threshold(W, threshold_type, **kwargs)
+        self.results["thresholded_matrix"] = W_thresh
 
         # construct the network
-        self.results['graph'] = create_graph(W_thresh)
-        G = self.results['graph']
+        self.results["graph"] = create_graph(W_thresh)
+        G = self.results["graph"]
 
         return G
 
     @staticmethod
     def split_data(TS, lag):
-        """From a single node time series, it returns a training dataset with
+        """From a single node time series, return a training dataset with
         corresponding targets.
 
-        Params
-        ------
+        Parameters
+        ----------
 
-        TS (np.ndarray): Array consisting of $L$ observations from $N$ sensors.
+        TS (np.ndarray)
+            Array consisting of :math:`L` observations from :math:`N`
+            sensors.
 
-        lag (int): Time lag.
+        lag (int)
+            Time lag to consider.
 
         Returns
         -------
 
-        inputs (np.ndarray): Training data for the inputs.
+        inputs (np.ndarray)
+            Training data for the inputs.
 
-        targets (np.ndarray): Training data for the targets.
+        targets (np.ndarray)
+            Training data for the targets.
 
         """
         T = len(TS)
@@ -104,7 +126,7 @@ class TimeGrangerCausality(BaseReconstructor):
         targets = np.zeros(T - lag - 1)
 
         for t in range(T - lag - 1):
-            inputs[t, :] = TS[t: lag + t]
+            inputs[t, :] = TS[t : lag + t]
             targets[t] = TS[t + lag]
 
         return inputs, targets

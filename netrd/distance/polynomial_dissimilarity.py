@@ -16,8 +16,8 @@ Submitted as part of the 2019 NetSI Collabathon.
 """
 import numpy as np
 import networkx as nx
-import scipy.sparse as ss
 from .base import BaseDistance
+from ..utilities.graph import ensure_unweighted
 
 
 class PolynomialDissimilarity(BaseDistance):
@@ -58,34 +58,38 @@ class PolynomialDissimilarity(BaseDistance):
                arXiv preprint arXiv:1801.07351 (2018).
 
         """
+        G1 = ensure_unweighted(G1)
+        G2 = ensure_unweighted(G2)
+
         A1 = nx.to_numpy_array(G1)
         A2 = nx.to_numpy_array(G2)
 
-        P_A1 = calculate_polynomial(A1, k, alpha)
-        P_A2 = calculate_polynomial(A2, k, alpha)
+        P_A1 = similarity_score(A1, k, alpha)
+        P_A2 = similarity_score(A2, k, alpha)
 
-        dist = np.linalg.norm(P_A1 - P_A2, ord='fro') / A1.shape[0] ** 2
+        dist = np.linalg.norm(P_A1 - P_A2, ord="fro") / A1.shape[0] ** 2
 
-        self.results['adjacency_matrices'] = A1, A2
-        self.results['dist'] = dist
+        self.results["adjacency_matrices"] = A1, A2
+        self.results["dist"] = dist
         return dist
 
 
-def calculate_polynomial(A, k, alpha):
+def similarity_score(A, k, alpha):
+    """
+    Calculate the similarity score used in the polynomial dissimilarity
+    distance. This uses a polynomial transformation of the eigenvalues of the
+    of the adjacency matrix in combination with the eigenvectors of the
+    adjacency matrix. See p. 27 of Donnat and Holmes (2018).
+    """
+
     eig_vals, Q = np.linalg.eig(A)
 
     n = A.shape[0]
-    W = np.diag(
-        sum(
-            list(
-                map(
-                    lambda kp: eig_vals ** kp / (n - 1) ** (alpha * kp - 1),
-                    range(1, k + 1),
-                )
-            )
-        )
-    )
 
+    def polynomial(kp):
+        return eig_vals ** kp / (n - 1) ** (alpha * (kp - 1))
+
+    W = np.diag(sum([polynomial(k) for k in range(1, k + 1)]))
     P_A = np.dot(np.dot(Q, W), Q.T)
 
     return P_A

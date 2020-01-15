@@ -21,7 +21,7 @@ Submitted as part of the 2019 NetSI Collabathon.
 import networkx as nx
 import numpy as np
 from .base import BaseDistance
-from ..utilities import entropy, ensure_undirected
+from ..utilities import entropy, ensure_undirected, ensure_unweighted
 
 
 class CommunicabilityJSD(BaseDistance):
@@ -85,6 +85,9 @@ class CommunicabilityJSD(BaseDistance):
 
         G1 = ensure_undirected(G1)
         G2 = ensure_undirected(G2)
+
+        G1 = ensure_unweighted(G1)
+        G2 = ensure_unweighted(G2)
 
         N1 = G1.number_of_nodes()
         N2 = G2.number_of_nodes()

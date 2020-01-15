@@ -15,6 +15,7 @@ Submitted as part of the 2019 NetSI Collabathon.
 import numpy as np
 import networkx as nx
 from .base import BaseDistance
+from ..utilities.graph import ensure_unweighted
 from scipy.special import erf
 from scipy.integrate import quad
 from scipy.linalg import eigvalsh
@@ -112,6 +113,8 @@ class LaplacianSpectral(BaseDistance):
         .. [2] https://ieeexplore.ieee.org/abstract/document/7344816.
 
         """
+        G1 = ensure_unweighted(G1)
+        G2 = ensure_unweighted(G2)
         adj1 = nx.to_numpy_array(G1)
         adj2 = nx.to_numpy_array(G2)
         self.results['adjacency_matrices'] = adj1, adj2
@@ -195,7 +198,7 @@ def _create_continuous_spectrum(eigenvalues, kernel, hwhm, a, b):
     # define density and repartition function for each eigenvalue
     if kernel == "normal":
         std = hwhm / 1.1775
-        f = lambda x, xp: np.exp(-(x - xp) ** 2 / (2 * std ** 2)) / np.sqrt(
+        f = lambda x, xp: np.exp(-((x - xp) ** 2) / (2 * std ** 2)) / np.sqrt(
             2 * np.pi * std ** 2
         )
         F = lambda x, xp: (1 + erf((x - xp) / (np.sqrt(2) * std))) / 2

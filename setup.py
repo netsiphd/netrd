@@ -25,7 +25,7 @@ with open('README.md') as fin:
 
 setuptools.setup(
     name='netrd',
-    version='0.1.1',
+    version='0.2.1',
     author='NetSI 2019 Collabathon Team',
     author_email='stefanmccabe@gmail.com',
     description=description,
@@ -39,5 +39,4 @@ setuptools.setup(
         'License :: OSI Approved :: MIT License',
         'Operating System :: OS Independent',
     ],
-    extras_require={'doc': ['POT>=0.5.1']},
 )

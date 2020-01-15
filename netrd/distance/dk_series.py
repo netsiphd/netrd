@@ -14,13 +14,14 @@ Submitted as part of the 2019 NetSI Collabathon.
 import networkx as nx
 import numpy as np
 from scipy.sparse import coo_matrix
-import itertools as it
 from collections import defaultdict
 from .base import BaseDistance
-from ..utilities import entropy, ensure_undirected
+from ..utilities import entropy, ensure_undirected, ensure_unweighted
 
 
 class dkSeries(BaseDistance):
+    """Compare graphs based on their :math:`dk`-series."""
+
     def dist(self, G1, G2, d=2):
         r"""Compute the distance between two graphs by using the Jensen-Shannon
         divergence between the :math:`dk`-series of the graphs.
@@ -60,6 +61,9 @@ class dkSeries(BaseDistance):
 
         G1 = ensure_undirected(G1)
         G2 = ensure_undirected(G2)
+
+        G1 = ensure_unweighted(G1)
+        G2 = ensure_unweighted(G2)
         N = max(len(G1), len(G2))
 
         if d == 1:
@@ -71,7 +75,7 @@ class dkSeries(BaseDistance):
             # the 2k-distance stores the distribution in a sparse matrix,
             # so here we take the output of DegreeDivergence and
             # produce a comparable object
-            hist1, hist2 = degdiv.results['degree_histograms']
+            hist1, hist2 = degdiv.results["degree_histograms"]
             hist1 /= len(G1)
             hist2 /= len(G2)
             hist1 = coo_matrix(hist1)

@@ -127,7 +127,7 @@ class ConvergentCrossMapping(BaseReconstructor):
         pvalue = np.zeros((N, N), dtype=float)
         for i, j in permutations(range(N), 2):
             estimates = time_series_estimates(data[:, j], neighbors[i], weights[i])
-            M, = estimates.shape
+            (M,) = estimates.shape
             correlation[i, j], pvalue[i, j] = pearsonr(estimates, data[-M:, j])
 
         weights = 1 - pvalue
@@ -173,7 +173,7 @@ def shadow_data_cloud(data, N, tau):
     for :math:`t = (N-1)*tau + 1, (N-1)*tau + 2, ..., L`.
 
     """
-    L, = data.shape
+    (L,) = data.shape
     M = L - (N - 1) * tau  # Number of points in the shadow data cloud
     shadow = np.zeros((M, N), dtype=data.dtype)
 

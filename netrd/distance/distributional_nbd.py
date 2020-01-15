@@ -10,6 +10,7 @@ import numpy as np
 import networkx as nx
 import scipy.sparse as sp
 from scipy.spatial.distance import euclidean, chebyshev
+from ..utilities.graph import ensure_unweighted
 
 from .base import BaseDistance
 
@@ -77,6 +78,9 @@ class DistributionalNBD(BaseDistance):
             The distance between `G1` and `G2`
 
         """
+        G1 = ensure_unweighted(G1)
+        G2 = ensure_unweighted(G2)
+
         B1 = reduced_hashimoto(G1, shave=shave, sparse=sparse, **kwargs)
         B2 = reduced_hashimoto(G2, shave=shave, sparse=sparse, **kwargs)
 

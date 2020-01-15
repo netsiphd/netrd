@@ -179,7 +179,7 @@ def shadow_data_cloud(data, N, tau):
 
     for j in reversed(range(N)):  # Fill in column values from the right
         delta = (N - 1 - j) * tau  # Amount of time-lag for this column
-        shadow[:, j] = data[delta : delta + M]
+        shadow[:, j] = data[delta:delta+M]
 
     return shadow
 
@@ -255,8 +255,17 @@ def neighbor_weights(dist):
     :math:`f_k = e^{-\[ d(u(t), u(t_k)) / d(u(t), u(t_1)) \]}`.
 
     """
-    expn = dist / dist[:, 0, np.newaxis]
-    wei = np.exp(-expn)
+    # For shadow data points where the nearest distance among the neighbors is
+    # zero, let the weight be one for the nearest neighbor and zero otherwise
+    wei = np.zeros(dist.shape)
+    wei[:, 0] = 1
+
+    # For those where the nearest distance is positive, assign weights that are
+    # exponentially decaying with the ratio to the nearest distance
+    pos_nearest_dist = dist[:, 0] > 0
+    dist_pnd = dist[pos_nearest_dist, :]
+
+    wei[pos_nearest_dist, :] = np.exp(-dist_pnd / dist_pnd[:, 0, np.newaxis])
     wei = wei / wei.sum(axis=1, keepdims=True)
 
     return wei

@@ -117,7 +117,7 @@ class ConvergentCrossMapping(BaseReconstructor):
         # Obtain nearest neighbors of points in the shadow data clould and
         # their weights for time series estimates
         neighbors, distances = zip(*[nearest_neighbors(shad, L) for shad in shadows])
-        weights = [neighbor_weights(dist) for dist in distances]
+        nei_weights = [neighbor_weights(dist) for dist in distances]
 
         # For every variable X and every other variable Y,
         # construct the estimates of Y from X's shadow data cloud and
@@ -126,14 +126,13 @@ class ConvergentCrossMapping(BaseReconstructor):
         correlation = np.ones((N, N), dtype=float)
         pvalue = np.zeros((N, N), dtype=float)
         for i, j in permutations(range(N), 2):
-            estimates = time_series_estimates(data[:, j], neighbors[i], weights[i])
+            estimates = time_series_estimates(data[:, j], neighbors[i], nei_weights[i])
             (M,) = estimates.shape
             correlation[i, j], pvalue[i, j] = pearsonr(estimates, data[-M:, j])
 
-        weights = 1 - pvalue
-
         # Build the reconstructed graph by finding significantly correlated
         # variables
+        weights = -pvalue  # weights such that we can sort p-values in decreasing order
         A = threshold(weights, threshold_type, cutoffs=cutoffs, **kwargs)
         G = create_graph(A, create_using=nx.DiGraph())
 

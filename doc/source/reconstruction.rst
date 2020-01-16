@@ -22,6 +22,7 @@ the same general usage as above.
     netrd.reconstruction.CorrelationMatrix
     netrd.reconstruction.CorrelationSpanningTree
     netrd.reconstruction.FreeEnergyMinimization
+    netrd.reconstruction.GrangerCausality
     netrd.reconstruction.GraphicalLasso
     netrd.reconstruction.MarchenkoPastur
     netrd.reconstruction.MaximumLikelihoodEstimation
@@ -34,7 +35,6 @@ the same general usage as above.
     netrd.reconstruction.PartialCorrelationMatrix
     netrd.reconstruction.RandomReconstructor
     netrd.reconstruction.ThoulessAndersonPalmer
-    netrd.reconstruction.TimeGrangerCausality
 
 
 Reference

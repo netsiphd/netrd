@@ -1,5 +1,5 @@
 """
-time_granger_causality.py
+granger_causality.py
 --------------
 
 Graph reconstruction algorithm based on [1].
@@ -21,7 +21,7 @@ from sklearn.linear_model import LinearRegression
 from ..utilities import create_graph, threshold
 
 
-class TimeGrangerCausality(BaseReconstructor):
+class GrangerCausality(BaseReconstructor):
     """Uses the Granger causality between nodes."""
 
     def fit(self, TS, lag=1, threshold_type="range", **kwargs):
@@ -65,10 +65,10 @@ class TimeGrangerCausality(BaseReconstructor):
         W = np.zeros([n, n])
 
         for i in range(n):
-            xi, yi = TimeGrangerCausality.split_data(TS[i, :], lag)
+            xi, yi = GrangerCausality.split_data(TS[i, :], lag)
 
             for j in range(n):
-                xj, yj = TimeGrangerCausality.split_data(TS[j, :], lag)
+                xj, yj = GrangerCausality.split_data(TS[j, :], lag)
                 xij = np.concatenate([xi, xj], axis=-1)
                 reg1 = LinearRegression().fit(xi, yi)
                 reg2 = LinearRegression().fit(xij, yi)

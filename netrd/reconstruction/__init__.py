@@ -13,7 +13,7 @@ from .ou_inference import OUInference
 from .graphical_lasso import GraphicalLasso
 from .marchenko_pastur import MarchenkoPastur
 from .naive_transfer_entropy import NaiveTransferEntropy
-from .time_granger_causality import TimeGrangerCausality
+from .granger_causality import GrangerCausality
 from .optimal_causation_entropy import OptimalCausationEntropy
 from .correlation_spanning_tree import CorrelationSpanningTree
 
@@ -32,7 +32,7 @@ __all__ = [
     'GraphicalLasso',
     'MarchenkoPastur',
     'NaiveTransferEntropy',
-    'TimeGrangerCausality',
+    'GrangerCausality',
     'OptimalCausationEntropy',
     'CorrelationSpanningTree',
 ]

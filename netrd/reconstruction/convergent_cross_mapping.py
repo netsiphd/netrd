@@ -178,7 +178,7 @@ def shadow_data_cloud(data, N, tau):
 
     for j in reversed(range(N)):  # Fill in column values from the right
         delta = (N - 1 - j) * tau  # Amount of time-lag for this column
-        shadow[:, j] = data[delta:delta+M]
+        shadow[:, j] = data[delta : delta + M]
 
     return shadow
 

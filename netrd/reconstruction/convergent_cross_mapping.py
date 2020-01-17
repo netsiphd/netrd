@@ -23,7 +23,7 @@ class ConvergentCrossMapping(BaseReconstructor):
     """Infers dynamical causal relations."""
 
     def fit(
-        self, TS, tau=1, threshold_type='cutoff', cutoffs=[(0.95, np.inf)], **kwargs
+        self, TS, tau=1, threshold_type='range', cutoffs=[(0.95, np.inf)], **kwargs
     ):
         r"""Infer causal relation applying Takens' Theorem of dynamical systems.
 

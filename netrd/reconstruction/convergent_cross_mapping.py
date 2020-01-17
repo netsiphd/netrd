@@ -64,8 +64,8 @@ class ConvergentCrossMapping(BaseReconstructor):
 
         The results dictionary also includes the raw Pearson correlations
         between elements (`'correlation_matrix'`), their associated
-        p-values (`'pvalues_matrix'`), and a matrix of the p-values subtracted
-        from one (`'weights_matrix'`).
+        p-values (`'pvalues_matrix'`), and a matrix of the negative logarithm
+        of the p-values subtracted (`'weights_matrix'`).
 
         Parameters
         ----------
@@ -131,8 +131,11 @@ class ConvergentCrossMapping(BaseReconstructor):
             correlation[i, j], pvalue[i, j] = pearsonr(estimates, data[-M:, j])
 
         # Build the reconstructed graph by finding significantly correlated
-        # variables
-        weights = -pvalue  # weights such that we can sort p-values in decreasing order
+        # variables,
+        # where weights of reconstructed edges are selected such that we can
+        # p-values in decreasing order and distinguish edges with zero p-value
+        weights = np.full(pvalue.shape, -np.inf)
+        weights[pvalue > 0] = -np.log10(pvalue[pvalue > 0])
         A = threshold(weights, threshold_type, cutoffs=cutoffs, **kwargs)
         G = create_graph(A, create_using=nx.DiGraph())
 

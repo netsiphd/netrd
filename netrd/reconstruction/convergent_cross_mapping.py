@@ -23,7 +23,7 @@ class ConvergentCrossMapping(BaseReconstructor):
     """Infers dynamical causal relations."""
 
     def fit(
-        self, TS, tau=1, threshold_type='cutoff', cutoffs=[(0.95, np.inf)], **kwargs
+        self, TS, tau=1, threshold_type='range', cutoffs=[(0.95, np.inf)], **kwargs
     ):
         r"""Infer causal relation applying Takens' Theorem of dynamical systems.
 
@@ -64,8 +64,8 @@ class ConvergentCrossMapping(BaseReconstructor):
 
         The results dictionary also includes the raw Pearson correlations
         between elements (`'correlation_matrix'`), their associated
-        p-values (`'pvalues_matrix'`), and a matrix of the p-values subtracted
-        from one (`'weights_matrix'`).
+        p-values (`'pvalues_matrix'`), and a matrix of the negative logarithm
+        of the p-values subtracted (`'weights_matrix'`).
 
         Parameters
         ----------
@@ -117,7 +117,7 @@ class ConvergentCrossMapping(BaseReconstructor):
         # Obtain nearest neighbors of points in the shadow data clould and
         # their weights for time series estimates
         neighbors, distances = zip(*[nearest_neighbors(shad, L) for shad in shadows])
-        weights = [neighbor_weights(dist) for dist in distances]
+        nei_weights = [neighbor_weights(dist) for dist in distances]
 
         # For every variable X and every other variable Y,
         # construct the estimates of Y from X's shadow data cloud and
@@ -126,14 +126,16 @@ class ConvergentCrossMapping(BaseReconstructor):
         correlation = np.ones((N, N), dtype=float)
         pvalue = np.zeros((N, N), dtype=float)
         for i, j in permutations(range(N), 2):
-            estimates = time_series_estimates(data[:, j], neighbors[i], weights[i])
+            estimates = time_series_estimates(data[:, j], neighbors[i], nei_weights[i])
             (M,) = estimates.shape
             correlation[i, j], pvalue[i, j] = pearsonr(estimates, data[-M:, j])
 
-        weights = 1 - pvalue
-
         # Build the reconstructed graph by finding significantly correlated
-        # variables
+        # variables,
+        # where weights of reconstructed edges are selected such that we can
+        # p-values in decreasing order and distinguish edges with zero p-value
+        weights = np.full(pvalue.shape, -np.inf)
+        weights[pvalue > 0] = -np.log10(pvalue[pvalue > 0])
         A = threshold(weights, threshold_type, cutoffs=cutoffs, **kwargs)
         G = create_graph(A, create_using=nx.DiGraph())
 
@@ -255,8 +257,17 @@ def neighbor_weights(dist):
     :math:`f_k = e^{-\[ d(u(t), u(t_k)) / d(u(t), u(t_1)) \]}`.
 
     """
-    expn = dist / dist[:, 0, np.newaxis]
-    wei = np.exp(-expn)
+    # For shadow data points where the nearest distance among the neighbors is
+    # zero, let the weight be one for the nearest neighbor and zero otherwise
+    wei = np.zeros(dist.shape)
+    wei[:, 0] = 1
+
+    # For those where the nearest distance is positive, assign weights that are
+    # exponentially decaying with the ratio to the nearest distance
+    pos_nearest_dist = dist[:, 0] > 0
+    dist_pnd = dist[pos_nearest_dist, :]
+
+    wei[pos_nearest_dist, :] = np.exp(-dist_pnd / dist_pnd[:, 0, np.newaxis])
     wei = wei / wei.sum(axis=1, keepdims=True)
 
     return wei

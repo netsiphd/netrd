@@ -12,7 +12,7 @@ from netrd.dynamics import BaseDynamics
 import numpy as np
 import networkx as nx
 from numpy.random import rand
-
+from ..utilities import ensure_unweighted
 
 class IsingGlauber(BaseDynamics):
     """Ising-Glauber model."""
@@ -57,6 +57,7 @@ class IsingGlauber(BaseDynamics):
 
         """
 
+        G = ensure_unweighted(G)
         N = G.number_of_nodes()
         adjmat = nx.to_numpy_array(G, dtype=float)
         degs = adjmat.sum(axis=0)

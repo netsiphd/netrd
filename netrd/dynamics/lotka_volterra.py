@@ -13,7 +13,7 @@ import numpy as np
 import networkx as nx
 from numpy.random import uniform, normal
 from scipy.integrate import ode
-
+from ..utilities import ensure_unweighted
 
 class LotkaVolterra(BaseDynamics):
     """Lotka-Volterra dynamics of species abundance."""
@@ -102,6 +102,7 @@ class LotkaVolterra(BaseDynamics):
 
         """
 
+        G = ensure_unweighted(G)
         N = G.number_of_nodes()
         adjmat = nx.to_numpy_array(G)
 

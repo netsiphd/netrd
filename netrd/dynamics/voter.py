@@ -13,6 +13,7 @@ Submitted as part of the 2019 NetSI Collabathon.
 from netrd.dynamics import BaseDynamics
 import numpy as np
 import networkx as nx
+from ..utilities import ensure_unweighted
 
 
 class VoterModel(BaseDynamics):
@@ -48,6 +49,8 @@ class VoterModel(BaseDynamics):
             an :math:`N \times L` array of synthetic time series data.
 
         """
+
+        G = ensure_unweighted(G)
 
         N = G.number_of_nodes()
 

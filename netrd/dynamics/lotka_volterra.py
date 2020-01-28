@@ -15,6 +15,7 @@ from numpy.random import uniform, normal
 from scipy.integrate import ode
 from ..utilities import ensure_unweighted
 
+
 class LotkaVolterra(BaseDynamics):
     """Lotka-Volterra dynamics of species abundance."""
 

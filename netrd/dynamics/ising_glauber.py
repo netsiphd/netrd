@@ -14,6 +14,7 @@ import networkx as nx
 from numpy.random import rand
 from ..utilities import ensure_unweighted
 
+
 class IsingGlauber(BaseDynamics):
     """Ising-Glauber model."""
 

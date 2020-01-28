@@ -10,6 +10,7 @@ submitted as part of the 2019 NetSI Collabathon
 from .base import BaseDynamics
 import networkx as nx
 import numpy as np
+from ..utilities import ensure_unweighted
 
 
 class SherringtonKirkpatrickIsing(BaseDynamics):
@@ -58,6 +59,7 @@ class SherringtonKirkpatrickIsing(BaseDynamics):
 
         """
 
+        G = ensure_unweighted(G)
         N = G.number_of_nodes()
 
         # get transition probability matrix of G

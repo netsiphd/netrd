@@ -12,13 +12,13 @@ from .base import BaseDistance
 from collections import Counter
 import numpy as np
 import networkx as nx
-from ..utilities import entropy
-from ..utilities.graph import ensure_unweighted
+from ..utilities import entropy, unweighted
 
 
 class PortraitDivergence(BaseDistance):
     """Compares graph portraits."""
 
+    @unweighted
     def dist(self, G1, G2, bins=None, binedges=None):
         """Distance measure based on the two graphs' "portraits".
 
@@ -53,9 +53,6 @@ class PortraitDivergence(BaseDistance):
         [2] https://github.com/bagrow/portrait-divergence
 
         """
-
-        G1 = ensure_unweighted(G1)
-        G2 = ensure_unweighted(G2)
 
         adj1 = nx.to_numpy_array(G1)
         adj2 = nx.to_numpy_array(G2)

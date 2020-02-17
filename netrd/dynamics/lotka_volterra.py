@@ -13,12 +13,13 @@ import numpy as np
 import networkx as nx
 from numpy.random import uniform, normal
 from scipy.integrate import ode
-from ..utilities import ensure_unweighted
+from ..utilities import unweighted
 
 
 class LotkaVolterra(BaseDynamics):
     """Lotka-Volterra dynamics of species abundance."""
 
+    @unweighted
     def simulate(
         self,
         G,
@@ -95,7 +96,7 @@ class LotkaVolterra(BaseDynamics):
 
         The deterministic dynamics is simulated through the forth-order
         Runge-Kutta method, and the stochastic one is simulated through
-        mutliplicative noise with the Euler-Maruyama method.
+        multiplicative noise with the Euler-Maruyama method.
 
         The ground-truth network, time steps and the time series can be
         found in results['ground-truth'], reuslts['time_steps'] and
@@ -103,7 +104,6 @@ class LotkaVolterra(BaseDynamics):
 
         """
 
-        G = ensure_unweighted(G)
         N = G.number_of_nodes()
         adjmat = nx.to_numpy_array(G)
 

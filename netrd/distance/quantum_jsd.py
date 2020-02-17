@@ -20,14 +20,16 @@ import networkx as nx
 import numpy as np
 from scipy.linalg import expm
 from .base import BaseDistance
-from ..utilities import ensure_undirected, ensure_unweighted
+from ..utilities import undirected, unweighted
 
 
 class QuantumJSD(BaseDistance):
     """Compares the spectral entropies of the density matrices."""
 
+    @undirected
+    @unweighted
     def dist(self, G1, G2, beta=0.1, q=None):
-        r"""Square root of the quantum :math:`q`-Jenson-Shannon divergence between two
+        r"""Square root of the quantum :math:`q`-Jensen-Shannon divergence between two
         graphs.
 
         The generalized Jensen-Shannon divergence compares two graphs by the
@@ -110,12 +112,6 @@ class QuantumJSD(BaseDistance):
 
         if q and q >= 2:
             warnings.warn("JSD is only a metric for 0 ≤ q < 2.", RuntimeWarning)
-
-        G1 = ensure_undirected(G1)
-        G2 = ensure_undirected(G2)
-
-        G1 = ensure_unweighted(G1)
-        G2 = ensure_unweighted(G2)
 
         def density_matrix(A, beta):
             """

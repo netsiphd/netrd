@@ -18,12 +18,13 @@ import networkx as nx
 from .base import BaseDistance
 from scipy.optimize import fsolve
 from .ipsen_mikhailov import _im_distance
-from ..utilities.graph import ensure_unweighted
+from ..utilities.graph import unweighted
 
 
 class HammingIpsenMikhailov(BaseDistance):
     """Combination of Hamming and Ipsen-Mikhailov distances."""
 
+    @unweighted
     def dist(self, G1, G2, combination_factor=1):
         """Graph distance combining local and global distances.
 
@@ -79,9 +80,6 @@ class HammingIpsenMikhailov(BaseDistance):
 
         """
         N = len(G1)
-
-        G1 = ensure_unweighted(G1)
-        G2 = ensure_unweighted(G2)
 
         # get the adjacency matrices
         adj1 = nx.to_numpy_array(G1)

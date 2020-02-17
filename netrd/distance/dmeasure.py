@@ -23,12 +23,13 @@ import numpy as np
 from scipy.stats import entropy
 from .base import BaseDistance
 from ..utilities.entropy import js_divergence
-from ..utilities import ensure_undirected
+from ..utilities import undirected
 
 
 class DMeasure(BaseDistance):
     """Compare two graphs by their network node dispersion."""
 
+    @undirected
     def dist(self, G1, G2, w1=0.45, w2=0.45, w3=0.10, niter=50):
         r"""The D-Measure is a comparison of structural dissimilarities between graphs.
 
@@ -103,9 +104,6 @@ class DMeasure(BaseDistance):
 
         if sum([w1, w2, w3]) != 1:
             raise ValueError("Weights must sum to one.")
-
-        G1 = ensure_undirected(G1)
-        G2 = ensure_undirected(G2)
 
         first_term = 0
         second_term = 0

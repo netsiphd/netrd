@@ -9,17 +9,16 @@ author: Ryan J. Gallagher & Jessica T. Davis
 Submitted as part of the 2019 NetSI Collabathon.
 
 """
-import warnings
 import numpy as np
 import networkx as nx
-import scipy.sparse as ss
 from .base import BaseDistance
-from ..utilities import ensure_undirected
+from ..utilities import undirected
 
 
 class ResistancePerturbation(BaseDistance):
     """Compares the resistance matrices."""
 
+    @undirected
     def dist(self, G1, G2, p=2):
         r"""The p-norm of the difference between two graph resistance matrices.
 
@@ -76,10 +75,6 @@ class ResistancePerturbation(BaseDistance):
         .. [1] https://arxiv.org/abs/1605.01091v2
 
         """
-        # Coerce to undirected, if needed.
-        G1 = ensure_undirected(G1)
-        G2 = ensure_undirected(G2)
-
         # Check for connected graphs
         if not nx.is_connected(G1) or not nx.is_connected(G2):
             raise ValueError(

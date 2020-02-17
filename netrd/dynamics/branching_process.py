@@ -18,7 +18,7 @@ import numpy as np
 
 
 class BranchingModel(BaseDynamics):
-    """A sand-pile-like brancing process."""
+    """A sand-pile-like branching process."""
 
     def __init__(self):
         self.results = {}
@@ -34,7 +34,7 @@ class BranchingModel(BaseDynamics):
         scale=0.95,
         noise=True,
     ):
-        r"""Simulate a (sand-pile-like) branching processs dynamics .
+        r"""Simulate a (sand-pile-like) branching process dynamics .
 
         The results dictionary also stores the ground truth network as
         `'ground_truth'`.

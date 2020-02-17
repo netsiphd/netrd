@@ -12,21 +12,22 @@ Submitted as part of the 2019 NetSI Collabathon.
 """
 import networkx as nx
 import numpy as np
-import warnings
 from scipy.spatial.distance import canberra
 from scipy.stats import skew, kurtosis
 
 from .base import BaseDistance
-from ..utilities import ensure_undirected, ensure_unweighted
+from ..utilities import undirected, unweighted
 
 
 class NetSimile(BaseDistance):
     """Compares node signature distributions."""
 
+    @undirected
+    @unweighted
     def dist(self, G1, G2):
         """A scalable approach to network similarity.
 
-        A network similarity measure based on node signature distrubtions.
+        A network similarity measure based on node signature distributions.
 
         The results dictionary includes the underlying feature matrices in
         `'feature_matrices'` and the underlying signature vectors in
@@ -53,10 +54,6 @@ class NetSimile(BaseDistance):
                (2012)
 
         """
-        G1 = ensure_undirected(G1)
-        G2 = ensure_undirected(G2)
-        G1 = ensure_unweighted(G1)
-        G2 = ensure_unweighted(G2)
 
         # find the graph node feature matrices
         G1_node_features = feature_extraction(G1)

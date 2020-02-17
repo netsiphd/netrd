@@ -15,12 +15,13 @@ from collections import Counter
 import numpy as np
 import networkx as nx
 from .base import BaseDistance
-from ..utilities import entropy, ensure_unweighted
+from ..utilities import entropy, unweighted
 
 
 class DegreeDivergence(BaseDistance):
     """Compare two degree distributions."""
 
+    @unweighted
     def dist(self, G1, G2):
         """Jenson-Shannon divergence between degree distributions.
 
@@ -39,9 +40,6 @@ class DegreeDivergence(BaseDistance):
             the distance between `G1` and `G2`.
 
         """
-
-        G1 = ensure_unweighted(G1)
-        G2 = ensure_unweighted(G2)
 
         def degree_vector_histogram(graph):
             """Return the degrees in both formats.

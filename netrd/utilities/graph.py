@@ -77,8 +77,8 @@ def ensure_undirected(G):
 
 def undirected(func):
     """
-    Decorator applying `ensure_undirected()` to all `nx.Graph`-subclassed
-    arguments of `func()`.
+    Decorator applying ``ensure_undirected()`` to all ``nx.Graph``-subclassed
+    arguments of ``func``.
     """
 
     @wraps(func)
@@ -123,8 +123,8 @@ def ensure_unweighted(G):
 
 def unweighted(func):
     """
-    Decorator applying `ensure_unweighted()` to all `nx.Graph`-subclassed
-    arguments of `func()`.
+    Decorator applying ``ensure_unweighted()`` to all ``nx.Graph``-subclassed
+    arguments of ``func``.
     """
 
     @wraps(func)

@@ -11,12 +11,13 @@ import scipy
 import numpy as np
 import networkx as nx
 from .base import BaseDistance
-from ..utilities.graph import ensure_unweighted
+from ..utilities import unweighted
 
 
 class Hamming(BaseDistance):
     """Entry-wise disagreement between adjacency matrices."""
 
+    @unweighted
     def dist(self, G1, G2):
         r"""The proportion of disagreeing nodes between the flattened adjacency
         matrices.
@@ -56,9 +57,6 @@ class Hamming(BaseDistance):
         .. [1] https://docs.scipy.org/doc/scipy/reference/generated/scipy.spatial.distance.hamming.html#scipy.spatial.distance.hamming
 
         """
-
-        G1 = ensure_unweighted(G1)
-        G2 = ensure_unweighted(G2)
 
         if G1.number_of_nodes() == G2.number_of_nodes():
             N = G1.number_of_nodes()

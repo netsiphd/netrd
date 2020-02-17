@@ -12,7 +12,7 @@ import scipy.sparse as sparse
 from .base import BaseDistance
 from collections import defaultdict, Counter
 from ortools.linear_solver import pywraplp
-from ..utilities.graph import ensure_unweighted
+from ..utilities import unweighted
 
 
 class NonBacktrackingSpectral(BaseDistance):
@@ -23,6 +23,7 @@ matrices.
 
     """
 
+    @unweighted
     def dist(self, G1, G2, topk='automatic', batch=100, tol=1e-5):
         """Non-Backtracking Distance between two graphs.
 
@@ -52,9 +53,6 @@ matrices.
             The distance between `G1` and `G2`
 
         """
-
-        G1 = ensure_unweighted(G1)
-        G2 = ensure_unweighted(G2)
 
         vals1 = nbvals(G1, topk, batch, tol)
         vals2 = nbvals(G2, topk, batch, tol)

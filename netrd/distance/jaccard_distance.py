@@ -11,14 +11,13 @@ Submitted as part of the 2019 NetSI Collabathon.
 """
 
 from .base import BaseDistance
-import networkx as nx
-import numpy as np
-from ..utilities import ensure_unweighted
+from ..utilities import unweighted
 
 
 class JaccardDistance(BaseDistance):
     """Jaccard distance between edge sets."""
 
+    @unweighted
     def dist(self, G1, G2):
         r"""Compute the Jaccard index between two graphs.
 
@@ -49,9 +48,6 @@ class JaccardDistance(BaseDistance):
             the distance between G1 and G2.
 
         """
-
-        G1 = ensure_unweighted(G1)
-        G2 = ensure_unweighted(G2)
 
         e1 = set(G1.edges)
         e2 = set(G2.edges)

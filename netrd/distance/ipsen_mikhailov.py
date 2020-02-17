@@ -19,12 +19,13 @@ from .base import BaseDistance
 from scipy.sparse.csgraph import laplacian
 from scipy.linalg import eigh
 from scipy.integrate import quad
-from ..utilities.graph import ensure_unweighted
+from ..utilities.graph import unweighted
 
 
 class IpsenMikhailov(BaseDistance):
     """Compares the spectrum of the Laplacian matrices."""
 
+    @unweighted
     def dist(self, G1, G2, hwhm=0.08):
         """Compare the spectrum ot the associated Laplacian matrices.
 
@@ -58,8 +59,6 @@ class IpsenMikhailov(BaseDistance):
 
         """
         N = len(G1)
-        G1 = ensure_unweighted(G1)
-        G2 = ensure_unweighted(G2)
 
         # get the adjacency matrices
         adj1 = nx.to_numpy_array(G1)

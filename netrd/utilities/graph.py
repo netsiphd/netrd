@@ -9,6 +9,7 @@ author: Stefan McCabe (stefanmccabe at gmail dot com)
 Submitted as part of the 2019 NetSI Collabathon.
 
 """
+from functools import wraps
 import warnings
 import numpy as np
 import networkx as nx
@@ -74,6 +75,23 @@ def ensure_undirected(G):
     return G
 
 
+def undirected(func):
+    """
+    Decorator applying ``ensure_undirected()`` to all ``nx.Graph``-subclassed
+    arguments of ``func``.
+    """
+
+    @wraps(func)
+    def wrapper(*args, **kwargs):
+        args = [
+            ensure_undirected(arg) if issubclass(arg.__class__, nx.Graph) else arg
+            for arg in args
+        ]
+        return func(*args, **kwargs)
+
+    return wrapper
+
+
 def ensure_unweighted(G):
     """Ensure the graph G is unweighted.
 
@@ -93,7 +111,7 @@ def ensure_unweighted(G):
     """
 
     for _, _, attr in G.edges(data=True):
-        if not np.isclose(attr.get('weight', 1.0), 1.0):
+        if not np.isclose(attr.get("weight", 1.0), 1.0):
             H = G.__class__()
             H.add_nodes_from(G)
             H.add_edges_from(G.edges)
@@ -101,3 +119,20 @@ def ensure_unweighted(G):
             return H
 
     return G
+
+
+def unweighted(func):
+    """
+    Decorator applying ``ensure_unweighted()`` to all ``nx.Graph``-subclassed
+    arguments of ``func``.
+    """
+
+    @wraps(func)
+    def wrapper(*args, **kwargs):
+        args = [
+            ensure_unweighted(arg) if issubclass(arg.__class__, nx.Graph) else arg
+            for arg in args
+        ]
+        return func(*args, **kwargs)
+
+    return wrapper

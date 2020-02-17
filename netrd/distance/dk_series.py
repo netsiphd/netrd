@@ -16,12 +16,14 @@ import numpy as np
 from scipy.sparse import coo_matrix
 from collections import defaultdict
 from .base import BaseDistance
-from ..utilities import entropy, ensure_undirected, ensure_unweighted
+from ..utilities import entropy, undirected, unweighted
 
 
 class dkSeries(BaseDistance):
     """Compare graphs based on their :math:`dk`-series."""
 
+    @unweighted
+    @undirected
     def dist(self, G1, G2, d=2):
         r"""Compute the distance between two graphs by using the Jensen-Shannon
         divergence between the :math:`dk`-series of the graphs.
@@ -59,11 +61,6 @@ class dkSeries(BaseDistance):
 
         """
 
-        G1 = ensure_undirected(G1)
-        G2 = ensure_undirected(G2)
-
-        G1 = ensure_unweighted(G1)
-        G2 = ensure_unweighted(G2)
         N = max(len(G1), len(G2))
 
         if d == 1:

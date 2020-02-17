@@ -12,18 +12,19 @@ from netrd.dynamics import BaseDynamics
 import numpy as np
 import networkx as nx
 from numpy.random import rand
-from ..utilities import ensure_unweighted
+from ..utilities import unweighted
 
 
 class IsingGlauber(BaseDynamics):
     """Ising-Glauber model."""
 
+    @unweighted
     def simulate(self, G, L, init=None, beta=2):
         r"""Simulate time series on a network from the Ising-Glauber model.
 
-        In the Ising Glauber model, each node has a binary state. At every
+        In the Ising-Glauber model, each node has a binary state. At every
         time step, nodes switch their state with certain probability. For
-        inactive nodes, this probaility is :math:`1 / (1 + e^{\beta (k -
+        inactive nodes, this probability is :math:`1 / (1 + e^{\beta (k -
         2m) / k})` where :math:`\beta` is a parameter tuning the likelihood
         of switching state, :math:`k` is degree of the node and :math:`m`
         is the number of its active neighbors; for active nodes the
@@ -47,7 +48,7 @@ class IsingGlauber(BaseDynamics):
             must have binary value (0 or 1).
 
         beta (float)
-            Inversed temperature tuning the likelihood that a node switches
+            Inverse temperature tuning the likelihood that a node switches
             its state. Default to :math:`2`.
 
         Returns
@@ -58,7 +59,6 @@ class IsingGlauber(BaseDynamics):
 
         """
 
-        G = ensure_unweighted(G)
         N = G.number_of_nodes()
         adjmat = nx.to_numpy_array(G, dtype=float)
         degs = adjmat.sum(axis=0)

@@ -16,7 +16,6 @@ from ..utilities import unweighted
 class SherringtonKirkpatrickIsing(BaseDynamics):
     """Ising model-like dynamics."""
 
-
     @unweighted
     def simulate(self, G, L, noisy=False):
         r"""Simulate Kinetic Ising model dynamics on a ground truth network.

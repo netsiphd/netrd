@@ -12,20 +12,30 @@ matrix:
           dist: xenial
           python: "3.7"
 
+        - os: linux
+          sudo: required
+          dist: xenial
+          python: "3.8"
+
         - os: osx
           language: generic
           python: "3.5"
-          env: PYVER="3.5.6"
+          env: PYVER="3.5.7"
 
         - os: osx
           language: generic
           python: "3.6"
-          env: PYVER="3.6.7"
+          env: PYVER="3.6.9"
 
         - os: osx
           language: generic
           python: "3.7"
-          env: PYVER="3.7.1"
+          env: PYVER="3.7.5"
+
+        - os: osx
+          language: generic
+          python: "3.8"
+          env: PYVER="3.8.0"
 
 before_install:
   - |
@@ -45,10 +55,11 @@ install:
   - pip install --upgrade pip
   - pip install .
   - pip install -r requirements.txt
-  - if [ $TRAVIS_PYTHON_VERSION == 3.6 ] || [ $TRAVIS_PYTHON_VERSION == 3.7 ]; then pip install black; fi
+
+  - if [ $TRAVIS_PYTHON_VERSION == 3.6 ] || [ $TRAVIS_PYTHON_VERSION == 3.7 ] || [ $TRAVIS_PYTHON_VERSION == 3.8 ]; then pip install black; fi
   - if [ "$TRAVIS_OS_NAME" == "osx" ]; then pip install pytest; fi
 before_script: cd tests/
 script:
   - pytest
-  - if [ $TRAVIS_PYTHON_VERSION == 3.6 ] || [ $TRAVIS_PYTHON_VERSION == 3.7 ]; then black --skip-string-normalization --check ../netrd; fi
-  - if [ $TRAVIS_PYTHON_VERSION == 3.6 ] || [ $TRAVIS_PYTHON_VERSION == 3.7 ]; then black --skip-string-normalization --check ../tests; fi
+  - if [ $TRAVIS_PYTHON_VERSION == 3.6 ] || [ $TRAVIS_PYTHON_VERSION == 3.7 ] || [ $TRAVIS_PYTHON_VERSION == 3.8 ]; then black --skip-string-normalization --check ../netrd; fi
+  - if [ $TRAVIS_PYTHON_VERSION == 3.6 ] || [ $TRAVIS_PYTHON_VERSION == 3.7 ] || [ $TRAVIS_PYTHON_VERSION == 3.8 ]; then black --skip-string-normalization --check ../tests; fi

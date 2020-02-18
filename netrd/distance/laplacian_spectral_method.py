@@ -15,7 +15,7 @@ Submitted as part of the 2019 NetSI Collabathon.
 import numpy as np
 import networkx as nx
 from .base import BaseDistance
-from ..utilities.graph import ensure_unweighted
+from ..utilities.graph import unweighted
 from scipy.special import erf
 from scipy.integrate import quad
 from scipy.linalg import eigvalsh
@@ -27,6 +27,7 @@ from scipy.sparse.linalg import eigsh
 class LaplacianSpectral(BaseDistance):
     """Flexible distance able to compare the spectrum of the Laplacian in many ways."""
 
+    @unweighted
     def dist(
         self,
         G1,
@@ -113,8 +114,6 @@ class LaplacianSpectral(BaseDistance):
         .. [2] https://ieeexplore.ieee.org/abstract/document/7344816.
 
         """
-        G1 = ensure_unweighted(G1)
-        G2 = ensure_unweighted(G2)
         adj1 = nx.to_numpy_array(G1)
         adj2 = nx.to_numpy_array(G2)
         self.results['adjacency_matrices'] = adj1, adj2

@@ -10,14 +10,13 @@ from .base import BaseDynamics
 import networkx as nx
 import numpy as np
 import scipy.integrate as it
+from ..utilities import unweighted
 
 
 class Kuramoto(BaseDynamics):
     """Kuramoto model of oscillators."""
 
-    def __init__(self):
-        self.results = {}
-
+    @unweighted
     def simulate(self, G, L, dt=0.01, strength=1, phases=None, freqs=None):
         r"""Simulate Kuramoto model on a ground truth network.
 

@@ -13,9 +13,6 @@ import numpy as np
 class SingleUnbiasedRandomWalker(BaseDynamics):
     """Random walk dynamics."""
 
-    def __init__(self):
-        self.results = {}
-
     def simulate(self, G, L, initial_node=None):
         r"""Simulate single random-walker dynamics on a ground truth network.
 

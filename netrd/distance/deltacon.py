@@ -18,12 +18,13 @@ Submitted as part of the 2019 NetSI Collabathon.
 import numpy as np
 import networkx as nx
 from .base import BaseDistance
-from ..utilities import ensure_undirected
+from ..utilities import undirected
 
 
 class DeltaCon(BaseDistance):
     """Compare matrices related to Fast Belief Propagation."""
 
+    @undirected
     def dist(self, G1, G2, exact=True, g=None):
         """DeltaCon is based on the Matsusita between matrices created from fast
         belief propagation (FBP) on graphs G1 and G2.
@@ -69,9 +70,6 @@ class DeltaCon(BaseDistance):
 
         if not exact and g is None:
             g = N
-
-        G1 = ensure_undirected(G1)
-        G2 = ensure_undirected(G2)
 
         A1 = nx.to_numpy_array(G1)
         L1 = nx.laplacian_matrix(G1).toarray()

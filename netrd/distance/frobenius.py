@@ -9,12 +9,13 @@ Frobenius norm between two adjacency matrices.
 import numpy as np
 import networkx as nx
 from .base import BaseDistance
-from ..utilities.graph import ensure_unweighted
+from ..utilities.graph import unweighted
 
 
 class Frobenius(BaseDistance):
     """The Frobenius distance between their adjacency matrices."""
 
+    @unweighted
     def dist(self, G1, G2):
         r"""Frobenius distance between two graphs.
 
@@ -44,9 +45,6 @@ class Frobenius(BaseDistance):
         The graphs must have the same number of nodes.
 
         """
-
-        G1 = ensure_unweighted(G1)
-        G2 = ensure_unweighted(G2)
 
         adj1 = nx.to_numpy_array(G1)
         adj2 = nx.to_numpy_array(G2)

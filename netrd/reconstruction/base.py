@@ -31,13 +31,12 @@ class BaseReconstructor:
         else:
             raise ValueError("")
 
-    def to_graph(self, remove_self_loops=True, create_using=None):
+    def to_graph(self, create_using=None):
+        """Return the graph representation of the reconstructed network."""
         if self.graph:
             return self.graph
         elif self.matrix is not None:
             A = self.matrix.copy()
-            if remove_self_loops:
-                np.fill_diagonal(A, 0)
 
             if not create_using:
                 if np.allclose(A, A.T):

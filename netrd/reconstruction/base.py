@@ -149,12 +149,12 @@ class BaseReconstructor:
         return self
 
     def binarize(self):
-        self.update_matrix(np.abs(np.sign(self.matrix)))
+        self.update_matrix(np.abs(np.sign(self.to_matrix())))
         return self
 
     def remove_self_loops(self):
         mask = np.diag_indices(self.matrix.shape[0])
-        new_mat = self.matrix.copy()
+        new_mat = self.to_matrix().copy()
         new_mat[mask] = 0
         self.update_matrix(new_mat)
         return self

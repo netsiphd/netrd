@@ -13,19 +13,13 @@ Submitted as part of the 2019 NetSI Collabathon.
 from .base import BaseReconstructor
 import numpy as np
 import networkx as nx
-from ..utilities import create_graph, threshold
 
 
 class MarchenkoPastur(BaseReconstructor):
     """Uses Marchenko-Pastur law to remove noise."""
 
     def fit(
-        self,
-        TS,
-        remove_largest=False,
-        metric_distance=False,
-        threshold_type='range',
-        **kwargs
+        self, TS, remove_largest=False, metric_distance=False,
     ):
         r"""Create a correlation-based graph using Marchenko-Pastur law to remove noise.
 
@@ -148,9 +142,9 @@ class MarchenkoPastur(BaseReconstructor):
         selected = (w < w_min) | (w > w_max)
 
         if selected.sum() == 0:
-            G = nx.empty_graph(n=N)
-            self.results['graph'] = G
-            return G
+            self.matrix = np.zeros((N, N))
+            self.results['weights_matrix'] = np.zeros((N, N))
+            return self
 
         if remove_largest:
             selected[-1] = False
@@ -164,14 +158,6 @@ class MarchenkoPastur(BaseReconstructor):
             C_signal = np.sqrt(2 * (1 - C_signal))
 
         self.results['weights_matrix'] = C_signal
+        self.matrix = C_signal
 
-        # threshold signal matrix
-
-        self.results['thresholded_matrix'] = threshold(
-            C_signal, threshold_type, **kwargs
-        )
-
-        G = create_graph(self.results['thresholded_matrix'])
-
-        self.results['graph'] = G
-        return G
+        return self

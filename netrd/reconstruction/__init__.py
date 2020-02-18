@@ -15,7 +15,6 @@ from .marchenko_pastur import MarchenkoPastur
 from .naive_transfer_entropy import NaiveTransferEntropy
 from .granger_causality import GrangerCausality
 from .optimal_causation_entropy import OptimalCausationEntropy
-from .correlation_spanning_tree import CorrelationSpanningTree
 
 __all__ = [
     'RandomReconstructor',
@@ -34,5 +33,4 @@ __all__ = [
     'NaiveTransferEntropy',
     'GrangerCausality',
     'OptimalCausationEntropy',
-    'CorrelationSpanningTree',
 ]

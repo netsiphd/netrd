@@ -11,22 +11,14 @@ Submitted as part of the 2019 NetSI Collabathon
 """
 from .base import BaseReconstructor
 import numpy as np
-import networkx as nx
 from scipy import stats, linalg
-from ..utilities import create_graph, threshold
 
 
 class PartialCorrelationMatrix(BaseReconstructor):
     """Uses a regularized form of the precision matrix."""
 
     def fit(
-        self,
-        TS,
-        index=None,
-        drop_index=True,
-        of_residuals=False,
-        threshold_type='range',
-        **kwargs
+        self, TS, index=None, drop_index=True, of_residuals=False,
     ):
         """Uses a regularized form of the precision matrix.
 
@@ -82,17 +74,9 @@ class PartialCorrelationMatrix(BaseReconstructor):
             p_cor = partial_corr(p_cor, index=None)
 
         self.results['weights_matrix'] = p_cor
+        self.matrix = p_cor
 
-        # threshold the network
-        W_thresh = threshold(p_cor, threshold_type, **kwargs)
-
-        # construct the network
-        self.results['graph'] = create_graph(W_thresh)
-        self.results['thresholded_matrix'] = W_thresh
-
-        G = self.results['graph']
-
-        return G
+        return self
 
 
 # This partial correlation function is adapted from Fabian Pedregosa-Izquierdo's

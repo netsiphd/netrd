@@ -19,15 +19,13 @@ Submitted as part of the 2019 NetSI Collabathon
 """
 from .base import BaseReconstructor
 import numpy as np
-import networkx as nx
 from scipy import stats, linalg
-from ..utilities import create_graph, threshold
 
 
 class PartialCorrelationInfluence(BaseReconstructor):
     """Uses average effect from a sensor to all others."""
 
-    def fit(self, TS, index=None, threshold_type='range', **kwargs):
+    def fit(self, TS, index=None):
         r"""Uses the average effect of a series :math:`Z` on the correlation between
         a series :math:`X` and all other series.
 
@@ -122,17 +120,8 @@ class PartialCorrelationInfluence(BaseReconstructor):
         p_cor_inf = np.nanmean(p_cor_zs, axis=2)  # mean over the Y axis
 
         self.results['weights_matrix'] = p_cor_inf
-
-        # threshold the network
-        W_thresh = threshold(p_cor_inf, threshold_type, **kwargs)
-
-        # construct the network
-        self.results['graph'] = create_graph(W_thresh)
-        self.results['thresholded_matrix'] = W_thresh
-
-        G = self.results['graph']
-
-        return G
+        self.matrix = p_cor_inf
+        return self
 
 
 # This partial correlation function is adapted from Fabian Pedregosa-Izquierdo's
@@ -147,8 +136,7 @@ algorithm is detailed here:
 
     http://en.wikipedia.org/wiki/Partial_correlation#Using_linear_regression
 
-Taking X and Y two variables of interest and Z the matrix with all the variable minus {X, Y},
-the algorithm can be summarized as
+Taking X and Y two variables of interest and Z the matrix with all the variable minus {X, Y}, the algorithm can be summarized as
 
     1) perform a normal linear least-squares regression with X as the target and Z as the predictor
     2) calculate the residuals in Step #1

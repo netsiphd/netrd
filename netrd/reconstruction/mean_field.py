@@ -8,18 +8,13 @@ submitted as part of the 2019 NetSI Collabathon
 """
 from .base import BaseReconstructor
 import numpy as np
-import networkx as nx
-import scipy as sp
 from scipy import linalg
 from scipy.integrate import quad
 from scipy.optimize import fsolve
-from ..utilities import create_graph, threshold
 
 
 class MeanField(BaseReconstructor):
-    def fit(
-        self, TS, exact=True, stop_criterion=True, threshold_type='range', **kwargs
-    ):
+    def fit(self, TS, exact=True, stop_criterion=True):
         """Infer inter-node coupling weights using a mean field approximation.
 
         From the paper: "Exact mean field (eMF) is another mean field
@@ -137,17 +132,10 @@ class MeanField(BaseReconstructor):
         else:
             W = np.dot(A_inv, B)
 
-        # threshold the network
-        W_thresh = threshold(W, threshold_type, **kwargs)
-
-        # construct the network
-
-        self.results['graph'] = create_graph(W_thresh)
+        self.matrix = W
         self.results['weights_matrix'] = W
-        self.results['thresholded_matrix'] = W_thresh
-        G = self.results['graph']
 
-        return G
+        return self
 
 
 def cross_cov(a, b):

@@ -27,7 +27,7 @@ def test_graph_size():
             continue
         if isinstance(obj, type) and BaseReconstructor in obj.__bases__:
             TS = np.random.random((size, 125))
-            G = obj().fit(TS, threshold_type='range', cutoffs=[(-np.inf, np.inf)])
+            G = obj().fit(TS).threshold_in_range([(-np.inf, np.inf)]).to_graph()
             assert G.order() == size
 
 
@@ -39,9 +39,8 @@ def test_naive_transfer_entropy():
     """
     size = 25
     TS = np.random.random((size, 100))
-    G = reconstruction.NaiveTransferEntropy().fit(
-        TS, delay_max=2, threshold_type='range', cutoffs=[(-np.inf, np.inf)]
-    )
+    R = reconstruction.NaiveTransferEntropy()
+    G = R.fit(TS).threshold_in_range([(-np.inf, np.inf)]).to_graph()
     assert G.order() == size
 
 
@@ -52,9 +51,8 @@ def test_oce():
 
     size = 25
     TS = np.random.random((size, 50))
-    G = reconstruction.OptimalCausationEntropy().fit(
-        TS, threshold_type='range', cutoffs=[(-np.inf, np.inf)]
-    )
+    R = reconstruction.OptimalCausationEntropy()
+    G = R.fit(TS).threshold_in_range([(-np.inf, np.inf)]).to_graph()
     assert G.order() == size
 
 
@@ -66,11 +64,11 @@ def test_convergent_cross_mapping():
     """
     filepath = '../data/two_species_coupled_time_series.dat'
     edgelist = {(1, 0), (0, 1)}
-    keys = ['graph', 'weights_matrix', 'pvalues_matrix']
+    keys = ['weights_matrix', 'pvalues_matrix']
 
     TS = np.loadtxt(filepath, delimiter=',')
     recon = ConvergentCrossMapping()
-    G = recon.fit(TS, threshold_type='range', cutoffs=[(-np.inf, np.inf)])
+    G = recon.fit(TS).threshold_in_range([(-np.inf, np.inf)]).to_graph()
     el = set(G.edges())
     res = recon.results.keys()
 
@@ -91,10 +89,69 @@ def test_partial_correlation():
                     pass  # this shouldn't be a valid parameterization
                 else:
                     TS = np.random.random((size, 50))
-                    G = reconstruction.PartialCorrelationMatrix().fit(
-                        TS, index=index, cutoffs=[(-np.inf, np.inf)]
-                    )
+                    R = reconstruction.PartialCorrelationMatrix()
+                    R = R.fit(TS, index=index, of_residuals=resid)
+                    G = R.threshold_in_range([(-np.inf, np.inf)]).to_graph()
                     if index is None:
                         assert G.order() == size
                     else:
                         assert G.order() == (size - 1)
+
+
+def test_thresholds():
+    """
+    Test the threshold function by testing three underlying thresholding
+    methods: range, quantile, and degree.
+    """
+
+    R = reconstruction.BaseReconstructor()
+    R.matrix = np.arange(1, 17, 1).reshape((4, 4))
+
+    for k in range(5):  # TODO: 5
+        R.matrix = np.arange(1, 17, 1).reshape((4, 4))
+        thresholded_mat = R.threshold('degree', avg_k=k).to_matrix()
+        assert (thresholded_mat != 0).sum() == 4 * k
+
+    for n in range(17):
+        R.matrix = np.arange(1, 17, 1).reshape((4, 4))
+        thresholded_mat = R.threshold('quantile', quantile=n / 16).to_matrix()
+        assert (thresholded_mat != 0).sum() == 16 - n
+
+    R.matrix = np.arange(1, 17, 1).reshape((4, 4))
+    thresholded_mat = R.threshold('range', cutoffs=[(0, np.inf)]).to_matrix()
+    assert (thresholded_mat >= 0).all()
+
+    R.matrix = np.arange(1, 17, 1).reshape((4, 4))
+    thresholded_mat = R.threshold('range', cutoffs=[(-np.inf, 0)]).to_matrix()
+    assert (thresholded_mat <= 0).all()
+
+    target_mat = np.array(
+        [[0, 0, 0, 0], [0, 0, 0, 0], [9, 10, 11, 12], [13, 14, 15, 16]]
+    )
+
+    R.matrix = np.arange(1, 17, 1).reshape((4, 4))
+    assert np.array_equal(
+        R.threshold('range', cutoffs=[(9, 16)]).to_matrix(), target_mat
+    )
+
+    R.matrix = np.arange(1, 17, 1).reshape((4, 4))
+    assert np.array_equal(R.threshold('degree', avg_k=2).to_matrix(), target_mat)
+
+    R.matrix = np.arange(1, 17, 1).reshape((4, 4))
+    assert np.array_equal(R.threshold('quantile', quantile=0.5).to_matrix(), target_mat)
+
+    target_mat = np.array([[0, 0, 0, 0], [0, 0, 0, 0], [1, 1, 1, 1], [1, 1, 1, 1]])
+    R.matrix = np.arange(1, 17, 1).reshape((4, 4))
+    assert np.array_equal(
+        R.threshold('range', cutoffs=[(9, 16)]).binarize().to_matrix(), target_mat,
+    )
+
+    R.matrix = np.arange(1, 17, 1).reshape((4, 4))
+    assert np.array_equal(
+        R.threshold('degree', avg_k=2, binary=True).binarize().to_matrix(), target_mat,
+    )
+
+    R.matrix = np.arange(1, 17, 1).reshape((4, 4))
+    assert np.array_equal(
+        R.threshold('quantile', quantile=0.5).binarize().to_matrix(), target_mat,
+    )

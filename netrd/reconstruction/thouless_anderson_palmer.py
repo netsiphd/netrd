@@ -9,16 +9,13 @@ submitted as part of the 2019 NetSI Collabathon
 """
 from .base import BaseReconstructor
 import numpy as np
-import networkx as nx
-import scipy as sp
 from scipy import linalg
-from ..utilities import create_graph, threshold
 
 
 class ThoulessAndersonPalmer(BaseReconstructor):
     """Uses Thouless-Anderson-Palmer mean field approximation."""
 
-    def fit(self, TS, threshold_type='range', **kwargs):
+    def fit(self, TS):
         """Infer inter-node coupling weights using a Thouless-Anderson-Palmer mean
         field approximation.
 
@@ -111,16 +108,8 @@ class ThoulessAndersonPalmer(BaseReconstructor):
         # predict W:
         W = np.dot(A_TAP_inv, B)
         self.results['weights_matrix'] = W
-
-        # threshold the network
-        W_thresh = threshold(W, threshold_type, **kwargs)
-        self.results['thresholded_matrix'] = W_thresh
-
-        # construct the network
-        self.results['graph'] = create_graph(W_thresh)
-        G = self.results['graph']
-
-        return G
+        self.matrix = W
+        return self
 
 
 def cross_cov(a, b):

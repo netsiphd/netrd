@@ -18,13 +18,12 @@ import numpy as np
 
 from .base import BaseReconstructor
 from sklearn.linear_model import LinearRegression
-from ..utilities import create_graph, threshold
 
 
 class GrangerCausality(BaseReconstructor):
     """Uses the Granger causality between nodes."""
 
-    def fit(self, TS, lag=1, threshold_type="range", **kwargs):
+    def fit(self, TS, lag=1):
         r"""Reconstruct a network based on the Granger causality. To evaluate
         the effect of a time series :math:`j` over another, :math:`i`, it first
         evaluates the error :math:`e_1` given by an autoregressive model fit
@@ -86,15 +85,9 @@ class GrangerCausality(BaseReconstructor):
                     W[j, i] = np.log(std_i) - np.log(std_ij)
 
         self.results["weights_matrix"] = W
-        # threshold the network
-        W_thresh = threshold(W, threshold_type, **kwargs)
-        self.results["thresholded_matrix"] = W_thresh
+        self.matrix = W
 
-        # construct the network
-        self.results["graph"] = create_graph(W_thresh)
-        G = self.results["graph"]
-
-        return G
+        return self
 
     @staticmethod
     def split_data(TS, lag):

@@ -8,14 +8,12 @@ Submitted as part of the 2019 NetSI Collabathon
 """
 from .base import BaseReconstructor
 import numpy as np
-import networkx as nx
-from ..utilities import create_graph, threshold
 
 
 class CorrelationMatrix(BaseReconstructor):
     """Uses the correlation matrix."""
 
-    def fit(self, TS, num_eigs=None, threshold_type='range', **kwargs):
+    def fit(self, TS, num_eigs=None):
         """Uses the correlation matrix.
 
         If ``num_eigs`` is `None`, perform the reconstruction using the
@@ -85,13 +83,5 @@ class CorrelationMatrix(BaseReconstructor):
 
         # store the appropriate source matrix
         self.results['weights_matrix'] = mat
-
-        # threshold the correlation matrix
-        A = threshold(mat, threshold_type, **kwargs)
-        self.results['thresholded_matrix'] = A
-
-        # construct the network
-        self.results['graph'] = create_graph(A)
-        G = self.results['graph']
-
-        return G
+        self.matrix = mat
+        return self

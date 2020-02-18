@@ -1,7 +1,7 @@
 Reconstruction
 ==============
 
-Algorithms to recosntruct a graph from time series data.
+Algorithms to reconstruct a graph from time series data.
 
 
 Base class
@@ -20,7 +20,6 @@ the same general usage as above.
 
     netrd.reconstruction.ConvergentCrossMapping
     netrd.reconstruction.CorrelationMatrix
-    netrd.reconstruction.CorrelationSpanningTree
     netrd.reconstruction.FreeEnergyMinimization
     netrd.reconstruction.GrangerCausality
     netrd.reconstruction.GraphicalLasso

@@ -93,8 +93,10 @@ class BaseReconstructor:
             self.matrix = nx.to_numpy_array(self.graph)
             return self.matrix
         else:
-            raise ValueError("Matrix and graph representations both missing. "
-                             "Have you fit the data yet?")
+            raise ValueError(
+                "Matrix and graph representations both missing. "
+                "Have you fit the data yet?"
+            )
 
     def to_graph(self, create_using=None):
         """Return the graph representation of the reconstructed network."""
@@ -114,8 +116,10 @@ class BaseReconstructor:
             self.graph = G
             return self.graph
         else:
-            raise ValueError("Matrix and graph representations both missing. "
-                             "Have you fit the data yet?")
+            raise ValueError(
+                "Matrix and graph representations both missing. "
+                "Have you fit the data yet?"
+            )
 
     def threshold_in_range(self, c=None, **kwargs):
         """Threshold by setting values not within a list of ranges to zero.

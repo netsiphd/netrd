@@ -1,13 +1,40 @@
 """
 portrait_divergence.py
 ---------------------
-Adapted from "An information-theoretic, all-scales approach to comparing networks" by James P. Bagrow and Erik M. Bollt, 2018 arXiv:1804.03665
-and [this repository](https://github.com/bagrow/portrait-divergence)
+
+Adapted from "An information-theoretic, all-scales approach to comparing
+networks" by James P. Bagrow and Erik M. Bollt, 2018 arXiv:1804.03665 and [this
+repository](https://github.com/bagrow/portrait-divergence)
 
 author: Brennan Klein
 email: brennanjamesklein at gmail dot com
 submitted as part of the 2019 NetSI Collabathon
+
 """
+
+# Much of the following is adapted from Jim Bagrow's implementation of
+# portrait divergence, which is available under the following MIT license:
+
+# Copyright (c) 2018 Jim Bagrow
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in all
+# copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+
 from .base import BaseDistance
 from collections import Counter
 import numpy as np
@@ -97,12 +124,14 @@ def portrait(G):
     """
     Parameters
     ----------
-    G (nx.Graph or nx.DiGraph): a graph.
+    G (nx.Graph or nx.DiGraph):
+        a graph.
 
     Returns
     -------
-    B (np.ndarray): a matrix B such that B[i,j] is the number of starting
-    nodes in graph with j nodes in shell i.
+    B (np.ndarray):
+        a matrix :math:`B` such that :math:`B_{i,j}` is the number of starting
+        nodes in graph with :math:`j` nodes in shell :math:`i`.
     """
 
     dia = nx.diameter(G)
@@ -159,19 +188,27 @@ def portrait(G):
 
 
 def weighted_portrait(G, paths=None, binedges=None):
-    """
-    Compute weighted portrait, using Dijkstra's algorithm for finding
+    """Compute weighted portrait, using Dijkstra's algorithm for finding
     shortest paths.
 
     Parameters
     ----------
-    G (nx.Graph or nx.DiGraph): a graph.
-    paths (list): a list of all pairs of pahts
-    binedges (list): sampled path lengths
+    G (nx.Graph or nx.DiGraph):
+        a graph.
+
+    paths (list):
+        a list of all pairs of paths.
+
+    binedges (list):
+        sampled path lengths.
 
     Returns
     -------
-    B (np.ndarray): a matrix B where B[i,j] is the number of starting nodes in graph with j nodes at distance d_i <  d < d_{i+1}.
+    B (np.ndarray):
+        a matrix :math:`B` where :math:`B_{i,j}` is the number of starting
+        nodes in graph with :math:`j` nodes at distance :math:`d_i < d <
+        d_{i+1}`.
+
     """
 
     # all pairs path lengths
@@ -211,12 +248,16 @@ def _get_unique_path_lengths(G, paths=None):
 
     Parameters
     ----------
-    G (nx.Graph or DiGraph): a graph.
-    paths (list): list of paths.
+    G (nx.Graph or DiGraph):
+        a graph.
+
+    paths (list):
+        list of paths.
 
     Returns
     -------
-    unique_path_lengths (list): sorted unique path lengths.
+    unique_path_lengths (list):
+        sorted unique path lengths.
     """
 
     if paths is None:
@@ -238,12 +279,13 @@ def pad_portraits_to_same_size(B1, B2):
 
     Parameters
     ----------
-    B1 (np.ndarray): Portrait matrix of a graph (k x N)
-    B2 (np.ndarray):
+    B1, B2 (np.ndarray):
+        Portrait matrices of a graph (k x N)
 
     Returns
     -------
-    BigB1, BigB2 (np.ndarray): padded versions of B1 and B2 so they align
+    BigB1, BigB2 (np.ndarray):
+        padded versions of B1 and B2 with the same dimensions
     """
     ns, ms = B1.shape
     nl, ml = B2.shape
@@ -302,12 +344,13 @@ def portrait_divergence(G1, G2, N1=None, N2=None):
 
     Parameters
     ----------
-    G1 (nx.Graph or nx.DiGraph): a graph.
-    G2 (nx.Graph or nx.DiGraph): a graph.
+    G1, G2 (nx.Graph or nx.DiGraph):
+        Two graphs to compare.
 
     Returns
     -------
-    JSDpq (float): the Jensen-Shannon divergence between the portraits of G1 and G2
+    JSDpq (float):
+        the Jensen-Shannon divergence between the portraits of G1 and G2
 
     """
     BG1 = _graph_or_portrait(G1)

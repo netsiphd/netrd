@@ -68,10 +68,12 @@ def test_convergent_cross_mapping():
 
     TS = np.loadtxt(filepath, delimiter=',')
     recon = ConvergentCrossMapping()
-    G = (recon.fit(TS)
-              .remove_self_loops()
-              .threshold_in_range([(-np.inf, np.inf)])
-              .to_graph())
+    G = (
+        recon.fit(TS)
+        .remove_self_loops()
+        .threshold_in_range([(-np.inf, np.inf)])
+        .to_graph()
+    )
     el = set(G.edges())
     res = recon.results.keys()
 

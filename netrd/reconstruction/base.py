@@ -1,6 +1,7 @@
 import networkx as nx
 import numpy as np
 import warnings
+import scipy.sparse as sp
 from scipy.sparse.csgraph import minimum_spanning_tree
 
 
@@ -57,7 +58,7 @@ class BaseReconstructor:
 
     def fit(self, TS):
         """The key method of the class. This takes an NxL numpy array representing a
-    time series and reconstructs a network from it.
+        time series and reconstructs a network from it.
 
         Any new reconstruction method should subclass from BaseReconstructor
         and override fit(). This method should reconstruct the network and
@@ -76,21 +77,29 @@ class BaseReconstructor:
         self.matrix = new_mat.copy()
         self.graph = None
 
-    def update_graph(self, new_graph):
-        """
-        Update the contents of `self.graph`. This also empties out
-        `self.matrix` to avoid inconsistent state between the graph and matrix
-        representations of the networks.
-        """
-        self.graph = new_graph.copy()
-        self.matrix = None
+    def to_dense(self):
+        if self.matrix is None:
+            raise ValueError(
+                "Matrix representation is missing. Have you fit the data yet?"
+            )
+        elif sp.issparse(self.matrix):
+            return self.matrix.toarray()
+        else:
+            return self.matrix
+
+    def to_sparse(self):
+        if self.matrix is None:
+            raise ValueError(
+                "Matrix and graph representations both missing. "
+                "Have you fit the data yet?"
+            )
+        elif sp.issparse(self.matrix):
+            return self.matrix
+        else:
+            return sp.csr_matrix(self.matrix)
 
     def to_matrix(self):
-        """Return the matrix representation of the reconstructed network."""
         if self.matrix is not None:
-            return self.matrix
-        elif self.graph:
-            self.matrix = nx.to_numpy_array(self.graph)
             return self.matrix
         else:
             raise ValueError(
@@ -100,18 +109,31 @@ class BaseReconstructor:
 
     def to_graph(self, create_using=None):
         """Return the graph representation of the reconstructed network."""
-        if self.graph:
+        if self.graph is not None:
             return self.graph
         elif self.matrix is not None:
             A = self.matrix.copy()
 
-            if not create_using:
-                if np.allclose(A, A.T):
-                    G = nx.from_numpy_array(A, create_using=nx.Graph())
-                else:
-                    G = nx.from_numpy_array(A, create_using=nx.DiGraph())
+            if not sp.issparse(self.matrix):
+                from_array = nx.from_numpy_array
             else:
-                G = nx.from_numpy_array(A, create_using=create_using)
+                from_array = nx.from_scipy_sparse_matrix
+
+            if create_using is None:
+                try:
+                    undirected = np.allclose(A, A.T)
+                except TypeError:
+                    try:
+                        undirected = _sparse_allclose(A)
+                    except ValueError:
+                        undirected = False
+
+                if undirected:
+                    G = from_array(A, create_using=nx.Graph())
+                else:
+                    G = from_array(A, create_using=nx.DiGraph())
+            else:
+                G = from_array(A, create_using=create_using)
 
             self.graph = G
             return self.graph
@@ -145,13 +167,14 @@ class BaseReconstructor:
         else:
             cutoffs = c
 
-        mat = self.to_matrix()
+        mat = self.to_dense().copy()
         mask_function = np.vectorize(
             lambda x: any([x >= cutoff[0] and x <= cutoff[1] for cutoff in cutoffs])
         )
         mask = mask_function(mat)
 
-        thresholded_mat = mat * mask
+        thresholded_mat = np.where(mask, mat, 0)
+        thresholded_mat = sp.csr_matrix(thresholded_mat)
 
         self.update_matrix(thresholded_mat)
         return self
@@ -177,14 +200,14 @@ class BaseReconstructor:
             quantile = 0.9
         else:
             quantile = q
-        mat = self.matrix.copy()
+        mat = self.to_dense().copy()
 
         if quantile != 0:
             thresholded_mat = mat * (mat > np.percentile(mat, quantile * 100))
         else:
             thresholded_mat = mat
 
-        self.update_matrix(thresholded_mat)
+        self.update_matrix(sp.csr_matrix(thresholded_mat))
         return self
 
     def threshold_on_degree(self, k=None, **kwargs):
@@ -214,7 +237,6 @@ class BaseReconstructor:
         A = np.ones((n, n))
 
         if np.mean(np.sum(A, 1)) <= avg_k:
-            # degenerate case: threshold the whole matrix
             thresholded_mat = mat
         else:
             for m in sorted(mat.flatten()):
@@ -223,7 +245,7 @@ class BaseReconstructor:
                     break
             thresholded_mat = mat * (mat > m)
 
-        self.update_matrix(thresholded_mat)
+        self.update_matrix(sp.csr_matrix(thresholded_mat))
         return self
 
     def threshold(self, rule, **kwargs):
@@ -245,25 +267,64 @@ class BaseReconstructor:
             elif rule == 'quantile':
                 return self.threshold_on_quantile(**kwargs)
             elif rule == 'custom':
-                mat = self.to_matrix()
-                self.update_matrix(kwargs['custom_thresholder'](mat))
+                mat = self.to_dense()
+                self.update_matrix(sp.csr_matrix(kwargs['custom_thresholder'](mat)))
                 return self
 
         except KeyError:
             raise ValueError("missing threshold parameter")
 
+    def _mst_sparse(self, mat):
+        MST = minimum_spanning_tree(mat).asformat(mat.format)
+        return MST
+
+    def _mst_dense(self, mat):
+        MST = minimum_spanning_tree(mat).asformat('csr')
+        return MST
+
     def minimum_spanning_tree(self):
-        MST = minimum_spanning_tree(self.to_matrix()).todense()
+        if sp.issparse(self.matrix):
+            MST = self._mst_sparse(self.to_dense())
+        else:
+            MST = self._mst_dense(self.to_dense())
         self.update_matrix(MST)
         return self
 
+    def _binarize_sparse(self, mat):
+        return np.abs(mat.sign())
+
+    def _binarize_dense(self, mat):
+        return np.abs(np.sign(mat))
+
     def binarize(self):
-        self.update_matrix(np.abs(np.sign(self.to_matrix())))
+        if sp.issparse(self.matrix):
+            mat = self._binarize_sparse(self.matrix)
+        else:
+            mat = self._binarize_dense(self.matrix)
+        self.update_matrix(mat)
         return self
 
+    def _rsl_sparse(self, mat):
+        new_mat = mat.copy()
+        new_mat.setdiag(0)
+        return new_mat
+
+    def _rsl_dense(self, mat):
+        new_mat = mat.copy()
+        np.fill_diagonal(new_mat, 0)
+        return new_mat
+
     def remove_self_loops(self):
-        mask = np.diag_indices(self.matrix.shape[0])
-        new_mat = self.to_matrix().copy()
-        new_mat[mask] = 0
-        self.update_matrix(new_mat)
+        if sp.issparse(self.matrix):
+            mat = self._rsl_sparse(self.matrix)
+        else:
+            mat = self._rsl_dense(self.matrix)
+        self.update_matrix(mat)
         return self
+
+
+def _sparse_allclose(mat, tol=1e-8):
+    """
+    np.allclose doesn't work on sparse matrices. This approximates its behavior.
+    """
+    return abs((mat - mat.T) > tol).nnz == 0

@@ -71,12 +71,13 @@ def test_convergent_cross_mapping():
     G = (
         recon.fit(TS)
         .remove_self_loops()
-        .threshold_in_range([(-np.inf, np.inf)])
+        .threshold_in_range(cutoffs=[(-np.inf, np.inf)])
         .to_graph()
     )
     el = set(G.edges())
     res = recon.results.keys()
 
+    assert G.is_directed()
     assert el == edgelist
     assert all(k in res for k in keys)
 
@@ -114,20 +115,20 @@ def test_thresholds():
 
     for k in range(5):  # TODO: 5
         R.matrix = np.arange(1, 17, 1).reshape((4, 4))
-        thresholded_mat = R.threshold('degree', avg_k=k).to_matrix()
+        thresholded_mat = R.threshold('degree', avg_k=k).to_dense()
         assert (thresholded_mat != 0).sum() == 4 * k
 
     for n in range(17):
         R.matrix = np.arange(1, 17, 1).reshape((4, 4))
-        thresholded_mat = R.threshold('quantile', quantile=n / 16).to_matrix()
+        thresholded_mat = R.threshold('quantile', quantile=n / 16).to_dense()
         assert (thresholded_mat != 0).sum() == 16 - n
 
     R.matrix = np.arange(1, 17, 1).reshape((4, 4))
-    thresholded_mat = R.threshold('range', cutoffs=[(0, np.inf)]).to_matrix()
+    thresholded_mat = R.threshold('range', cutoffs=[(0, np.inf)]).to_dense()
     assert (thresholded_mat >= 0).all()
 
     R.matrix = np.arange(1, 17, 1).reshape((4, 4))
-    thresholded_mat = R.threshold('range', cutoffs=[(-np.inf, 0)]).to_matrix()
+    thresholded_mat = R.threshold('range', cutoffs=[(-np.inf, 0)]).to_dense()
     assert (thresholded_mat <= 0).all()
 
     target_mat = np.array(
@@ -136,27 +137,27 @@ def test_thresholds():
 
     R.matrix = np.arange(1, 17, 1).reshape((4, 4))
     assert np.array_equal(
-        R.threshold('range', cutoffs=[(9, 16)]).to_matrix(), target_mat
+        R.threshold('range', cutoffs=[(9, 16)]).to_dense(), target_mat
     )
 
     R.matrix = np.arange(1, 17, 1).reshape((4, 4))
-    assert np.array_equal(R.threshold('degree', avg_k=2).to_matrix(), target_mat)
+    assert np.array_equal(R.threshold('degree', avg_k=2).to_dense(), target_mat)
 
     R.matrix = np.arange(1, 17, 1).reshape((4, 4))
-    assert np.array_equal(R.threshold('quantile', quantile=0.5).to_matrix(), target_mat)
+    assert np.array_equal(R.threshold('quantile', quantile=0.5).to_dense(), target_mat)
 
     target_mat = np.array([[0, 0, 0, 0], [0, 0, 0, 0], [1, 1, 1, 1], [1, 1, 1, 1]])
     R.matrix = np.arange(1, 17, 1).reshape((4, 4))
     assert np.array_equal(
-        R.threshold('range', cutoffs=[(9, 16)]).binarize().to_matrix(), target_mat,
+        R.threshold('range', cutoffs=[(9, 16)]).binarize().to_dense(), target_mat,
     )
 
     R.matrix = np.arange(1, 17, 1).reshape((4, 4))
     assert np.array_equal(
-        R.threshold('degree', avg_k=2, binary=True).binarize().to_matrix(), target_mat,
+        R.threshold('degree', avg_k=2, binary=True).binarize().to_dense(), target_mat,
     )
 
     R.matrix = np.arange(1, 17, 1).reshape((4, 4))
     assert np.array_equal(
-        R.threshold('quantile', quantile=0.5).binarize().to_matrix(), target_mat,
+        R.threshold('quantile', quantile=0.5).binarize().to_dense(), target_mat,
     )

@@ -155,6 +155,8 @@ class BaseReconstructor:
             absolute value is between :math:`0.5` and :math:`1`, pass
             ``cutoffs=[(-1, -0.5), (0.5, 1)]``.
         """
+        s = self.__class__.__new__(self.__class__)
+        s.__dict__ = self.__dict__.copy()
         if 'cutoffs' in kwargs and not c:
             cutoffs = kwargs['cutoffs']
         elif not c:
@@ -167,7 +169,7 @@ class BaseReconstructor:
         else:
             cutoffs = c
 
-        mat = self.to_dense().copy()
+        mat = s.to_dense().copy()
         mask_function = np.vectorize(
             lambda x: any([x >= cutoff[0] and x <= cutoff[1] for cutoff in cutoffs])
         )
@@ -176,8 +178,8 @@ class BaseReconstructor:
         thresholded_mat = np.where(mask, mat, 0)
         thresholded_mat = sp.csr_matrix(thresholded_mat)
 
-        self.update_matrix(thresholded_mat)
-        return self
+        s.update_matrix(thresholded_mat)
+        return s
 
     def threshold_on_quantile(self, q=None, **kwargs):
         """Threshold by setting values below a given quantile to zero.
@@ -189,6 +191,8 @@ class BaseReconstructor:
             set to zero elements below the 90th quantile of the array.
 
         """
+        s = self.__class__.__new__(self.__class__)
+        s.__dict__ = self.__dict__.copy()
         if 'quantile' in kwargs and not q:
             quantile = kwargs['quantile']
         elif not q:
@@ -200,15 +204,15 @@ class BaseReconstructor:
             quantile = 0.9
         else:
             quantile = q
-        mat = self.to_dense().copy()
+        mat = s.to_dense().copy()
 
         if quantile != 0:
             thresholded_mat = mat * (mat > np.percentile(mat, quantile * 100))
         else:
             thresholded_mat = mat
 
-        self.update_matrix(sp.csr_matrix(thresholded_mat))
-        return self
+        s.update_matrix(sp.csr_matrix(thresholded_mat))
+        return s
 
     def threshold_on_degree(self, k=None, **kwargs):
         """Threshold by iteratively setting the smallest entries in the weights
@@ -220,6 +224,8 @@ class BaseReconstructor:
             The average degree to target when thresholding the matrix.
 
         """
+        s = self.__class__.__new__(self.__class__)
+        s.__dict__ = self.__dict__.copy()
         if 'avg_k' in kwargs and not k:
             avg_k = kwargs['avg_k']
         elif not k:
@@ -231,7 +237,7 @@ class BaseReconstructor:
             avg_k = 1
         else:
             avg_k = k
-        mat = self.matrix.copy()
+        mat = s.matrix.copy()
 
         n = len(mat)
         A = np.ones((n, n))
@@ -245,8 +251,8 @@ class BaseReconstructor:
                     break
             thresholded_mat = mat * (mat > m)
 
-        self.update_matrix(sp.csr_matrix(thresholded_mat))
-        return self
+        s.update_matrix(sp.csr_matrix(thresholded_mat))
+        return s
 
     def threshold(self, rule, **kwargs):
         """A flexible interface to other thresholding functions.
@@ -283,12 +289,14 @@ class BaseReconstructor:
         return MST
 
     def minimum_spanning_tree(self):
-        if sp.issparse(self.matrix):
-            MST = self._mst_sparse(self.to_dense())
+        s = self.__class__.__new__(self.__class__)
+        s.__dict__ = self.__dict__.copy()
+        if sp.issparse(s.matrix):
+            MST = s._mst_sparse(s.to_dense())
         else:
-            MST = self._mst_dense(self.to_dense())
-        self.update_matrix(MST)
-        return self
+            MST = s._mst_dense(s.to_dense())
+        s.update_matrix(MST)
+        return s
 
     def _binarize_sparse(self, mat):
         return np.abs(mat.sign())
@@ -297,12 +305,14 @@ class BaseReconstructor:
         return np.abs(np.sign(mat))
 
     def binarize(self):
-        if sp.issparse(self.matrix):
-            mat = self._binarize_sparse(self.matrix)
+        s = self.__class__.__new__(self.__class__)
+        s.__dict__ = self.__dict__.copy()
+        if sp.issparse(s.matrix):
+            mat = s._binarize_sparse(s.matrix)
         else:
-            mat = self._binarize_dense(self.matrix)
-        self.update_matrix(mat)
-        return self
+            mat = s._binarize_dense(s.matrix)
+        s.update_matrix(mat)
+        return s
 
     def _rsl_sparse(self, mat):
         new_mat = mat.copy()
@@ -315,12 +325,14 @@ class BaseReconstructor:
         return new_mat
 
     def remove_self_loops(self):
-        if sp.issparse(self.matrix):
-            mat = self._rsl_sparse(self.matrix)
+        s = self.__class__.__new__(self.__class__)
+        s.__dict__ = self.__dict__.copy()
+        if sp.issparse(s.matrix):
+            mat = s._rsl_sparse(s.matrix)
         else:
-            mat = self._rsl_dense(self.matrix)
-        self.update_matrix(mat)
-        return self
+            mat = s._rsl_dense(s.matrix)
+        s.update_matrix(mat)
+        return s
 
 
 def _sparse_allclose(mat, tol=1e-8):

@@ -89,6 +89,6 @@ class GraphicalLasso(BaseReconstructor):
         self.results['weights_matrix'] = cov
         self.results['precision_matrix'] = prec
 
-        self.matrix = cov
+        self.update_matrix(cov)
 
         return self

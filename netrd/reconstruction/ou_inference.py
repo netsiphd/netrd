@@ -65,7 +65,7 @@ class OUInference(BaseReconstructor):
         self.results['weights_matrix'] = np.zeros([N, N])
         self.results['weights_matrix'][index_pair] = weights
 
-        self.matrix = self.results['weights_matrix']
+        self.update_matrix(self.results['weights_matrix'])
         return self
 
 

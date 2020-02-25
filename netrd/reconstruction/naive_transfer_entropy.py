@@ -97,7 +97,7 @@ class NaiveTransferEntropy(BaseReconstructor):
             TE[i, j] = np.mean(te_list)
 
         self.results['weights_matrix'] = TE
-        self.matrix = TE
+        self.update_matrix(TE)
         return self
 
 

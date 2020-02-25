@@ -47,5 +47,5 @@ class RandomReconstructor(BaseReconstructor):
         W = np.random.rand(N, N)
 
         self.results['weights_matrix'] = W
-        self.matrix = W
+        self.update_matrix(W)
         return self

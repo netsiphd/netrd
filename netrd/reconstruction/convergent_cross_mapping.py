@@ -133,7 +133,7 @@ class ConvergentCrossMapping(BaseReconstructor):
         weights = np.full(pvalue.shape, -np.inf)
         weights[pvalue > 0] = -np.log10(pvalue[pvalue > 0])
 
-        self.matrix = weights
+        self.update_matrix(weights)
         self.results['correlation_matrix'] = correlation
         self.results['pvalues_matrix'] = pvalue
         self.results['weights_matrix'] = weights

@@ -83,5 +83,5 @@ class CorrelationMatrix(BaseReconstructor):
 
         # store the appropriate source matrix
         self.results['weights_matrix'] = mat
-        self.matrix = mat
+        self.update_matrix(mat)
         return self

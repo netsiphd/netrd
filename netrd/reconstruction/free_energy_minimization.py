@@ -93,7 +93,7 @@ class FreeEnergyMinimization(BaseReconstructor):
 
             W[i0, :] = w[:]
 
-        self.matrix = W
+        self.update_matrix(W)
         self.results['weights_matrix'] = W
 
         return self

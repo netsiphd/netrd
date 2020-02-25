@@ -111,7 +111,7 @@ class OptimalCausationEntropy(BaseReconstructor):
 
         # Build the reconstructed graph
         A = nx.to_numpy_array(nx.DiGraph(adjlist).reverse())
-        self.matrix = A
+        self.update_matrix(A)
         self.results['adjacency_matrix'] = A
         self.results['parents'] = adjlist
 

@@ -74,7 +74,7 @@ class PartialCorrelationMatrix(BaseReconstructor):
             p_cor = partial_corr(p_cor, index=None)
 
         self.results['weights_matrix'] = p_cor
-        self.matrix = p_cor
+        self.update_matrix(p_cor)
 
         return self
 

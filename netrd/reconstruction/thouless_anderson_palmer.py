@@ -108,7 +108,7 @@ class ThoulessAndersonPalmer(BaseReconstructor):
         # predict W:
         W = np.dot(A_TAP_inv, B)
         self.results['weights_matrix'] = W
-        self.matrix = W
+        self.update_matrix(W)
         return self
 
 

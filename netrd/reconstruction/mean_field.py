@@ -132,7 +132,7 @@ class MeanField(BaseReconstructor):
         else:
             W = np.dot(A_inv, B)
 
-        self.matrix = W
+        self.update_matrix(W)
         self.results['weights_matrix'] = W
 
         return self

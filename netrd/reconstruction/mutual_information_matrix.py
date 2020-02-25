@@ -72,7 +72,7 @@ class MutualInformationMatrix(BaseReconstructor):
         I = mutual_info_all_pairs(JointP, ProduP, N)
         self.results['weights_matrix'] = I
 
-        self.matrix = I
+        self.update_matrix(I)
         return self
 
 

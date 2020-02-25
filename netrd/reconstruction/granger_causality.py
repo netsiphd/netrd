@@ -85,7 +85,7 @@ class GrangerCausality(BaseReconstructor):
                     W[j, i] = np.log(std_i) - np.log(std_ij)
 
         self.results["weights_matrix"] = W
-        self.matrix = W
+        self.update_matrix(W)
 
         return self
 

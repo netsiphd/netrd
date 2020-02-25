@@ -111,23 +111,23 @@ def test_thresholds():
     """
 
     R = reconstruction.BaseReconstructor()
-    R.matrix = np.arange(1, 17, 1).reshape((4, 4))
+    R._matrix = np.arange(1, 17, 1).reshape((4, 4))
 
-    for k in range(5):  # TODO: 5
-        R.matrix = np.arange(1, 17, 1).reshape((4, 4))
+    for k in range(5):
+        R._matrix = np.arange(1, 17, 1).reshape((4, 4))
         thresholded_mat = R.threshold('degree', avg_k=k).to_dense()
         assert (thresholded_mat != 0).sum() == 4 * k
 
     for n in range(17):
-        R.matrix = np.arange(1, 17, 1).reshape((4, 4))
+        R._matrix = np.arange(1, 17, 1).reshape((4, 4))
         thresholded_mat = R.threshold('quantile', quantile=n / 16).to_dense()
         assert (thresholded_mat != 0).sum() == 16 - n
 
-    R.matrix = np.arange(1, 17, 1).reshape((4, 4))
+    R._matrix = np.arange(1, 17, 1).reshape((4, 4))
     thresholded_mat = R.threshold('range', cutoffs=[(0, np.inf)]).to_dense()
     assert (thresholded_mat >= 0).all()
 
-    R.matrix = np.arange(1, 17, 1).reshape((4, 4))
+    R._matrix = np.arange(1, 17, 1).reshape((4, 4))
     thresholded_mat = R.threshold('range', cutoffs=[(-np.inf, 0)]).to_dense()
     assert (thresholded_mat <= 0).all()
 
@@ -135,29 +135,29 @@ def test_thresholds():
         [[0, 0, 0, 0], [0, 0, 0, 0], [9, 10, 11, 12], [13, 14, 15, 16]]
     )
 
-    R.matrix = np.arange(1, 17, 1).reshape((4, 4))
+    R._matrix = np.arange(1, 17, 1).reshape((4, 4))
     assert np.array_equal(
         R.threshold('range', cutoffs=[(9, 16)]).to_dense(), target_mat
     )
 
-    R.matrix = np.arange(1, 17, 1).reshape((4, 4))
+    R._matrix = np.arange(1, 17, 1).reshape((4, 4))
     assert np.array_equal(R.threshold('degree', avg_k=2).to_dense(), target_mat)
 
-    R.matrix = np.arange(1, 17, 1).reshape((4, 4))
+    R._matrix = np.arange(1, 17, 1).reshape((4, 4))
     assert np.array_equal(R.threshold('quantile', quantile=0.5).to_dense(), target_mat)
 
     target_mat = np.array([[0, 0, 0, 0], [0, 0, 0, 0], [1, 1, 1, 1], [1, 1, 1, 1]])
-    R.matrix = np.arange(1, 17, 1).reshape((4, 4))
+    R._matrix = np.arange(1, 17, 1).reshape((4, 4))
     assert np.array_equal(
         R.threshold('range', cutoffs=[(9, 16)]).binarize().to_dense(), target_mat,
     )
 
-    R.matrix = np.arange(1, 17, 1).reshape((4, 4))
+    R._matrix = np.arange(1, 17, 1).reshape((4, 4))
     assert np.array_equal(
         R.threshold('degree', avg_k=2, binary=True).binarize().to_dense(), target_mat,
     )
 
-    R.matrix = np.arange(1, 17, 1).reshape((4, 4))
+    R._matrix = np.arange(1, 17, 1).reshape((4, 4))
     assert np.array_equal(
         R.threshold('quantile', quantile=0.5).binarize().to_dense(), target_mat,
     )

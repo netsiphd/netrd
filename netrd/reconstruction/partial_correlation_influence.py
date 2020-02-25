@@ -120,7 +120,7 @@ class PartialCorrelationInfluence(BaseReconstructor):
         p_cor_inf = np.nanmean(p_cor_zs, axis=2)  # mean over the Y axis
 
         self.results['weights_matrix'] = p_cor_inf
-        self.matrix = p_cor_inf
+        self.update_matrix(p_cor_inf)
         return self
 
 

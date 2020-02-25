@@ -142,7 +142,7 @@ class MarchenkoPastur(BaseReconstructor):
         selected = (w < w_min) | (w > w_max)
 
         if selected.sum() == 0:
-            self.matrix = np.zeros((N, N))
+            self.update_matrix(np.zeros((N, N)))
             self.results['weights_matrix'] = np.zeros((N, N))
             return self
 
@@ -158,6 +158,6 @@ class MarchenkoPastur(BaseReconstructor):
             C_signal = np.sqrt(2 * (1 - C_signal))
 
         self.results['weights_matrix'] = C_signal
-        self.matrix = C_signal
+        self.update_matrix(C_signal)
 
         return self

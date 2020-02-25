@@ -78,6 +78,6 @@ class MaximumLikelihoodEstimation(BaseReconstructor):
 
             W[i0, :] = w
 
-        self.matrix = W
+        self.update_matrix(W)
 
         return self

@@ -108,13 +108,18 @@ class PartialCorrelationInfluence(BaseReconstructor):
             diff = p_corr[np.ix_(m_new, m_new)]
             diff -= partial_corr(data[:, m_new], data[:, ~m_new])
             p_corr_inf[np.ix_(m_new, m_new, [z])] = diff[:, :, np.newaxis]
-            np.fill_diagonal(p_corr_inf[:, :, z], np.nan)  # Exclude case Y = X
+
+            # Exclude the cases of Y = X
+            np.fill_diagonal(p_corr_inf[:, :, z], np.nan)
+            # Set PCI for X = Z to 0 for consistency after averaging
+            p_corr_inf[z, :, z] = 0
 
         # Obtain the average partial correlation influence
-        # (by default the index variables influence all variables,
-        # and each variable influeces itself)
-        influence = np.nanmean(p_corr_inf, axis=1)
-        influence[np.isnan(influence)] = 1
+        influence = np.zeros((N, N))  # Default self-influence by zero
+        influence[mask, mask] = np.nanmean(p_corr_inf[mask, mask], axis=1)
+
+        influence[~mask, :] = np.inf  # Index variables influence all others
+        influence[:, ~mask] = 0  # but no one influences the index variables
 
         self.results['weights_matrix'] = influence
 

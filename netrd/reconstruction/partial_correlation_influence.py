@@ -13,14 +13,13 @@ Kenett, D. Y., Huang, X., Vodenska, I., Havlin, S. & Stanley, H. E. Partial corr
 analysis: applications for financial markets. Quantitative Finance 15, 569–578 (2015).
 
 
-author: Carolina Mattsson
+author: Carolina Mattsson and Chia-Hung Yang
 email: mattsson dot c at northeastern dot edu
 Submitted as part of the 2019 NetSI Collabathon
 """
 from .base import BaseReconstructor
 import numpy as np
-import networkx as nx
-from scipy import stats, linalg
+from scipy import linalg
 from ..utilities import create_graph, threshold
 
 
@@ -53,12 +52,13 @@ class PartialCorrelationInfluence(BaseReconstructor):
 
         Parameters
         ----------
+        TS (np.ndarray)
+            Array consisting of :math:`L` observations from :math:`N` sensors.
 
         index (int, array of ints, or None)
-            Take the partial correlations of each pair of elements holding
-            constant an index variable or set of index variables. If None,
-            take the partial correlations of the variables holding constant
-            all other variables.
+            An index variable or set of index variables, which are assumed to
+            be confounders of all other variables. They are held constant when
+            calculating the partial correlations. Default to None.
 
         threshold_type (str):
             Which thresholding function to use on the matrix of
@@ -85,46 +85,46 @@ class PartialCorrelationInfluence(BaseReconstructor):
                (2015).
 
         """
-        if index:
-            p_cor = partial_corr(TS, index=index)
-            n_TS = p_cor.shape[0]
-            p_cor = np.delete(p_cor, index, axis=0)
-            p_cor = np.delete(p_cor, index, axis=1)
-        else:
-            p_cor = partial_corr(TS)
+        data = TS.T
+        N = data.shape[1]
 
-        np.fill_diagonal(p_cor, float("nan"))
+        # Create masks to separate variables of interests from the pre-included
+        # index variables
+        mask = np.ones(N, dtype=bool)
+        if index is not None:
+            mask[index] = False
 
-        n = p_cor.shape[0]
+        # Compute partial correlations with the index variables held constant
+        p_corr = np.full((N, N), np.nan)
+        p_corr[np.ix_(mask, mask)] = partial_corr(data[:, mask], data[:, ~mask])
 
-        p_cor_zs = np.zeros((n, n, n))
+        # For every non-index variable Z, compute partial correlation influence
+        # between other variables when Z is also held constant
+        p_corr_inf = np.full((N, N, N), np.nan)
+        for z in np.arange(N)[mask]:
+            m_new = mask.copy()  # New mask including variable Z
+            m_new[z] = False
 
-        if index:
-            for k, z in enumerate(np.delete(range(n_TS), index)):
-                index_z = np.append(index, z)
-                p_cor_z = partial_corr(TS, index=index_z)
-                p_cor_z = np.delete(p_cor_z, index, axis=0)
-                p_cor_z = np.delete(p_cor_z, index, axis=1)
-                p_cor_z = p_cor - p_cor_z
-                p_cor_z[:, k] = float("nan")
-                p_cor_z[k, :] = -np.inf
-                p_cor_zs[z] = p_cor_z
-        else:
-            index = np.array([], dtype=int)
-            for z in range(n):
-                index_z = z
-                p_cor_z = partial_corr(TS, index=index_z)
-                p_cor_z = p_cor - p_cor_z
-                p_cor_z[:, z] = float("nan")
-                p_cor_z[z, :] = -np.inf
-                p_cor_zs[z] = p_cor_z
+            diff = p_corr[np.ix_(m_new, m_new)]
+            diff -= partial_corr(data[:, m_new], data[:, ~m_new])
+            p_corr_inf[np.ix_(m_new, m_new, [z])] = diff[:, :, np.newaxis]
 
-        p_cor_inf = np.nanmean(p_cor_zs, axis=2)  # mean over the Y axis
+            # Exclude the cases of Y = X
+            np.fill_diagonal(p_corr_inf[:, :, z], np.nan)
+            # Set PCI for X = Z to 0 for consistency after averaging
+            p_corr_inf[z, :, z] = 0
 
-        self.results['weights_matrix'] = p_cor_inf
+        # Obtain the average partial correlation influence
+        influence = np.zeros((N, N))  # Default self-influence by zero
+        influence[mask, mask] = np.nanmean(p_corr_inf[mask, mask], axis=1)
+
+        influence[~mask, :] = np.inf  # Index variables influence all others
+        influence[:, ~mask] = 0  # but no one influences the index variables
+
+        self.results['weights_matrix'] = influence
 
         # threshold the network
-        W_thresh = threshold(p_cor_inf, threshold_type, **kwargs)
+        W_thresh = threshold(influence, threshold_type, **kwargs)
 
         # construct the network
         self.results['graph'] = create_graph(W_thresh)
@@ -135,84 +135,35 @@ class PartialCorrelationInfluence(BaseReconstructor):
         return G
 
 
-# This partial correlation function is adapted from Fabian Pedregosa-Izquierdo's
-# implementation of partial correlation in Python, found at [this gist](
-# https://gist.github.com/fabianp/9396204419c7b638d38f)
-"""
-Partial Correlation in Python (clone of Matlab's partialcorr)
-
-This uses the linear regression approach to compute the partial
-correlation (might be slow for a huge number of variables). The
-algorithm is detailed here:
-
-    http://en.wikipedia.org/wiki/Partial_correlation#Using_linear_regression
-
-Taking X and Y two variables of interest and Z the matrix with all the variable minus {X, Y},
-the algorithm can be summarized as
-
-    1) perform a normal linear least-squares regression with X as the target and Z as the predictor
-    2) calculate the residuals in Step #1
-    3) perform a normal linear least-squares regression with Y as the target and Z as the predictor
-    4) calculate the residuals in Step #3
-    5) calculate the correlation coefficient between the residuals from Steps #2 and #4;
-
-    The result is the partial correlation between X and Y while controlling for the effect of Z
-
-
-Date: Nov 2014
-Author: Fabian Pedregosa-Izquierdo, f@bianp.net
-Testing: Valentina Borghesani, valentinaborghesani@gmail.com
-"""
-
-
-def partial_corr(C, index=None):
-    """Returns the sample linear partial correlation coefficients between pairs of
-    variables in C, controlling for the remaining variables in C.
-
+def partial_corr(_vars, idx_vars):
+    """
+    Return the partial correlations between pairs of variables, given a set of
+    index variables held constant.
 
     Parameters
     ----------
-    C : array-like, shape (p, n)
-        Array with the different variables. Each row of C is taken as a variable
+    _vars (numpy.ndarray)
+        Variables of interests (which are columns of the array).
 
+    idx_vars (numpy.ndarray)
+        Index variables to be held constant (which are columns of the array).
+        If the array has zero size, namely no index variable, return the
+        Pearson correlations between variables.
 
-    Returns -------
-    P : array-like, shape (p, p)
-        P[i, j] contains the partial correlation of C[:, i] and C[:, j]
-        controlling for the remaining variables in C.
+    Return
+    ------
+    p_corr (numpy.ndarray)
+         Square array of pairwise partial correlations between variables.
+
+    Note
+    ----
+    Precondition: The index variables should not contain or synchronize with
+                  a variable of interests.
 
     """
-
-    C = np.asarray(C).T
-    p = C.shape[1]
-    P_corr = np.zeros((p, p), dtype=np.float)
-
-    for i in range(p):
-        P_corr[i, i] = 1
-        for j in range(i + 1, p):
-            if index is None:
-                idx = np.ones(p, dtype=np.bool)
-                idx[i] = False
-                idx[j] = False
-            elif type(index) is int or (
-                isinstance(index, np.ndarray)
-                and issubclass(index.dtype.type, np.integer)
-            ):
-                idx = np.zeros(p, dtype=np.bool)
-                idx[index] = True
-            else:
-                raise ValueError(
-                    "Index must be an integer, an array of " "integers, or None."
-                )
-
-            beta_i = linalg.lstsq(C[:, idx], C[:, j])[0]
-            beta_j = linalg.lstsq(C[:, idx], C[:, i])[0]
-
-            res_j = C[:, j] - C[:, idx].dot(beta_i)
-            res_i = C[:, i] - C[:, idx].dot(beta_j)
-
-            corr = stats.pearsonr(res_i, res_j)[0]
-            P_corr[i, j] = corr
-            P_corr[j, i] = corr
-
-    return P_corr
+    if idx_vars.size == 0:
+        return np.corrcoef(_vars, rowvar=False)
+    else:
+        coef = linalg.lstsq(idx_vars, _vars)[0]  # Coefficients of regression
+        resid = _vars - idx_vars.dot(coef)  # Residuals
+        return np.corrcoef(resid, rowvar=False)

@@ -153,9 +153,9 @@ class BaseReconstructor:
         """
         s = self.__class__.__new__(self.__class__)
         s.__dict__ = self.__dict__.copy()
-        if 'cutoffs' in kwargs and not c:
+        if 'cutoffs' in kwargs and c is None:
             cutoffs = kwargs['cutoffs']
-        elif not c:
+        elif c is None:
             warnings.warn(
                 "Setting 'cutoffs' argument is strongly encouraged. "
                 "Using cutoff range of (-1, 1).",
@@ -189,9 +189,9 @@ class BaseReconstructor:
         """
         s = self.__class__.__new__(self.__class__)
         s.__dict__ = self.__dict__.copy()
-        if 'quantile' in kwargs and not q:
+        if 'quantile' in kwargs and q is None:
             quantile = kwargs['quantile']
-        elif not q:
+        elif q is None:
             warnings.warn(
                 "Setting 'quantile' argument is strongly recommended."
                 "Using target quantile of 0.9 for thresholding.",
@@ -222,9 +222,9 @@ class BaseReconstructor:
         """
         s = self.__class__.__new__(self.__class__)
         s.__dict__ = self.__dict__.copy()
-        if 'avg_k' in kwargs and not k:
+        if 'avg_k' in kwargs and k is None:
             avg_k = kwargs['avg_k']
-        elif not k:
+        elif k is None:
             warnings.warn(
                 "Setting 'avg_k' argument is strongly encouraged. Using average "
                 "degree of 1 for thresholding.",

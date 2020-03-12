@@ -239,6 +239,7 @@ class BaseReconstructor:
         A = np.ones((n, n))
 
         if np.mean(np.sum(A, 1)) <= avg_k:
+            # degenerate case: use the whole matrix
             thresholded_mat = mat
         else:
             for m in sorted(mat.flatten()):

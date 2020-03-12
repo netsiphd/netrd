@@ -202,7 +202,7 @@ class BaseReconstructor:
             quantile = q
         mat = s.to_dense().copy()
 
-        if np.isclose(quantile,  0):
+        if np.isclose(quantile, 0):
             thresholded_mat = mat
         else:
             thresholded_mat = mat * (mat > np.percentile(mat, quantile * 100))

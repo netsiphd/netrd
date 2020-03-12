@@ -13,4 +13,3 @@ Common utilities for use within ``netrd``.
    graph
    read
    standardize
-   threshold

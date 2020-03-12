@@ -13,10 +13,10 @@ class BaseReconstructor:
     >>> R = ReconstructionAlgorithm()
     >>> G = R.fit(TS, <some_params>).to_graph()
 
-    However, this is probably not the desired behavior, because (depending on
-    the method used) it will return a complete graph with varying weights
-    between the edges. The network should typically be thresholded in some way
-    to produce a more useful structure.
+    However, this is probably not the desired behavior, because, depending on
+    the method used, this typically returns a weighted dense graph, possibly
+    with self-loops. If a sparse or unweighted graph is desired, use the
+    thresholding functionality, as in the example below:
 
     >>> R = ReconstructionAlgorithm()
     >>> R = R.fit(TS, <some_params>)
@@ -26,9 +26,9 @@ class BaseReconstructor:
     Note that these can all be combined into a single call using method
     chaining.
 
-    All algorithms subclass BaseReconstructor and override the fit() method;
-    see the documentation for each subclass's fit() method for documentation of
-    the algorithm.
+    All algorithms subclass `BaseReconstructor` and override the `fit()`
+    method; see the documentation for each subclass's `fit()` method for
+    documentation of the algorithm.
 
     """
 
@@ -54,12 +54,13 @@ class BaseReconstructor:
         self.results = {}
 
     def fit(self, TS):
-        """The key method of the class. This takes an NxL numpy array representing a
-        time series and reconstructs a network from it.
+        """The key method of the class. This takes an :math:`N \times L` numpy array,
+        representing a time series of :math:`L` observations from :math:`N`
+        sensors (nodes), and reconstructs a network from it.
 
-        Any new reconstruction method should subclass from BaseReconstructor
-        and override fit(). This method should reconstruct the network and
-        assign it to either self._graph or self._matrix, then return self.
+        Any new reconstruction method should subclass from `BaseReconstructor`
+        and override `fit()`. This method should reconstruct the network as a
+        matrix of weights, call `self.update_matrix()`, and then `return self`.
 
         """
         self._matrix = np.zeros((TS.shape[0], TS.shape[0]))
@@ -146,7 +147,7 @@ class BaseReconstructor:
         Parameters
         ----------
         cutoffs (list of tuples)
-            When thresholding, include only edges whose correlations fall
+            When thresholding, include only edges whose weights fall
             within a given range or set of ranges. The lower value must come
             first in each tuple. For example, to keep those values whose
             absolute value is between :math:`0.5` and :math:`1`, pass

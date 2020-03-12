@@ -88,8 +88,7 @@ class BaseReconstructor:
     def to_sparse(self):
         if self._matrix is None:
             raise ValueError(
-                "Matrix and graph representations both missing. "
-                "Have you fit the data yet?"
+                "Matrix representation is missing. Have you fit the data yet?"
             )
         elif sp.issparse(self._matrix):
             return self._matrix
@@ -101,8 +100,7 @@ class BaseReconstructor:
             return self._matrix
         else:
             raise ValueError(
-                "Matrix and graph representations both missing. "
-                "Have you fit the data yet?"
+                "Matrix representation is missing. Have you fit the data yet?"
             )
 
     def to_graph(self, create_using=None):
@@ -204,10 +202,10 @@ class BaseReconstructor:
             quantile = q
         mat = s.to_dense().copy()
 
-        if quantile != 0:
-            thresholded_mat = mat * (mat > np.percentile(mat, quantile * 100))
-        else:
+        if np.isclose(quantile,  0):
             thresholded_mat = mat
+        else:
+            thresholded_mat = mat * (mat > np.percentile(mat, quantile * 100))
 
         s.update_matrix(sp.csr_matrix(thresholded_mat))
         return s

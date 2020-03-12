@@ -122,7 +122,7 @@ class BaseReconstructor:
                     undirected = np.allclose(A, A.T)
                 except TypeError:
                     try:
-                        undirected = _sparse_allclose(A)
+                        undirected = _sparse_check_symmetric(A)
                     except ValueError:
                         undirected = False
 
@@ -333,8 +333,9 @@ class BaseReconstructor:
         return s
 
 
-def _sparse_allclose(mat, tol=1e-8):
-    """
-    np.allclose doesn't work on sparse matrices. This approximates its behavior.
+def _sparse_check_symmetric(mat, tol=1e-8):
+    """np.allclose doesn't work on sparse matrices. This approximates the behavior
+    of np.allclose(mat, mat.T), where mat is a sparse matrix.
+
     """
     return abs((mat - mat.T) > tol).nnz == 0

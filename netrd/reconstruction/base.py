@@ -281,12 +281,10 @@ class BaseReconstructor:
             raise ValueError("missing threshold parameter")
 
     def _mst_sparse(self, mat):
-        MST = minimum_spanning_tree(mat).asformat(mat.format)
-        return MST
+        return minimum_spanning_tree(mat).asformat(mat.format)
 
     def _mst_dense(self, mat):
-        MST = minimum_spanning_tree(mat).asformat('csr')
-        return MST
+        return minimum_spanning_tree(mat).asformat('csr')
 
     def minimum_spanning_tree(self):
         s = self.__class__.__new__(self.__class__)

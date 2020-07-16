@@ -19,6 +19,7 @@ from .distributional_nbd import DistributionalNBD
 from .dk_series import dkSeries
 from .dmeasure import DMeasure
 from .nbd import NonBacktrackingSpectral
+from .graph_diffusion_distance import GraphDiffusion
 
 __all__ = [
     'Hamming',
@@ -41,4 +42,5 @@ __all__ = [
     'dkSeries',
     'DMeasure',
     'NonBacktrackingSpectral',
+    'GraphDiffusion'
 ]

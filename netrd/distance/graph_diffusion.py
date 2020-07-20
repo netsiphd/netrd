@@ -1,5 +1,5 @@
 """
-gdd.py
+graph_diffusion.py
 --------------------------
 
 Graph diffusion distance, from
@@ -26,7 +26,7 @@ class GraphDiffusion(BaseDistance):
     """Find the maximally dissimilar diffusion kernels between two graphs."""
 
     @undirected
-    def dist(self, G1, G2, thresh=1e-14, resolution=1000):
+    def dist(self, G1, G2, thresh=1e-08, resolution=1000):
         r"""The graph diffusion distance between two graphs, :math:`G` and :math:`G'`,
         is a distance measure based on the notion of flow within each graph. As
         such, this measure uses the unnormalized Laplacian matrices of both
@@ -37,14 +37,16 @@ class GraphDiffusion(BaseDistance):
         creating a column vector of node-level activity at each timestep. The
         distance :math:`d_\texttt{GDD}(G, G')` is defined as the Frobenius norm
         between the two diffusion kernels at the timestep :math:`t^{*}` where
-        the two kernels are maximally different.
+        the two kernels are maximally different. That is, we compute the
+        Frobenius norms and their differences for each timestep, and return the
+        maximum difference.
 
         .. math::
             D_{GDD}(G,G') = \sqrt{||e^{-t^{*}\mathcal{L}}-e^{-t^{*}\mathcal{L}'}||}
 
         The results dictionary also stores a 2-tuple of the underlying
         adjacency matrices in `adjacency_matrices`, the Laplacian matrices in
-        `laplacian matrices`, and the output of the optimization process
+        `laplacian_matrices`, and the output of the optimization process
         (`peak_diffusion_time` and `peak_deviation`).
 
         Adapted from the authors' MATLAB code, available at: https://rb.gy/txbfrh
@@ -84,10 +86,10 @@ class GraphDiffusion(BaseDistance):
         L1 = laplacian(A1)
         L2 = laplacian(A2)
 
-        D1, V1 = np.linalg.eig(L1)
-        D2, V2 = np.linalg.eig(L2)
+        vals1, vecs1 = np.linalg.eig(L1)
+        vals2, vecs2 = np.linalg.eig(L2)
 
-        eigs = np.hstack((np.diag(D1), np.diag(D2)))
+        eigs = np.hstack((np.diag(vals1), np.diag(vals2)))
         eigs = eigs[np.where(eigs > thresh)]
         eigs = np.sort(eigs)
 
@@ -101,7 +103,7 @@ class GraphDiffusion(BaseDistance):
 
         # Find the Frobenius norms between all the diffusion kernels at
         # different times. Return the value and where this vector is minimized.
-        E = -gdd_xi_t(V1, D1, V2, D2, ts)
+        E = -exponential_diffusion_diff(vecs1, vals1, vecs2, vals2, ts)
         f_val, t_star = (np.nanmin(E), np.argmin(E))
 
         dist = np.sqrt(-f_val)
@@ -116,7 +118,7 @@ class GraphDiffusion(BaseDistance):
         return dist
 
 
-def gdd_xi_t(V1, D1, V2, D2, ts):
+def exponential_diffusion_diff(vecs1, vals1, vecs2, vals2, ts):
     """
     Computes Frobenius norm of difference of Laplacian exponential diffusion
     kernels, at specified timepoints.
@@ -130,27 +132,27 @@ def gdd_xi_t(V1, D1, V2, D2, ts):
     D1, D2 (np.array)
         eigenvalues of the Laplacians of `G1` and `G2`
 
-    t (float)
+    ts (float)
         time at which to compute the difference in Frobenius norms
 
     Returns
     -------
 
-    E (np.array)
-        same size as :math:`t`, contains differences of Frobenius norms
+    diffs (np.array)
+        same shape as :math:`t`, contains differences of Frobenius norms
 
     """
 
-    E = np.zeros(len(ts))
+    diffs = np.zeros(len(ts))
 
     for kt, t in enumerate(ts):
-        ed1 = np.diag(np.exp(-t * np.diag(D1)))
-        ed2 = np.diag(np.exp(-t * np.diag(D2)))
+        exp_diag_1 = np.diag(np.exp(-t * np.diag(vals1)))
+        exp_diag_2 = np.diag(np.exp(-t * np.diag(vals2)))
 
-        tmp1 = V1.dot(np.atleast_2d(ed1).T * V1.T)
-        tmp2 = V2.dot(np.atleast_2d(ed2).T * V2.T)
-        tmp = tmp1 - tmp2
+        norm1 = vecs1.dot(np.atleast_2d(exp_diag_1).T * vecs1.T)
+        norm2 = vecs2.dot(np.atleast_2d(exp_diag_2).T * vecs2.T)
+        diff = norm1 - norm2
 
-        E[kt] = sum(sum(tmp**2))
+        diffs[kt] = (diff ** 2).sum()
 
-    return E
+    return diffs

@@ -126,14 +126,14 @@ def exponential_diffusion_diff(vecs1, vals1, vecs2, vals2, ts):
     Parameters
     ----------
 
-    V1, V2 (np.array)
+    vecs1, vecs2 (np.array)
         eigenvectors of the Laplacians of `G1` and `G2`
 
-    D1, D2 (np.array)
+    vals1, vals2 (np.array)
         eigenvalues of the Laplacians of `G1` and `G2`
 
-    ts (float)
-        time at which to compute the difference in Frobenius norms
+    ts (np.array)
+        times at which to compute the difference in Frobenius norms
 
     Returns
     -------

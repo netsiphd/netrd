@@ -42,5 +42,5 @@ __all__ = [
     'dkSeries',
     'DMeasure',
     'NonBacktrackingSpectral',
-    'GraphDiffusion'
+    'GraphDiffusion',
 ]

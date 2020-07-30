@@ -149,8 +149,10 @@ def exponential_diffusion_diff(vecs1, vals1, vecs2, vals2, ts):
         exp_diag_1 = np.diag(np.exp(-t * np.diag(vals1)))
         exp_diag_2 = np.diag(np.exp(-t * np.diag(vals2)))
 
-        norm1 = vecs1.dot(np.atleast_2d(exp_diag_1).T * vecs1.T)
-        norm2 = vecs2.dot(np.atleast_2d(exp_diag_2).T * vecs2.T)
+        # multiply the eigenvectors element-wise by the appropriate diffusion value
+        # before left-multiplying the eigenvectors again.
+        norm1 = vecs1.dot(np.multiply(exp_diag_1, vecs1).T)
+        norm2 = vecs2.dot(np.multiply(exp_diag_2, vecs2).T)
         diff = norm1 - norm2
 
         diffs[kt] = (diff ** 2).sum()

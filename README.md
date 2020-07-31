@@ -1,3 +1,4 @@
+[![PyPI version](https://badge.fury.io/py/netrd.svg)](https://badge.fury.io/py/netrd)
 [![ReadTheDocs](https://img.shields.io/readthedocs/netrd.svg)](
     https://netrd.readthedocs.io)
 [![Travis](https://img.shields.io/travis/netsiphd/netrd.svg)](

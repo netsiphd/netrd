@@ -129,7 +129,7 @@ def test_isomorphic_input():
     G1 = nx.fast_gnp_random_graph(150, 0.05)
 
     N = G1.order()
-    new_nodes = [(i+5) % N for i in G1.nodes]
+    new_nodes = [(i + 5) % N for i in G1.nodes]
 
     # create G1 by permuting the adjacency matrix
     new_adj_mat = nx.to_numpy_array(G1, nodelist=new_nodes)
@@ -151,7 +151,6 @@ def test_isomorphic_input():
         "QuantumJSD",
         "DistributionalNBD",
         "NonBacktrackingSpectral",
-        "DMeasure",
     ]
 
     for label, obj in distance.__dict__.items():

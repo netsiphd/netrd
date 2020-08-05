@@ -126,7 +126,7 @@ def test_weighted_input():
 
 
 def test_isomorphic_input():
-    G1 = nx.fast_gnp_random_graph(150, 0.05)
+    G1 = nx.fast_gnp_random_graph(150, 0.10)
 
     N = G1.order()
     new_nodes = [(i + 5) % N for i in G1.nodes]

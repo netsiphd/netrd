@@ -32,7 +32,7 @@ class QuantumJSD(BaseDistance):
         r"""Square root of the quantum :math:`q`-Jensen-Shannon divergence between two
         graphs.
 
-        The generalized Jensen-Shannon divergence compares two graphs by the
+        The generalized Jensen-Shannon divergence compares two graphs b √(H0 - 0.5 * (H1 + H2))y the
         spectral entropies of their quantum-statistical-mechanical density
         matrices. It can be written as
 

@@ -76,15 +76,15 @@ class NetSimile(BaseDistance):
 def feature_extraction(G):
     """Node feature extraction.
 
-        Parameters
-        ----------
+    Parameters
+    ----------
 
-        G (nx.Graph): a networkx graph.
+    G (nx.Graph): a networkx graph.
 
-        Returns
-        -------
+    Returns
+    -------
 
-        node_features (float): the Nx7 matrix of node features."""
+    node_features (float): the Nx7 matrix of node features."""
 
     # necessary data structures
     node_features = np.zeros(shape=(G.number_of_nodes(), 7))

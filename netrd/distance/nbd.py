@@ -17,9 +17,9 @@ from ..utilities import unweighted
 
 class NonBacktrackingSpectral(BaseDistance):
     """Compares the empirical spectral distribution of the non-backtracking
-matrices.
+    matrices.
 
-    The eigenvalues are stored in the results dictionary.
+        The eigenvalues are stored in the results dictionary.
 
     """
 
@@ -312,7 +312,7 @@ def half_incidence(graph, ordering='blocks', return_ordering=False):
 
 
 def earthmover_distance(p1, p2):
-    '''
+    """
     Jeremy Kun's MIT-licensed (see below) implementation of the Earthmover's Distance.
 
     See <https://github.com/j2kun/earthmover>.
@@ -321,7 +321,7 @@ def earthmover_distance(p1, p2):
      - p1: an iterable of hashable iterables of numbers (i.e., list of tuples)
      - p2: an iterable of hashable iterables of numbers (i.e., list of tuples)
 
-    '''
+    """
 
     # MIT License
 

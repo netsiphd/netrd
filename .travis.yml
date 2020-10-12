@@ -22,6 +22,7 @@ before_install:
     fi
     conda config --set always_yes yes --set changeps1 no
     conda update -q conda
+    conda init bash
     conda info -a
 install:
   - conda create -q -n test-env python=$PYTHON_TRAVIS_VERSION black pytest

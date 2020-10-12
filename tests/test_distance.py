@@ -150,7 +150,6 @@ def test_isomorphic_input():
         "DeltaCon",
         "QuantumJSD",
         "DistributionalNBD",
-        "NonBacktrackingSpectral",
     ]
 
     for label, obj in distance.__dict__.items():
@@ -162,3 +161,19 @@ def test_isomorphic_input():
         ):
             dist = obj().dist(G1, G2)
             assert np.isclose(dist, 0.0, atol=1e-3)
+        elif label == "NonBacktrackingSpectral":
+            # NOTE: A special case; see the discussion in #296 and #299. If NBD
+            # fails to pass this test, it can be due to the sign of the
+            # eigenvalues returned. We get around this by requesting the normal
+            # number of eigenvalues, testing, and then if it fails we get one
+            # more eigenvalue and test again.
+            nbd = obj()
+            dist = nbd.dist(G1, G2)
+            try:
+                assert np.isclose(dist, 0.0, atol=1e-3)
+            except AssertionError:
+                print("NBD: using extra eigenvalue")
+                topk = len(nbd.results['vals'][0])
+                new_dist = nbd.dist(G1, G2, topk=topk+1)
+                assert np.isclose(new_dist, 0.0, atol=1e-3)
+

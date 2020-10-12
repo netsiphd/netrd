@@ -25,8 +25,9 @@ before_install:
     conda info -a
 install:
   - conda create -q -n test-env python=$PYTHON_TRAVIS_VERSION
-  - conda install black
+  - conda activate test-env
   - pip install -r requirements.txt
+  - pip install black
   - pip install .
 
 before_script: cd tests/

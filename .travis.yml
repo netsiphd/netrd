@@ -4,11 +4,38 @@ matrix:
         - os: linux
           sudo: required
           dist: xenial
+          python: "3.6"
+
+        - os: linux
+          sudo: required
+          dist: xenial
+          python: "3.7"
+
+        - os: linux
+          sudo: required
+          dist: xenial
           python: "3.8"
+
+        - os: linux
+          sudo: required
+          dist: xenial
+          python: "3.9"
+
+        - os: osx
+          language: generic
+          python: "3.6"
+
+        - os: osx
+          language: generic
+          python: "3.7"
 
         - os: osx
           language: generic
           python: "3.8"
+
+        - os: osx
+          language: generic
+          python: "3.9"
 
 before_install:
   - |
@@ -34,5 +61,5 @@ install:
 before_script: cd tests/
 script:
   - pytest
-  - if [ $TRAVIS_PYTHON_VERSION == 3.6 ] || [ $TRAVIS_PYTHON_VERSION == 3.7 ] || [ $TRAVIS_PYTHON_VERSION == 3.8 ]; then black --skip-string-normalization --check ../netrd; fi
-  - if [ $TRAVIS_PYTHON_VERSION == 3.6 ] || [ $TRAVIS_PYTHON_VERSION == 3.7 ] || [ $TRAVIS_PYTHON_VERSION == 3.8 ]; then black --skip-string-normalization --check ../tests; fi
+  - black --skip-string-normalization --check ../netrd
+  - black --skip-string-normalization --check ../tests

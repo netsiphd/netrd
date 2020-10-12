@@ -173,7 +173,6 @@ def test_isomorphic_input():
                 assert np.isclose(dist, 0.0, atol=1e-3)
             except AssertionError:
                 print("NBD: using extra eigenvalue")
-                topk = len(nbd.results['vals'][0])
-                new_dist = nbd.dist(G1, G2, topk=topk+1)
+                topk = len(nbd.results["vals"][0])
+                new_dist = nbd.dist(G1, G2, topk=topk + 1)
                 assert np.isclose(new_dist, 0.0, atol=1e-3)
-

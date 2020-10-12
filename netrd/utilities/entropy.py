@@ -32,7 +32,16 @@ def js_divergence(P, Q):
 
     """
     M = 0.5 * (P + Q)
-    return 0.5 * (sp_entropy(P, M, base=2) + sp_entropy(Q, M, base=2))
+    jsd = 0.5 * (sp_entropy(P, M, base=2) + sp_entropy(Q, M, base=2))
+
+    # If the input distributions are identical, floating-point error in the
+    # construction of the mixture matrix can result in negative values that are
+    # very close to zero. If one wants to compute the root-JSD metric, these
+    # negative values lead to undesirable nans.
+    if np.isclose(jsd, 0.0):
+        return 0
+    else:
+        return jsd
 
 
 def entropy_from_seq(var):

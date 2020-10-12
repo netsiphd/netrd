@@ -9,6 +9,10 @@ distance: A difference measure for weighted graphs based on the graph Laplacian
 exponential kernel. In Global Conference on Signal and Information Processing,
 2013 IEEE (pp 419-422). IEEE. https://doi.org/10.1109/GlobalSIP.2013.6736904
 
+This implementation is adapted from the authors' MATLAB code, available at
+https://rb.gy/txbfrh, and available under an MIT license with the authors'
+permission.
+
 author: Brennan Klein
 email: brennanjamesklein at gmail dot com
 Submitted as part of the 2019 NetSI Collabathon.

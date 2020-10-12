@@ -93,7 +93,7 @@ class DeltaCon(BaseDistance):
             )
 
         def matusita_dist(X, Y):
-            r""" Return the Matusita distance
+            r"""Return the Matusita distance
 
             .. math::
 

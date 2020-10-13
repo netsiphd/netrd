@@ -28,7 +28,7 @@ class NonBacktrackingSpectral(BaseDistance):
         self,
         G1,
         G2,
-        topk='automatic',
+        topk="automatic",
         ignore_negative_evals=True,
         batch=100,
         tol=1e-5,
@@ -87,11 +87,11 @@ class NonBacktrackingSpectral(BaseDistance):
 
         dist = earthmover_distance(vals1, vals2)
 
-        self.results['vals'] = (vals1, vals2)
+        self.results["vals"] = (vals1, vals2)
         return dist
 
 
-def nbvals(graph, topk='automatic', ignore_negative_evals=False, batch=100, tol=1e-5):
+def nbvals(graph, topk="automatic", ignore_negative_evals=False, batch=100, tol=1e-5):
     """Compute the largest-magnitude non-backtracking eigenvalues.
 
     Parameters
@@ -131,12 +131,12 @@ def nbvals(graph, topk='automatic', ignore_negative_evals=False, batch=100, tol=
     matrix = pseudo_hashimoto(core)
     if not isinstance(topk, str) and topk > matrix.shape[0] - 1:
         topk = matrix.shape[0] - 2
-        print('Computing only {} eigenvalues'.format(topk))
+        print("Computing only {} eigenvalues".format(topk))
 
-    if topk == 'automatic':
+    if topk == "automatic":
         batch = min(batch, 2 * graph.order() - 4)
         if 2 * graph.order() - 4 < batch:
-            print('Using batch size {}'.format(batch))
+            print("Using batch size {}".format(batch))
         topk = batch
 
     N = matrix.shape[0]
@@ -153,10 +153,10 @@ def nbvals(graph, topk='automatic', ignore_negative_evals=False, batch=100, tol=
             vals = vals[vals.imag >= 0]
 
         largest = np.sqrt(abs(max(vals, key=abs)))
-        if abs(vals[0]) <= largest or topk != 'automatic':
+        if abs(vals[0]) <= largest or topk != "automatic":
             break
         count += 1
-    if topk == 'automatic':
+    if topk == "automatic":
         vals = vals[abs(vals) > largest]
 
     # The eigenvalues are returned in no particular order, which may yield
@@ -220,10 +220,10 @@ def pseudo_hashimoto(graph):
     adj = nx.adjacency_matrix(graph)
     ident = sparse.eye(graph.order())
     pseudo = sparse.bmat([[None, degrees - ident], [-ident, adj]])
-    return pseudo.asformat('csr')
+    return pseudo.asformat("csr")
 
 
-def half_incidence(graph, ordering='blocks', return_ordering=False):
+def half_incidence(graph, ordering="blocks", return_ordering=False):
     """Return the 'half-incidence' matrices of the graph.
 
     If the graph has n nodes and m *undirected* edges, then the
@@ -272,10 +272,10 @@ def half_incidence(graph, ordering='blocks', return_ordering=False):
     numnodes = graph.order()
     numedges = graph.size()
 
-    if ordering == 'blocks':
+    if ordering == "blocks":
         src_pairs = lambda i, u, v: [(u, i), (v, numedges + i)]
         tgt_pairs = lambda i, u, v: [(v, i), (u, numedges + i)]
-    if ordering == 'consecutive':
+    if ordering == "consecutive":
         src_pairs = lambda i, u, v: [(u, 2 * i), (v, 2 * i + 1)]
         tgt_pairs = lambda i, u, v: [(v, 2 * i), (u, 2 * i + 1)]
 
@@ -298,11 +298,11 @@ def half_incidence(graph, ordering='blocks', return_ordering=False):
         data = np.ones(2 * graph.size())
         return sparse.coo_matrix((data, coords), shape=(numnodes, 2 * numedges))
 
-    src = make_coo(src_pairs).asformat('csr')
-    tgt = make_coo(tgt_pairs).asformat('csr')
+    src = make_coo(src_pairs).asformat("csr")
+    tgt = make_coo(tgt_pairs).asformat("csr")
 
     if return_ordering:
-        if ordering == 'blocks':
+        if ordering == "blocks":
             func = lambda x: (x, numedges + x)
         else:
             func = lambda x: (2 * x, 2 * x + 1)
@@ -351,7 +351,7 @@ def earthmover_distance(p1, p2):
     dist1 = {x: float(count) / len(p1) for (x, count) in Counter(p1).items()}
     dist2 = {x: float(count) / len(p2) for (x, count) in Counter(p2).items()}
     solver = pywraplp.Solver(
-        'earthmover_distance', pywraplp.Solver.GLOP_LINEAR_PROGRAMMING
+        "earthmover_distance", pywraplp.Solver.GLOP_LINEAR_PROGRAMMING
     )
 
     variables = dict()
@@ -369,7 +369,7 @@ def earthmover_distance(p1, p2):
     for (x, dirt_at_x) in dist1.items():
         for (y, capacity_of_y) in dist2.items():
             amount_to_move_x_y = solver.NumVar(
-                0, solver.infinity(), 'z_{%s, %s}' % (x, y)
+                0, solver.infinity(), "z_{%s, %s}" % (x, y)
             )
             variables[(x, y)] = amount_to_move_x_y
             dirt_leaving_constraints[x] += amount_to_move_x_y
@@ -384,7 +384,7 @@ def earthmover_distance(p1, p2):
 
     status = solver.Solve()
     if status not in [solver.OPTIMAL, solver.FEASIBLE]:
-        raise Exception('Unable to find feasible solution')
+        raise Exception("Unable to find feasible solution")
 
     for ((x, y), variable) in variables.items():
         if variable.solution_value() != 0:

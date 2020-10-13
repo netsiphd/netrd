@@ -150,7 +150,7 @@ def test_isomorphic_input():
         "DeltaCon",
         "QuantumJSD",
         "DistributionalNBD",
-        "NonBacktrackingSpectral"
+        "NonBacktrackingSpectral",
     ]
 
     for label, obj in distance.__dict__.items():

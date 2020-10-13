@@ -29,7 +29,7 @@ class NonBacktrackingSpectral(BaseDistance):
         G1,
         G2,
         topk='automatic',
-        include_negative_evals=False,
+        ignore_negative_evals=True,
         batch=100,
         tol=1e-5,
     ):
@@ -47,7 +47,7 @@ class NonBacktrackingSpectral(BaseDistance):
             of the largest eigenvalue.  Note this may yield different
             number of eigenvalues for each graph.
 
-        include_negative_evals (bool):
+        ignore_negative_evals (bool):
             The original publication considers all eigenvalues for inclusion.
             If `True`, instead drop eigenvalues with negative complex parts.
 
@@ -72,14 +72,14 @@ class NonBacktrackingSpectral(BaseDistance):
             topk=topk,
             batch=batch,
             tol=tol,
-            include_negative_evals=include_negative_evals,
+            ignore_negative_evals=ignore_negative_evals,
         )
         vals2 = nbvals(
             G2,
             topk=topk,
             batch=batch,
             tol=tol,
-            include_negative_evals=include_negative_evals,
+            ignore_negative_evals=ignore_negative_evals,
         )
 
         vals1 = [tuple(v) for v in vals1]
@@ -91,7 +91,7 @@ class NonBacktrackingSpectral(BaseDistance):
         return dist
 
 
-def nbvals(graph, topk='automatic', include_negative_evals=False, batch=100, tol=1e-5):
+def nbvals(graph, topk='automatic', ignore_negative_evals=False, batch=100, tol=1e-5):
     """Compute the largest-magnitude non-backtracking eigenvalues.
 
     Parameters
@@ -105,7 +105,7 @@ def nbvals(graph, topk='automatic', include_negative_evals=False, batch=100, tol
     to +-1. If 'automatic', return all eigenvalues whose magnitude is
     larger than the square root of the largest eigenvalue.
 
-    include_negative_evals (bool): The original publication considers all
+    ignore_negative_evals (bool): The original publication considers all
     eigenvalues for inclusion. If `True`, instead drop eigenvalues with
     negative complex parts.
 
@@ -149,7 +149,7 @@ def nbvals(graph, topk='automatic', include_negative_evals=False, batch=100, tol
     while True:
         vals = eigs(topk * count)
 
-        if not include_negative_evals:
+        if ignore_negative_evals:
             vals = vals[vals.imag >= 0]
 
         largest = np.sqrt(abs(max(vals, key=abs)))

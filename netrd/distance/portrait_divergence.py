@@ -45,7 +45,6 @@ from ..utilities import entropy, unweighted
 class PortraitDivergence(BaseDistance):
     """Compares graph portraits."""
 
-    @unweighted
     def dist(self, G1, G2, bins=None, binedges=None):
         """Distance measure based on the two graphs' "portraits".
 

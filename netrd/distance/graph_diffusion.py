@@ -98,14 +98,13 @@ class GraphDiffusion(BaseDistance):
         vals1, vecs1 = sort_eigs(np.linalg.eig(L1))
         vals2, vecs2 = sort_eigs(np.linalg.eig(L2))
 
-
         eigs = np.hstack((np.diag(vals1), np.diag(vals2)))
         eigs = eigs[np.where(eigs > thresh)]
         eigs = np.sort(eigs)
 
         if len(eigs) == 0:
             dist = 0
-            self.results['dist'] = dist
+            self.results["dist"] = dist
             return dist
 
         t_upperbound = np.real(1.0 / eigs[0])
@@ -118,12 +117,12 @@ class GraphDiffusion(BaseDistance):
 
         dist = np.sqrt(-f_val)
 
-        self.results['adjacency_matrices'] = A1, A2
-        self.results['laplacian_matrices'] = L1, L2
-        self.results['peak_diffusion_time'] = t_star
-        self.results['peak_deviation'] = f_val
+        self.results["adjacency_matrices"] = A1, A2
+        self.results["laplacian_matrices"] = L1, L2
+        self.results["peak_diffusion_time"] = t_star
+        self.results["peak_deviation"] = f_val
 
-        self.results['dist'] = dist
+        self.results["dist"] = dist
 
         return dist
 

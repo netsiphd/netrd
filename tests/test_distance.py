@@ -151,7 +151,7 @@ def test_isomorphic_input():
         "QuantumJSD",
         "DistributionalNBD",
         "NonBacktrackingSpectral",
-        "GraphDiffusion"
+        "GraphDiffusion",
     ]
 
     for label, obj in distance.__dict__.items():

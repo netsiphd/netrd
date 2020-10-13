@@ -2,9 +2,8 @@ language: python
 matrix:
     include:
         - os: linux
-          python: "3.5"
-
-        - os: linux
+          sudo: required
+          dist: xenial
           python: "3.6"
 
         - os: linux
@@ -19,47 +18,39 @@ matrix:
 
         - os: osx
           language: generic
-          python: "3.5"
-          env: PYVER="3.5.7"
+          env: PYTHON_TRAVIS_VERSION="3.6"
 
         - os: osx
           language: generic
-          python: "3.6"
-          env: PYVER="3.6.9"
+          env: PYTHON_TRAVIS_VERSION="3.7"
 
         - os: osx
           language: generic
-          python: "3.7"
-          env: PYVER="3.7.5"
-
-        - os: osx
-          language: generic
-          python: "3.8"
-          env: PYVER="3.8.0"
+          env: PYTHON_TRAVIS_VERSION="3.8"
 
 before_install:
   - |
     if [ "$TRAVIS_OS_NAME" == "osx" ]; then
-    brew update
-    brew install openssl readline
-    brew outdated pyenv || brew upgrade pyenv
-    brew install pyenv-virtualenv
-    pyenv install $PYVER
-    export PYENV_VERSION=$PYVER
-    export PATH="/Users/travis/.pyenv/shims:${PATH}"
-    pyenv virtualenv venv
-    source ~/.pyenv/versions/venv/bin/activate
-    python --version
+       brew cask install miniconda
+    else
+       wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -O miniconda.sh
+       bash miniconda.sh -b -p $HOME/miniconda
+       source "$HOME/miniconda/etc/profile.d/conda.sh"
+       hash -r
     fi
+    conda config --set always_yes yes --set changeps1 no
+    conda update -q conda
+    source $(conda info --root)/etc/profile.d/conda.sh
+    source .bashrc
+    conda info -a
 install:
-  - pip install --upgrade pip
-  - pip install .
+  - conda create -q -n test-env python=$PYTHON_TRAVIS_VERSION black pytest
+  - conda activate test-env
   - pip install -r requirements.txt
+  - pip install .
 
-  - if [ $TRAVIS_PYTHON_VERSION == 3.6 ] || [ $TRAVIS_PYTHON_VERSION == 3.7 ] || [ $TRAVIS_PYTHON_VERSION == 3.8 ]; then pip install black; fi
-  - if [ "$TRAVIS_OS_NAME" == "osx" ]; then pip install pytest; fi
 before_script: cd tests/
 script:
   - pytest
-  - if [ $TRAVIS_PYTHON_VERSION == 3.6 ] || [ $TRAVIS_PYTHON_VERSION == 3.7 ] || [ $TRAVIS_PYTHON_VERSION == 3.8 ]; then black --skip-string-normalization --check ../netrd; fi
-  - if [ $TRAVIS_PYTHON_VERSION == 3.6 ] || [ $TRAVIS_PYTHON_VERSION == 3.7 ] || [ $TRAVIS_PYTHON_VERSION == 3.8 ]; then black --skip-string-normalization --check ../tests; fi
+  - black --skip-string-normalization --check ../netrd
+  - black --skip-string-normalization --check ../tests

@@ -90,8 +90,14 @@ class GraphDiffusion(BaseDistance):
         L1 = laplacian(A1)
         L2 = laplacian(A2)
 
-        vals1, vecs1 = np.linalg.eig(L1)
-        vals2, vecs2 = np.linalg.eig(L2)
+        def sort_eigs(eigs):
+            vals, vecs = eigs
+            idx = np.argsort(abs(vals))
+            return vals[idx], vecs[:, idx]
+
+        vals1, vecs1 = sort_eigs(np.linalg.eig(L1))
+        vals2, vecs2 = sort_eigs(np.linalg.eig(L2))
+
 
         eigs = np.hstack((np.diag(vals1), np.diag(vals2)))
         eigs = eigs[np.where(eigs > thresh)]

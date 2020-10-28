@@ -107,37 +107,33 @@ class BaseReconstructor:
         """Return the graph representation of the reconstructed network."""
         if self._graph is not None:
             return self._graph
-        elif self._matrix is not None:
+        if self._matrix is not None:
             A = self._matrix.copy()
 
             if not sp.issparse(self._matrix):
                 from_array = nx.from_numpy_array
+                allclose = lambda A: np.allclose(A, A.T)
             else:
                 from_array = nx.from_scipy_sparse_matrix
+                allclose = _sparse_check_symmetric
 
             if create_using is None:
-                try:
-                    undirected = np.allclose(A, A.T)
-                except TypeError:
-                    try:
-                        undirected = _sparse_check_symmetric(A)
-                    except ValueError:
-                        undirected = False
+                undirected = allclose(A)
 
                 if undirected:
-                    G = from_array(A, create_using=nx.Graph())
+                    create_using = nx.Graph()
                 else:
-                    G = from_array(A, create_using=nx.DiGraph())
-            else:
-                G = from_array(A, create_using=create_using)
+                    create_using = nx.DiGraph()
+
+            G = from_array(A, create_using=create_using)
 
             self._graph = G
             return self._graph
-        else:
-            raise ValueError(
-                "Matrix and graph representations both missing. "
-                "Have you fit the data yet?"
-            )
+
+        raise ValueError(
+            "Matrix and graph representations both missing. "
+            "Have you fit the data yet?"
+        )
 
     def threshold_in_range(self, c=None, **kwargs):
         """Threshold by setting values not within a list of ranges to zero.

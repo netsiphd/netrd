@@ -7,7 +7,7 @@ tags:
   - graph distance
   - network dynamics
 authors:
-  - name: Stefan McCabe^[[mccabe.s@northeastern.edu](mailto:mccabe.s@northeastern.edu)]
+  - name: Stefan McCabe^[correspondence: mccabe.s@northeastern.edu]
     orcid: 0000-0002-7180-145X
     affiliation: 1
   - name: Leo Torres
@@ -24,7 +24,7 @@ authors:
   - name: Harrison Hartle
     orcid: 0000-0002-0917-6112
     affiliation: 1
-  - name: Brennan Klein^[[klein.br@northeastern.edu](mailto:klein.br@northeastern.edu)]
+  - name: Brennan Klein[correspondence: klein.br@northeastern.edu]
     orcid: 0000-0001-8326-5044
     affiliation: "1, 2"
 affiliations:

@@ -14,7 +14,7 @@ Some resources that maybe of interest:
 
 * A [tutorial](https://netrd.readthedocs.io/en/latest/tutorial.html) on how to use the library
 * The API [reference](https://netrd.readthedocs.io/en/latest/) 
-* A [notebook](https://nbviewer.jupyter.org/github/netrd/netrd/blob/master/notebooks/example.ipynb) showing advanced usage
+* A [notebook](https://nbviewer.jupyter.org/github/netsiphd/netrd/blob/master/notebooks/example.ipynb) showing advanced usage
 
 # Installation
 
@@ -93,6 +93,6 @@ Contributing guidelines can be found in [CONTRIBUTING.md](CONTRIBUTING.md).
 * Hartle H., Klein B., McCabe S., Daniels A., St-Onge G., Murphy C., and
 Hébert-Dufresne L. (2020). Network comparison and the within-ensemble graph
 distance. *Proc. R. Soc. A* 20190744.
-doi: (http://dx.doi.org/10.1098/rspa.2019.0744)[10.1098/rspa.2019.0744].
+doi: [10.1098/rspa.2019.0744](http://dx.doi.org/10.1098/rspa.2019.0744).
     + recent work introducing a baseline measure for comparing graph distances
 

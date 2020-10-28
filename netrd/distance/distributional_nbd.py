@@ -182,7 +182,7 @@ def reduced_hashimoto(graph, shave=True, sparse=True):
         if len(graph) == 0:
             # We can provide a workaround for this case, however it is best
             # that it is brought to the attention of the user.
-            raise Exception(
+            raise NotImplementedError(
                 "Graph two-core is empty: non-backtracking methods unsuitable."
             )
 

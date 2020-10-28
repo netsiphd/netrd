@@ -12,11 +12,9 @@ simulated dynamics on networks.
 
 Some resources that maybe of interest:
 
-* An interactive demonstration: [netrd
-  explorer](https://netrdexplorer.herokuapp.com)
 * A [tutorial](https://netrd.readthedocs.io/en/latest/tutorial.html) on how to use the library
 * The API [reference](https://netrd.readthedocs.io/en/latest/) 
-* A [notebook](https://nbviewer.jupyter.org/github/netsiphd/netrd/blob/master/notebooks/00%20-%20netrd_introduction.ipynb) showing advanced usage
+* A [notebook](https://nbviewer.jupyter.org/github/netsiphd/netrd/blob/master/notebooks/example.ipynb) showing advanced usage
 
 # Installation
 
@@ -88,3 +86,13 @@ This produces a numpy array of time series data.
 # Contributing
 
 Contributing guidelines can be found in [CONTRIBUTING.md](CONTRIBUTING.md).
+
+
+# Publications
+
+* Hartle H., Klein B., McCabe S., Daniels A., St-Onge G., Murphy C., and
+Hébert-Dufresne L. (2020). Network comparison and the within-ensemble graph
+distance. *Proc. R. Soc. A* 20190744.
+doi: [10.1098/rspa.2019.0744](http://dx.doi.org/10.1098/rspa.2019.0744).
+    + recent work introducing a baseline measure for comparing graph distances
+

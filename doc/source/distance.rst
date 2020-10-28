@@ -25,6 +25,7 @@ same general usage as above.
     netrd.distance.dkSeries
     netrd.distance.DMeasure
     netrd.distance.Frobenius
+    netrd.distance.GraphDiffusion
     netrd.distance.Hamming
     netrd.distance.HammingIpsenMikhailov
     netrd.distance.IpsenMikhailov

@@ -22,8 +22,8 @@ class DistributionalNBD(BaseDistance):
     Computes the distance between two graphs using the empirical spectral density
     of the non-backtracking operator.
 
-    See: 
-    "Graph Comparison via the Non-backtracking Spectrum" 
+    See:
+    "Graph Comparison via the Non-backtracking Spectrum"
     A. Mellor & A. Grusovin
     arXiv:1812.05457 / 10.1103/PhysRevE.99.052309
 
@@ -63,7 +63,7 @@ class DistributionalNBD(BaseDistance):
 
         vector_distance (str)
             The distance measure used to compare two empirical distributions.
-            Currently available are 'euclidean' and 'chebyshev', implemented 
+            Currently available are 'euclidean' and 'chebyshev', implemented
             using SciPy.
             Default: 'euclidean'
 
@@ -156,7 +156,7 @@ def pseudo_hashimoto(graph):
 
 def reduced_hashimoto(graph, shave=True, sparse=True):
     """
-    
+
 
     Parameters
     ----------
@@ -218,7 +218,7 @@ def nb_eigenvalues(B, k=None, **kwargs):
 
 def logr(r, rmax):
     """
-    Logarithm to the base r. 
+    Logarithm to the base r.
 
     NOTE:Maps zero to zero as a special case.
     """
@@ -229,7 +229,7 @@ def logr(r, rmax):
 
 
 def spectral_distribution(points, cumulative=True):
-    """ 
+    """
     Returns the distribution of complex values (in r,theta-space).
     """
 

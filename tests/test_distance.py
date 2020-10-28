@@ -123,3 +123,43 @@ def test_weighted_input():
                     assert not np.isclose(dist, 0.0)
                 else:
                     assert np.isclose(dist, 0.0)
+
+
+def test_isomorphic_input():
+    G1 = nx.fast_gnp_random_graph(150, 0.10)
+
+    N = G1.order()
+    new_nodes = [(i + 5) % N for i in G1.nodes]
+
+    # create G1 by permuting the adjacency matrix
+    new_adj_mat = nx.to_numpy_array(G1, nodelist=new_nodes)
+    G2 = nx.from_numpy_array(new_adj_mat)
+
+    assert nx.is_isomorphic(G1, G2)
+
+    # not all distances should be invariant under isomorphism
+    # document those here
+    EXCLUDED_DISTANCES = [
+        "Hamming",
+        "Frobenius",
+        "JaccardDistance",
+        "HammingIpsenMikhailov",
+        "ResistancePerturbation",
+        "LaplacianSpectral",
+        "PolynomialDissimilarity",
+        "DeltaCon",
+        "QuantumJSD",
+        "DistributionalNBD",
+        "NonBacktrackingSpectral",
+        "GraphDiffusion",
+    ]
+
+    for label, obj in distance.__dict__.items():
+        print(label)
+        if (
+            isinstance(obj, type)
+            and BaseDistance in obj.__bases__
+            and label not in EXCLUDED_DISTANCES
+        ):
+            dist = obj().dist(G1, G2)
+            assert np.isclose(dist, 0.0, atol=1e-3)

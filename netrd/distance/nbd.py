@@ -122,6 +122,10 @@ def nbvals(graph, topk="automatic", ignore_negative_evals=False, batch=100, tol=
     # Moreover, removing them makes the computations faster.  This
     # 'shaving' leaves us with the 2-core of the graph.
     core = shave(graph)
+    if len(core) == 0:
+        raise NotImplementedError(
+            "Graph two-core is empty: non-backtracking methods unsuitable."
+        )
     matrix = pseudo_hashimoto(core)
     if not isinstance(topk, str) and topk > matrix.shape[0] - 1:
         topk = matrix.shape[0] - 2

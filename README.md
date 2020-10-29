@@ -37,6 +37,10 @@ pip install .
 
 ## Reconstructing a graph
 
+<p align="center">
+<img src="netrd_reconstruction_example.png" alt="example reconstruction" width="95%"/>
+</p>
+
 The basic usage of a graph reconstruction algorithm is as follows:
 
 ```
@@ -55,12 +59,12 @@ reconstructing the network, which may be useful for debugging or
 considering goodness of fit. What is returned will vary between
 reconstruction algorithms.
 
-<p align="center">
-<img src="netrd_reconstruction_example.png" alt="example reconstruction" width="90%"/>
-</p>
-
 
 ## Distances between graphs
+
+<p align="center">
+<img src="netrd_distance_example.png" alt="example distance" width="95%"/>
+</p>
 
 The basic usage of a distance algorithm is as follows:
 
@@ -74,11 +78,11 @@ Here, `G1` and `G2` are `nx.Graph` objects (or subclasses such as
 `nx.DiGraph`). The results dictionary holds the distance value, as
 well as any other values that were computed as a side effect.
 
-<p align="center">
-<img src="netrd_distance_example.png" alt="example distance" width="90%"/>
-</p>
-
 ## Dynamics on graphs
+
+<p align="center">
+<img src="netrd_dynamics_example.png" alt="example distance" width="95%"/>
+</p>
 
 The basic usage of a dynamics algorithm is as follows:
 
@@ -90,10 +94,6 @@ The basic usage of a dynamics algorithm is as follows:
 ```
 
 This produces a numpy array of time series data.
-
-<p align="center">
-<img src="netrd_dynamics_example.png" alt="example distance" width="90%"/>
-</p>
 
 
 # Contributing

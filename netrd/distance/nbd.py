@@ -25,7 +25,7 @@ class NonBacktrackingSpectral(BaseDistance):
 
     @unweighted
     def dist(
-        self, G1, G2, topk="automatic", ignore_negative_evals=True, batch=100, tol=1e-5,
+        self, G1, G2, topk="automatic", ignore_negative_evals=True, batch=100, tol=1e-5
     ):
         """Non-Backtracking Distance between two graphs.
 

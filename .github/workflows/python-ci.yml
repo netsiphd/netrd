@@ -23,9 +23,9 @@ jobs:
         pip install -e .
     - name: Lint with black
       run: |
-        cd tests/
-        black --skip-string-normalization --check ../netrd
-        black --skip-string-normalization --check ../tests
+        black --skip-string-normalization --check netrd
+        black --skip-string-normalization --check tests
     - name: Test with pytest
       run: |
+        cd tests/
         pytest

@@ -3,6 +3,7 @@
     https://netrd.readthedocs.io)
 [![Travis](https://img.shields.io/travis/netsiphd/netrd.svg)](
     https://travis-ci.org/netsiphd/netrd)
+![CI](https://github.com/netsiphd/netrd/workflows/build/badge.svg)
 
 # netrd: A library for network {reconstruction, distances, dynamics}
 

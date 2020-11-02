@@ -20,6 +20,7 @@ jobs:
         python -m pip install --upgrade pip
         pip install black pytest
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+        pip install -e .
     - name: Lint with black
       run: |
         cd tests/

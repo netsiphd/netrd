@@ -14,17 +14,13 @@ from .base import BaseReconstructor
 import numpy as np
 from itertools import permutations
 from scipy.stats import pearsonr
-import networkx as nx
 from sklearn.neighbors import NearestNeighbors
-from ..utilities import create_graph, threshold
 
 
 class ConvergentCrossMapping(BaseReconstructor):
     """Infers dynamical causal relations."""
 
-    def fit(
-        self, TS, tau=1, threshold_type='range', cutoffs=[(0.95, np.inf)], **kwargs
-    ):
+    def fit(self, TS, tau=1):
         r"""Infer causal relation applying Takens' Theorem of dynamical systems.
 
         Convergent cross-mapping infers dynamical causal relation between
@@ -136,18 +132,13 @@ class ConvergentCrossMapping(BaseReconstructor):
         # sort zero p-values in decreasing order and tell edges with zero p-value
         weights = np.full(pvalue.shape, np.inf)
         weights[pvalue > 0] = -np.log10(pvalue[pvalue > 0])
-        A = threshold(weights, threshold_type, cutoffs=cutoffs, **kwargs)
-        G = create_graph(A, create_using=nx.DiGraph())
 
-        # Save the graph object, matrices of correlation and p-values into the
-        # "results" field (dictionary)
+        self.update_matrix(weights)
         self.results['correlation_matrix'] = correlation
         self.results['pvalues_matrix'] = pvalue
         self.results['weights_matrix'] = weights
-        self.results['thresholded_matrix'] = A
-        self.results['graph'] = G
 
-        return G
+        return self
 
 
 def shadow_data_cloud(data, N, tau):

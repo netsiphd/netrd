@@ -12,15 +12,13 @@ Submitted as part of the 2019 NetSI Collabathon.
 """
 
 from .base import BaseReconstructor
-import networkx as nx
 import numpy as np
-from ..utilities import create_graph, threshold
 
 
 class RandomReconstructor(BaseReconstructor):
     """Returns a random graph (dummy class)."""
 
-    def fit(self, TS, threshold_type='range', **kwargs):
+    def fit(self, TS):
         """Return a random correlation matrix with a threshold.
 
         The results dictionary also stores the weight matrix as
@@ -47,9 +45,7 @@ class RandomReconstructor(BaseReconstructor):
         """
         N, L = TS.shape
         W = np.random.rand(N, N)
-        A = threshold(W, threshold_type, **kwargs)
-        G = create_graph(A)
-        self.results['graph'] = G
+
         self.results['weights_matrix'] = W
-        self.results['thresholded_matrix'] = A
-        return G
+        self.update_matrix(W)
+        return self

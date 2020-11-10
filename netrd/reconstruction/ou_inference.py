@@ -14,16 +14,14 @@ Submitted as part of the 2019 NetSI Collabathon.
 """
 
 from .base import BaseReconstructor
-import networkx as nx
 import numpy as np
-from scipy.linalg import eig, inv
-from ..utilities import create_graph, threshold
+from scipy.linalg import eig
 
 
 class OUInference(BaseReconstructor):
     """Assumes a Orstein-Uhlenbeck generative model."""
 
-    def fit(self, TS, threshold_type='range', **kwargs):
+    def fit(self, TS):
         """Infers the coupling coefficients assuming a Orstein-Uhlenbeck process
         generative model.
 
@@ -67,15 +65,8 @@ class OUInference(BaseReconstructor):
         self.results['weights_matrix'] = np.zeros([N, N])
         self.results['weights_matrix'][index_pair] = weights
 
-        # threshold the network
-        W_thresh = threshold(self.results['weights_matrix'], threshold_type, **kwargs)
-        self.results['thresholded_matrix'] = W_thresh
-
-        # construct the network
-        self.results['graph'] = create_graph(W_thresh)
-        G = self.results['graph']
-
-        return G
+        self.update_matrix(self.results['weights_matrix'])
+        return self
 
 
 def inverse_method(covariance, temperatures):

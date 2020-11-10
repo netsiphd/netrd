@@ -14,14 +14,12 @@ Submitted as part of the 2019 NetSI Collabathon.
 
 from .base import BaseReconstructor
 import numpy as np
-import networkx as nx
-from ..utilities import create_graph, threshold
 
 
 class MutualInformationMatrix(BaseReconstructor):
     """Uses the mutual information between nodes."""
 
-    def fit(self, TS, nbins=10, threshold_type='degree', **kwargs):
+    def fit(self, TS, nbins=10):
         """Calculates the mutual information between the probability distributions
         of the (binned) values of the time series of pairs of nodes.
 
@@ -74,16 +72,8 @@ class MutualInformationMatrix(BaseReconstructor):
         I = mutual_info_all_pairs(JointP, ProduP, N)
         self.results['weights_matrix'] = I
 
-        # the adjacency matrix is the binarized thresholded mutual information matrix
-        # tau=threshold_from_degree(deg,I)
-        # A = np.array(I>tau, dtype=int)
-        A = threshold(I, threshold_type, **kwargs)
-        self.results['thresholded_matrix'] = A
-
-        G = create_graph(A)
-        self.results['graph'] = G
-
-        return G
+        self.update_matrix(I)
+        return self
 
 
 def find_individual_probability_distribution(TS, rang, nbins):
@@ -230,26 +220,3 @@ def mutual_info_all_pairs(JointP, ProduP, N):
             I[l, j] = I[j, l]  # this method is symmetric
 
     return I
-
-
-def threshold_from_degree(deg, M):
-    """
-    Compute the required threshold (tau) in order to yield a reconstructed graph of mean degree deg.
-    Parameters
-    ----------
-    deg (int): Target degree for which the appropriate threshold will be computed
-    M (np.ndarray): Pre-thresholded NxN array
-    Returns
-    ------
-    tau (float): Required threshold for A=np.array(I<tau,dtype=int) to have an average of deg ones per row/column
-
-    """
-    N = len(M)
-    A = np.ones((N, N))  # start with a complete graph (lowest possible threshold)
-    for tau in sorted(M.flatten()):  # consider increasingly large entry-values
-        A[M == tau] = 0  # remove edges of weight less than the current entry
-        if (
-            np.mean(np.sum(A, 1)) < deg
-        ):  # stop once the matrix is trimmed down to mean degree deg
-            break
-    return tau  # return this critical threshold value

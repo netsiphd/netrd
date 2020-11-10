@@ -16,7 +16,6 @@ Submitted as part of the 2019 NetSI Collabathon.
 import numpy as np
 from sklearn.covariance import graphical_lasso
 from .base import BaseReconstructor
-from ..utilities import create_graph, threshold
 
 
 class GraphicalLasso(BaseReconstructor):
@@ -90,13 +89,6 @@ class GraphicalLasso(BaseReconstructor):
         self.results['weights_matrix'] = cov
         self.results['precision_matrix'] = prec
 
-        # threshold the network
-        self.results['thresholded_matrix'] = threshold(
-            self.results['weights_matrix'], threshold_type, **kwargs
-        )
+        self.update_matrix(cov)
 
-        # construct the network
-        G = create_graph(self.results['thresholded_matrix'])
-        self.results['graph'] = G
-
-        return G
+        return self

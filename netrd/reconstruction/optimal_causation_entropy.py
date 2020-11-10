@@ -13,7 +13,6 @@ from .base import BaseReconstructor
 from netrd.utilities.entropy import categorized_data, conditional_entropy
 import networkx as nx
 import numpy as np
-from ..utilities import create_graph
 
 
 class OptimalCausationEntropy(BaseReconstructor):
@@ -112,12 +111,11 @@ class OptimalCausationEntropy(BaseReconstructor):
 
         # Build the reconstructed graph
         A = nx.to_numpy_array(nx.DiGraph(adjlist).reverse())
-        G = create_graph(A, create_using=nx.DiGraph(), remove_self_loops=False)
+        self.update_matrix(A)
         self.results['adjacency_matrix'] = A
-        self.results['graph'] = G
         self.results['parents'] = adjlist
 
-        return G
+        return self
 
 
 def causal_superset(nodes_I, data, atol):

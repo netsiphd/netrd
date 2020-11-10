@@ -20,13 +20,12 @@ Submitted as part of the 2019 NetSI Collabathon
 from .base import BaseReconstructor
 import numpy as np
 from scipy import linalg
-from ..utilities import create_graph, threshold
 
 
 class PartialCorrelationInfluence(BaseReconstructor):
     """Uses average effect from a sensor to all others."""
 
-    def fit(self, TS, index=None, threshold_type='range', **kwargs):
+    def fit(self, TS, index=None):
         r"""Uses the average effect of a series :math:`Z` on the correlation between
         a series :math:`X` and all other series.
 
@@ -85,6 +84,7 @@ class PartialCorrelationInfluence(BaseReconstructor):
                (2015).
 
         """
+
         data = TS.T
         N = data.shape[1]
 
@@ -123,16 +123,8 @@ class PartialCorrelationInfluence(BaseReconstructor):
 
         self.results['weights_matrix'] = influence
 
-        # threshold the network
-        W_thresh = threshold(influence, threshold_type, **kwargs)
-
-        # construct the network
-        self.results['graph'] = create_graph(W_thresh)
-        self.results['thresholded_matrix'] = W_thresh
-
-        G = self.results['graph']
-
-        return G
+        self.update_matrix(influence)
+        return self
 
 
 def partial_corr(_vars, idx_vars):

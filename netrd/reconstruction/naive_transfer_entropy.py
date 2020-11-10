@@ -14,14 +14,13 @@ Submitted as part of the 2019 NetSI Collabathon.
 from .base import BaseReconstructor
 import numpy as np
 from itertools import permutations
-from ..utilities import create_graph, threshold
 from ..utilities.entropy import conditional_entropy, categorized_data
 
 
 class NaiveTransferEntropy(BaseReconstructor):
     """Uses transfer entropy between sensors."""
 
-    def fit(self, TS, delay_max=1, n_bins=2, threshold_type='range', **kwargs):
+    def fit(self, TS, delay_max=1, n_bins=2):
         r"""Calculates the transfer entropy from i --> j.
 
         The resulting network is asymmetric, and each element
@@ -98,16 +97,8 @@ class NaiveTransferEntropy(BaseReconstructor):
             TE[i, j] = np.mean(te_list)
 
         self.results['weights_matrix'] = TE
-
-        # threshold the network
-        TE_thresh = threshold(TE, threshold_type, **kwargs)
-        self.results['thresholded_matrix'] = TE_thresh
-
-        # construct the network
-        self.results['graph'] = create_graph(TE_thresh)
-        G = self.results['graph']
-
-        return G
+        self.update_matrix(TE)
+        return self
 
 
 def transfer_entropy(X, Y, delay):

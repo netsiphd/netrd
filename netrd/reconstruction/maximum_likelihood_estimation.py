@@ -8,8 +8,6 @@ submitted as part of the 2019 NeTSI Collabathon
 """
 from .base import BaseReconstructor
 import numpy as np
-import networkx as nx
-from ..utilities import create_graph, threshold
 
 
 class MaximumLikelihoodEstimation(BaseReconstructor):
@@ -80,14 +78,6 @@ class MaximumLikelihoodEstimation(BaseReconstructor):
 
             W[i0, :] = w
 
-        # threshold the network
-        W_thresh = threshold(W, threshold_type, **kwargs)
+        self.update_matrix(W)
 
-        # construct the network
-
-        self.results['graph'] = create_graph(W_thresh)
-        self.results['weights_matrix'] = W
-        self.results['thresholded_matrix'] = W_thresh
-        G = self.results['graph']
-
-        return G
+        return self

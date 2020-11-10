@@ -8,16 +8,13 @@ submitted as part of the 2019 NetSI Collabathon
 """
 from .base import BaseReconstructor
 import numpy as np
-import networkx as nx
-import scipy as sp
 from scipy import linalg
-from ..utilities import create_graph, threshold
 
 
 class FreeEnergyMinimization(BaseReconstructor):
     """Applies free energy principle."""
 
-    def fit(self, TS, threshold_type='degree', **kwargs):
+    def fit(self, TS):
         """Infer inter-node coupling weights by minimizing a free energy over the
         data structure.
 
@@ -96,14 +93,7 @@ class FreeEnergyMinimization(BaseReconstructor):
 
             W[i0, :] = w[:]
 
-        # threshold the network
-        W_thresh = threshold(W, threshold_type, **kwargs)
-
-        # construct the network
-
-        self.results['graph'] = create_graph(W_thresh)
+        self.update_matrix(W)
         self.results['weights_matrix'] = W
-        self.results['thresholded_matrix'] = W_thresh
-        G = self.results['graph']
 
-        return G
+        return self

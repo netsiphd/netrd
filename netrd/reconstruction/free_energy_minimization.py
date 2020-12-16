@@ -8,8 +8,6 @@ submitted as part of the 2019 NetSI Collabathon
 """
 from .base import BaseReconstructor
 import numpy as np
-import networkx as nx
-import scipy as sp
 from scipy import linalg
 from ..utilities import create_graph, threshold
 

@@ -12,7 +12,6 @@ Submitted as part of the 2019 NetSI Collabathon.
 """
 
 from .base import BaseReconstructor
-import networkx as nx
 import numpy as np
 from ..utilities import create_graph, threshold
 

@@ -39,7 +39,7 @@ from .base import BaseDistance
 from collections import Counter
 import numpy as np
 import networkx as nx
-from ..utilities import entropy, unweighted
+from ..utilities import entropy
 
 
 class PortraitDivergence(BaseDistance):

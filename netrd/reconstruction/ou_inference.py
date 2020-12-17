@@ -14,9 +14,8 @@ Submitted as part of the 2019 NetSI Collabathon.
 """
 
 from .base import BaseReconstructor
-import networkx as nx
 import numpy as np
-from scipy.linalg import eig, inv
+from scipy.linalg import eig
 from ..utilities import create_graph, threshold
 
 

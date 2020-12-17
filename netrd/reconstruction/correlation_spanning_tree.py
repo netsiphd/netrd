@@ -103,8 +103,6 @@ class CorrelationSpanningTree(BaseReconstructor):
                topology of stock markets. Quantitative Finance 1, 372–374.
 
         """
-        N, L = TS.shape
-
         C = np.corrcoef(TS)  # Empirical correlation matrix
 
         D = (

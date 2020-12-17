@@ -384,8 +384,4 @@ def earthmover_distance(p1, p2):
     if status not in [solver.OPTIMAL, solver.FEASIBLE]:
         raise Exception("Unable to find feasible solution")
 
-    for ((x, y), variable) in variables.items():
-        if variable.solution_value() != 0:
-            cost = euclidean_distance(x, y) * variable.solution_value()
-
     return objective.Value()

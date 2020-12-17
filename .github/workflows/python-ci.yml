@@ -33,8 +33,8 @@ jobs:
         black --skip-string-normalization --check tests
     - name: Check for unused imports with flake8
       run: |
-        flake8 --select=E401 netrd
-        flake8 --select=E401 tests
+        flake8 --select=F401 netrd
+        flake8 --select=F401 tests
     - name: Test with pytest
       run: |
         cd tests/

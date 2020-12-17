@@ -9,6 +9,7 @@ from .voter import VoterModel
 from .SIS import SISModel
 
 __all__ = [
+    'BaseDynamics',
     'SherringtonKirkpatrickIsing',
     'SingleUnbiasedRandomWalker',
     'Kuramoto',

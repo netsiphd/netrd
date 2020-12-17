@@ -18,6 +18,7 @@ from .optimal_causation_entropy import OptimalCausationEntropy
 from .correlation_spanning_tree import CorrelationSpanningTree
 
 __all__ = [
+    'BaseReconstructor',
     'RandomReconstructor',
     'CorrelationMatrix',
     'PartialCorrelationMatrix',

@@ -22,6 +22,7 @@ from .nbd import NonBacktrackingSpectral
 from .graph_diffusion import GraphDiffusion
 
 __all__ = [
+    'BaseDistance',
     'Hamming',
     'Frobenius',
     'PortraitDivergence',

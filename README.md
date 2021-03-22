@@ -79,9 +79,9 @@ The basic usage of a distance algorithm is as follows:
 ```
 >>> from netrd.distance import QuantumJSD
 >>> import networkx as nx
->>>
 >>> G1 = nx.fast_gnp_random_graph(1000, .1)
 >>> G2 = nx.fast_gnp_random_graph(1000, .1)
+>>>
 >>> dist_obj = QuantumJSD()
 >>> distance = dist_obj.dist(G1, G2)
 >>> # or alternatively: distance = dist_obj.results['dist']

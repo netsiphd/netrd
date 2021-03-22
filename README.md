@@ -43,8 +43,8 @@ pip install .
 The basic usage of a graph reconstruction algorithm is as follows:
 
 ```
->>> import numpy as np
 >>> from netrd.reconstruction import CorrelationMatrix
+>>> import numpy as np
 >>> TS = np.loadtxt('time_series_data.txt')
 >>>
 >>> reconstructor = CorrelationMatrix()
@@ -101,11 +101,13 @@ The basic usage of a dynamics algorithm is as follows:
 
 ```
 >>> from netrd.dynamics import VoterModel
+>>> import networkx as nx
 >>> ground_truth = nx.read_edgelist("ground_truth.txt")
 >>>
 >>> dynamics_model = VoterModel()
 >>> synthetic_TS = dynamics_model.simulate(ground_truth)
->>> # G = Reconstructor().fit(synthetic_TS)
+>>> # this is the same structure as the input data to a reconstructor
+>>> # G = CorrelationMatrix().fit(synthetic_TS)
 ```
 
 This produces a numpy array of time series data.

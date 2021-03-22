@@ -43,8 +43,12 @@ pip install .
 The basic usage of a graph reconstruction algorithm is as follows:
 
 ```
->>> reconstructor = ReconstructionAlgorithm()
->>> G = reconstructor.fit(TS, <some_params>)
+>>> from netrd.reconstruction import CorrelationMatrix
+>>> import numpy as np
+>>> TS = np.loadtxt('time_series_data.txt')
+>>>
+>>> reconstructor = CorrelationMatrix()
+>>> G = reconstructor.fit(TS, threshold_type='degree', avg_k=15)
 >>> # or alternately, G = reconstructor.results['graph']
 ```
 
@@ -58,6 +62,11 @@ reconstructing the network, which may be useful for debugging or
 considering goodness of fit. What is returned will vary between
 reconstruction algorithms.
 
+Many reconstruction algorithms create a dense matrix of weights and
+use additional parameters to describe how to create a sparse graph; the
+[tutorial](https://netrd.readthedocs.io/en/latest/tutorial.html) has more
+details on these parameters.
+
 
 ## Distances between graphs
 
@@ -68,8 +77,13 @@ reconstruction algorithms.
 The basic usage of a distance algorithm is as follows:
 
 ```
->>> dist_obj = DistanceAlgorithm()
->>> distance = dist_obj.dist(G1, G2, <some_params>)
+>>> from netrd.distance import QuantumJSD
+>>> import networkx as nx
+>>> G1 = nx.fast_gnp_random_graph(1000, .1)
+>>> G2 = nx.fast_gnp_random_graph(1000, .1)
+>>>
+>>> dist_obj = QuantumJSD()
+>>> distance = dist_obj.dist(G1, G2)
 >>> # or alternatively: distance = dist_obj.results['dist']
 ```
 
@@ -86,10 +100,14 @@ well as any other values that were computed as a side effect.
 The basic usage of a dynamics algorithm is as follows:
 
 ```
+>>> from netrd.dynamics import VoterModel
+>>> import networkx as nx
 >>> ground_truth = nx.read_edgelist("ground_truth.txt")
->>> dynamics_model = Dynamics()
->>> synthetic_TS = dynamics_model.simulate(ground_truth, <some_params>)
->>> # G = Reconstructor().fit(synthetic_TS)
+>>>
+>>> dynamics_model = VoterModel()
+>>> synthetic_TS = dynamics_model.simulate(ground_truth)
+>>> # this is the same structure as the input data to a reconstructor
+>>> # G = CorrelationMatrix().fit(synthetic_TS)
 ```
 
 This produces a numpy array of time series data.

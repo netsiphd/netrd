@@ -106,7 +106,7 @@ import networkx as nx
 ground_truth = nx.karate_club_graph()
 
 dynamics_model = VoterModel()
-synthetic_TS = dynamics_model.simulate(ground_truth)
+synthetic_TS = dynamics_model.simulate(ground_truth, 1000)
 # this is the same structure as the input data to a reconstructor
 # G = CorrelationMatrix().fit(synthetic_TS)
 ```

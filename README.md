@@ -40,13 +40,13 @@ pip install .
 <img src="netrd_reconstruction_example.png" alt="example reconstruction" width="95%"/>
 </p>
 
-The basic usage of a graph reconstruction algorithm is as follows. Given a file
-of time-series data, `time_series_data.txt`:
+The basic usage of a graph reconstruction algorithm is as follows:
 
 ```python
 from netrd.reconstruction import CorrelationMatrix
 import numpy as np
-TS = np.loadtxt('time_series_data.txt')
+# 100 nodes, 1000 observations
+TS = np.random.random((100, 1000))
 
 reconstructor = CorrelationMatrix()
 G = reconstructor.fit(TS, threshold_type='degree', avg_k=15)
@@ -98,13 +98,12 @@ well as any other values that were computed as a side effect.
 <img src="netrd_dynamics_example.png" alt="example distance" width="95%"/>
 </p>
 
-The basic usage of a dynamics algorithm is as follows. Given an edgelist,
-`ground_truth.txt`:
+The basic usage of a dynamics algorithm is as follows:
 
 ```python
 from netrd.dynamics import VoterModel
 import networkx as nx
-ground_truth = nx.read_edgelist("ground_truth.txt")
+ground_truth = nx.karate_club_graph()
 
 dynamics_model = VoterModel()
 synthetic_TS = dynamics_model.simulate(ground_truth)

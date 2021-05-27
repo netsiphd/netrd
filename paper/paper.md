@@ -69,6 +69,6 @@ In the network reconstruction literature, there are often software repositories 
 
 # Acknowledgements
 
-The authors thank Kathryn Coronges, Mark Giannini, and Alessandro Vespignani for contributing to the coordination of the 2019 Network Science Institute "Collabathon", where much of the development of this package began. The authors acknowledge the support of ten other contributors to this package: Guillaume St-Onge, Andrew Mellor, Charles Murphy, David Saffo, Carolina Mattsson, Ryan Gallagher, Matteo Chinazzi, Jessica Davis, Alexander J. Gates, and Anton Tsitulin. **Funding:** This research was supported by the Network Science Institute at Northeastern University. B.K. is supported in part by the National Defense Science & Engineering Graduate Fellowship (NDSEG) Program.
+The authors thank Kathryn Coronges, Mark Giannini, and Alessandro Vespignani for contributing to the coordination of the 2019 Network Science Institute "Collabathon", where much of the development of this package began. The authors acknowledge the support of ten other contributors to this package: Guillaume St-Onge, Andrew Mellor, Charles Murphy, David Saffo, Carolina Mattsson, Ryan Gallagher, Matteo Chinazzi, Jessica Davis, Alexander J. Gates, and Anton Tsitulin. **Funding:** This research was supported by the Network Science Institute at Northeastern University.
 
 # References

@@ -58,8 +58,6 @@ class IpsenMikhailov(BaseDistance):
         .. [1] https://journals.aps.org/pre/abstract/10.1103/PhysRevE.66.046109
 
         """
-        N = len(G1)
-
         # get the adjacency matrices
         adj1 = nx.to_numpy_array(G1)
         adj2 = nx.to_numpy_array(G2)

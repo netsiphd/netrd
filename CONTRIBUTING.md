@@ -208,7 +208,23 @@ Once you have completed the above steps, you are ready to choose an algorithm to
    If you do not do this, our tests will likely fail and your code will not be
    merged without further changes.
 
-2. After updating your local code, the first thing to do is tell git which files
+2. We also want to make sure there are no unused imports; for that we'll use
+   [flake8](https://flake8.pycqa.org/en/latest/). This is a general-purpose
+   linter that we're using to catch unused imports and wildcard imports. You
+   can probably check these manually, but our test suite will run this command:
+
+   ```
+   # if you don't have flake8 installed on your system, just pip install:
+   # pip install flake8
+
+   flake8 --select F401,F403 netrd/
+   flake8 --select F401,F403 tests/
+   ```
+
+   And if there are any import warnings, it cause the tests to fail and will
+   have to be fixed before merging.
+
+3. After updating your local code, the first thing to do is tell git which files
    you have been working on. (This is called staging.) If you worked on a
    distance algorithm, for example, do
 
@@ -216,7 +232,7 @@ Once you have completed the above steps, you are ready to choose an algorithm to
    git add netrd/distance/<your_file> netrd/distance/__init__.py
    ```
 
-3. Next tell git to commit (or save) your changes:
+4. Next tell git to commit (or save) your changes:
 
 	```
 	git commit -m 'Write a commit message here. This will be public and
@@ -226,7 +242,7 @@ Once you have completed the above steps, you are ready to choose an algorithm to
 	implementation of SomeMethod, based on SomeAuthor and/or SomeCode.'
 	```
 
-4. Now you have to tell git to do two things. First, `pull` the latest changes from
+5. Now you have to tell git to do two things. First, `pull` the latest changes from
    the upstream repository (in case someone made changes while you were coding), 
    then `push` your changes and the updated code from your machine to your fork:
 
@@ -239,7 +255,7 @@ Once you have completed the above steps, you are ready to choose an algorithm to
 	conflicts that must be merged. If you run in to trouble here, ask
 	for help!
 
-5. Finally, you need to tell this (the upstream) repository to include your
+6. Finally, you need to tell this (the upstream) repository to include your
    contributions. For this, we use the GitHub web interface. At the top of
    this page, there is a 'New Pull Request' button. Click on it, and it
    will take you to a page titled 'Compare Changes'. Right below the title,

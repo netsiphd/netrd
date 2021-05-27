@@ -25,7 +25,7 @@ class NonBacktrackingSpectral(BaseDistance):
 
     @unweighted
     def dist(
-        self, G1, G2, topk="automatic", ignore_negative_evals=True, batch=100, tol=1e-5,
+        self, G1, G2, topk="automatic", ignore_negative_evals=True, batch=100, tol=1e-5
     ):
         """Non-Backtracking Distance between two graphs.
 
@@ -383,9 +383,5 @@ def earthmover_distance(p1, p2):
     status = solver.Solve()
     if status not in [solver.OPTIMAL, solver.FEASIBLE]:
         raise Exception("Unable to find feasible solution")
-
-    for ((x, y), variable) in variables.items():
-        if variable.solution_value() != 0:
-            cost = euclidean_distance(x, y) * variable.solution_value()
 
     return objective.Value()

@@ -20,9 +20,6 @@ import numpy as np
 class BranchingModel(BaseDynamics):
     """A sand-pile-like branching process."""
 
-    def __init__(self):
-        self.results = {}
-
     def simulate(
         self,
         G,
@@ -115,7 +112,6 @@ class BranchingModel(BaseDynamics):
                 active_edges = G.out_edges(nbunch=active_nodes, data=True)
 
                 if len(active_edges) != 0:
-                    current_sources = list(list(zip(*active_edges))[0])
                     current_targets = list(list(zip(*active_edges))[1])
                     weights_array = np.array([j[2]['weight'] for j in active_edges])
 
@@ -174,14 +170,16 @@ def initialize_history(N, L, initial_fraction, m, target_Ahat, noise):
 
     # maybe also here initialize TS_init with external drives?
     if m != 1.0:
-        N_nodes = 1000
         if N > 1000:
             N_nodes = N
+        else:
+            N_nodes = 1000
         h_vals = np.random.poisson(target_Ahat * N_nodes * np.abs(1 - m), L)
     else:
-        N_nodes = 100
         if N > 100:
             N_nodes = N
+        else:
+            N_nodes = 100
         h_vals = np.random.poisson(0.01, L)
     #         h_vals = np.random.poisson(target_Ahat*N_nodes * 0.01, L)
 

@@ -24,7 +24,7 @@ def test_same_graph():
 
 
 def test_different_graphs():
-    """ The distance between two different graphs must be nonzero."""
+    """The distance between two different graphs must be nonzero."""
     ## NOTE: This test is not totally rigorous. For example, two different
     ## networks may have the same eigenvalues, thus a method that compares
     ## their eigenvalues would result in distance 0. However, this is very

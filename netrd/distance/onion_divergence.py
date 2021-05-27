@@ -132,7 +132,6 @@ def _onion_decomposition(G):
 def _update_sparse_matrix(dictionary, values, key, index):
     # Creates entry if it doesn't exist or else update the corresponding value
     if not key in dictionary:
-        index_i = index
         dictionary[key] = index
         values.append(1)
         index += 1

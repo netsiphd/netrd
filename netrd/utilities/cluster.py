@@ -10,7 +10,6 @@ author: David Saffo (saffo.d@husky.neu.edu)
 Submitted as part of the 2019 NetSI Collabathon.
 
 """
-import numpy as np
 import networkx as nx
 from scipy.cluster.hierarchy import dendrogram, linkage
 

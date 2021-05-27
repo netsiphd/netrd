@@ -91,8 +91,7 @@ def feature_extraction(G):
     node_list = sorted(G.nodes())
     node_degree_dict = dict(G.degree())
     node_clustering_dict = dict(nx.clustering(G))
-    egonets = [nx.ego_graph(G, n) for n in node_list]
-    egonet_dict = {node: egonet for node, egonet in zip(node_list, egonets)}
+    egonets = {n: nx.ego_graph(G, n) for n in node_list}
 
     # node degrees
     degs = [node_degree_dict[n] for n in node_list]

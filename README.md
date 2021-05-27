@@ -1,8 +1,7 @@
 [![PyPI version](https://badge.fury.io/py/netrd.svg)](https://badge.fury.io/py/netrd)
 [![ReadTheDocs](https://img.shields.io/readthedocs/netrd.svg)](
     https://netrd.readthedocs.io)
-[![Travis](https://img.shields.io/travis/netsiphd/netrd.svg)](
-    https://travis-ci.org/netsiphd/netrd)
+![CI](https://github.com/netsiphd/netrd/workflows/build/badge.svg)
 
 # netrd: A library for network {reconstruction, distances, dynamics}
 
@@ -43,10 +42,15 @@ pip install .
 
 The basic usage of a graph reconstruction algorithm is as follows:
 
-```
->>> reconstructor = ReconstructionAlgorithm()
->>> G = reconstructor.fit(TS, <some_params>)
->>> # or alternately, G = reconstructor.results['graph']
+```python
+from netrd.reconstruction import CorrelationMatrix
+import numpy as np
+# 100 nodes, 1000 observations
+TS = np.random.random((100, 1000))
+
+reconstructor = CorrelationMatrix()
+G = reconstructor.fit(TS, threshold_type='degree', avg_k=15)
+# or alternately, G = reconstructor.results['graph']
 ```
 
 Here, `TS` is an N x L numpy array consisting of L
@@ -59,6 +63,14 @@ reconstructing the network, which may be useful for debugging or
 considering goodness of fit. What is returned will vary between
 reconstruction algorithms.
 
+<<<<<<< HEAD
+=======
+Many reconstruction algorithms create a dense matrix of weights and
+use additional parameters to describe how to create a sparse graph; the
+[tutorial](https://netrd.readthedocs.io/en/latest/tutorial.html) has more
+details on these parameters.
+
+>>>>>>> f6c1bc6db61d96569d3547e6f3f09902755bc061
 
 ## Distances between graphs
 
@@ -68,10 +80,15 @@ reconstruction algorithms.
 
 The basic usage of a distance algorithm is as follows:
 
-```
->>> dist_obj = DistanceAlgorithm()
->>> distance = dist_obj.dist(G1, G2, <some_params>)
->>> # or alternatively: distance = dist_obj.results['dist']
+```python
+from netrd.distance import QuantumJSD
+import networkx as nx
+G1 = nx.fast_gnp_random_graph(1000, .1)
+G2 = nx.fast_gnp_random_graph(1000, .1)
+
+dist_obj = QuantumJSD()
+distance = dist_obj.dist(G1, G2)
+# or alternatively: distance = dist_obj.results['dist']
 ```
 
 Here, `G1` and `G2` are `nx.Graph` objects (or subclasses such as
@@ -86,11 +103,15 @@ well as any other values that were computed as a side effect.
 
 The basic usage of a dynamics algorithm is as follows:
 
-```
->>> ground_truth = nx.read_edgelist("ground_truth.txt")
->>> dynamics_model = Dynamics()
->>> synthetic_TS = dynamics_model.simulate(ground_truth, <some_params>)
->>> # G = Reconstructor().fit(synthetic_TS)
+```python
+from netrd.dynamics import VoterModel
+import networkx as nx
+ground_truth = nx.karate_club_graph()
+
+dynamics_model = VoterModel()
+synthetic_TS = dynamics_model.simulate(ground_truth, 1000)
+# this is the same structure as the input data to a reconstructor
+# G = CorrelationMatrix().fit(synthetic_TS)
 ```
 
 This produces a numpy array of time series data.

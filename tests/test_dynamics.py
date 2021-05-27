@@ -7,7 +7,6 @@ Test dynamics algorithms.
 """
 
 import networkx as nx
-import numpy as np
 from netrd import dynamics
 from netrd.dynamics import BaseDynamics
 

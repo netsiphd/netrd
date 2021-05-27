@@ -109,9 +109,6 @@ class DMeasure(BaseDistance):
         second_term = 0
         third_term = 0
 
-        N1 = G1.number_of_nodes()
-        N2 = G2.number_of_nodes()
-
         if w1 + w2 > 0:
             g1_nnd, g1_pdfs = network_node_dispersion(G1)
             g2_nnd, g2_pdfs = network_node_dispersion(G2)

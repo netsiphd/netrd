@@ -63,14 +63,11 @@ reconstructing the network, which may be useful for debugging or
 considering goodness of fit. What is returned will vary between
 reconstruction algorithms.
 
-<<<<<<< HEAD
-=======
 Many reconstruction algorithms create a dense matrix of weights and
 use additional parameters to describe how to create a sparse graph; the
 [tutorial](https://netrd.readthedocs.io/en/latest/tutorial.html) has more
 details on these parameters.
 
->>>>>>> f6c1bc6db61d96569d3547e6f3f09902755bc061
 
 ## Distances between graphs
 

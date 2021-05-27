@@ -127,3 +127,8 @@ distance. *Proc. R. Soc. A* 20190744.
 doi: [10.1098/rspa.2019.0744](http://dx.doi.org/10.1098/rspa.2019.0744).
     + recent work introducing a baseline measure for comparing graph distances
 
+* McCabe, S., Torres, L., LaRock, T., Haque, S.A, Yang, CH, Hartle, H., and
+Klein, B. (2020). netrd: A library for network reconstruction and graph
+distances. *arXiv* [2010.16019](https://arxiv.org/abs/2010.16019).
+    + preprint detailing the methods used in this package
+

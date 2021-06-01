@@ -1,3 +1,4 @@
+[![DOI](https://joss.theoj.org/papers/10.21105/joss.02990/status.svg)](https://doi.org/10.21105/joss.02990)
 [![PyPI version](https://badge.fury.io/py/netrd.svg)](https://badge.fury.io/py/netrd)
 [![ReadTheDocs](https://img.shields.io/readthedocs/netrd.svg)](
     https://netrd.readthedocs.io)
@@ -121,14 +122,16 @@ Contributing guidelines can be found in [CONTRIBUTING.md](CONTRIBUTING.md).
 
 # Publications
 
+* McCabe, S., Torres, L., LaRock, T., Haque, S. A., Yang, C.-H., Hartle, H., and
+Klein, B. (2021). netrd: A library for network reconstruction and graph
+distances. *Journal of Open Source Software* 6(62): 2990.
+doi:&nbsp;[10.21105/joss.02990](https://doi.org/10.21105/joss.02990).
+arXiv:&nbsp;[2010.16019](https://arxiv.org/abs/2010.16019).
+    + paper detailing the methods used in this package
+
 * Hartle H., Klein B., McCabe S., Daniels A., St-Onge G., Murphy C., and
 Hébert-Dufresne L. (2020). Network comparison and the within-ensemble graph
-distance. *Proc. R. Soc. A* 20190744.
-doi: [10.1098/rspa.2019.0744](http://dx.doi.org/10.1098/rspa.2019.0744).
+distance. *Proceedings of the Royal Society A* 476: 20190744.
+doi:&nbsp;[10.1098/rspa.2019.0744](http://doi.org/10.1098/rspa.2019.0744).
+arXiv:&nbsp;[2008.02415](https://arxiv.org/abs/2008.02415).
     + recent work introducing a baseline measure for comparing graph distances
-
-* McCabe, S., Torres, L., LaRock, T., Haque, S.A, Yang, CH, Hartle, H., and
-Klein, B. (2020). netrd: A library for network reconstruction and graph
-distances. *arXiv* [2010.16019](https://arxiv.org/abs/2010.16019).
-    + preprint detailing the methods used in this package
-

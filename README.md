@@ -125,13 +125,13 @@ Contributing guidelines can be found in [CONTRIBUTING.md](CONTRIBUTING.md).
 * McCabe, S., Torres, L., LaRock, T., Haque, S. A., Yang, C.-H., Hartle, H., and
 Klein, B. (2021). netrd: A library for network reconstruction and graph
 distances. *Journal of Open Source Software* 6(62) 2990.
-doi: [10.21105/joss.02990](https://doi.org/10.21105/joss.02990).
-arXiv: [2010.16019](https://arxiv.org/abs/2010.16019).
+doi:&nbsp;[10.21105/joss.02990](https://doi.org/10.21105/joss.02990).
+arXiv:&nbsp;[2010.16019](https://arxiv.org/abs/2010.16019).
     + paper detailing the methods used in this package
 
 * Hartle H., Klein B., McCabe S., Daniels A., St-Onge G., Murphy C., and
 Hébert-Dufresne L. (2020). Network comparison and the within-ensemble graph
 distance. *Proceedings of the  Royal Society A* 20190744.
-doi: [10.1098/rspa.2019.0744](http://doi.org/10.1098/rspa.2019.0744).
-arXiv: [2008.02415](https://arxiv.org/abs/2008.02415).
+doi:&nbsp;[10.1098/rspa.2019.0744](http://doi.org/10.1098/rspa.2019.0744).
+arXiv:&nbsp;[2008.02415](https://arxiv.org/abs/2008.02415).
     + recent work introducing a baseline measure for comparing graph distances

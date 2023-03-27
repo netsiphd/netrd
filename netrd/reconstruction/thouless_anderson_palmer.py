@@ -59,7 +59,7 @@ class ThoulessAndersonPalmer(BaseReconstructor):
         m = np.mean(TS, axis=1)  # empirical value
 
         # A matrix
-        A = 1 - m ** 2
+        A = 1 - m**2
         A_inv = np.diag(1 / A)
         A = np.diag(A)
         ds = TS.T - m  # equal time correlation
@@ -81,7 +81,7 @@ class ThoulessAndersonPalmer(BaseReconstructor):
         step = 0.001
         nloop = int(0.33 / step) + 2
 
-        W2_NMF = W_NMF ** 2
+        W2_NMF = W_NMF**2
 
         temp = np.empty(N)
         F = np.empty(N)

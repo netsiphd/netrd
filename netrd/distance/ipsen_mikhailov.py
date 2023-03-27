@@ -107,8 +107,8 @@ def _im_distance(adj1, adj2, hwhm):
     norm2 = (N - 1) * np.pi / 2 - np.sum(np.arctan(-w2 / hwhm))
 
     # define both spectral densities
-    density1 = lambda w: np.sum(hwhm / ((w - w1) ** 2 + hwhm ** 2)) / norm1
-    density2 = lambda w: np.sum(hwhm / ((w - w2) ** 2 + hwhm ** 2)) / norm2
+    density1 = lambda w: np.sum(hwhm / ((w - w1) ** 2 + hwhm**2)) / norm1
+    density2 = lambda w: np.sum(hwhm / ((w - w2) ** 2 + hwhm**2)) / norm2
 
     func = lambda w: (density1(w) - density2(w)) ** 2
 

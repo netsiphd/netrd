@@ -269,7 +269,7 @@ def alpha_centrality_prob(G, niter):
 
     # turn the alpha centralities into a probability distribution
     cr = cr / (N - 1)
-    r = sorted(cr / (N ** 2))
+    r = sorted(cr / (N**2))
     alpha_prob = list(r) + [max([0, 1 - sum(r)])]
 
     return np.array(alpha_prob)

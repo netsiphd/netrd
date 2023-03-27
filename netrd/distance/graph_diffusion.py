@@ -164,6 +164,6 @@ def exponential_diffusion_diff(vecs1, vals1, vecs2, vals2, ts):
         norm2 = vecs2.dot(np.multiply(exp_diag_2, vecs2).T)
         diff = norm1 - norm2
 
-        diffs[kt] = (diff ** 2).sum()
+        diffs[kt] = (diff**2).sum()
 
     return diffs

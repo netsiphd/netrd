@@ -118,7 +118,7 @@ class CorrelationSpanningTree(BaseReconstructor):
 
         MST = minimum_spanning_tree(D)  # Minimum Spanning Tree
 
-        G = nx.from_sparse(MST)
+        G = from_sparse(MST)
 
         self.results['graph'] = G
 

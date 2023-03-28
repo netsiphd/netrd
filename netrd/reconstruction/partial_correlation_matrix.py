@@ -144,20 +144,20 @@ def partial_corr(C, index=None):
 
     C = np.asarray(C).T
     p = C.shape[1]
-    P_corr = np.zeros((p, p), dtype=np.float)
+    P_corr = np.zeros((p, p), dtype=np.float64)
 
     for i in range(p):
         P_corr[i, i] = 1
         for j in range(i + 1, p):
             if index is None:
-                idx = np.ones(p, dtype=np.bool)
+                idx = np.ones(p, dtype=bool)
                 idx[i] = False
                 idx[j] = False
             elif type(index) is int or (
                 isinstance(index, np.ndarray)
-                and issubclass(index.dtype.type, np.integer)
+                and issubclass(index.dtype.type, np.int_)
             ):
-                idx = np.zeros(p, dtype=np.bool)
+                idx = np.zeros(p, dtype=bool)
                 idx[index] = True
             else:
                 raise ValueError(

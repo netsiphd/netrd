@@ -13,7 +13,6 @@ Submitted as part of the 2019 NetSI Collabathon.
 
 from .base import BaseReconstructor
 import numpy as np
-import networkx as nx
 from scipy.sparse.csgraph import minimum_spanning_tree
 
 try:

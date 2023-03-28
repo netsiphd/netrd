@@ -24,7 +24,7 @@ class PartialCorrelationMatrix(BaseReconstructor):
         index=None,
         drop_index=True,
         of_residuals=False,
-        threshold_type='range',
+        threshold_type="range",
         **kwargs
     ):
         """Uses a regularized form of the precision matrix.
@@ -80,16 +80,16 @@ class PartialCorrelationMatrix(BaseReconstructor):
         if of_residuals:
             p_cor = partial_corr(p_cor, index=None)
 
-        self.results['weights_matrix'] = p_cor
+        self.results["weights_matrix"] = p_cor
 
         # threshold the network
         W_thresh = threshold(p_cor, threshold_type, **kwargs)
 
         # construct the network
-        self.results['graph'] = create_graph(W_thresh)
-        self.results['thresholded_matrix'] = W_thresh
+        self.results["graph"] = create_graph(W_thresh)
+        self.results["thresholded_matrix"] = W_thresh
 
-        G = self.results['graph']
+        G = self.results["graph"]
 
         return G
 
@@ -154,8 +154,7 @@ def partial_corr(C, index=None):
                 idx[i] = False
                 idx[j] = False
             elif type(index) is int or (
-                isinstance(index, np.ndarray)
-                and issubclass(index.dtype.type, np.int_)
+                isinstance(index, np.ndarray) and issubclass(index.dtype.type, np.int_)
             ):
                 idx = np.zeros(p, dtype=bool)
                 idx[index] = True

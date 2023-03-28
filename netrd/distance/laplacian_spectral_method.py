@@ -197,12 +197,12 @@ def _create_continuous_spectrum(eigenvalues, kernel, hwhm, a, b):
     # define density and repartition function for each eigenvalue
     if kernel == "normal":
         std = hwhm / 1.1775
-        f = lambda x, xp: np.exp(-((x - xp) ** 2) / (2 * std ** 2)) / np.sqrt(
-            2 * np.pi * std ** 2
+        f = lambda x, xp: np.exp(-((x - xp) ** 2) / (2 * std**2)) / np.sqrt(
+            2 * np.pi * std**2
         )
         F = lambda x, xp: (1 + erf((x - xp) / (np.sqrt(2) * std))) / 2
     elif kernel == "lorentzian":
-        f = lambda x, xp: hwhm / (np.pi * (hwhm ** 2 + (x - xp) ** 2))
+        f = lambda x, xp: hwhm / (np.pi * (hwhm**2 + (x - xp) ** 2))
         F = lambda x, xp: np.arctan((x - xp) / hwhm) / np.pi + 1 / 2
 
     # compute normalization factor and define density function

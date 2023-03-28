@@ -147,7 +147,7 @@ class QuantumJSD(BaseDistance):
                 H = -1 * np.sum(eigs * np.log2(eigs))
             else:
                 prefactor = 1 / (1 - q)
-                H = prefactor * np.log2((eigs ** q).sum())
+                H = prefactor * np.log2((eigs**q).sum())
             return H
 
         A1 = nx.to_numpy_array(G1)

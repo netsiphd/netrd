@@ -114,7 +114,7 @@ def dk2_series(G, N=None):
     k_dict = dict(nx.degree(G))
     dk2 = defaultdict(int)
 
-    for (i, j) in G.edges:
+    for i, j in G.edges:
         k_i = k_dict[i]
         k_j = k_dict[j]
 

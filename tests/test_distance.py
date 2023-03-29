@@ -15,7 +15,7 @@ from netrd.distance import BaseDistance
 
 def test_same_graph():
     """The distance between two equal graphs must be zero."""
-    G = nx.karate_club_graph()
+    G = nx.barbell_graph(10, 5)
 
     for label, obj in distance.__dict__.items():
         if isinstance(obj, type) and BaseDistance in obj.__bases__:
@@ -59,7 +59,7 @@ def test_quantum_jsd():
     with warnings.catch_warnings():
         warnings.filterwarnings("ignore", message="JSD is only a metric for 0 ≤ q < 2.")
         JSD = distance.QuantumJSD()
-        G = nx.karate_club_graph()
+        G = nx.barbell_graph(10, 5)
         dist = JSD.dist(G, G, beta=0.1, q=2)
         assert np.isclose(dist, 0.0)
 
@@ -103,8 +103,8 @@ def test_directed_input():
 
 
 def test_weighted_input():
-    G1 = nx.karate_club_graph()
-    G2 = nx.karate_club_graph()
+    G1 = nx.barbell_graph(10, 5)
+    G2 = nx.barbell_graph(10, 5)
     rand = np.random.RandomState(seed=42)
     edge_weights = {e: rand.randint(0, 1000) for e in G2.edges}
     nx.set_edge_attributes(G2, edge_weights, "weight")

@@ -14,7 +14,7 @@ from netrd.dynamics import BaseDynamics
 def test_dynamics_valid_dimensions():
     """Dynamics models should return N x L arrays."""
 
-    G = nx.karate_club_graph()
+    G = nx.barbell_graph(10, 5)
     N = G.number_of_nodes()
 
     for L in [25, 100]:

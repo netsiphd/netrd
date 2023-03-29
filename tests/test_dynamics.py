@@ -9,6 +9,7 @@ Test dynamics algorithms.
 import networkx as nx
 from netrd import dynamics
 from netrd.dynamics import BaseDynamics
+from netrd.dynamics import LotkaVolterra
 
 
 def test_dynamics_valid_dimensions():
@@ -25,3 +26,11 @@ def test_dynamics_valid_dimensions():
 
     assert BaseDynamics().simulate(G, 25).shape == (N, 25)
     assert BaseDynamics().simulate(G, 100).shape == (N, 100)
+
+
+def test_lotka_volterra():
+    """Test Lotka Volterra simulation"""
+    g = nx.fast_gnp_random_graph(10, 0.001)
+    lv_model = LotkaVolterra()
+    assert lv_model.simulate(g, 100, stochastic=False).shape == (10, 100)
+    assert lv_model.simulate(g, 100, stochastic=False).shape == (10, 100)

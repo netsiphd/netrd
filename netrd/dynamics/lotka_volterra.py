@@ -143,7 +143,7 @@ class LotkaVolterra(BaseDynamics):
             integrator = ode(dyn).set_integrator('dopri5')
             integrator.set_initial_value(init, 0.0)
             for t in range(L - 1):
-                if integrator.succesful():
+                if integrator.successful():
                     TS[:, t + 1] = integrator.integrate(integrator.t + dt[t])
                 else:
                     message = 'Integration not succesful. '

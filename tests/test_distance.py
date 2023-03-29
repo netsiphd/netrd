@@ -15,12 +15,12 @@ from netrd.distance import BaseDistance
 
 def test_same_graph():
     """The distance between two equal graphs must be zero."""
-    G = nx.karate_club_graph()
+    G = nx.barbell_graph(10, 5)
 
     for label, obj in distance.__dict__.items():
         if isinstance(obj, type) and BaseDistance in obj.__bases__:
             dist = obj().dist(G, G)
-            assert np.isclose(dist, 0.0)
+            assert np.isclose(dist, 0.0), f"{label} fails same-graph test"
 
 
 def test_different_graphs():
@@ -35,7 +35,7 @@ def test_different_graphs():
     for obj in distance.__dict__.values():
         if isinstance(obj, type) and BaseDistance in obj.__bases__:
             dist = obj().dist(G1, G2)
-            assert dist > 0.0
+            assert dist > 0.0, f"{label} not nonzero"
 
 
 def test_symmetry():
@@ -47,7 +47,7 @@ def test_symmetry():
         if isinstance(obj, type) and BaseDistance in obj.__bases__:
             dist1 = obj().dist(G1, G2)
             dist2 = obj().dist(G2, G1)
-            assert np.isclose(dist1, dist2)
+            assert np.isclose(dist1, dist2), f"{label} not symmetric"
 
 
 def test_quantum_jsd():
@@ -59,20 +59,20 @@ def test_quantum_jsd():
     with warnings.catch_warnings():
         warnings.filterwarnings("ignore", message="JSD is only a metric for 0 ≤ q < 2.")
         JSD = distance.QuantumJSD()
-        G = nx.karate_club_graph()
+        G = nx.barbell_graph(10, 5)
         dist = JSD.dist(G, G, beta=0.1, q=2)
-        assert np.isclose(dist, 0.0)
+        assert np.isclose(dist, 0.0), "collision entropy fails same-graph test"
 
         G1 = nx.fast_gnp_random_graph(100, 0.3)
         G2 = nx.barabasi_albert_graph(100, 5)
         dist = JSD.dist(G1, G2, beta=0.1, q=2)
-        assert dist > 0.0
+        assert dist > 0.0, "collision entropy not nonzero"
 
         G1 = nx.barabasi_albert_graph(100, 4)
         G2 = nx.fast_gnp_random_graph(100, 0.3)
         dist1 = JSD.dist(G1, G2, beta=0.1, q=2)
         dist2 = JSD.dist(G2, G1, beta=0.1, q=2)
-        assert np.isclose(dist1, dist2)
+        assert np.isclose(dist1, dist2), "collision entropy not symmetric"
 
 
 def test_directed_input():
@@ -85,7 +85,7 @@ def test_directed_input():
         for label, obj in distance.__dict__.items():
             if isinstance(obj, type) and BaseDistance in obj.__bases__:
                 dist = obj().dist(G, G)
-                assert np.isclose(dist, 0.0)
+                assert np.isclose(dist, 0.0), f"{label} not deterministic"
 
         G1 = nx.fast_gnp_random_graph(100, 0.3, directed=True)
         G2 = nx.fast_gnp_random_graph(100, 0.3, directed=True)
@@ -94,17 +94,17 @@ def test_directed_input():
             if isinstance(obj, type) and BaseDistance in obj.__bases__:
                 dist1 = obj().dist(G1, G2)
                 dist2 = obj().dist(G2, G1)
-                assert np.isclose(dist1, dist2)
+                assert np.isclose(dist1, dist2), f"{label} not symmetric"
 
         for obj in distance.__dict__.values():
             if isinstance(obj, type) and BaseDistance in obj.__bases__:
                 dist = obj().dist(G1, G2)
-                assert dist > 0.0
+                assert dist > 0.0, f"{label} not nonzero"
 
 
 def test_weighted_input():
-    G1 = nx.karate_club_graph()
-    G2 = nx.karate_club_graph()
+    G1 = nx.barbell_graph(10, 5)
+    G2 = nx.barbell_graph(10, 5)
     rand = np.random.RandomState(seed=42)
     edge_weights = {e: rand.randint(0, 1000) for e in G2.edges}
     nx.set_edge_attributes(G2, edge_weights, "weight")
@@ -120,9 +120,9 @@ def test_weighted_input():
                     if "weighted" in str(warning.message):
                         warning_triggered = True
                 if not warning_triggered:
-                    assert not np.isclose(dist, 0.0)
+                    assert not np.isclose(dist, 0.0), f"{label} = 0"
                 else:
-                    assert np.isclose(dist, 0.0)
+                    assert np.isclose(dist, 0.0), f"{label} != 0"
 
 
 def test_isomorphic_input():
@@ -162,4 +162,6 @@ def test_isomorphic_input():
             and label not in EXCLUDED_DISTANCES
         ):
             dist = obj().dist(G1, G2)
-            assert np.isclose(dist, 0.0, atol=1e-3)
+            assert np.isclose(
+                dist, 0.0, atol=1e-3
+            ), f"{label} not invariant under isomorphism"

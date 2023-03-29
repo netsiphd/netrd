@@ -221,7 +221,6 @@ def mutual_info_all_pairs(JointP, ProduP, N):
 
     for l in range(N):
         for j in range(l):
-
             JointP_jl = JointP[(j, l)]
             ProduP_jl = ProduP[(j, l)]
 

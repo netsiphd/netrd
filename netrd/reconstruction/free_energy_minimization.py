@@ -66,14 +66,12 @@ class FreeEnergyMinimization(BaseReconstructor):
         nloop = 10000  # failsafe
 
         for i0 in range(N):  # for each node
-
             TS1 = TS[i0, 1:]  # take its entire time series
             h = TS1  # calculate the the local field
 
             cost = np.full(nloop, 100.0)
 
             for iloop in range(nloop):
-
                 h_av = np.mean(h)  # average local field
                 hs_av = np.dot(dst, h - h_av) / t1  # deltaE_i delta\sigma_k
                 w = np.dot(hs_av, c_inv)  # expectation under model

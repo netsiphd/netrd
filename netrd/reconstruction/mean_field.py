@@ -67,7 +67,7 @@ class MeanField(BaseReconstructor):
         m = np.mean(TS, axis=1)  # empirical value
 
         # A matrix
-        A = 1 - m ** 2
+        A = 1 - m**2
         A_inv = np.diag(1 / A)
         A = np.diag(A)
 
@@ -86,13 +86,13 @@ class MeanField(BaseReconstructor):
             # ---------------------------------------------------------------
             fun1 = (
                 lambda x, H: (1 / np.sqrt(2 * np.pi))
-                * np.exp(-(x ** 2) / 2)
+                * np.exp(-(x**2) / 2)
                 * np.tanh(H + x * np.sqrt(delta))
             )
 
             fun2 = (
                 lambda x: (1 / np.sqrt(2 * np.pi))
-                * np.exp(-(x ** 2) / 2)
+                * np.exp(-(x**2) / 2)
                 * (1 - np.square(np.tanh(H + x * np.sqrt(delta))))
             )
 
@@ -120,7 +120,7 @@ class MeanField(BaseReconstructor):
                     a = float(a)
 
                     if a != 0:
-                        delta = (1 / (a ** 2)) * np.sum(
+                        delta = (1 / (a**2)) * np.sum(
                             (B[i0, :] ** 2) * (1 - m[:] ** 2)
                         )
                         W_temp = B[i0, :] / a

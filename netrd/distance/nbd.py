@@ -364,8 +364,8 @@ def earthmover_distance(p1, p2):
     objective = solver.Objective()
     objective.SetMinimization()
 
-    for (x, dirt_at_x) in dist1.items():
-        for (y, capacity_of_y) in dist2.items():
+    for x, dirt_at_x in dist1.items():
+        for y, capacity_of_y in dist2.items():
             amount_to_move_x_y = solver.NumVar(
                 0, solver.infinity(), "z_{%s, %s}" % (x, y)
             )

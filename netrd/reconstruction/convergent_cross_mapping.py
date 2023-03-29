@@ -234,7 +234,7 @@ def nearest_neighbors(shadow, L):
 
 
 def neighbor_weights(dist):
-    """Return the weights of neighbors in time seires estimates.
+    r"""Return the weights of neighbors in time seires estimates.
 
     Parameters
     ----------
@@ -274,7 +274,7 @@ def neighbor_weights(dist):
 
 
 def time_series_estimates(data_y, nei_x, wei_x):
-    """Return estimates of variable :math:`Y` from variable :math:`X`'s shadow data cloud.
+    r"""Return estimates of variable :math:`Y` from variable :math:`X`'s shadow data cloud.
 
     Parameters
     ----------

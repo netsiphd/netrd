@@ -120,9 +120,9 @@ def test_weighted_input():
                     if "weighted" in str(warning.message):
                         warning_triggered = True
                 if not warning_triggered:
-                    assert not np.isclose(dist, 0.0)
+                    assert not np.isclose(dist, 0.0), f"{label} = 0"
                 else:
-                    assert np.isclose(dist, 0.0)
+                    assert np.isclose(dist, 0.0), f"{label} != 0"
 
 
 def test_isomorphic_input():

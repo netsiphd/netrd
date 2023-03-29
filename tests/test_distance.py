@@ -20,7 +20,7 @@ def test_same_graph():
     for label, obj in distance.__dict__.items():
         if isinstance(obj, type) and BaseDistance in obj.__bases__:
             dist = obj().dist(G, G)
-            assert np.isclose(dist, 0.0), f"{label} not deterministic"
+            assert np.isclose(dist, 0.0), f"{label} fails same-graph test"
 
 
 def test_different_graphs():
@@ -61,7 +61,7 @@ def test_quantum_jsd():
         JSD = distance.QuantumJSD()
         G = nx.barbell_graph(10, 5)
         dist = JSD.dist(G, G, beta=0.1, q=2)
-        assert np.isclose(dist, 0.0), "collision entropy not deterministic"
+        assert np.isclose(dist, 0.0), "collision entropy fails same-graph test"
 
         G1 = nx.fast_gnp_random_graph(100, 0.3)
         G2 = nx.barabasi_albert_graph(100, 5)

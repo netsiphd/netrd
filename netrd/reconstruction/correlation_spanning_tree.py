@@ -13,8 +13,12 @@ Submitted as part of the 2019 NetSI Collabathon.
 
 from .base import BaseReconstructor
 import numpy as np
-import networkx as nx
 from scipy.sparse.csgraph import minimum_spanning_tree
+
+try:
+    from networkx import from_scipy_sparse_array as from_sparse
+except ImportError:
+    from networkx import from_scipy_sparse_matrix as from_sparse
 
 
 class CorrelationSpanningTree(BaseReconstructor):
@@ -113,7 +117,7 @@ class CorrelationSpanningTree(BaseReconstructor):
 
         MST = minimum_spanning_tree(D)  # Minimum Spanning Tree
 
-        G = nx.from_scipy_sparse_array(MST)
+        G = from_sparse(MST)
 
         self.results['graph'] = G
 

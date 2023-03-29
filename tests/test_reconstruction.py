@@ -28,7 +28,7 @@ def test_graph_size():
         if isinstance(obj, type) and BaseReconstructor in obj.__bases__:
             TS = np.random.random((size, 125))
             G = obj().fit(TS, threshold_type='range', cutoffs=[(-np.inf, np.inf)])
-            assert G.order() == size
+            assert G.order() == size, f"{label} has wrong size"
 
 
 def test_naive_transfer_entropy():
